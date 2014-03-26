@@ -47,6 +47,8 @@ gem 'sequel-rails'
 
 gem 'grape'
 
+gem 'ice_cube'
+
 
 group :development do
   gem 'sqlite3'

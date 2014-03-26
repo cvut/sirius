@@ -50,6 +50,7 @@ GEM
     hashie (2.0.5)
     hike (1.2.3)
     i18n (0.6.9)
+    ice_cube (0.11.3)
     ice_nine (0.11.0)
     json (1.8.1)
     mail (2.5.4)
@@ -137,6 +138,7 @@ PLATFORMS
 
 DEPENDENCIES
   grape
+  ice_cube
   pg
   rails (= 4.0.4)
   rspec-rails (~> 2.99.0.beta)
