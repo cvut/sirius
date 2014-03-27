@@ -28,6 +28,9 @@ module Sirius
     config.paths.add 'app/api', glob: '**/*.rb'
     config.autoload_paths += Dir["#{Rails.root}/app/api"]
 
+    # Sequel config
+    Sequel::Database.extension :pg_hstore
+
     config.sequel.after_connect = proc do
       Sequel::Model.plugin :timestamps, update_on_create: true
     end
