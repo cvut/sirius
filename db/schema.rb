@@ -20,6 +20,18 @@ Sequel.migration do
       column :updated_at, "timestamp without time zone"
     end
     
+    create_table(:rooms) do
+      primary_key :id
+      column :code, "text"
+      column :name, "hstore"
+      column :capacity, "hstore"
+      column :division, "text"
+      column :locality, "text"
+      column :type, "text"
+      column :created_at, "timestamp without time zone"
+      column :updated_at, "timestamp without time zone"
+    end
+    
     create_table(:schema_migrations) do
       column :filename, "text", :null=>false
       
@@ -47,5 +59,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327012704_create_courses.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327125618_add_timestamps_to_courses.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327132523_create_parallels.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327134045_create_rooms.rb')"
   end
 end
