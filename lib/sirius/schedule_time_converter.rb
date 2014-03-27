@@ -42,7 +42,7 @@ module Sirius
 
       start_time = @first_hour + ( ( start_hour - 1 ) * @total_hour_duration ).minutes
       end_time = @first_hour + ( ( ( start_hour - 1 + duration ) * @total_hour_duration ) - @break_length).minutes
-      { start: start_time, end: end_time }
+      { start_time: start_time, end_time: end_time }
     end
   end
 end
