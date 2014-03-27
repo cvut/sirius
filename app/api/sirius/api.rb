@@ -8,7 +8,7 @@ module Sirius
 
       desc 'Test resource'
       get do
-        'Hello world'
+        Event.all
       end
     end
   end
