@@ -28,6 +28,9 @@ module Sirius
     config.paths.add 'app/api', glob: '**/*.rb'
     config.autoload_paths += Dir["#{Rails.root}/app/api"]
 
+    # Autoload lib/sirius/ folder including all subdirectories
+    config.autoload_paths += Dir["#{Rails.root}/lib/**/"]
+
     # Sequel config
     Sequel::Database.extension :pg_hstore
 
