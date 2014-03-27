@@ -5,6 +5,8 @@ Sequel.migration do
       column :code, "text"
       column :department, "text"
       column :name, "hstore"
+      column :created_at, "timestamp without time zone"
+      column :updated_at, "timestamp without time zone"
     end
     
     create_table(:events) do
@@ -29,5 +31,6 @@ Sequel.migration do
   change do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140326184848_create_events.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327012704_create_courses.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327125618_add_timestamps_to_courses.rb')"
   end
 end
