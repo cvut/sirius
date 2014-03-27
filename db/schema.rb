@@ -51,6 +51,18 @@ Sequel.migration do
       column :created_at, "timestamp without time zone"
       column :updated_at, "timestamp without time zone"
     end
+    
+    create_table(:timetable_slots) do
+      primary_key :id
+      column :day, "integer"
+      column :parity, "integer"
+      column :first_hour, "integer"
+      column :duration, "integer"
+      foreign_key :room_id, :rooms, :key=>[:id]
+      foreign_key :parallel_id, :parallels, :key=>[:id]
+      column :created_at, "timestamp without time zone"
+      column :updated_at, "timestamp without time zone"
+    end
   end
 end
 Sequel.migration do
@@ -60,5 +72,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327125618_add_timestamps_to_courses.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327132523_create_parallels.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327134045_create_rooms.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327134320_create_timetable_slots.rb')"
   end
 end
