@@ -1,5 +1,12 @@
 Sequel.migration do
   change do
+    create_table(:courses) do
+      primary_key :id
+      column :code, "text"
+      column :department, "text"
+      column :name, "hstore"
+    end
+    
     create_table(:events) do
       primary_key :id
       column :name, "text"
@@ -21,5 +28,6 @@ end
 Sequel.migration do
   change do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140326184848_create_events.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327012704_create_courses.rb')"
   end
 end
