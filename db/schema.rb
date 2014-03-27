@@ -9,17 +9,6 @@ Sequel.migration do
       column :updated_at, "timestamp without time zone"
     end
     
-    create_table(:events) do
-      primary_key :id
-      column :name, "text"
-      column :note, "text"
-      column :starts_at, "timestamp without time zone"
-      column :ends_at, "timestamp without time zone"
-      column :sequence_number, "integer"
-      column :created_at, "timestamp without time zone"
-      column :updated_at, "timestamp without time zone"
-    end
-    
     create_table(:rooms) do
       primary_key :id
       column :code, "text"
@@ -36,6 +25,18 @@ Sequel.migration do
       column :filename, "text", :null=>false
       
       primary_key [:filename]
+    end
+    
+    create_table(:events) do
+      primary_key :id
+      column :name, "text"
+      column :note, "text"
+      column :starts_at, "timestamp without time zone"
+      column :ends_at, "timestamp without time zone"
+      column :sequence_number, "integer"
+      column :created_at, "timestamp without time zone"
+      column :updated_at, "timestamp without time zone"
+      foreign_key :room_id, :rooms, :key=>[:id]
     end
     
     create_table(:parallels) do
@@ -73,5 +74,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327132523_create_parallels.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327134045_create_rooms.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327134320_create_timetable_slots.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327154417_add_room_fk_to_events.rb')"
   end
 end
