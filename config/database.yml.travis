@@ -1,0 +1,7 @@
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: sirius_test
+  pool: 5
+  host: localhost
+  username: postgres
