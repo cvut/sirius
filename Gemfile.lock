@@ -141,6 +141,7 @@ DEPENDENCIES
   ice_cube
   pg
   rails (= 4.0.4)
+  rake
   rspec-rails (~> 2.99.0.beta)
   sdoc
   sequel-rails
