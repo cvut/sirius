@@ -9,6 +9,7 @@ bundler_args: --without development doc
 before_script:
   - cp config/database.yml.travis config/database.yml
   - psql -c 'create database sirius_test' -U postgres
+  - psql -c sirius_test 'CREATE EXTENSION IF NOT EXISTS hstore' -U postgres
   - bundle exec rake --trace db:migrate db:test:prepare
 notifications:
   email:
