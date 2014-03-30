@@ -68,6 +68,7 @@ Sequel.migration do
 end
 Sequel.migration do
   change do
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140326000000_create_hstore.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140326184848_create_events.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327012704_create_courses.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327125618_add_timestamps_to_courses.rb')"
