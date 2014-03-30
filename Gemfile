@@ -51,6 +51,9 @@ gem 'grape'
 
 gem 'ice_cube'
 
+group :test do
+  gem 'codeclimate-test-reporter', require: nil
+end
 
 group :development do
   gem 'sqlite3'

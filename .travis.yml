@@ -14,3 +14,6 @@ notifications:
   email:
     on_success: never # default: change
     on_failure: change # default: always
+addons:
+  code_climate:
+    repo_token: a813ce884be14a158262d4e05906c0b6f4e7f4533c41cdf88bda7da84d88297f
