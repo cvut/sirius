@@ -1,0 +1,16 @@
+language: ruby
+rvm:
+  - 2.0.0
+  - 2.1.1
+addons:
+  postgresql: "9.3"
+cache: bundler
+bundler_args: --without development doc
+before_script:
+  - cp config/database.yml.travis config/database.yml
+  - psql -c 'create database sirius_test' -U postgres
+  - bundle exec rake --trace db:test:prepare
+notifications:
+  email:
+    on_success: never # default: change
+    on_failure: change # default: always
