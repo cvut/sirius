@@ -43,20 +43,19 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+# Storage
 gem 'pg'
-
 gem 'sequel-rails'
 
+# REST API
 gem 'grape'
+gem 'grape-entity'
 
+# Helper libs
 gem 'ice_cube'
 
 group :test do
   gem 'codeclimate-test-reporter', require: nil
-end
-
-group :development do
-  gem 'sqlite3'
 end
 
 group :development, :test do
