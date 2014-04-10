@@ -2,7 +2,6 @@ module Sirius
 
   class ScheduleTimeConverter
 
-
     # Initializes converter with timetable
     # parameters required for conversion.
     #
@@ -10,7 +9,7 @@ module Sirius
     # @param hour_length [Float] Duration of single teaching hour in minutes.
     # @param break_length [Float] Duration of break in minutes.
     # @param break_after [Integer] After how many teaching hours a break occurs.
-    def initialize( first_hour, hour_length, break_length, break_after )
+    def initialize( first_hour:, hour_length:, break_length:, break_after: )
 
       @first_hour = first_hour
       @hour_length = hour_length
@@ -42,7 +41,7 @@ module Sirius
 
       start_time = @first_hour + ( ( start_hour - 1 ) * @total_hour_duration ).minutes
       end_time = @first_hour + ( ( ( start_hour - 1 + duration ) * @total_hour_duration ) - @break_length).minutes
-      { start_time: start_time, end_time: end_time }
+      Period.new(start_time, end_time)
     end
   end
 end
