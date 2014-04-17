@@ -54,5 +54,5 @@ Sirius::Application.routes.draw do
   #     resources :products
   #   end
 
-  mount Sirius::API => '/'
+  mount API => '/'
 end
