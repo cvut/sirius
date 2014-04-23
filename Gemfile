@@ -49,7 +49,7 @@ gem 'sequel-rails'
 
 # REST API
 gem 'grape'
-gem 'grape-entity'
+gem 'roar'
 
 # Helper libs
 gem 'ice_cube'
