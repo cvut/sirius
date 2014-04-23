@@ -1,10 +1,12 @@
 module Sirius
   class EventEndpoint < Grape::API
+    helpers ApiHelper
+
     resource :events do
 
       desc 'Test resource'
       get do
-        ::Event.all
+        represent ::Event.all, with: EventRepresenter
       end
     end
 
