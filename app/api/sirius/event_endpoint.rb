@@ -1,5 +1,5 @@
 module Sirius
-  class Event < Grape::API
+  class EventEndpoint < Grape::API
     resource :events do
 
       desc 'Test resource'
