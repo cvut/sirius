@@ -27,7 +27,7 @@ module Sirius
         requires :id, type: Integer, desc: 'ID of the event'
       end
       route_param :id do
-        desc 'Get an <%= name.underscore %>'
+        desc 'Get an event'
         get do
           event = Event.find(params[:id])
           represent event, with: EventRepresenter
