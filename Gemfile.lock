@@ -51,9 +51,6 @@ GEM
       rack-accept
       rack-mount
       virtus (>= 1.0.0)
-    grape-entity (0.4.2)
-      activesupport
-      multi_json (>= 1.3.2)
     hashie (2.1.0)
     hike (1.2.3)
     i18n (0.6.9)
@@ -64,9 +61,12 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.25.1)
+    mini_portile (0.5.3)
     minitest (4.7.5)
     multi_json (1.9.2)
     multi_xml (0.5.5)
+    nokogiri (1.6.1)
+      mini_portile (~> 0.5.0)
     pg (0.17.1)
     polyglot (0.3.4)
     rack (1.5.2)
@@ -92,6 +92,12 @@ GEM
     rake (10.2.2)
     rdoc (4.1.1)
       json (~> 1.4)
+    representable (1.8.1)
+      multi_json
+      nokogiri
+      uber
+    roar (0.12.6)
+      representable (>= 1.6.0)
     rspec-collection_matchers (0.0.3)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.0.0.beta2)
@@ -142,6 +148,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.39)
+    uber (0.0.4)
     virtus (1.0.2)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -154,11 +161,11 @@ PLATFORMS
 DEPENDENCIES
   codeclimate-test-reporter
   grape
-  grape-entity
   ice_cube
   pg
   rails (= 4.0.4)
   rake
+  roar
   rspec-rails (~> 3.0.0.beta2)
   sdoc
   sequel-rails
