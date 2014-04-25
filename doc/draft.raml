@@ -1,13 +1,21 @@
 #%RAML 0.8
 title: CTU Sirius API
-baseUri: http://sirius.is.cvut.cz/
+baseUri: https://sirius.fit.cvut.cz/
 version: v1
 traits:
   - paged:
+      usage: Retreive further pages in collection
+      description: Use `offset` and `limit` to paginate the records.
       queryParameters:
-        pages:
-          description: The number of pages to return
+        limit:
+          description: The number of entries in collection to return
           type: number
+          default: 10
+          maximum: 100
+        offset:
+          description: Offset of the first entry in collection
+          type: number
+          default: 0
   - dateScoped:
       queryParameters:
         from:
@@ -37,11 +45,10 @@ traits:
           type: string
           example: people
 
-
 /events:
   is: [ paged, dateScoped, filterable ]
   get:
-    description: Return 20 most recently created events
+    description: Return most recently created events
     responses:
       200:
         body:
@@ -88,6 +95,7 @@ traits:
     delete:
 /exceptions:
   description: Manage calendar exceptions
+  is: [paged]
   get:
     responses:
       200:
