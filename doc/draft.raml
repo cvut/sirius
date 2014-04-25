@@ -1,0 +1,117 @@
+#%RAML 0.8
+title: CTU Sirius API
+baseUri: http://sirius.is.cvut.cz/
+version: v1
+traits:
+  - paged:
+      queryParameters:
+        pages:
+          description: The number of pages to return
+          type: number
+  - dateScoped:
+      queryParameters:
+        from:
+          description: Return events from this date
+          type: date
+        to:
+          description: Return events up to this date
+          type: date
+  - filterable:
+      queryParameters:
+        rooms:
+          description: Filter by room's GTF code, comma separated
+          type: string
+          example: 026A--n13-1333
+        courses:
+          description: Filter by associated course, comma separated
+          type: string
+          example: MI-RUB,BI-PYT
+        people:
+          description: Filter by associated persons' usernames, comma separated
+          type: string
+          example: vomackar,kadleto2
+  - includable:
+      queryParameters:
+        include:
+          description: Include linked resources per JSON API
+          type: string
+          example: people
+
+
+/events:
+  is: [ paged, dateScoped, filterable ]
+  get:
+    description: Return 20 most recently created events
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+                {
+                  events: [{
+                    id: 42,
+                    name: "MI-RUB",
+                    note: "Yadda yadda yadda",
+                    starts_at: "2014-04-23T07:30:00Z",
+                    ends_at: "2014-04-23T11:00:00Z",
+                    sequence_number: 12, //
+                    links: {
+                      room: "026A--n13-1333",
+                      course: "MI-RUB",
+                      parallel: "yadda yadda yadda"
+                    }
+                  ]}
+                }
+  /{eventId}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  events: [{
+                    id: 42,
+                    name: "MI-RUB",
+                    note: "Yadda yadda yadda",
+                    starts_at: "2014-04-23T07:30:00Z",
+                    ends_at: "2014-04-23T11:00:00Z",
+                    sequence_number: 12, //
+                    links: {
+                      room: "026A--n13-1333",
+                      course: "MI-RUB"
+                      people: ["kadleto2", "jirutjak"]
+                    }
+                  ]}
+                }
+    put:
+    delete:
+/exceptions:
+  description: Manage calendar exceptions
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                exceptions: [
+                  {
+                    id: 43,
+                    name: "statni svatek",
+                    action: "cancel",
+                    starts_at: "2014-04-23T15:00:00Z",
+                    ends_at: "2014-04-23T19:00:00Z",
+                    recurrence: "FREQ=YEARLY",
+                    links: {
+                      parallels: ["", ""],
+                      divisions: ["18001"],
+                      semester: "abc123"
+                    }
+                  },
+                  {
+
+                  }
+
+                ]
+              }

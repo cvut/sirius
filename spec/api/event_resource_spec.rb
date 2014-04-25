@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Sirius::EventEndpoint do
+describe Sirius::EventResource do
   subject { response }
   let(:status) { response.status }
   let :event_attributes do
