@@ -17,6 +17,8 @@ gem 'ice_cube' # Date/Time helper
 # Server
 #gem 'thin'
 
+gem 'activesupport'
+
 group :development do
   gem 'rerun'
 end
