@@ -7,7 +7,7 @@ module Sirius
     end
 
     def plan_parallels(parallels)
-      parallels.each { |p| p.generate_evets(@time_converter, @calendar_planner) }
+      parallels.each { |p| p.generate_events(@time_converter, @calendar_planner) }
     end
 
 

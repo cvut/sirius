@@ -35,8 +35,4 @@ describe Parallel do
     end
   end
 
-
-
-
-
 end
