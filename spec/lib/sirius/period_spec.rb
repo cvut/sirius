@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'sirius/period'
 describe Sirius::Period do
 
   describe '#parse' do
