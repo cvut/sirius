@@ -1,6 +1,6 @@
 module Sirius
 
-  class ScheduleTimeConverter
+  class TimeConverter
 
     # Initializes converter with timetable
     # parameters required for conversion.
