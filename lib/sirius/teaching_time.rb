@@ -31,7 +31,7 @@ module Sirius
     end
 
     def plan_calendar(calendar_planner)
-      calendar_planner.plan(this)
+      calendar_planner.plan(self)
     end
   end
 end
