@@ -33,18 +33,23 @@ namespace :db do
     Sequel::Migrator.run(DB, MIGRATIONS_DIR)
   end
 
-  # namespace :schema do
-  #   task :dump => :configure_connection do
-  #     File.open("db/schema.rb", "w") do |file|
-  #       ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, file)
-  #     end
-  #   end
+  namespace :schema do
+    task :dump => :configure_connection do
+      require 'sequel/extensions/schema_dumper'
+      Sequel.extension :schema_dumper
+      DB.extend Sequel::SchemaDumper
+      File.open("db/schema.rb", "w") do |file|
+        file << DB.dump_schema_migration(:same_db => true)
+        # file << SequelRails::Migrations.dump_schema_information(:sql => false)
+      end
+      Rake::Task['db:schema:dump'].reenable
+    end
 
-  #   desc 'Load a schema.rb file into the database'
-  #   task :load => :configure_connection do
-  #     load('db/schema.rb')
-  #   end
-  # end
+    desc 'Load a schema.rb file into the database'
+    task :load => :configure_connection do
+      load('db/schema.rb')
+    end
+  end
 
   namespace :migrate do
     desc 'migrate to the specified version'
