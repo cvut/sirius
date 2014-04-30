@@ -31,4 +31,12 @@ describe Sirius::EventPlanner do
     expect(events.length).to be 7
   end
 
+  it 'returns two Time instances in Period' do
+    event = planner.plan(teaching_time).first
+    expect(event.starts_at).to be_an_instance_of(Time)
+    expect(event.ends_at).to be_an_instance_of(Time)
+  end
+
+
+
 end
