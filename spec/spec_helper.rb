@@ -1,39 +1,23 @@
-require 'bogus/rspec'
-require 'active_record'
-require 'database_cleaner'
-require 'shoulda-matchers'
+ENV['RACK_ENV'] ||= 'test'
 
-ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
-ActiveRecord::Base.logger = Logger.new("log/test.log")
+if ENV['CODECLIMATE_REPO_TOKEN']
+  require 'codeclimate-test-reporter'
+  CodeClimate::TestReporter.start
+end
+
+require 'sequel'
+
+# TODO: Move this to config/boot
+@config = YAML.load_file('config/database.yml')['test']
+DB = Sequel.connect(@config)
+DB.loggers << Logger.new("log/test.log")
+
+# Requires supporting ruby files with custom matchers and macros, etc,
+# in spec/support/ and its subdirectories.
+Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
-
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-    ActiveRecord::Migrator.migrate 'db/migrate', ENV['VERSION'] ? ENV['VERSION'].to_i : nil
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
-
-end
-
-Bogus.configure do |c|
-  c.fake_ar_attributes = true
-end
-
-# see: https://github.com/psyho/bogus/issues/35
-# temporary until Bogus implements stub_const
-def stub_const(name, value)
-  previous_value = eval(name)
-  Bogus.inject.overwrites_classes.overwrite(name, value)
-  Bogus.inject.overwritten_classes.add(name, previous_value)
+  config.order = 'random'
 end
 
 def load_path(path)
