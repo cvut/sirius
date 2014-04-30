@@ -1,3 +1,4 @@
+require 'base_representer'
 class EventRepresenter < BaseRepresenter
   include Roar::Representer::JSON
 

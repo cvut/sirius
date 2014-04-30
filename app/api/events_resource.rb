@@ -1,4 +1,7 @@
-module Sirius
+require 'models/event'
+require 'event_representer'
+require 'api_helper'
+module API
   class EventsResource < Grape::API
     helpers ApiHelper
 
@@ -8,7 +11,6 @@ module Sirius
       get do
         represent ::Event.all, with: EventRepresenter
       end
-
 
       desc 'Create an event'
       params do
