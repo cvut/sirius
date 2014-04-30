@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Parallel do
 
   subject(:parallel) do
-    par = Parallel.new
-    par.timetable_slots = timetable_slots
-    par
+    parallel = Parallel.new
+    allow(parallel).to receive(:timetable_slots).and_return(timetable_slots)
+    parallel
   end
 
   # let(:schedule_params) { { first_hour: Time.parse('7:30'), hour_length: 45, break_length: 15, break_after: 2 } }
@@ -25,7 +25,7 @@ describe Parallel do
     end
 
     context 'when TimetableSlots are not empty' do
-      let(:timetable_slots) { [double('TimetableSlot', first_hour: 1, duration: 2, parity: :both, day: :monday)] }
+      let(:timetable_slots) { [TimetableSlot.new(first_hour: 1, duration: 2, parity: :both, day: :monday)] }
 
       it 'converts Timetableslots to events' do
         events = parallel.generate_events(converter, event_planner)
