@@ -1,5 +1,6 @@
 require 'spec_helper'
+require 'models/room'
 
-describe Event do
+describe Room do
   skip "add some examples to (or delete) #{__FILE__}"
 end

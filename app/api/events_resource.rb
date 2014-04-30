@@ -1,5 +1,5 @@
 module Sirius
-  class EventResource < Grape::API
+  class EventsResource < Grape::API
     helpers ApiHelper
 
     resource :events do

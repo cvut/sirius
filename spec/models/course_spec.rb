@@ -1,5 +1,6 @@
 require 'spec_helper'
+require 'models/course'
 
-describe Room do
+describe Course do
   skip "add some examples to (or delete) #{__FILE__}"
 end

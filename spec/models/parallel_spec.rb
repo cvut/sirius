@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'models/parallel'
 
 describe Parallel do
 
@@ -34,9 +35,5 @@ describe Parallel do
       end
     end
   end
-
-
-
-
 
 end
