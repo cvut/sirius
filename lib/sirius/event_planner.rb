@@ -1,3 +1,5 @@
+require 'ice_cube'
+require 'sirius/teaching_time'
 module Sirius
 
   class EventPlanner

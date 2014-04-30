@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'sirius/event_planner'
 describe Sirius::EventPlanner do
 
   let(:teaching_time) { Sirius::TeachingTime.new(teaching_period: Sirius::Period.new(Time.parse('14:30'), Time.parse('16:00')), parity: :both, day: :tuesday) }
