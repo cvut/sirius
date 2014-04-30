@@ -1,5 +1,5 @@
 test:
-  adapter: postgresql
+  adapter: postgres
   encoding: unicode
   database: sirius_test
   pool: 5
