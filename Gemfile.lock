@@ -41,6 +41,7 @@ GEM
     docile (1.1.3)
     equalizer (0.0.9)
     erubis (2.7.0)
+    fabrication (2.11.2)
     grape (0.7.0)
       activesupport
       builder
@@ -160,6 +161,7 @@ PLATFORMS
 
 DEPENDENCIES
   codeclimate-test-reporter
+  fabrication
   grape
   ice_cube
   pg

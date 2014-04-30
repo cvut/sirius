@@ -56,6 +56,7 @@ gem 'ice_cube'
 
 group :test do
   gem 'codeclimate-test-reporter', require: nil
+  gem 'fabrication'
 end
 
 group :development, :test do
