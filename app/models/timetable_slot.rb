@@ -11,13 +11,9 @@ class TimetableSlot < Sequel::Model
   end
 
   def parity=(new_parity)
-    numerical_parity = case new_parity
-                    when :odd then 1
-                    when :even then 2
-                    when :both then 0
-                    else raise "Invalid parity type #{new_parity}"
-                       end
-    super numerical_parity
+    parity_index = PARITIES.find_index(new_parity)
+    raise "Invalid parity type #{new_parity}" if parity_index.nil?
+    super parity_index
   end
 
   def day
