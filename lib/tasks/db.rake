@@ -3,7 +3,7 @@ require 'logger'
 
 namespace :db do
   task :environment do
-    DATABASE_ENV = ENV['DATABASE_ENV'] || 'development'
+    DATABASE_ENV = ENV['RACK_ENV'] || 'development'
     MIGRATIONS_DIR = ENV['MIGRATIONS_DIR'] || 'db/migrate'
   end
 
