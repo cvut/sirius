@@ -7,13 +7,10 @@ module Sirius
     end
 
     def plan_parallels(parallels)
-      parallels.each { |p| plan_parallel(p) }
+      parallels.each { |p| p.generate_evets(@time_converter, @calendar_planner) }
     end
 
-    def plan_parallel(parallel)
-      teaching_times = parallel.convert_time(@time_converter)
-      teaching_times.each{ |tt| tt.plan_calendar(@calendar_planner) }
-    end
+
 
   end
 end
