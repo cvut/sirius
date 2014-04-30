@@ -1,0 +1,7 @@
+#!/bin/bash
+# Boot server with development environment by default.
+# You can start the server with an arg to change the env:
+#
+# ex: script/server production
+#
+rackup -s thin -E ${1-development}

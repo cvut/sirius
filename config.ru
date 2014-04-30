@@ -1,4 +1,7 @@
-# This file is used by Rack-based servers to start the application.
+require File.join(File.dirname(__FILE__), 'init')
 
-require ::File.expand_path('../config/environment',  __FILE__)
-run Rails.application
+use Rack::CommonLogger, $logger
+use Middleware::Logger, $logger
+use Middleware::DBConnectionSweeper
+
+run API::Base
