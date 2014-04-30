@@ -7,7 +7,7 @@ module Middleware
     def call(env)
       response = @app.call(env)
     ensure
-      ActiveRecord::Base.clear_active_connections!
+      DB.disconnect
       response
     end
   end

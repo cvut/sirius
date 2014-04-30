@@ -18,5 +18,5 @@ RACK_ENV = ENV['RACK_ENV'] || 'development'
 puts "Starting environment: #{RACK_ENV}..."
 @config = YAML.load_file('config/database.yml')[RACK_ENV]
 
-ActiveRecord::Base.establish_connection @config
-ActiveRecord::Base.logger = $logger
+DB = Sequel.connect(@config)
+DB.loggers << $logger

@@ -1,1 +1,1 @@
-ActiveRecord::Base.logger = Logger.new(STDOUT)
+DB.loggers = [Logger.new(STDOUT)]
