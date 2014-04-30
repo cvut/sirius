@@ -1,6 +1,6 @@
 module Sirius
 
-  class ScheduleCalendarPlanner
+  class EventPlanner
 
     def initialize( params = {} )
       @teaching_period = params[:teaching_period]
