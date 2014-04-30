@@ -3,8 +3,6 @@ class Parallel < Sequel::Model
   many_to_one :course
   one_to_many :timetable_slots
 
-  attr_accessor :timetable_slots
-
   def generate_events(time_converter, calendar_planner)
     teaching_times = teaching_times(time_converter)
     plan_calendar(teaching_times, calendar_planner)
