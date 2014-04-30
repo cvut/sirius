@@ -1,12 +1,6 @@
 require 'api_spec_helper'
 
 describe API::EventsResource do
-  include Rack::Test::Methods
-
-  def app
-    API::Base
-  end
-
   subject { response }
   let(:status) { response.status }
   let :event_attributes do
