@@ -2,9 +2,9 @@ module Sirius
 
   class EventPlanner
 
-    def initialize( params = {} )
-      @teaching_period = params[:teaching_period]
-      @first_week_parity = params[:first_week_parity]
+    def initialize( teaching_period:, first_week_parity: )
+      @teaching_period = teaching_period
+      @first_week_parity = first_week_parity
     end
 
     def plan(teaching_time)
