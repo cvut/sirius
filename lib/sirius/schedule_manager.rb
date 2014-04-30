@@ -3,10 +3,10 @@ module Sirius
 
     def plan_stored_parallels
       semesters = load_semesters
-      semesters.each do |sem|
+      semesters.map do |sem|
         parallels = Parallel.all
         events = sem.plan_parallels(parallels)
-        events.each(&:save)
+        events.each { |event| event.save }
       end
 
     end
