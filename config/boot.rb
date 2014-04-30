@@ -13,10 +13,9 @@ end
 $LOAD_PATH << load_path('../')
 $LOAD_PATH << load_path('../lib')
 $LOAD_PATH << load_path('../app')
-# %w(context data decorators helpers information representers).each do |app_path|
-#   $LOAD_PATH << load_path("../app/#{app_path}")
-# end
-
+%w(api contexts helpers representers models).each do |app_path|
+  $LOAD_PATH << load_path("../app/#{app_path}")
+end
 
 # Setup DB connection
 require 'yaml'

@@ -14,7 +14,7 @@ module API
     content_type :json, CONTENT_TYPE
 
     rescue_from Grape::Exceptions::Validation do |e|
-      Rack::Response.new({ message: e.message }.to_json, 412, RACK_CONTENT_TYPE_HEADER).finish
+      Rack::Response.new({ message: e.message }.to_json, 422, RACK_CONTENT_TYPE_HEADER).finish
     end
 
     # rescue_from ActiveRecord::RecordNotFound do |e|
