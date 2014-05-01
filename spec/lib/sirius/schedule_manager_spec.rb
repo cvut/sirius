@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sirius/schedule_manager'
 
 describe Sirius::ScheduleManager do
 

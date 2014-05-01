@@ -1,3 +1,5 @@
+require 'sirius/course'
+
 Fabricator(:course) do
   code 'MI-PSL'
   department '18102'

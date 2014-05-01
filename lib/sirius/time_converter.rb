@@ -1,3 +1,5 @@
+require 'sirius/period'
+
 module Sirius
 
   class TimeConverter

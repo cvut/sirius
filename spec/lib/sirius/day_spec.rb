@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sirius/day'
 
 describe Sirius::Day do
 

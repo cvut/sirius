@@ -1,8 +1,9 @@
 require 'spec_helper'
+require 'sirius/event_factory'
 
 describe Sirius::EventFactory do
 
-  subject(:factory) { Sirius::EventFactory.new }
+  subject(:factory) { described_class.new }
   let(:period) { Sirius::Period.parse('7:30', '9:00') }
 
   it 'builds an Event from Period' do

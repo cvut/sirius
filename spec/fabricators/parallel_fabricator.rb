@@ -1,3 +1,5 @@
+require 'sirius/parallel'
+
 Fabricator(:parallel) do
   code 101
   capacity 24

@@ -1,3 +1,5 @@
+require 'sirius/timetable_slot'
+
 Fabricator(:timetable_slot) do
   day Sirius::Day::MONDAY #:monday
   parity :both

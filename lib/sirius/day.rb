@@ -1,3 +1,5 @@
+require 'sirius/enum'
+
 module Sirius
   class Day
     extend Enum

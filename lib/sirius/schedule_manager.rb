@@ -1,3 +1,5 @@
+require 'sirius/semester'
+
 module Sirius
   class ScheduleManager
 

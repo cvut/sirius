@@ -1,3 +1,5 @@
+require 'models/event'
+
 module Sirius
   class EventFactory
 
