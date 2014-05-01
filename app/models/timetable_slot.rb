@@ -1,6 +1,5 @@
 class TimetableSlot < Sequel::Model
 
-  DAYS = [nil, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday]
   PARITIES = [:both, :odd, :even]
 
   many_to_one :parallel
@@ -17,13 +16,11 @@ class TimetableSlot < Sequel::Model
   end
 
   def day
-    DAYS[super]
+    Sirius::Day.from_numeric(super)
   end
 
   def day=(new_day)
-    day_index = DAYS.find_index(new_day)
-    raise "Invalid day name #{new_day}" if day_index.nil?
-    super day_index
+    super Sirius::Day.to_numeric(new_day)
   end
 
 end
