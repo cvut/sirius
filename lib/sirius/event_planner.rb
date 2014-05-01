@@ -17,7 +17,7 @@ module Sirius
 
       event_schedule = IceCube::Schedule.new(scheduling_start, duration: event_duration)
       event_schedule.add_recurrence_rule to_recurrence_rule(teaching_time)
-      event_schedule.all_occurrences.map{ |event_start| { starts_at: event_start, ends_at: event_start + event_duration } }
+      event_schedule.all_occurrences.map{ |event_start| Sirius::Period.new(event_start.to_time, event_start + event_duration) }
     end
 
     private

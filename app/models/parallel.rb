@@ -3,11 +3,10 @@ class Parallel < Sequel::Model
   many_to_one :course
   one_to_many :timetable_slots
 
-  attr_accessor :timetable_slots
-
   def generate_events(time_converter, calendar_planner)
     teaching_times = teaching_times(time_converter)
-    plan_calendar(teaching_times, calendar_planner)
+    event_periods = plan_calendar(teaching_times, calendar_planner)
+    create_events(event_periods)
   end
 
   private
@@ -19,7 +18,12 @@ class Parallel < Sequel::Model
   end
 
   def plan_calendar(teaching_times, calendar_planner)
-    teaching_times.map{ |tt| tt.plan_calendar(calendar_planner) }
+    teaching_times.map{ |tt| tt.plan_calendar(calendar_planner) }.flatten
+  end
+
+  def create_events(event_periods)
+    factory = Sirius::EventFactory.new
+    event_periods.map { |period| factory.build_event(period) }
   end
 
 end

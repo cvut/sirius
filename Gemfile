@@ -30,6 +30,7 @@ group :test do
   gem 'database_cleaner'
   gem 'timecop'
   gem 'codeclimate-test-reporter', require: nil
+  gem 'fabrication'
 end
 
 group :development, :test do
