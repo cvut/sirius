@@ -15,7 +15,13 @@ require 'fabrication'
 # in spec/support/ and its subdirectories.
 # Dir["spec/support/**/*.rb"].each { |f| require f }
 
-RSpec.configure do |config|
-  config.order = 'random'
+RSpec.configure do |c|
+  c.order = 'random'
+
+  # Use transactions per
+  # http://sequel.jeremyevans.net/rdoc/files/doc/testing_rdoc.html
+  c.around(:each) do |example|
+    DB.transaction(:rollback=>:always, :auto_savepoint=>true){example.run}
+  end
 end
 
