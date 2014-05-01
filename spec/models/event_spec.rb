@@ -7,7 +7,7 @@ describe Event do
   let(:period) { Sirius::Period.parse('7:30', '9:00') }
 
   it 'returns correct calculated period' do
-    expect(event.period).to eq Period.parse('11:00', '12:30')
+    expect(event.period).to eq Sirius::Period.parse('11:00', '12:30')
   end
 
   it 'sets starts_at and ends_at attributes from period=' do

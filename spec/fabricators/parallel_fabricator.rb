@@ -1,4 +1,4 @@
-require 'sirius/parallel'
+require 'models/parallel'
 
 Fabricator(:parallel) do
   code 101

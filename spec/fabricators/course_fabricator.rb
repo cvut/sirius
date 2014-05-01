@@ -1,4 +1,4 @@
-require 'sirius/course'
+require 'models/course'
 
 Fabricator(:course) do
   code 'MI-PSL'

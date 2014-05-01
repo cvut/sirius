@@ -1,4 +1,4 @@
-require 'sirius/timetable_slot'
+require 'models/timetable_slot'
 
 Fabricator(:timetable_slot) do
   day Sirius::Day::MONDAY #:monday

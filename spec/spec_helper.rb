@@ -5,14 +5,11 @@ if ENV['CODECLIMATE_REPO_TOKEN']
   CodeClimate::TestReporter.start
 end
 
-def load_path(path)
-  File.join(File.dirname(__FILE__), path)
-end
-
-
 # FIXME: This should go to boot, probably with load_path
 # and APP_ROOT constant
 require File.expand_path('../config/boot', File.dirname(__FILE__))
+
+require 'fabrication'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.

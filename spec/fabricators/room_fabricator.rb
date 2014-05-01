@@ -1,4 +1,4 @@
-require 'sirius/room'
+require 'models/room'
 
 Fabricator(:room) do
   code 'T9:350'
