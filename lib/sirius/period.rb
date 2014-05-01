@@ -1,3 +1,5 @@
+require 'sirius/day'
+
 module Sirius
   class Period
 
