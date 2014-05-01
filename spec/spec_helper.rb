@@ -1,4 +1,4 @@
-ENV['RACK_ENV'] ||= 'test'
+RACK_ENV = ENV['RACK_ENV'] || 'test'
 
 if ENV['CODECLIMATE_REPO_TOKEN']
   require 'codeclimate-test-reporter'

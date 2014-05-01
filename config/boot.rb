@@ -5,7 +5,6 @@ require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 
 require 'active_support/all'
 
-
 def load_path(path)
   File.expand_path(path, File.dirname(__FILE__))
 end
@@ -20,7 +19,7 @@ end
 # Setup DB connection
 require 'yaml'
 require 'sequel'
-db_config = YAML.load_file('config/database.yml')[ENV['RACK_ENV']]
+db_config = YAML.load_file('config/database.yml')[RACK_ENV]
 DB = Sequel.connect(db_config)
 
 DB.extension :pg_hstore
