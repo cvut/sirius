@@ -1,22 +1,14 @@
-def load_path(path)
-  File.join(File.dirname(__FILE__), path)
-end
+# class ::Logger; alias_method :write, :<<; end # for Rack::CommonLogger
+# $logger = ::Logger.new('log/service.log')
 
-$LOAD_PATH << load_path(".")
-$LOAD_PATH << load_path("./lib")
+RACK_ENV = ENV['RACK_ENV'] || 'development'
+
+puts "Starting environment: #{RACK_ENV}..."
+require File.expand_path('config/boot', File.dirname(__FILE__))
 
 require 'api/base'
 require 'middleware/db_connection_sweeper'
 require 'middleware/logger'
 require 'logger'
 
-class ::Logger; alias_method :write, :<<; end # for Rack::CommonLogger
-$logger = ::Logger.new('log/service.log')
-
-RACK_ENV = ENV['RACK_ENV'] || 'development'
-
-puts "Starting environment: #{RACK_ENV}..."
-@config = YAML.load_file('config/database.yml')[RACK_ENV]
-
-DB = Sequel.connect(@config)
-DB.loggers << $logger
+# DB.loggers << $logger
