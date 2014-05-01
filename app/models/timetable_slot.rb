@@ -16,11 +16,11 @@ class TimetableSlot < Sequel::Model
   end
 
   def day
-    Sirius::Day.from_numeric(super)
+    Day.from_numeric(super)
   end
 
   def day=(new_day)
-    super Sirius::Day.to_numeric(new_day)
+    super Day.to_numeric(new_day)
   end
 
 end

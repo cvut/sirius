@@ -1,4 +1,4 @@
-require 'sirius/period'
+require 'period'
 
 module Sirius
 

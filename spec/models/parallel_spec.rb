@@ -11,7 +11,7 @@ describe Parallel do
 
   # let(:schedule_params) { { first_hour: Time.parse('7:30'), hour_length: 45, break_length: 15, break_after: 2 } }
   # let(:converter) { Sirius::TimeConverter.new(schedule_params) }
-  let(:period) { Sirius::Period.parse('7:30', '9:00') }
+  let(:period) { Period.parse('7:30', '9:00') }
   let(:converter) { instance_double(Sirius::TimeConverter, convert_time: period) }
   let(:event_planner) { instance_double(Sirius::EventPlanner, plan: [period]) }
 

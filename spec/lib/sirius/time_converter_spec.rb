@@ -9,6 +9,6 @@ describe Sirius::TimeConverter do
   it 'calculates event start and end time' do
 
     result = converter.convert_time(1, 2)
-    expect(result).to eq(Sirius::Period.parse('7:30','9:00'))
+    expect(result).to eq(Period.parse('7:30','9:00'))
   end
 end

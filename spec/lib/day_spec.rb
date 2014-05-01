@@ -1,9 +1,7 @@
 require 'spec_helper'
-require 'sirius/day'
+require 'day'
 
-describe Sirius::Day do
-
-  Day = Sirius::Day
+describe Day do
 
   it 'converts day symbol to number' do
     expect(Day.to_numeric(Day::WEDNESDAY)).to eq 3

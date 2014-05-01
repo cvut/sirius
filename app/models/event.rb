@@ -1,11 +1,11 @@
-require 'sirius/period'
+require 'period'
 
 class Event < Sequel::Model
 
   many_to_one :room
 
   def period
-    Sirius::Period.new(starts_at, ends_at)
+    Period.new(starts_at, ends_at)
   end
 
   def period=(new_period)
