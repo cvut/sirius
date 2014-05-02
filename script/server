@@ -4,4 +4,4 @@
 #
 # ex: script/server production
 #
-rackup -s thin -E ${1-development}
+rackup -E ${1-development}
