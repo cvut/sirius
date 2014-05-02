@@ -11,4 +11,7 @@ require 'middleware/db_connection_sweeper'
 require 'middleware/logger'
 require 'logger'
 
+class ::Logger; alias_method :write, :<<; end # for Rack::CommonLogger
+$logger = ::Logger.new("log/#{RACK_ENV}.log")
+
 # DB.loggers << $logger
