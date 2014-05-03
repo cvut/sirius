@@ -1,18 +1,17 @@
-class TimetableSlot < Sequel::Model
+require 'day'
+require 'parity'
 
-  PARITIES = [:both, :odd, :even]
+class TimetableSlot < Sequel::Model
 
   many_to_one :parallel
   many_to_one :room
 
   def parity
-    PARITIES[super]
+    Parity.from_numeric(super)
   end
 
   def parity=(new_parity)
-    parity_index = PARITIES.find_index(new_parity)
-    raise "Invalid parity type #{new_parity}" if parity_index.nil?
-    super parity_index
+    super Parity.to_numeric(new_parity)
   end
 
   def day
