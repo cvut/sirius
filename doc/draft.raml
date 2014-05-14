@@ -55,17 +55,17 @@ traits:
           application/json:
             example: |
                 {
-                  events: [{
-                    id: 42,
-                    name: "MI-RUB",
-                    note: "Yadda yadda yadda",
-                    starts_at: "2014-04-23T07:30:00Z",
-                    ends_at: "2014-04-23T11:00:00Z",
-                    sequence_number: 12, //
-                    links: {
-                      room: "026A--n13-1333",
-                      course: "MI-RUB",
-                      parallel: "yadda yadda yadda"
+                  "events": [{
+                    "id": 42,
+                    "name": "MI-RUB",
+                    "note": "Yadda yadda yadda",
+                    "starts_at": "2014-04-23T07:30:00Z",
+                    "ends_at": "2014-04-23T11:00:00Z",
+                    "sequence_number": 12, //
+                    "links": {
+                      "room": "026A--n13-1333",
+                      "course": "MI-RUB",
+                      "parallel": "yadda yadda yadda"
                     }
                   }]
                 }
@@ -77,17 +77,17 @@ traits:
             application/json:
               example: |
                 {
-                  events: [{
-                    id: 42,
-                    name: "MI-RUB",
-                    note: "Yadda yadda yadda",
-                    starts_at: "2014-04-23T07:30:00Z",
-                    ends_at: "2014-04-23T11:00:00Z",
-                    sequence_number: 12, //
-                    links: {
-                      room: "026A--n13-1333",
-                      course: "MI-RUB"
-                      people: ["kadleto2", "jirutjak"]
+                  "events": [{
+                    "id": 42,
+                    "name": "MI-RUB",
+                    "note": "Yadda yadda yadda",
+                    "starts_at": "2014-04-23T07:30:00Z",
+                    "ends_at": "2014-04-23T11:00:00Z",
+                    "sequence_number": 12, //
+                    "links": {
+                      "room": "026A--n13-1333",
+                      "course": "MI-RUB"
+                      "people": ["kadleto2", "jirutjak"]
                     }
                   }]
                 }
@@ -103,18 +103,18 @@ traits:
           application/json:
             example: |
               {
-                exceptions: [
+                "exceptions": [
                   {
-                    id: 43,
-                    name: "statni svatek",
-                    action: "cancel",
-                    starts_at: "2014-04-23T15:00:00Z",
-                    ends_at: "2014-04-23T19:00:00Z",
-                    recurrence: "FREQ=YEARLY",
-                    links: {
-                      parallels: ["", ""],
-                      divisions: ["18001"],
-                      semester: "abc123"
+                    "id": 43,
+                    "name": "statni svatek",
+                    "action": "cancel",
+                    "starts_at": "2014-04-23T15:00:00Z",
+                    "ends_at": "2014-04-23T19:00:00Z",
+                    "recurrence": "FREQ=YEARLY",
+                    "links": {
+                      "parallels": ["", ""],
+                      "divisions": ["18001"],
+                      "semester": "abc123"
                     }
                   },
                   {
