@@ -38,3 +38,5 @@ group :development, :test do
   gem 'pry-nav'
   gem 'awesome_print'
 end
+
+gem 'kosapi_client', github: 'flexik/kosapi_client'
