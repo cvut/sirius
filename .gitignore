@@ -22,3 +22,6 @@
 /.idea
 bin/
 /coverage/
+
+# dotenv config
+.env

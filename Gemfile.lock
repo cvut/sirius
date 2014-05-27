@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/flexik/kosapi_client.git
-  revision: 560d53c5e49c9a0619a018cbb402bb69ef64e464
+  revision: d41dc2972155db03ae2d1c096bdc625e5034702e
   specs:
     kosapi_client (0.0.1)
       activesupport
@@ -42,6 +42,9 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
     docile (1.1.3)
+    dotenv (0.11.1)
+      dotenv-deployment (~> 0.0.2)
+    dotenv-deployment (0.0.2)
     equalizer (0.0.9)
     escape_utils (1.0.1)
     fabrication (2.11.2)
@@ -151,6 +154,7 @@ DEPENDENCIES
   bogus
   codeclimate-test-reporter
   database_cleaner
+  dotenv
   fabrication
   grape
   ice_cube

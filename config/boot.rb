@@ -5,6 +5,9 @@ require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 
 require 'active_support/all'
 
+require 'dotenv'
+Dotenv.load
+
 def load_path(path)
   File.expand_path(path, File.dirname(__FILE__))
 end
