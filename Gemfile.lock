@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/flexik/kosapi_client.git
-  revision: d41dc2972155db03ae2d1c096bdc625e5034702e
+  revision: 37163bdf286a217c86d2bbbb75b174fda588506b
   specs:
     kosapi_client (0.0.1)
       activesupport
@@ -132,7 +132,7 @@ GEM
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
     slop (3.5.0)
-    thread_safe (0.3.3)
+    thread_safe (0.3.4)
     timecop (0.7.1)
     timers (1.1.0)
     tzinfo (1.2.0)
