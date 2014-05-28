@@ -3,6 +3,8 @@ rvm:
   - 2.1.1
 addons:
   postgresql: "9.3"
+  code_climate:
+    repo_token: a813ce884be14a158262d4e05906c0b6f4e7f4533c41cdf88bda7da84d88297f
 cache: bundler
 bundler_args: --without development doc
 before_script:
@@ -13,6 +15,7 @@ notifications:
   email:
     on_success: never # default: change
     on_failure: change # default: always
-addons:
-  code_climate:
-    repo_token: a813ce884be14a158262d4e05906c0b6f4e7f4533c41cdf88bda7da84d88297f
+env:
+  global:
+  - secure: YHwUt3DrGNASEsmSpiaTM5Lm7Cw3ONi2bc1rSSq3rPebLNp5aQ0trFZ3nI97eG/4kZzjjFC5JqEF7MFnqPC5CFOUugspJa3x4XkUjZCX6QT6CJfCrN87cgslmJxCdjfXTiLonjr9XzAkTepPk+FKqKcjWLRgZidpwvoc9hA0/1Q=
+  - secure: JyFPRYEYWJnFq6ejxKF7SsnaIkG+5lm01rlw7Mn0Waemp8GnIa8/am+vStOo1dtzI0QpxJG1suPq0GbfdxK7DbRceTTEHSnx2scdR4EyLW2b8O6m0pwL6iZAb2AbiQQ28lz45b6RehET2JJf4VNB4D/Bz1TepmV8Ny7eKHxlOJY=
