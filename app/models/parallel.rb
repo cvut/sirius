@@ -3,6 +3,10 @@ class Parallel < Sequel::Model
   many_to_one :course
   one_to_many :timetable_slots
 
+  def self.from_kosapi(kosapi_parallel)
+    self.new(kosapi_parallel.to_hash)
+  end
+
   def generate_events(time_converter, calendar_planner)
     teaching_times = teaching_times(time_converter)
     event_periods = plan_calendar(teaching_times, calendar_planner)

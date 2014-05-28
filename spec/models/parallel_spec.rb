@@ -37,4 +37,15 @@ describe Parallel do
     end
   end
 
+  describe '.from_kosapi' do
+    let(:kosapi_parallel) { double(to_hash: {code: 1234}) }
+
+    it 'converts kosapi parallel to sirius paralell entity' do
+      parallel = Parallel.from_kosapi(kosapi_parallel)
+      expect(parallel).to be_an_instance_of(Parallel)
+      expect(parallel.code).to eq(1234)
+    end
+
+  end
+
 end
