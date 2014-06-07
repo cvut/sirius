@@ -9,10 +9,11 @@ gem 'sequel'
 # REST API
 gem 'grape'
 gem 'roar'
-gem 'json'                          # JSON
+gem 'json'
 
 # Helper libs
 gem 'ice_cube' # Date/Time helper
+gem 'icalendar', '~> 2.0.1'
 
 # Server
 #gem 'thin'
