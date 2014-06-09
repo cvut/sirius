@@ -19,14 +19,5 @@ $LOAD_PATH << load_path('../app')
   $LOAD_PATH << load_path("../app/#{app_path}")
 end
 
-# Setup DB connection
-require 'yaml'
-require 'sequel'
-db_config = YAML.load_file('config/database.yml')[RACK_ENV]
-DB = Sequel.connect(db_config)
-
-DB.extension :pg_hstore
-
 # Load initializers
-
 Dir['config/initializers/*.rb'].each {|file| require file }
