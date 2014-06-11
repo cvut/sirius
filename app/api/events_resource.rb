@@ -5,11 +5,13 @@ module API
   class EventsResource < Grape::API
     helpers ApiHelper
 
+    represent Event, with: EventsRepresenter
+
     resource :events do
 
       desc 'Get all events'
       get do
-        represent ::Event.all, with: EventRepresenter
+        represent ::Event.all
       end
 
       params do
@@ -19,7 +21,7 @@ module API
         desc 'Get an event'
         get do
           event = Event[params[:id]]
-          represent event, with: EventRepresenter
+          represent event
         end
       end
 
