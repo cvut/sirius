@@ -5,13 +5,12 @@ require 'api/events_resource'
 
 module API
   class Base < Grape::API
-    CONTENT_TYPE = "application/hal+json"
+    CONTENT_TYPE = "application/vnd.api+json"
     RACK_CONTENT_TYPE_HEADER = {"content-type" => CONTENT_TYPE}
     HTTP_STATUS_CODES = Rack::Utils::HTTP_STATUS_CODES.invert
 
-    format :json
-    cascade false
-    content_type :json, CONTENT_TYPE
+    content_type :jsonapi, CONTENT_TYPE
+    format :jsonapi
 
     rescue_from Grape::Exceptions::Validation do |e|
       Rack::Response.new({ message: e.message }.to_json, 422, RACK_CONTENT_TYPE_HEADER).finish
