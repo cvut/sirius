@@ -1,13 +1,22 @@
 module ApiHelper
-  ## Helper for Roar representers
-  ## Taken from  Napa::GrapeHelpers
+  ## Simplified `present` method
+  # - Seeks a relevant representer if not defined with `represent` macro
+  # - Always works with collections
   def represent(data, with: nil, **args)
-    raise ArgumentError.new(":with option is required") if with.nil?
 
-    if data.respond_to?(:to_a)
-      return { data: data.map{ |item| with.new(item).to_hash(args) } }
-    else
-      return { data: with.new(data).to_hash(args)}
+    # convert singular resource to a collection
+    objects = Array(data)
+
+    entity_class = with
+    if entity_class.nil?
+      object_class = objects.first.class
+      # Iterate over ancestors to find a relevant representer
+      # defined with `represent` macro
+      object_class.ancestors.each do |potential|
+        entity_class ||= (settings[:representations] || {})[potential]
+      end
     end
+
+    entity_class.new(objects)
   end
 end
