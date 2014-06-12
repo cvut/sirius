@@ -1,5 +1,5 @@
-require 'representable/json/collection'
 require 'base_representer'
+require 'representable/json/collection'
 class CollectionRepresenter < BaseRepresenter
-  include Roar::Representer::JSON
+  include Representable::JSON::Collection
 end

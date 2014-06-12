@@ -8,5 +8,4 @@ DB.extension :pg_hstore
 
 # Add ActiveModel compatibility
 # http://sequel.jeremyevans.net/rdoc-plugins/classes/Sequel/Plugins/ActiveModel.html
-# Used by ActiveModel Serializers, pagination
-Sequel::Model.plugin :active_model
+# Sequel::Model.plugin :active_model

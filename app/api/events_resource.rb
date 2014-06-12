@@ -1,5 +1,5 @@
 require 'models/event'
-require 'event_representer'
+require 'events_representer'
 require 'api_helper'
 module API
   class EventsResource < Grape::API
