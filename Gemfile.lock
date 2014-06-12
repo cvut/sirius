@@ -9,6 +9,14 @@ GIT
       oauth2
       uri_template
 
+GIT
+  remote: git://github.com/jnv/json_spec.git
+  revision: f2151551970328002cdf7b79c5de6aa5bac4efc3
+  specs:
+    json_spec (1.1.1)
+      multi_json (~> 1.0)
+      rspec (>= 2.0, < 4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -156,6 +164,7 @@ DEPENDENCIES
   icalendar (~> 2.0.1)
   ice_cube
   json
+  json_spec!
   kosapi_client!
   pg
   pry

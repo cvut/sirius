@@ -32,6 +32,10 @@ group :test do
   gem 'timecop'
   gem 'codeclimate-test-reporter', require: nil
   gem 'fabrication'
+
+  # Fork, until RSpec 3.0 is supported
+  # https://github.com/collectiveidea/json_spec/pull/71
+  gem 'json_spec', github: 'jnv/json_spec'
 end
 
 group :development, :test do
