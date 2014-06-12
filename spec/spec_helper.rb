@@ -10,18 +10,24 @@ end
 require File.expand_path('../config/boot', File.dirname(__FILE__))
 
 require 'fabrication'
+require 'database_cleaner'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 # Dir["spec/support/**/*.rb"].each { |f| require f }
 
-RSpec.configure do |c|
-  c.order = 'random'
+RSpec.configure do |config|
+  config.order = 'random'
 
-  # Use transactions per
-  # http://sequel.jeremyevans.net/rdoc/files/doc/testing_rdoc.html
-  c.around(:each) do |example|
-    DB.transaction(:rollback=>:always, :auto_savepoint=>true){example.run}
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
   end
 end
 
