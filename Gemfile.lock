@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/collectiveidea/json_spec.git
-  revision: 4aa659c1f7d33f12feedc360c96b7f16d4befbaa
-  specs:
-    json_spec (1.1.1)
-      multi_json (~> 1.0)
-      rspec (>= 2.0, < 4.0)
-
-GIT
   remote: git://github.com/flexik/kosapi_client.git
   revision: 37163bdf286a217c86d2bbbb75b174fda588506b
   specs:
@@ -72,6 +64,9 @@ GEM
     ice_cube (0.12.0)
     ice_nine (0.11.0)
     json (1.8.1)
+    json_spec (1.1.2)
+      multi_json (~> 1.0)
+      rspec (>= 2.0, < 4.0)
     jwt (1.0.0)
     listen (2.7.7)
       celluloid (>= 0.15.2)
@@ -164,7 +159,7 @@ DEPENDENCIES
   icalendar (~> 2.0.1)
   ice_cube
   json
-  json_spec!
+  json_spec (~> 1.1.2)
   kosapi_client!
   pg
   pry
