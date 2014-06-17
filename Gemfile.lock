@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/collectiveidea/json_spec.git
+  revision: 4aa659c1f7d33f12feedc360c96b7f16d4befbaa
+  specs:
+    json_spec (1.1.1)
+      multi_json (~> 1.0)
+      rspec (>= 2.0, < 4.0)
+
+GIT
   remote: git://github.com/flexik/kosapi_client.git
   revision: 37163bdf286a217c86d2bbbb75b174fda588506b
   specs:
@@ -8,14 +16,6 @@ GIT
       faraday (~> 0.8.9)
       oauth2
       uri_template
-
-GIT
-  remote: git://github.com/jnv/json_spec.git
-  revision: f2151551970328002cdf7b79c5de6aa5bac4efc3
-  specs:
-    json_spec (1.1.1)
-      multi_json (~> 1.0)
-      rspec (>= 2.0, < 4.0)
 
 GEM
   remote: https://rubygems.org/
