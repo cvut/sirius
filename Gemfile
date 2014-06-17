@@ -33,9 +33,7 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'fabrication'
 
-  # GitHub, until there is an official RSpec 3.0 support
-  # https://github.com/collectiveidea/json_spec/pull/71
-  gem 'json_spec', github: 'collectiveidea/json_spec'
+  gem 'json_spec', '~> 1.1.2'
 end
 
 group :development, :test do
