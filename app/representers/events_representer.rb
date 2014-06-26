@@ -9,6 +9,6 @@ class EventsRepresenter < CollectionRepresenter
 
   # FIXME: this should be handled on Grape's level
   def to_ical
-    EventsIcalFormatting.new.call(events)
+    EventsIcalFormatting.new(represented).call
   end
 end

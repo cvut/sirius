@@ -4,13 +4,14 @@ require 'role_playing'
 class EventsIcalFormatting
   include RolePlaying::Context
 
-  def initialize
+  def initialize(events)
+    @events = Array(events) # Always work with collection
+    @calendar = Icalendar::Calendar.new
   end
 
-  def call(events)
-    calendar = Icalendar::Calendar.new
-    Array(events).each do |e|
-      calendar.add_event IcalEvent(e).to_ical
+  def call
+    @events.each do |e|
+      @calendar.add_event IcalEvent(e).to_ical
     end
     @calendar.to_ical
   end
