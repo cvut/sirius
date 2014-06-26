@@ -1,6 +1,21 @@
 require 'icalendar'
-module Roles::Event
-  class ToIcal < SimpleDelegator
+require 'role_playing'
+
+class EventsIcalFormatting
+  include RolePlaying::Context
+
+  def initialize
+  end
+
+  def call(events)
+    calendar = Icalendar::Calendar.new
+    Array(events).each do |e|
+      calendar.add_event IcalEvent(e).to_ical
+    end
+    @calendar.to_ical
+  end
+
+  role :IcalEvent do
     def to_ical
       ical_event = Icalendar::Event.new.tap do |e|
         e.summary = name
@@ -14,5 +29,7 @@ module Roles::Event
         #e.uid = e.url = "/events/#{self.id}" # FIXME!
         #e.add_comment()
       end
+    end
   end
+
 end
