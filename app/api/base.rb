@@ -12,6 +12,9 @@ module API
     content_type :jsonapi, CONTENT_TYPE
     format :jsonapi
 
+    content_type :ical, 'text/calendar'
+    formatter :ical, lambda { |object, env| object.to_ical }
+
     rescue_from Grape::Exceptions::Validation do |e|
       Rack::Response.new({ message: e.message }.to_json, 422, RACK_CONTENT_TYPE_HEADER).finish
     end

@@ -112,6 +112,8 @@ GEM
       listen (~> 2.7, >= 2.7.3)
     roar (0.12.7)
       representable (>= 1.6.0)
+    role_playing (0.1.4)
+      activesupport (>= 3.0.0)
     rspec (3.0.0)
       rspec-core (~> 3.0.0)
       rspec-expectations (~> 3.0.0)
@@ -168,6 +170,7 @@ DEPENDENCIES
   rake
   rerun
   roar
+  role_playing
   rspec (~> 3.0.0.beta2)
   sequel
   timecop
