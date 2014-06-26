@@ -13,7 +13,7 @@ gem 'json'
 
 # Helper libs
 gem 'ice_cube' # Date/Time helper
-gem 'icalendar', '~> 2.0.1'
+gem 'icalendar', '~> 2.1.0'
 
 # Server
 #gem 'thin'
@@ -27,7 +27,7 @@ group :development do
 end
 
 group :test do
-  gem 'rspec', '~> 3.0.0.beta2'
+  gem 'rspec', '~> 3.0.0'
   gem 'rack-test'
   gem 'bogus'
   gem 'database_cleaner'

@@ -60,7 +60,7 @@ GEM
       virtus (>= 1.0.0)
     hashie (3.1.0)
     i18n (0.6.9)
-    icalendar (2.0.1)
+    icalendar (2.1.0)
     ice_cube (0.12.0)
     ice_nine (0.11.0)
     json (1.8.1)
@@ -158,7 +158,7 @@ DEPENDENCIES
   dotenv
   fabrication
   grape
-  icalendar (~> 2.0.1)
+  icalendar (~> 2.1.0)
   ice_cube
   json
   json_spec (~> 1.1.2)
@@ -171,6 +171,6 @@ DEPENDENCIES
   rerun
   roar
   role_playing
-  rspec (~> 3.0.0.beta2)
+  rspec (~> 3.0.0)
   sequel
   timecop
