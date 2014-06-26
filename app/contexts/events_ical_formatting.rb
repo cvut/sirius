@@ -21,11 +21,11 @@ class EventsIcalFormatting
       ical_event = Icalendar::Event.new.tap do |e|
         e.summary = name
         e.description = note
-        e.start = starts_at.strftime("%Y%m%dT%H%M%S")
-        e.end = ends_at.strftime("%Y%m%dT%H%M%S")
+        e.dtstart = starts_at.strftime("%Y%m%dT%H%M%S")
+        e.dtend = ends_at.strftime("%Y%m%dT%H%M%S")
         e.location = '' # FIXME!
-        e.klass = 'PUBLIC'
-        e.created = e.created_at
+        e.ip_class = 'PUBLIC'
+        e.created = self.created_at
         e.last_modified = self.updated_at
         #e.uid = e.url = "/events/#{self.id}" # FIXME!
         #e.add_comment()
