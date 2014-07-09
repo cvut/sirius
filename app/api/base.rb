@@ -1,7 +1,7 @@
 require 'grape'
 require 'json'
 
-require 'api/events_resource'
+require 'api/events_endpoints'
 
 module API
   class Base < Grape::API
@@ -25,6 +25,6 @@ module API
     # end
 
     # Mount your api classes here
-    mount API::EventsResource
+    mount API::EventsEndpoints
   end
 end

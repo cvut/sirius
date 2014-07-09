@@ -1,6 +1,6 @@
 require 'api_spec_helper'
 
-describe API::EventsResource do
+describe API::EventsEndpoints do
   subject { response }
   let!(:event) { Fabricate(:event) }
   let(:status) { response.status }
