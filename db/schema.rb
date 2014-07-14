@@ -11,7 +11,7 @@ Sequel.migration do
     
     create_table(:rooms) do
       primary_key :id
-      column :code, "text"
+      column :kos_code, "text"
       column :name, "hstore"
       column :capacity, "hstore"
       column :division, "text"
@@ -19,6 +19,8 @@ Sequel.migration do
       column :type, "text"
       column :created_at, "timestamp without time zone"
       column :updated_at, "timestamp without time zone"
+      
+      index [:kos_code], :unique=>true
     end
     
     create_table(:schema_migrations) do
@@ -76,5 +78,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327134045_create_rooms.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327134320_create_timetable_slots.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327154417_add_room_fk_to_events.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140710143245_update_rooms.rb')"
   end
 end
