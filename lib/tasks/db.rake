@@ -31,16 +31,18 @@ namespace :db do
   desc 'Migrate the database (options: VERSION=x, VERBOSE=false).'
   task :migrate => :configure_connection do
     Sequel::Migrator.run(DB, MIGRATIONS_DIR)
+    Rake::Task['db:schema:dump'].invoke
   end
 
   namespace :schema do
+    desc 'Dumps database schema to db/schema.rb'
     task :dump => :configure_connection do
       require 'sequel/extensions/schema_dumper'
       Sequel.extension :schema_dumper
       DB.extend Sequel::SchemaDumper
       File.open("db/schema.rb", "w") do |file|
         file << DB.dump_schema_migration(:same_db => true)
-        # file << SequelRails::Migrations.dump_schema_information(:sql => false)
+        file << dump_schema_information(:sql => false)
       end
       Rake::Task['db:schema:dump'].reenable
     end
@@ -58,7 +60,7 @@ namespace :db do
       task :rollback => :configure_connection do
         fail 'VERSION is required' unless version
         ::Sequel::Migrator.run(::Sequel::Model.db, MIGRATIONS_DIR, {version: version})
-        # Rake::Task['db:dump'].invoke if SequelRails.configuration.schema_dump
+        Rake::Task['db:schema:dump'].invoke
       end
     end
   end
@@ -96,3 +98,31 @@ desc "create a Sequel migration in ./db/migrate"
     end
     puts "#{filename} created"
   end
+
+# Logic for dumping database migrations to schema file
+def available_migrations?
+  File.exist?(MIGRATIONS_DIR) && Dir[File.join(MIGRATIONS_DIR, '*')].any?
+end
+
+def dump_schema_information(opts = {})
+  sql = opts.fetch :sql
+  db = ::Sequel::Model.db
+  res = ''
+
+  if available_migrations?
+    migrator_class = ::Sequel::Migrator.send(:migrator_class, MIGRATIONS_DIR)
+    migrator = migrator_class.new db, MIGRATIONS_DIR
+
+    inserts = migrator.ds.map do |hash|
+      insert = migrator.ds.insert_sql(hash)
+      sql ? "#{insert};" : "    self << #{insert.inspect}"
+    end
+
+    if inserts.any?
+      res << "Sequel.migration do\n  change do\n" unless sql
+      res << inserts.join("\n")
+      res << "\n  end\nend\n" unless sql
+    end
+  end
+  res
+end
