@@ -12,7 +12,7 @@ describe Paginating do
   end
 
   context 'with passed parameters' do
-    subject { context.call(limit: 30, offset: 10) }
+    subject { context.call(limit: 30, offset: 10).sql }
     it { should == 'SELECT * FROM test LIMIT 30 OFFSET 10'}
   end
 
