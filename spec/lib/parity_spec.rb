@@ -17,4 +17,8 @@ describe Parity do
     expect { Parity.from_numeric(1) }.not_to raise_error
   end
 
+  it 'keeps same value when already numeric' do
+    expect( Parity.to_numeric(1) ).to eq 1
+  end
+
 end

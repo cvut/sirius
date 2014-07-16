@@ -7,6 +7,7 @@ module Enum
   end
 
   def to_numeric(value)
+    return value if value.is_a?(Numeric)
     value_index = values.find_index(value)
     raise "Invalid #{self.name.demodulize} value #{value}" if value_index.nil?
     value_index
