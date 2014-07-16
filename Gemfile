@@ -45,4 +45,10 @@ group :development, :test do
   gem 'dotenv'
 end
 
+group :documentation do
+  gem 'kramdown'
+  gem 'guard-livereload'
+  gem 'guard-yard'
+end
+
 gem 'kosapi_client', github: 'flexik/kosapi_client'
