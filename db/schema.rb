@@ -11,6 +11,15 @@ Sequel.migration do
       primary_key [:id]
     end
     
+    create_table(:people) do
+      column :id, "text", :null=>false
+      column :full_name, "text"
+      column :created_at, "timestamp without time zone"
+      column :updated_at, "timestamp without time zone"
+      
+      primary_key [:id]
+    end
+    
     create_table(:rooms) do
       primary_key :id
       column :kos_code, "text"
@@ -82,5 +91,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140327154417_add_room_fk_to_events.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140710143245_update_rooms.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140716225640_courses_pk.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140716231715_create_people.rb')"
   end
 end
