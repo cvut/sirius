@@ -1,6 +1,7 @@
 require 'models/event'
 require 'events_representer'
 require 'api_helper'
+require 'paginating'
 module API
   class EventsEndpoints < Grape::API
     helpers ApiHelper
@@ -10,8 +11,19 @@ module API
     resource :events do
 
       desc 'Get all events'
+      params do
+        optional :limit, type: Integer
+        optional :offset, type: Integer
+      end
       get do
-        represent ::Event.all
+        events = ::Event.dataset
+
+        case api_format
+        when :ical
+          represent events
+        else
+          represent Paginating.new(events).call(offset: params[:offset], limit: params[:limit])
+        end
       end
 
       params do
