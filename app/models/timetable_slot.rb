@@ -15,6 +15,10 @@ class TimetableSlot < Sequel::Model
     db_slot = TimetableSlot.new(slot_hash)
     db_slot.parallel_id = parallel[:id]
     room_code = slot.room.title
+    unless room_code == 'no-title'
+      room = Room.find_or_create(kos_code: room_code)
+      db_slot.room = room
+    end
     db_slot.save()
   end
 
