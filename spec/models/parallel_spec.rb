@@ -38,7 +38,8 @@ describe Parallel do
   end
 
   describe '.from_kosapi' do
-    let(:kosapi_parallel) { double(to_hash: {code: 1234}) }
+    let(:slots) { [] }
+    let(:kosapi_parallel) { double(to_hash: {code: 1234, link: double(href: '432')}, timetable_slots: slots) }
 
     it 'converts kosapi parallel to sirius paralell entity' do
       parallel = Parallel.from_kosapi(kosapi_parallel)

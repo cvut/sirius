@@ -1,4 +1,5 @@
 require 'sirius/semester'
+require 'models/parallel'
 
 module Sirius
   class ScheduleManager
@@ -21,7 +22,7 @@ module Sirius
       current_semester = 'B132'
       parallels = @client.parallels.where('course.faculty' => 18000, semester: current_semester).offset(0).limit(20)
       parallels.each do |parallel|
-
+        Parallel.from_kosapi(parallel)
       end
     end
 

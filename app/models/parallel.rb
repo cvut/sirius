@@ -3,8 +3,20 @@ class Parallel < Sequel::Model
   many_to_one :course
   one_to_many :timetable_slots
 
+  DB_KEYS = [:id, :code, :capacity, :occupied, :semester, :teacher]
+
   def self.from_kosapi(kosapi_parallel)
-    self.new(kosapi_parallel.to_hash)
+    parallel_hash = kosapi_parallel.to_hash
+    parallel_hash[:id] = parallel_hash[:link].href.split('/').last
+    parallel_hash = parallel_hash.select { |key,_| DB_KEYS.include? key }
+
+    Parallel.unrestrict_primary_key
+    parallel = self.new(parallel_hash)
+    parallel.save
+    kosapi_parallel.timetable_slots.each do |slot|
+      TimetableSlot.from_kosapi(slot, parallel_hash)
+    end
+    parallel
   end
 
   def generate_events(time_converter, calendar_planner)
