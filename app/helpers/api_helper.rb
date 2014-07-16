@@ -34,4 +34,8 @@ module ApiHelper
 
     entity_class.new(objects)
   end
+
+  def api_format
+    env['api.format'].to_sym
+  end
 end
