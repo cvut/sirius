@@ -20,6 +20,7 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.before(:suite) do
+    DatabaseCleaner[:sequel, {:connection => DB}]
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
