@@ -1,7 +1,22 @@
+##
+# Helper methods used in Grape's API endpoints.
 module ApiHelper
-  ## Simplified `present` method
-  # - Seeks a relevant representer if not defined with `represent` macro
-  # - Always works with collections
+
+  ##
+  # Present a given objects(s) with a representer.
+  #
+  # Dervied from {Grape::Endpoint#present}, wraps an object
+  # with a representer, but always works with an objects collection
+  # (singular objects are wrapped into an Array).
+  #
+  # Representer can be given explicitly, or derived implicitly
+  # from Grape's representations defined with {Grape::API#respresent}
+  # macro.
+  #
+  # @param data [Enumerable,Object] a collection or an object to represent
+  # @param with [BaseRepresenter] optional explicit representer
+  # @return [BaseRepresenter<Array>] given object wrapped into a representer (and Array)
+  # @see http://intridea.github.io/grape/docs/Grape/Endpoint.html#present-instance_method
   def represent(data, with: nil, **args)
 
     # convert singular resource to a collection
