@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/flexik/kosapi_client.git
-  revision: 974639415c2d1fb1c2484c15c11704ab01699acb
+  revision: e526e9d45995ef8d592a990cb7d18cdebfad7bf5
   specs:
     kosapi_client (0.0.1)
       activesupport
@@ -109,7 +109,7 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (~> 1.2)
-    ox (2.1.1)
+    ox (2.1.2)
     pg (0.17.1)
     pry (0.9.12.6)
       coderay (~> 1.0)
@@ -151,7 +151,7 @@ GEM
       rspec-support (~> 3.0.0)
     rspec-support (3.0.2)
     sequel (4.12.0)
-    simplecov (0.8.2)
+    simplecov (0.9.0)
       docile (~> 1.1.0)
       multi_json
       simplecov-html (~> 0.8.0)

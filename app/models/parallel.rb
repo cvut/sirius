@@ -1,6 +1,8 @@
 require 'models/person'
 require 'models/course'
 require 'models/timetable_slot'
+require 'sirius/event_factory'
+require 'sirius/teaching_time'
 
 class Parallel < Sequel::Model
 
