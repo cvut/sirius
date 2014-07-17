@@ -19,6 +19,12 @@ describe TimetableSlot do
       expect(slot.parity).to eq :odd
     end
 
+    it 'updates already existing db record' do
+      db_slot = Fabricate(:timetable_slot, id: 1234)
+      slot = TimetableSlot.from_kosapi(kosapi_slot, parallel)
+      expect(slot.id).to eq db_slot.id
+    end
+
     context 'with room record not existing' do
       it 'creates related room record' do
         slot = TimetableSlot.from_kosapi(kosapi_slot, parallel)

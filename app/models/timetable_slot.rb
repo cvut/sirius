@@ -25,7 +25,12 @@ class TimetableSlot < Sequel::Model
 
     def update_or_create_slot(slot_hash, parallel)
       TimetableSlot.unrestrict_primary_key
-      db_slot = TimetableSlot.new(slot_hash)
+      db_slot = TimetableSlot[slot_hash[:id]]
+      if db_slot
+        db_slot.set(slot_hash)
+      else
+        db_slot = TimetableSlot.new(slot_hash)
+      end
       db_slot.parallel_id = parallel.link.id
       db_slot
     end
