@@ -12,7 +12,8 @@ class Parallel < Sequel::Model
     def from_kosapi(kosapi_parallel)
       parallel_hash = get_attr_hash(kosapi_parallel)
       teachers = load_teachers(kosapi_parallel)
-      parallel = create_parallel(parallel_hash, teachers)
+      course = load_course(kosapi_parallel)
+      parallel = create_parallel(parallel_hash, teachers, course)
       process_slots(kosapi_parallel)
       parallel
     end
@@ -31,10 +32,17 @@ class Parallel < Sequel::Model
       end
     end
 
-    def create_parallel(attr_hash, teachers)
+    def load_course(kosapi_parallel)
+      course = kosapi_parallel.course
+      Course.unrestrict_primary_key
+      Course.find_or_create(id: course.id, name: Sequel.hstore({en: course.title}) )
+    end
+
+    def create_parallel(attr_hash, teachers, course)
       Parallel.unrestrict_primary_key
       parallel = self.new(attr_hash)
       parallel.teacher_ids = teachers
+      parallel.course = course
       parallel.save
     end
 

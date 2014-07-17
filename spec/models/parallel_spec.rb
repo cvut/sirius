@@ -41,7 +41,8 @@ describe Parallel do
   describe '.from_kosapi' do
     let(:slots) { [] }
     let(:teachers) { [double(href: 'foo/szolatib', title: 'Bc. Tibor Szolár', id: 'szolatib')] }
-    let(:kosapi_parallel) { double(to_hash: {code: 1234, link: double(href: 'foo/432', id: '432')}, timetable_slots: slots, teachers: teachers) }
+    let(:course) { double( id: 'BI-AL2', title: 'English Language for IT' ) }
+    let(:kosapi_parallel) { double(to_hash: {code: 1234, link: double(href: 'foo/432', id: '432')}, timetable_slots: slots, teachers: teachers, course: course) }
 
     it 'converts kosapi parallel to sirius paralell entity' do
       parallel = Parallel.from_kosapi(kosapi_parallel)
@@ -65,6 +66,24 @@ describe Parallel do
       person = Fabricate(:person, id: 'szolatib', full_name: 'Bc. Tibor Szolár')
       parallel = Parallel.from_kosapi(kosapi_parallel)
       expect(parallel.teacher_ids.first).to eq person.id
+    end
+
+    it 'loads course info' do
+      parallel = Parallel.from_kosapi(kosapi_parallel)
+      expect(parallel.course.id).to eq 'BI-AL2'
+      expect(parallel.course.name).to eq({'en' => 'English Language for IT'})
+    end
+
+    it 'saves new course record' do
+      parallel = Parallel.from_kosapi(kosapi_parallel)
+      expect(parallel.course).not_to be_nil
+      expect(parallel.course).to eq Course['BI-AL2']
+    end
+
+    it 'uses existing course record' do
+      course = Fabricate(:course, id: 'BI-AL2', name: {'en' => 'English Language for IT'})
+      parallel = Parallel.from_kosapi(kosapi_parallel)
+      expect(parallel.course).to eq course
     end
 
   end
