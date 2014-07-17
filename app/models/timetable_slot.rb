@@ -4,23 +4,40 @@ require 'models/room'
 
 class TimetableSlot < Sequel::Model
 
-  DB_KEYS = [:id, :day, :duration, :first_hour, :parity]
-
   many_to_one :parallel
   many_to_one :room
 
-  def self.from_kosapi(slot, parallel)
-    TimetableSlot.unrestrict_primary_key
-    slot_hash = slot.to_hash
-    slot_hash = slot_hash.select { |key,_| DB_KEYS.include? key }
-    db_slot = TimetableSlot.new(slot_hash)
-    db_slot.parallel_id = parallel.link.id
-    room_code = slot.room.title
-    unless room_code == 'no-title'
-      room = Room.find_or_create(kos_code: room_code)
-      db_slot.room = room
+  class << self
+
+    DB_KEYS = [:id, :day, :duration, :first_hour, :parity]
+
+    def from_kosapi(slot, parallel)
+      slot_hash = get_attr_hash(slot)
+      db_slot = update_or_create_slot(slot_hash, parallel)
+      process_room(slot, db_slot)
+      db_slot.save()
     end
-    db_slot.save()
+
+    def get_attr_hash(slot)
+      slot_hash = slot.to_hash
+      slot_hash.select { |key,_| DB_KEYS.include? key }
+    end
+
+    def update_or_create_slot(slot_hash, parallel)
+      TimetableSlot.unrestrict_primary_key
+      db_slot = TimetableSlot.new(slot_hash)
+      db_slot.parallel_id = parallel.link.id
+      db_slot
+    end
+
+    def process_room(kosapi_slot, db_slot)
+      room_code = kosapi_slot.room.title
+      unless room_code == 'no-title'
+        room = Room.find_or_create(kos_code: room_code)
+        db_slot.room = room
+      end
+    end
+
   end
 
   def parity
