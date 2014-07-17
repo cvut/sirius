@@ -15,7 +15,7 @@ end
 $LOAD_PATH << load_path('../')
 $LOAD_PATH << load_path('../lib')
 $LOAD_PATH << load_path('../app')
-%w(api contexts helpers representers models).each do |app_path|
+%w(api contexts helpers representers models roles).each do |app_path|
   $LOAD_PATH << load_path("../app/#{app_path}")
 end
 
