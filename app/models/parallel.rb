@@ -22,7 +22,7 @@ class Parallel < Sequel::Model
 
     def get_attr_hash(kosapi_parallel)
       parallel_hash = kosapi_parallel.to_hash
-      parallel_hash[:id] = parallel_hash[:link].id
+      parallel_hash[:id] = kosapi_parallel.link.id
       parallel_hash.select { |key,_| DB_KEYS.include? key }
     end
 
@@ -41,8 +41,13 @@ class Parallel < Sequel::Model
     end
 
     def create_parallel(attr_hash, teachers, course)
+      parallel = Parallel[attr_hash[:id]]
       Parallel.unrestrict_primary_key
-      parallel = self.new(attr_hash)
+      if parallel
+        parallel.set(attr_hash)
+      else
+        parallel = self.new(attr_hash)
+      end
       parallel.teacher_ids = teachers
       parallel.course = course
       parallel.save
