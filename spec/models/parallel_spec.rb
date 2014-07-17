@@ -42,12 +42,18 @@ describe Parallel do
     let(:slots) { [] }
     let(:teachers) { [double(href: 'foo/szolatib', title: 'Bc. Tibor Szolár', id: 'szolatib')] }
     let(:course) { double( id: 'BI-AL2', title: 'English Language for IT' ) }
-    let(:kosapi_parallel) { double(to_hash: {code: 1234, link: double(href: 'foo/432', id: '432')}, timetable_slots: slots, teachers: teachers, course: course) }
+    let(:kosapi_parallel) { double(to_hash: {code: 1234}, link: double(href: 'foo/432', id: '432'), timetable_slots: slots, teachers: teachers, course: course) }
 
     it 'converts kosapi parallel to sirius paralell entity' do
       parallel = Parallel.from_kosapi(kosapi_parallel)
       expect(parallel).to be_an_instance_of(Parallel)
       expect(parallel.code).to eq(1234)
+    end
+
+    it 'updates already existing parallel' do
+      db_parallel = Fabricate(:parallel, id: 432)
+      parallel = Parallel.from_kosapi(kosapi_parallel)
+      expect(parallel.id).to eq db_parallel.id
     end
 
     it 'loads teachers' do
