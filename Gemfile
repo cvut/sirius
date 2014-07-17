@@ -11,16 +11,14 @@ gem 'grape'
 gem 'roar'
 gem 'json'
 
-# Helper libs
+# Time & Space
 gem 'ice_cube' # Date/Time helper
 gem 'icalendar', '~> 2.1.0'
 
-# Server
-#gem 'thin'
-
+# Helper stuff
 gem 'activesupport'
-
 gem 'role_playing'
+gem 'methodchain'
 
 group :development do
   gem 'rerun'
