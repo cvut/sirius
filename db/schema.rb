@@ -54,7 +54,7 @@ Sequel.migration do
     
     create_table(:parallels) do
       primary_key :id
-      column :type, "text"
+      column :parallel_type, "text"
       foreign_key :course_id, :courses, :type=>"text", :key=>[:id]
       column :code, "integer"
       column :capacity, "integer"
@@ -93,5 +93,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140716231715_create_people.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140716235800_add_teachers_parallels.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717165013_delete_duplicate_parallels_columns.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717175952_rename_type_to_parallel_type.rb')"
   end
 end
