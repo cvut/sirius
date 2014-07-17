@@ -1,5 +1,6 @@
 require 'day'
 require 'parity'
+require 'models/room'
 
 class TimetableSlot < Sequel::Model
 

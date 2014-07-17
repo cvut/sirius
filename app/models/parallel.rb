@@ -1,4 +1,6 @@
 require 'models/person'
+require 'models/course'
+require 'models/timetable_slot'
 
 class Parallel < Sequel::Model
 
