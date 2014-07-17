@@ -1,5 +1,5 @@
 require 'role_playing'
-require 'refinements/method_chain'
+require 'core_ext/then_if'
 
 require 'paginated_dataset'
 require 'date_filtered_dataset'
@@ -20,8 +20,12 @@ class EventsFiltering
     [DateFilteredDataset, PaginatedDataset].played_by(@dataset) do |dataset|
       dataset
         .filter_by_date(from: params[:from], to: params[:to])
-        .then(-> { format != :ical }) { |d| d.paginate(offset: params[:offset], limit: params[:limit]) }
+        .then_if(paginate?) { |d| d.paginate(offset: params[:offset], limit: params[:limit]) }
     end
   end
 
+  private
+  def paginate?
+    format != :ical
+  end
 end
