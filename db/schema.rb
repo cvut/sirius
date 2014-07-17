@@ -54,14 +54,12 @@ Sequel.migration do
     
     create_table(:parallels) do
       primary_key :id
-      column :kos_id, "text"
       column :type, "text"
       foreign_key :course_id, :courses, :type=>"text", :key=>[:id]
       column :code, "integer"
       column :capacity, "integer"
       column :occupied, "integer"
       column :semester, "text"
-      column :teacher, "text"
       column :created_at, "timestamp without time zone"
       column :updated_at, "timestamp without time zone"
       column :teacher_ids, "text[]"
@@ -94,5 +92,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140716225640_courses_pk.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140716231715_create_people.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140716235800_add_teachers_parallels.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717165013_delete_duplicate_parallels_columns.rb')"
   end
 end
