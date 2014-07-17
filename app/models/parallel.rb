@@ -9,7 +9,7 @@ class Parallel < Sequel::Model
 
   class << self
 
-    DB_KEYS = [:id, :code, :capacity, :occupied]
+    DB_KEYS = [:id, :code, :parallel_type, :capacity, :occupied]
 
     def from_kosapi(kosapi_parallel)
       parallel_hash = get_attr_hash(kosapi_parallel)
