@@ -4,6 +4,10 @@ require 'sequel'
 
 db_config = YAML.load_file('config/database.yml')[RACK_ENV]
 DB = Sequel.connect(db_config)
+
+# Sequel extensions
+DB.extension :pg_array
+Sequel.extension :pg_array_ops
 DB.extension :pg_hstore
 
 # Add ActiveModel compatibility
