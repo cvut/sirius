@@ -42,7 +42,8 @@ describe Parallel do
     let(:slots) { [] }
     let(:teachers) { [double(href: 'foo/szolatib', title: 'Bc. Tibor Szolár', id: 'szolatib')] }
     let(:course) { double( id: 'BI-AL2', title: 'English Language for IT' ) }
-    let(:kosapi_parallel) { double(to_hash: {code: 1234}, link: double(href: 'foo/432', id: '432'), timetable_slots: slots, teachers: teachers, course: course) }
+    let(:semester) { double( id: 'B132' )}
+    let(:kosapi_parallel) { double(to_hash: {code: 1234}, link: double(href: 'foo/432', id: '432'), timetable_slots: slots, teachers: teachers, course: course, semester: semester) }
 
     it 'converts kosapi parallel to sirius paralell entity' do
       parallel = Parallel.from_kosapi(kosapi_parallel)
@@ -90,6 +91,11 @@ describe Parallel do
       course = Fabricate(:course, id: 'BI-AL2', name: {'en' => 'English Language for IT'})
       parallel = Parallel.from_kosapi(kosapi_parallel)
       expect(parallel.course).to eq course
+    end
+
+    it 'loads semester info' do
+      parallel = Parallel.from_kosapi(kosapi_parallel)
+      expect(parallel.semester).to eq 'B132'
     end
 
   end
