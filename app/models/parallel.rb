@@ -9,7 +9,7 @@ class Parallel < Sequel::Model
 
   class << self
 
-    DB_KEYS = [:id, :code, :capacity, :occupied, :semester, :teacher]
+    DB_KEYS = [:id, :code, :capacity, :occupied]
 
     def from_kosapi(kosapi_parallel)
       parallel_hash = get_attr_hash(kosapi_parallel)
@@ -22,8 +22,10 @@ class Parallel < Sequel::Model
 
     def get_attr_hash(kosapi_parallel)
       parallel_hash = kosapi_parallel.to_hash
+      parallel_hash.select! { |key,_| DB_KEYS.include? key }
       parallel_hash[:id] = kosapi_parallel.link.id
-      parallel_hash.select { |key,_| DB_KEYS.include? key }
+      parallel_hash[:semester] = kosapi_parallel.semester.id
+      parallel_hash
     end
 
     def load_teachers(kosapi_parallel)
