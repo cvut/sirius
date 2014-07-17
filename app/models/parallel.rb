@@ -62,6 +62,12 @@ class Parallel < Sequel::Model
         TimetableSlot.from_kosapi(slot, kosapi_parallel)
       end
     end
+
+    def for_teacher(teacher_id)
+      array_op = Sequel.pg_array(:teacher_ids)
+      filter(array_op.contains([teacher_id]))
+      # alternative: filter(teacher_id => array_op.any)
+    end
   end
 
 
