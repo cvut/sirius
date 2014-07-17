@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/flexik/kosapi_client.git
-  revision: 5f007039d64a1ce5f91ba1210b3a7e4e92967cc8
+  revision: 974639415c2d1fb1c2484c15c11704ab01699acb
   specs:
     kosapi_client (0.0.1)
       activesupport

@@ -64,6 +64,7 @@ Sequel.migration do
       column :teacher, "text"
       column :created_at, "timestamp without time zone"
       column :updated_at, "timestamp without time zone"
+      column :teacher_ids, "text[]"
     end
     
     create_table(:timetable_slots) do
@@ -92,5 +93,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140710143245_update_rooms.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140716225640_courses_pk.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140716231715_create_people.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140716235800_add_teachers_parallels.rb')"
   end
 end
