@@ -4,7 +4,8 @@ require 'models/timetable_slot'
 describe TimetableSlot do
 
   describe '.from_kosapi' do
-    let(:parallel) { Fabricate(:parallel) }
+    let(:db_parallel) { Fabricate(:parallel) }
+    let(:parallel) { double(link: double(id: db_parallel.id)) }
     let(:room) { double(href: '432', title: 'A-1442') }
     let(:kosapi_slot) { double(to_hash: {id: 1234, day: 4, duration: 2, first_hour: 3, parity: :odd }, room: room ) }
 

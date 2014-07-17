@@ -13,7 +13,7 @@ class TimetableSlot < Sequel::Model
     slot_hash = slot.to_hash
     slot_hash = slot_hash.select { |key,_| DB_KEYS.include? key }
     db_slot = TimetableSlot.new(slot_hash)
-    db_slot.parallel_id = parallel[:id]
+    db_slot.parallel_id = parallel.link.id
     room_code = slot.room.title
     unless room_code == 'no-title'
       room = Room.find_or_create(kos_code: room_code)
