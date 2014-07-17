@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'models/parallel'
+require 'models/person'
 
 describe Parallel do
 
@@ -39,12 +40,31 @@ describe Parallel do
 
   describe '.from_kosapi' do
     let(:slots) { [] }
-    let(:kosapi_parallel) { double(to_hash: {code: 1234, link: double(href: '432')}, timetable_slots: slots) }
+    let(:teachers) { [double(href: 'foo/szolatib', title: 'Bc. Tibor Szolár', id: 'szolatib')] }
+    let(:kosapi_parallel) { double(to_hash: {code: 1234, link: double(href: 'foo/432', id: '432')}, timetable_slots: slots, teachers: teachers) }
 
     it 'converts kosapi parallel to sirius paralell entity' do
       parallel = Parallel.from_kosapi(kosapi_parallel)
       expect(parallel).to be_an_instance_of(Parallel)
       expect(parallel.code).to eq(1234)
+    end
+
+    it 'loads teachers' do
+      parallel = Parallel.from_kosapi(kosapi_parallel)
+      expect(parallel.teacher_ids).to eq(['szolatib'])
+    end
+
+    it 'stores new teacher record' do
+      parallel = Parallel.from_kosapi(kosapi_parallel)
+      person = Person['szolatib']
+      expect(person).not_to be_nil
+      expect(person.full_name).to eq 'Bc. Tibor Szolár'
+    end
+
+    it 'uses already existing person record' do
+      person = Fabricate(:person, id: 'szolatib', full_name: 'Bc. Tibor Szolár')
+      parallel = Parallel.from_kosapi(kosapi_parallel)
+      expect(parallel.teacher_ids.first).to eq person.id
     end
 
   end

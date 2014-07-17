@@ -1,3 +1,5 @@
+require 'models/person'
+
 class Parallel < Sequel::Model
 
   many_to_one :course
@@ -9,7 +11,8 @@ class Parallel < Sequel::Model
 
     def from_kosapi(kosapi_parallel)
       parallel_hash = get_attr_hash(kosapi_parallel)
-      parallel = create_parallel(parallel_hash)
+      teachers = load_teachers(kosapi_parallel)
+      parallel = create_parallel(parallel_hash, teachers)
       process_slots(kosapi_parallel)
       parallel
     end
@@ -20,9 +23,18 @@ class Parallel < Sequel::Model
       parallel_hash.select { |key,_| DB_KEYS.include? key }
     end
 
-    def create_parallel(attr_hash)
+    def load_teachers(kosapi_parallel)
+      Person.unrestrict_primary_key
+      kosapi_parallel.teachers.map do |teacher_link|
+        Person.find_or_create(id: teacher_link.id, full_name: teacher_link.title)
+        teacher_link.id
+      end
+    end
+
+    def create_parallel(attr_hash, teachers)
       Parallel.unrestrict_primary_key
       parallel = self.new(attr_hash)
+      parallel.teacher_ids = teachers
       parallel.save
     end
 
