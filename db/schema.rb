@@ -2,7 +2,6 @@ Sequel.migration do
   change do
     create_table(:courses) do
       column :id, "text", :default=>Sequel::LiteralString.new("nextval('courses_id_seq'::regclass)"), :null=>false
-      column :code, "text"
       column :department, "text"
       column :name, "hstore"
       column :created_at, "timestamp without time zone"
@@ -94,5 +93,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140716235800_add_teachers_parallels.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717165013_delete_duplicate_parallels_columns.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717175952_rename_type_to_parallel_type.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717180517_drop_course_code.rb')"
   end
 end
