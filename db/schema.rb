@@ -39,18 +39,6 @@ Sequel.migration do
       primary_key [:filename]
     end
     
-    create_table(:events) do
-      primary_key :id
-      column :name, "text"
-      column :note, "text"
-      column :starts_at, "timestamp without time zone"
-      column :ends_at, "timestamp without time zone"
-      column :sequence_number, "integer"
-      column :created_at, "timestamp without time zone"
-      column :updated_at, "timestamp without time zone"
-      foreign_key :room_id, :rooms, :key=>[:id]
-    end
-    
     create_table(:parallels) do
       primary_key :id
       column :parallel_type, "text"
@@ -75,6 +63,28 @@ Sequel.migration do
       column :created_at, "timestamp without time zone"
       column :updated_at, "timestamp without time zone"
     end
+    
+    create_table(:events) do
+      primary_key :id
+      column :name, "text"
+      column :note, "text"
+      column :starts_at, "timestamp without time zone"
+      column :ends_at, "timestamp without time zone"
+      column :absolute_sequence_number, "integer"
+      column :created_at, "timestamp without time zone"
+      column :updated_at, "timestamp without time zone"
+      foreign_key :room_id, :rooms, :key=>[:id]
+      column :teacher_ids, "character varying(50)[]"
+      column :student_ids, "character varying(50)[]"
+      column :relative_sequence_number, "integer"
+      column :deleted, "boolean"
+      column :event_type, "text"
+      foreign_key :parallel_id, :parallels, :key=>[:id]
+      foreign_key :timetable_slot_id, :timetable_slots, :key=>[:id]
+      
+      index [:student_ids]
+      index [:teacher_ids]
+    end
   end
 end
 Sequel.migration do
@@ -94,5 +104,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717165013_delete_duplicate_parallels_columns.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717175952_rename_type_to_parallel_type.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717180517_drop_course_code.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140718175201_events_extension.rb')"
   end
 end
