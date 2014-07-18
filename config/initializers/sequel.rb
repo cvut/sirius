@@ -6,6 +6,7 @@ db_config = YAML.load_file('config/database.yml')[RACK_ENV]
 DB = Sequel.connect(db_config)
 
 # Sequel extensions
+Sequel::Model.plugin :timestamps, update_on_create: true
 DB.extension :pg_array
 Sequel.extension :pg_array_ops
 DB.extension :pg_hstore
