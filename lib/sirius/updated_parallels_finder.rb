@@ -3,13 +3,12 @@ require 'kosapi_client'
 module Sirius
   class UpdatedParallelsFinder
 
-    def initialize(since: , client: KOSapiClient.client)
-      @since = since
+    def initialize(client: KOSapiClient.client)
       @client = client
     end
 
-    def find_updated
-      time_str = format_time_kosapi(@since)
+    def find_updated(since)
+      time_str = format_time_kosapi(since)
       @client.parallels.where("lastUpdatedDate>=#{time_str},timetableSlot/lastUpdatedDate>=#{time_str}")
     end
 
