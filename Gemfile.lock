@@ -164,6 +164,7 @@ GEM
       thread_safe (~> 0.1)
     uber (0.0.7)
     uri_template (0.7.0)
+    vcr (2.9.2)
     virtus (1.0.2)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -202,3 +203,4 @@ DEPENDENCIES
   rspec (~> 3.0.0)
   sequel
   timecop
+  vcr

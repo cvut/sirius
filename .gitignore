@@ -46,3 +46,6 @@
 
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
+
+## VCR cassetes
+/spec/cassettes
