@@ -23,7 +23,7 @@ describe DateFilteredDataset do
 
     context 'with from and to' do
       subject { role.filter_by_date(from: DateTime.new(2014, 2, 3), to: Date.new(2014, 04, 01)).sql }
-      it { should == "SELECT * FROM test WHERE (starts_at >= '2014-02-03') AND (ends_at <= '2014-04-01')" }
+      it { should == "SELECT * FROM test WHERE ((starts_at >= '2014-02-03 00:00:00.000000') AND (ends_at <= '2014-04-01'))" }
     end
   end
 
