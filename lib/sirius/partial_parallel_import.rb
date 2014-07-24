@@ -1,11 +1,11 @@
 module Sirius
   class PartialParallelImport
 
-    def initialize(limit: , semester: , client: KOSapiClient.client, finder: UpdatedParallelsFinder)
+    def initialize(limit: , semester: , client: KOSapiClient.client, finder: UpdatedParallelsFinder.new)
       @limit = limit
       @semester = semester
       @client = client
-      @finder = finder.new()
+      @finder = finder
     end
 
     def run
