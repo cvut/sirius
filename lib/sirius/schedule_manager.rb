@@ -4,7 +4,7 @@ require 'models/parallel'
 module Sirius
   class ScheduleManager
 
-    def initialize(client = KOSapiClient.client)
+    def initialize(client: KOSapiClient.client)
       @client = client
     end
 
