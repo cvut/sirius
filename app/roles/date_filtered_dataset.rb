@@ -1,5 +1,5 @@
 require 'role_playing'
-require 'core_ext/then_if'
+require 'core_ext/then'
 
 ##
 # Filters dataset by starting date and end date.

@@ -18,7 +18,6 @@ gem 'icalendar', '~> 2.1.0'
 # Helper stuff
 gem 'activesupport'
 gem 'role_playing'
-gem 'methodchain'
 
 group :development do
   gem 'rerun'

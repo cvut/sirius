@@ -1,5 +1,5 @@
 require 'role_playing'
-require 'core_ext/then_if'
+require 'core_ext/then'
 
 require 'paginated_dataset'
 require 'date_filtered_dataset'
@@ -9,7 +9,6 @@ require 'date_filtered_dataset'
 #
 class EventsFiltering
   include RolePlaying::Context
-  using MethodChain
 
   # @param [Sequel::Dataset<Event>]
   def initialize(dataset)
