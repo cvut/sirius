@@ -3,28 +3,39 @@ require 'events_filtering'
 
 describe EventsFiltering do
   let(:dataset) {  }
-  let(:context) { descibed_class.new() }
 
-  let(:events) do
-    Fabricate.build_times(3, :event) do
-      sequence(:starts_at, 1) { |i| "2014-04-0#{i} 14:30" }
-      sequence(:ends_at, 1) { |i| "2014-04-0#{i} 16:00" }
-    end
+  let(:dataset) do
+    Sequel.mock.dataset.from(:test)
   end
-  let(:context) { described_class.new(event) }
+  let(:context) { described_class.new(dataset) }
 
-  let(:offset) { 1 }
-  let(:limit) { 1 }
+  let(:params) do
+    {
+      from: '2014-04-01',
+      to: '2014-04-02',
+      offset: 1,
+      limit: 2,
+    }
+  end
+
+  let(:format) { :jsonapi }
+  let(:result) { context.call(params: params, format: format) }
+  let(:opts) { result.opts }
+
+  it 'returns a new dataset' do
+    expect(result).to be_a(Sequel::Dataset)
+  end
 
   context 'for JSON API format' do
-    let(:format) { :jsonapi }
-
-    it 'paginates stuff' do
-
+    it 'paginates records' do
+      expect(opts[:limit]).to eql(params[:limit])
     end
   end
 
   context 'for ICal format' do
-
+    let(:format) { :ical }
+    it 'does not paginate records' do
+      expect(opts[:limit]).to be_nil
+    end
   end
 end

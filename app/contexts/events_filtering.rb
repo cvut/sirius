@@ -17,15 +17,17 @@ class EventsFiltering
   end
 
   def call(params: {}, format: :jsonapi)
-    [DateFilteredDataset, PaginatedDataset].played_by(@dataset) do |dataset|
+    DateFilteredDataset.played_by(@dataset) do |dataset|
       dataset
         .filter_by_date(from: params[:from], to: params[:to])
-        .then_if(paginate?) { |d| d.paginate(offset: params[:offset], limit: params[:limit]) }
+        .then_if(paginate?(format)) do |d|
+          PaginatedDataset.new(d).paginate(offset: params[:offset], limit: params[:limit])
+        end
     end
   end
 
   private
-  def paginate?
+  def paginate?(format)
     format != :ical
   end
 end
