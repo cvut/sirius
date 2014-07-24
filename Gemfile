@@ -34,6 +34,7 @@ group :test do
   gem 'fabrication'
 
   gem 'json_spec', '~> 1.1.2'
+  gem 'vcr'
 end
 
 group :development, :test do

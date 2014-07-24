@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'sirius/schedule_manager'
 
-describe Sirius::ScheduleManager do
+describe Sirius::ScheduleManager, :vcr do
 
   subject(:manager) { Sirius::ScheduleManager.new }
 
