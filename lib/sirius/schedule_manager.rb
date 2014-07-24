@@ -24,13 +24,15 @@ module Sirius
       total_parallels = 0
       offset = 0
       parallels = fetch_parallels(0, limit, current_semester)
-      while parallels.count > 0 && total_parallels < parallels_limit
-        parallels.each do |parallel|
-          Parallel.from_kosapi(parallel)
+      DB.transaction do
+        while parallels.count > 0 && total_parallels < parallels_limit
+          parallels.each do |parallel|
+            Parallel.from_kosapi(parallel)
+          end
+          total_parallels += parallels.count
+          offset += limit
+          parallels = fetch_parallels(offset, limit, current_semester)
         end
-        total_parallels += parallels.count
-        offset += limit
-        parallels = fetch_parallels(offset, limit, current_semester)
       end
     end
 
