@@ -1,10 +1,9 @@
 module Sirius
   class PartialParallelImport
 
-    def initialize(limit: , semester: , client: KOSapiClient.client, finder: UpdatedParallelsFinder.new)
+    def initialize(limit: nil, semester: nil, finder: UpdatedParallelsFinder.new)
       @limit = limit
       @semester = semester
-      @client = client
       @finder = finder
     end
 
@@ -15,7 +14,13 @@ module Sirius
     end
 
     def fetch_parallels
-      @parallels = finder.find_updated
+      last_update_log = UpdateLog.last_partial_update
+      if last_update_log
+        last_update_at = last_update_log.created_at
+      else
+        last_update_at = Time.at(0) # start of unix epoch
+      end
+      @parallels = @finder.find_updated(last_update_at)
     end
 
     def process_records
