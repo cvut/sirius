@@ -10,7 +10,7 @@ describe API::EventsEndpoints do
   let(:events_cnt) { 3 }
   let(:events) do
     i = 1
-    Fabricate.build_times(events_cnt, :event) do
+    Fabricate.times(events_cnt, :event) do
       starts_at { "2014-04-0#{i+=1} 14:30" } # XXX sequencer in times doesn't work
       ends_at { "2014-04-0#{i} 16:00" }
     end
@@ -39,7 +39,7 @@ describe API::EventsEndpoints do
       context 'JSON-API format' do
         subject { body }
 
-        it { should have_json_size(1+2).at_path('events') }
+        it { should have_json_size(events_cnt).at_path('events') }
       end
 
     end
@@ -60,7 +60,7 @@ describe API::EventsEndpoints do
 
       it 'returns a valid iCalendar' do
         calendar = Icalendar.parse(body).first
-        expect(calendar.events.size).to eq 3
+        expect(calendar.events.size).to eq(events_cnt)
       end
     end
   end
