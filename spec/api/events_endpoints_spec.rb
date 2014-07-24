@@ -8,8 +8,10 @@ describe API::EventsEndpoints do
   let(:headers) { response.headers }
 
   let(:events_cnt) { 3 }
+
+  # Events from 2014-04-01 to 2014-04-03
   let(:events) do
-    i = 1
+    i = 0
     Fabricate.times(events_cnt, :event) do
       starts_at { "2014-04-0#{i+=1} 14:30" } # XXX sequencer in times doesn't work
       ends_at { "2014-04-0#{i} 16:00" }
@@ -28,6 +30,7 @@ describe API::EventsEndpoints do
 
   describe 'GET /events' do
     before { events }
+    subject { body }
 
     context 'with default parameters' do
       before { get '/events' }
@@ -37,8 +40,6 @@ describe API::EventsEndpoints do
       end
 
       context 'JSON-API format' do
-        subject { body }
-
         it { should have_json_size(events_cnt).at_path('events') }
       end
 
@@ -46,9 +47,14 @@ describe API::EventsEndpoints do
 
     context 'with pagination' do
       before { get '/events?limit=2&offset=1'}
-      subject { body }
 
       it { should have_json_size(2).at_path('events') }
+    end
+
+    context 'with date filtering' do
+      before { get '/events?from=2014-04-02T13:50&to=2014-04-03T00:00'}
+
+      it { should have_json_size(1).at_path('events') }
     end
 
     context 'as an icalendar' do
