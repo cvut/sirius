@@ -21,6 +21,7 @@ gem 'role_playing'
 
 group :development do
   gem 'guard-shotgun', github: 'jnv/guard-shotgun', require: false
+  gem 'guard-rspec', require: false
 end
 
 group :test do
@@ -37,8 +38,8 @@ group :test do
 end
 
 group :development, :test do
-  gem 'pry'
-  gem 'pry-nav'
+  gem 'pry', '~> 0.10.0', require: false
+  gem 'pry-nav', github: 'nixme/pry-nav', require: false
   gem 'awesome_print'
   gem 'dotenv'
 end

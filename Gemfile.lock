@@ -19,6 +19,13 @@ GIT
       guard (~> 2.0)
       spoon
 
+GIT
+  remote: git://github.com/nixme/pry-nav.git
+  revision: fd18b3f28107966b335efe5f5447b782b30fd92e
+  specs:
+    pry-nav (0.2.3)
+      pry (>= 0.9.10, < 0.11.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -83,6 +90,9 @@ GEM
       em-websocket (~> 0.5)
       guard (~> 2.0)
       multi_json (~> 1.8)
+    guard-rspec (4.2.10)
+      guard (~> 2.1)
+      rspec (>= 2.14, < 4.0)
     guard-yard (2.1.1)
       guard (>= 1.1.0)
       yard (>= 0.7.0)
@@ -119,12 +129,10 @@ GEM
       rack (~> 1.2)
     ox (2.1.2)
     pg (0.17.1)
-    pry (0.9.12.6)
-      coderay (~> 1.0)
-      method_source (~> 0.8)
+    pry (0.10.0)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-nav (0.2.3)
-      pry (~> 0.9.10)
     rack (1.5.2)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -194,6 +202,7 @@ DEPENDENCIES
   fabrication
   grape
   guard-livereload
+  guard-rspec
   guard-shotgun!
   guard-yard
   icalendar (~> 2.1.0)
@@ -203,8 +212,8 @@ DEPENDENCIES
   kosapi_client!
   kramdown
   pg
-  pry
-  pry-nav
+  pry (~> 0.10.0)
+  pry-nav!
   rack-test
   rake
   roar
