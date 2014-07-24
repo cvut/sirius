@@ -39,6 +39,13 @@ Sequel.migration do
       primary_key [:filename]
     end
     
+    create_table(:update_logs) do
+      primary_key :id
+      column :type, "integer"
+      column :created_at, "timestamp without time zone"
+      column :updated_at, "timestamp without time zone"
+    end
+    
     create_table(:parallels) do
       primary_key :id
       column :parallel_type, "text"
@@ -105,5 +112,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717175952_rename_type_to_parallel_type.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717180517_drop_course_code.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140718175201_events_extension.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140724005656_create_update_log.rb')"
   end
 end
