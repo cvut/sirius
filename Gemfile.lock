@@ -10,6 +10,15 @@ GIT
       ox
       uri_template
 
+GIT
+  remote: git://github.com/jnv/guard-shotgun.git
+  revision: a792fd849f267faf4e47ddf386c876049124475b
+  specs:
+    guard-shotgun (0.3.0)
+      ffi
+      guard (~> 2.0)
+      spoon
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -131,8 +140,6 @@ GEM
       multi_json
       nokogiri
       uber
-    rerun (0.10.0)
-      listen (~> 2.7, >= 2.7.3)
     roar (0.12.7)
       representable (>= 1.6.0)
     role_playing (0.1.4)
@@ -156,6 +163,8 @@ GEM
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
     slop (3.6.0)
+    spoon (0.0.4)
+      ffi
     thor (0.19.1)
     thread_safe (0.3.4)
     timecop (0.7.1)
@@ -185,6 +194,7 @@ DEPENDENCIES
   fabrication
   grape
   guard-livereload
+  guard-shotgun!
   guard-yard
   icalendar (~> 2.1.0)
   ice_cube
@@ -197,7 +207,6 @@ DEPENDENCIES
   pry-nav
   rack-test
   rake
-  rerun
   roar
   role_playing
   rspec (~> 3.0.0)

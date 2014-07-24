@@ -20,7 +20,7 @@ gem 'activesupport'
 gem 'role_playing'
 
 group :development do
-  gem 'rerun'
+  gem 'guard-shotgun', github: 'jnv/guard-shotgun', require: false
 end
 
 group :test do
@@ -42,6 +42,7 @@ group :development, :test do
   gem 'awesome_print'
   gem 'dotenv'
 end
+
 
 group :documentation do
   gem 'kramdown'

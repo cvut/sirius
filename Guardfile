@@ -1,9 +1,5 @@
-# A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
-
-
-scope groups: [:doc]
 
 group :doc do
   guard 'yard' do
@@ -16,3 +12,11 @@ group :doc do
     watch(%r{doc/.+\.html})
   end
 end
+
+guard :shotgun do
+  watch %r{^(app|lib|config)/.*\.rb}
+  watch 'config.ru'
+  watch 'init.rb'
+end
+
+scope plugin: :shotgun
