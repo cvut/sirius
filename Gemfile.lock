@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/flexik/kosapi_client.git
-  revision: 04db40a4b780926b93a1edd1cc99c62845ca4f2c
+  revision: ee661e58c8bab4b14bc276a5e80693df083865a8
   specs:
     kosapi_client (0.0.1)
       activesupport
@@ -80,7 +80,7 @@ GEM
     hashie (3.2.0)
     http_parser.rb (0.6.0)
     i18n (0.6.11)
-    icalendar (2.1.0)
+    icalendar (2.1.1)
     ice_cube (0.12.1)
     ice_nine (0.11.0)
     json (1.8.1)
