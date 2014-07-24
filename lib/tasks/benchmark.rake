@@ -21,8 +21,8 @@ namespace :benchmark do
   task :run => :environment do
     manager = Sirius::ScheduleManager.new
     DatabaseCleaner[:sequel, {:connection => DB}]
-    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.strategy = :truncation
     Benchmark.bm do |x|
       5.times do
         DatabaseCleaner.cleaning do
