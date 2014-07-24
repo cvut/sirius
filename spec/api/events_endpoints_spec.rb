@@ -3,10 +3,19 @@ require 'icalendar'
 
 describe API::EventsEndpoints do
   subject { response }
-  let!(:event) { Fabricate(:event) }
   let(:status) { response.status }
   let(:body) { response.body }
   let(:headers) { response.headers }
+
+  let(:events_cnt) { 3 }
+  let(:events) do
+    i = 1
+    Fabricate.build_times(events_cnt, :event) do
+      starts_at { "2014-04-0#{i+=1} 14:30" } # XXX sequencer in times doesn't work
+      ends_at { "2014-04-0#{i} 16:00" }
+    end
+  end
+  let(:event) { events.first }
 
   let(:event_json) do
     {
@@ -18,7 +27,7 @@ describe API::EventsEndpoints do
   end
 
   describe 'GET /events' do
-    let!(:events) { Fabricate.times(2, :event) }
+    before { events }
 
     context 'with default parameters' do
       before { get '/events' }
