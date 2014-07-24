@@ -1,5 +1,5 @@
 module Sirius
-  class KOSapiPartialParallelImport
+  class PartialParallelImport
 
     def initialize(limit: , semester: , client: KOSapiClient.client, finder: UpdatedParallelsFinder)
       @limit = limit
@@ -15,7 +15,7 @@ module Sirius
     end
 
     def fetch_parallels
-
+      @parallels = finder.find_updated
     end
 
     def process_records
