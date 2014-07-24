@@ -3,9 +3,9 @@ require 'kosapi_client'
 module Sirius
   class UpdatedParallelsFinder
 
-    def initialize(since: )
+    def initialize(since: , client: KOSapiClient.client)
       @since = since
-      @client = KOSapiClient.client
+      @client = client
     end
 
     def find_updated

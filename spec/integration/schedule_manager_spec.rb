@@ -3,7 +3,7 @@ require 'sirius/schedule_manager'
 
 describe Sirius::ScheduleManager, :vcr do
 
-  subject(:manager) { Sirius::ScheduleManager.new }
+  subject(:manager) { Sirius::ScheduleManager.new(client: create_kosapi_client) }
 
   it 'fetches parallels from KOSapi' do
     manager.fetch_and_store_parallels
