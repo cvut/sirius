@@ -8,6 +8,6 @@ describe Sirius::UpdatedParallelsFinder, :vcr do
 
   it 'finds parallels updated since' do
     parallels = finder.find_updated
-    expect(parallels.first.updated).to be > since
+    expect(parallels.any? { |par| par.updated > since }).to be_truthy
   end
 end
