@@ -2,12 +2,15 @@ require 'api_spec_helper'
 require 'icalendar'
 
 RSpec.shared_examples 'events endpoint' do
+  include_context 'API response'
+
   let(:events_cnt) { 3 }
+  let(:events_params) { Hash.new }
 
   # Events from 2014-04-01 to 2014-04-03
   let!(:events) do
     i = 0
-    Fabricate.times(events_cnt, :event) do
+    Fabricate.times(events_cnt, :event, events_params) do
       starts_at { "2014-04-0#{i+=1} 14:30" } # XXX sequencer in times doesn't work
       ends_at { "2014-04-0#{i} 16:00" }
     end
@@ -23,8 +26,11 @@ RSpec.shared_examples 'events endpoint' do
     }.to_json
   end
 
-  include_context 'API response'
   subject { body }
+
+  it 'is sane' do
+    expect(Event.where(events_params).count).to eql events_cnt
+  end
 
   context 'with default parameters' do
     before { get path }
@@ -60,27 +66,18 @@ RSpec.shared_examples 'events endpoint' do
       expect(calendar.events.size).to eq(events_cnt)
     end
   end
+end
 
+RSpec.shared_examples 'invalid endpoint' do
+  it 'returns a Not Found error' do
+    get path
+    expect(response.status).to eql 404
+  end
 end
 
 
 describe API::EventsEndpoints do
-  subject { response }
-  let(:status) { response.status }
-  let(:body) { response.body }
-  let(:headers) { response.headers }
-
-  let(:events_cnt) { 3 }
-  let(:event) { events.first }
-
-  let(:event_json) do
-    {
-      id: event.id,
-      name: event.name,
-      starts_at: event.starts_at,
-      ends_at: event.ends_at
-    }.to_json
-  end
+  include_context 'API response'
 
   describe 'GET /events' do
     let(:path) { '/events' }
@@ -88,6 +85,15 @@ describe API::EventsEndpoints do
   end
 
   describe 'GET /events/:id' do
+    let(:event) { Fabricate(:event) }
+    let(:event_json) do
+      {
+        id: event.id,
+        name: event.name,
+        starts_at: event.starts_at,
+        ends_at: event.ends_at
+      }.to_json
+    end
     context 'JSON-API format' do
       before { get "/events/#{event.id}" }
       subject { body }
@@ -104,8 +110,40 @@ describe API::EventsEndpoints do
 
     context 'with non-existent resource' do
       before { get "/events/9001" }
-      it 'returns Not Found' do
+      it 'returns a Not Found error' do
         expect(status).to eql(404)
+      end
+    end
+  end
+
+  let(:room) { Fabricate(:room, kos_code: 'T9:350') }
+
+  describe 'GET /rooms' do
+    it_behaves_like 'invalid endpoint' do
+      let(:path) { '/rooms' }
+    end
+  end
+
+  describe 'GET /rooms/:kos_id' do
+    it_behaves_like 'invalid endpoint' do
+      let(:path) { "/rooms/#{room.kos_code}" }
+    end
+  end
+
+  describe 'GET /rooms/:kos_code/events' do
+    let(:path) { "/rooms/#{room.kos_code}/events" }
+
+    context 'with non-existent room' do
+      before { get path }
+      let(:path) { "/rooms/YOLO/events" }
+      it 'returns a Not Found error' do
+        expect(status).to eql 404
+      end
+    end
+
+    context 'with existing room' do
+      it_behaves_like 'events endpoint' do
+        let(:events_params) { { room: room } }
       end
     end
   end

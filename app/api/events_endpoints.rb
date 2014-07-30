@@ -1,4 +1,5 @@
 require 'models/event'
+require 'models/room'
 require 'events_representer'
 require 'api_helper'
 require 'events_filtering'
@@ -41,6 +42,8 @@ module API
       route_param :kos_id do
         resource :events do
           get do
+            events = ::Room.with_code!(params[:kos_id]).events_dataset
+            represent EventsFiltering.new(events).call(params: params, format: api_format)
           end
         end
       end
