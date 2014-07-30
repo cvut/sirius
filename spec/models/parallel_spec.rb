@@ -40,10 +40,10 @@ describe Parallel do
 
   describe '.from_kosapi' do
     let(:slots) { [] }
-    let(:teachers) { [double(href: 'foo/szolatib', title: 'Bc. Tibor Szolár', id: 'szolatib')] }
-    let(:course) { double( id: 'BI-AL2', title: 'English Language for IT' ) }
-    let(:semester) { double( id: 'B132' )}
-    let(:kosapi_parallel) { double(to_hash: {code: 1234, parallel_type: :tutorial}, link: double(href: 'foo/432', id: '432'), timetable_slots: slots, teachers: teachers, course: course, semester: semester) }
+    let(:teachers) { [double(link_href: 'foo/szolatib', link_title: 'Bc. Tibor Szolár', link_id: 'szolatib')] }
+    let(:course) { double( link_id: 'BI-AL2', link_title: 'English Language for IT' ) }
+    let(:semester) { double( link_id: 'B132' )}
+    let(:kosapi_parallel) { double(to_hash: {code: 1234, parallel_type: :tutorial}, link: double(link_href: 'foo/432', link_id: '432'), timetable_slots: slots, teachers: teachers, course: course, semester: semester) }
 
     it 'converts kosapi parallel to sirius paralell entity' do
       parallel = Parallel.from_kosapi(kosapi_parallel)

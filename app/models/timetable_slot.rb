@@ -31,12 +31,12 @@ class TimetableSlot < Sequel::Model
       else
         db_slot = TimetableSlot.new(slot_hash)
       end
-      db_slot.parallel_id = parallel.link.id
+      db_slot.parallel_id = parallel.link.link_id
       db_slot
     end
 
     def process_room(kosapi_slot, db_slot)
-      room_code = kosapi_slot.room.title
+      room_code = kosapi_slot.room.link_title
       unless room_code == 'no-title'
         room = Room.find_or_create(kos_code: room_code)
         db_slot.room = room

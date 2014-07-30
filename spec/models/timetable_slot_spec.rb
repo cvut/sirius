@@ -5,8 +5,8 @@ describe TimetableSlot do
 
   describe '.from_kosapi' do
     let(:db_parallel) { Fabricate(:parallel) }
-    let(:parallel) { double(link: double(id: db_parallel.id)) }
-    let(:room) { double(href: '432', title: 'A-1442') }
+    let(:parallel) { double(link: double(link_id: db_parallel.id)) }
+    let(:room) { double(link_href: '432', link_title: 'A-1442') }
     let(:kosapi_slot) { double(to_hash: {id: 1234, day: 4, duration: 2, first_hour: 3, parity: :odd }, room: room ) }
 
     it 'converts kosapi timetable slot to sirius timetable slot entity' do
@@ -44,7 +44,7 @@ describe TimetableSlot do
     end
 
     context 'with invalid room code' do
-      let(:room) { double(href: '432', title: 'no-title') }
+      let(:room) { double(link_href: '432', link_title: 'no-title') }
 
       it 'skips room when invalid' do
         slot = TimetableSlot.from_kosapi(kosapi_slot, parallel)

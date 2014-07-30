@@ -25,23 +25,23 @@ class Parallel < Sequel::Model
     def get_attr_hash(kosapi_parallel)
       parallel_hash = kosapi_parallel.to_hash
       parallel_hash.select! { |key,_| DB_KEYS.include? key }
-      parallel_hash[:id] = kosapi_parallel.link.id
-      parallel_hash[:semester] = kosapi_parallel.semester.id
+      parallel_hash[:id] = kosapi_parallel.link.link_id
+      parallel_hash[:semester] = kosapi_parallel.semester.link_id
       parallel_hash
     end
 
     def load_teachers(kosapi_parallel)
       Person.unrestrict_primary_key
       kosapi_parallel.teachers.map do |teacher_link|
-        Person.find_or_create(id: teacher_link.id, full_name: teacher_link.title)
-        teacher_link.id
+        Person.find_or_create(id: teacher_link.link_id, full_name: teacher_link.link_title)
+        teacher_link.link_id
       end
     end
 
     def load_course(kosapi_parallel)
       course = kosapi_parallel.course
       Course.unrestrict_primary_key
-      Course.find_or_create(id: course.id, name: Sequel.hstore({en: course.title}) )
+      Course.find_or_create(id: course.link_id, name: Sequel.hstore({en: course.link_title}) )
     end
 
     def create_parallel(attr_hash, teachers, course)
