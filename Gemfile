@@ -39,7 +39,7 @@ end
 
 group :development, :test do
   gem 'pry', '~> 0.10.0', require: false
-  gem 'pry-nav', github: 'nixme/pry-nav', require: false
+  gem 'pry-nav', '~> 0.2.4', require: false
   gem 'awesome_print'
   gem 'dotenv'
 end
