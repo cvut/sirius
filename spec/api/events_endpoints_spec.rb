@@ -85,5 +85,12 @@ describe API::EventsEndpoints do
       it { should be_json_eql(event_json).at_path('events/0') }
 
     end
+
+    context 'with non-existent resource' do
+      before { get "/events/9001" }
+      it 'returns Not Found' do
+        expect(status).to eql(404)
+      end
+    end
   end
 end

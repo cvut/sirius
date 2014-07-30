@@ -26,7 +26,7 @@ module API
       route_param :id do
         desc 'Get an event'
         get do
-          event = ::Event[params[:id]]
+          event = ::Event.with_pk!(params[:id])
           represent event
         end
       end
