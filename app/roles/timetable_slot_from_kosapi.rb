@@ -13,6 +13,7 @@ class TimetableSlotFromKOSapi < RolePlaying::Role
       db_slot.save()
     end
 
+    private
     def get_attr_hash(slot)
       slot_hash = slot.to_hash
       slot_hash.select { |key,_| DB_KEYS.include? key }

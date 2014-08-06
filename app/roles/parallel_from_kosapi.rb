@@ -18,6 +18,7 @@ class ParallelFromKOSapi < RolePlaying::Role
       parallel
     end
 
+    private
     def get_attr_hash(kosapi_parallel)
       parallel_hash = kosapi_parallel.to_hash
       parallel_hash.select! { |key,_| DB_KEYS.include? key }
