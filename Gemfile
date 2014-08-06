@@ -51,4 +51,4 @@ group :documentation do
   gem 'guard-yard'
 end
 
-gem 'kosapi_client', github: 'flexik/kosapi_client'
+gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
