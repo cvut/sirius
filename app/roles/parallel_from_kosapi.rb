@@ -1,4 +1,7 @@
 require 'role_playing'
+require 'person'
+require 'course'
+require 'parallel'
 
 class ParallelFromKOSapi < RolePlaying::Role
 
@@ -52,7 +55,7 @@ class ParallelFromKOSapi < RolePlaying::Role
 
     def process_slots(kosapi_parallel)
       kosapi_parallel.timetable_slots.each do |slot|
-        TimetableSlot.from_kosapi(slot, kosapi_parallel)
+        TimetableSlotFromKOSapi.from_kosapi(slot, kosapi_parallel)
       end
     end
 
