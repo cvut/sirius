@@ -1,6 +1,6 @@
 require 'collection_representer'
 require 'event_representer'
-require 'events_ical_formatting'
+require 'format_events_ical'
 
 class EventsRepresenter < CollectionRepresenter
   self.representation_wrap = :events
@@ -9,6 +9,6 @@ class EventsRepresenter < CollectionRepresenter
 
   # FIXME: this should be handled on Grape's level
   def to_ical
-    EventsIcalFormatting.new(represented).call
+    FormatEventsIcal.perform(events: represented).ical
   end
 end
