@@ -2,7 +2,7 @@ require 'models/event'
 require 'models/room'
 require 'events_representer'
 require 'api_helper'
-require 'events_filtering'
+require 'filter_events'
 module API
   class EventsEndpoints < Grape::API
     helpers ApiHelper
@@ -17,8 +17,8 @@ module API
         optional :offset, type: Integer
       end
       get do
-        events = EventsFiltering.new(::Event.dataset)
-        represent events.call(params: params, format: api_format)
+        events = ::Event.dataset
+        represent FilterEvents.perform(events: events, params: params, format: api_format).events
       end
 
       params do
@@ -43,7 +43,7 @@ module API
         resource :events do
           get do
             events = ::Room.with_code!(params[:kos_id]).events_dataset
-            represent EventsFiltering.new(events).call(params: params, format: api_format)
+            represent FilterEvents.perform(events: events, params: params, format: api_format).events
           end
         end
       end

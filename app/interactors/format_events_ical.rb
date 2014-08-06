@@ -1,25 +1,34 @@
-require 'icalendar'
 require 'role_playing'
+require 'interpipe/interactor'
+require 'icalendar'
 
 ##
 # Converts {Event}'s collection to an ICalendar.
 #
-class EventsIcalFormatting
+class FormatEventsIcal
   include RolePlaying::Context
+  include Interpipe::Interactor
 
-  # @param [Event, Array<Event>]
-  def initialize(events)
-    @events = Array(events) # Always work with collection
+  def setup
     @calendar = Icalendar::Calendar.new
   end
 
   ##
   # Adds events to an ICalendar and convert it to a text representation.
   # @return [String] ICalendar as a string.
-  def call
+  def perform(events: [])
+    @events = Array(events)
+
     @events.each do |e|
       @calendar.add_event IcalEvent(e).to_ical
     end
+  end
+
+  def results
+    {ical: ical}
+  end
+
+  def ical
     @calendar.to_ical
   end
 

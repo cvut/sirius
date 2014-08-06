@@ -1,13 +1,13 @@
 require 'spec_helper'
-require 'events_filtering'
+require 'filter_events'
 
-describe EventsFiltering do
+describe FilterEvents do
   let(:dataset) {  }
 
   let(:dataset) do
     Sequel.mock.dataset.from(:test)
   end
-  let(:context) { described_class.new(dataset) }
+  let(:interactor) { described_class }
 
   let(:params) do
     {
@@ -19,7 +19,7 @@ describe EventsFiltering do
   end
 
   let(:format) { :jsonapi }
-  let(:result) { context.call(params: params, format: format) }
+  let(:result) { interactor.perform(events: dataset, params: params, format: format).events }
   let(:opts) { result.opts }
 
   it 'returns a new dataset' do
