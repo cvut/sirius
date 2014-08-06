@@ -27,8 +27,8 @@ module Interpipe
       end
 
       def perform(**options)
-        interactors.inject(options) do |result, interactor|
-          interactor.perform(result)
+        @results = interactors.inject(options) do |result, interactor|
+          interactor.perform(result).results
         end
       end
     end

@@ -26,10 +26,5 @@ module Interpipe
 
     def perform(**options)
     end
-
-    private
-    def results=(val)
-    end
-
   end
 end
