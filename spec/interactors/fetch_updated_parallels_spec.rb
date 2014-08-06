@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'interactors/updated_parallels_fetch'
+require 'interactors/fetch_updated_parallels'
 require 'sirius/updated_parallels_finder'
 
-describe UpdatedParallelsFetch do
+describe FetchUpdatedParallels do
 
   let(:finder) { instance_double(Sirius::UpdatedParallelsFinder, find_updated: []) }
   subject(:fetch) { described_class.new }

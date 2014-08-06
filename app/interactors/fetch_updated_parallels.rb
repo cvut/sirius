@@ -1,7 +1,7 @@
 require 'update_log'
 require 'interpipe/interactor'
 
-class UpdatedParallelsFetch
+class FetchUpdatedParallels
   include Interpipe::Interactor
 
   def setup(finder: Sirius::UpdatedParallelsFinder.new)
