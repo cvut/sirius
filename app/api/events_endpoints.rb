@@ -1,5 +1,6 @@
 require 'models/event'
 require 'models/room'
+require 'models/person'
 require 'events_representer'
 require 'api_helper'
 require 'filter_events'
@@ -57,6 +58,8 @@ module API
       route_param :username do
         resource :events do
           get do
+            events = ::Person.with_pk!(params[:username]).events_dataset
+            represent FilterEvents.perform(events: events, params: params, format: api_format).events
           end
         end
       end

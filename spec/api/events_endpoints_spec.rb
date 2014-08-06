@@ -116,34 +116,72 @@ describe API::EventsEndpoints do
     end
   end
 
-  let(:room) { Fabricate(:room, kos_code: 'T9:350') }
+  describe 'filter by rooms' do
+    let(:room) { Fabricate(:room, kos_code: 'T9:350') }
 
-  describe 'GET /rooms' do
-    it_behaves_like 'invalid endpoint' do
-      let(:path) { '/rooms' }
-    end
-  end
-
-  describe 'GET /rooms/:kos_id' do
-    it_behaves_like 'invalid endpoint' do
-      let(:path) { "/rooms/#{room.kos_code}" }
-    end
-  end
-
-  describe 'GET /rooms/:kos_code/events' do
-    let(:path) { "/rooms/#{room.kos_code}/events" }
-
-    context 'with non-existent room' do
-      before { get path }
-      let(:path) { "/rooms/YOLO/events" }
-      it 'returns a Not Found error' do
-        expect(status).to eql 404
+    describe 'GET /rooms' do
+      it_behaves_like 'invalid endpoint' do
+        let(:path) { '/rooms' }
       end
     end
 
-    context 'with existing room' do
-      it_behaves_like 'events endpoint' do
-        let(:events_params) { { room: room } }
+    describe 'GET /rooms/:kos_id' do
+      it_behaves_like 'invalid endpoint' do
+        let(:path) { "/rooms/#{room.kos_code}" }
+      end
+    end
+
+    describe 'GET /rooms/:kos_code/events' do
+      let(:path) { "/rooms/#{room.kos_code}/events" }
+
+      context 'with non-existent room' do
+        before { get path }
+        let(:path) { "/rooms/YOLO/events" }
+        it 'returns a Not Found error' do
+          expect(status).to eql 404
+        end
+      end
+
+      context 'with existing room' do
+        it_behaves_like 'events endpoint' do
+          let(:events_params) { { room: room } }
+        end
+      end
+    end
+  end
+
+  describe 'filter by person' do
+    let(:person) { Fabricate(:person, id: 'vomackar') }
+
+    describe 'GET /people' do
+      it_behaves_like 'invalid endpoint' do
+        let(:path) { '/people' }
+      end
+    end
+
+    describe 'GET /people/:username' do
+      it_behaves_like 'invalid endpoint' do
+        let(:path) { "/people/#{person.id}" }
+      end
+    end
+
+    describe 'GET /people/:username/events' do
+      let(:path) { "/people/#{perosn.id}/events" }
+
+      context 'with non-existent person' do
+        before { get path }
+        let(:path) { "/people/mranonym/events" }
+        it 'returns a Not Found error' do
+          expect(status).to eql 404
+        end
+      end
+
+      context 'with existing person' do
+        pending do
+          it_behaves_like 'events endpoint' do
+            let(:events_params) { { person: person } }
+          end
+        end
       end
     end
   end
