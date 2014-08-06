@@ -36,11 +36,10 @@ class TimetableSlot < Sequel::Model
     end
 
     def process_room(kosapi_slot, db_slot)
+      return if !kosapi_slot.room || kosapi_slot.room.link_title == 'no-title'
       room_code = kosapi_slot.room.link_title
-      unless room_code == 'no-title'
-        room = Room.find_or_create(kos_code: room_code)
-        db_slot.room = room
-      end
+      room = Room.find_or_create(kos_code: room_code)
+      db_slot.room = room
     end
 
   end

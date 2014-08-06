@@ -52,6 +52,15 @@ describe TimetableSlot do
       end
     end
 
+    context 'with missing room' do
+      let(:room) { nil }
+
+      it 'sets room to nil' do
+        slot = TimetableSlot.from_kosapi(kosapi_slot, parallel)
+        expect(slot.room).to be_nil
+      end
+    end
+
   end
 
 end
