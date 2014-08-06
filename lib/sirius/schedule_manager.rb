@@ -23,7 +23,7 @@ module Sirius
       parallels = fetch_parallels(0, 20, 'B132')
       DB.transaction do
         parallels.take_while do |parallel|
-          Parallel.from_kosapi(parallel)
+          ParallelFromKOSapi.from_kosapi(parallel)
           total_parallels += 1
           total_parallels < parallels_limit
         end
