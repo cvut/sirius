@@ -1,5 +1,6 @@
 require 'sirius/semester'
 require 'models/parallel'
+require 'roles/parallel_from_kosapi'
 
 module Sirius
   class ScheduleManager

@@ -2,6 +2,7 @@ require 'role_playing'
 require 'person'
 require 'course'
 require 'parallel'
+require 'timetable_slot_from_kosapi'
 
 class ParallelFromKOSapi < RolePlaying::Role
 
