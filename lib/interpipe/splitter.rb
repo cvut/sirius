@@ -1,7 +1,9 @@
 require 'interpipe/organizer'
+require 'interpipe/aliases'
 
 module Interpipe
   class Splitter < Organizer
+    extend Aliases
 
     def self.split(*interactors)
       @interactors = interactors.flatten

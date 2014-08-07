@@ -1,7 +1,9 @@
 require 'interpipe/organizer'
+require 'interpipe/aliases'
 
 module Interpipe
   class Pipe < Organizer
+    extend Aliases
 
     def self.pipe(*interactors)
       @interactors = interactors.flatten
