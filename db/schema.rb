@@ -88,6 +88,7 @@ Sequel.migration do
       column :event_type, "text"
       foreign_key :parallel_id, :parallels, :key=>[:id]
       foreign_key :timetable_slot_id, :timetable_slots, :key=>[:id]
+      foreign_key :course_id, :courses, :type=>"text", :key=>[:id]
       
       index [:student_ids]
       index [:teacher_ids]
@@ -113,5 +114,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140717180517_drop_course_code.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140718175201_events_extension.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140724005656_create_update_log.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140807132353_add_course_id_to_events.rb')"
   end
 end

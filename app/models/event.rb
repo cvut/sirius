@@ -3,6 +3,7 @@ require 'period'
 class Event < Sequel::Model
 
   many_to_one :room
+  many_to_one :course
 
   def self.for_person(username)
     teacher_op = Sequel.pg_array(:teacher_ids, :varchar)
