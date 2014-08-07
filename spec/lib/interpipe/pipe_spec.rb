@@ -6,20 +6,6 @@ describe Interpipe::Pipe do
   let(:interactor1) { double(:first).as_null_object }
   let(:interactor2) { double(:second).as_null_object }
 
-  describe '.[]' do
-
-    it 'creates new anonymous pipe class' do
-      anonymous_pipe = Interpipe::Pipe[]
-      expect(anonymous_pipe).to be < Interpipe::Pipe
-    end
-
-    it 'sets interactors of newly created class' do
-      anonymous_pipe = Interpipe::Pipe[interactor1, interactor2]
-      expect(anonymous_pipe.interactors).to eq [interactor1, interactor2]
-    end
-
-  end
-
   describe '#perform' do
     before do
       allow(pipe).to receive(:interactors) { [interactor1, interactor2] }
