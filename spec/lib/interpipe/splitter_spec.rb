@@ -2,20 +2,9 @@ require 'spec_helper'
 require 'interpipe/splitter'
 
 describe Interpipe::Splitter do
-  let(:splitter) { Class.new.send(:include, Interpipe::Splitter) }
-  let(:interactor) { Class.new.send(:include, Interpipe::Interactor) }
+  let(:splitter) { described_class }
   let(:interactor1) { double(:first).as_null_object }
   let(:interactor2) { double(:second).as_null_object }
-
-  describe '.split' do
-    it 'sets split interactors' do
-      expect{
-        splitter.split [interactor1, interactor2]
-      }.to change {
-        splitter.interactors
-      }.from([]).to([interactor1, interactor2])
-    end
-  end
 
   describe '#perform' do
     before do
