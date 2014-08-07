@@ -2,19 +2,22 @@ require 'spec_helper'
 require 'interpipe/pipe'
 
 describe Interpipe::Pipe do
-  let(:pipe) { Class.new.send(:include, Interpipe::Pipe) }
-  let(:interactor) { Class.new.send(:include, Interpipe::Interactor) }
+  let(:pipe) { described_class }
   let(:interactor1) { double(:first).as_null_object }
   let(:interactor2) { double(:second).as_null_object }
 
-  describe '.pipe' do
-    it 'sets piped interactors' do
-      expect{
-        pipe.pipe [interactor1, interactor2]
-      }.to change {
-        pipe.interactors
-      }.from([]).to([interactor1, interactor2])
+  describe '.[]' do
+
+    it 'creates new anonymous pipe class' do
+      anonymous_pipe = Interpipe::Pipe[]
+      expect(anonymous_pipe).to be < Interpipe::Pipe
     end
+
+    it 'sets interactors of newly created class' do
+      anonymous_pipe = Interpipe::Pipe[interactor1, interactor2]
+      expect(anonymous_pipe.interactors).to eq [interactor1, interactor2]
+    end
+
   end
 
   describe '#perform' do
@@ -44,11 +47,6 @@ describe Interpipe::Pipe do
       rs = {lorem: 'ipsum', dolor: 'sit'}
       allow(interactor1).to receive(:results) { rs }
       expect(results).to eql(rs)
-    end
-  end
-
-  pending do
-    context 'with nested pipe' do
     end
   end
 

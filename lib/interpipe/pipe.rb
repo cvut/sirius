@@ -1,35 +1,21 @@
-require 'interpipe/interactor'
+require 'interpipe/organizer'
 
 module Interpipe
-  module Pipe
-    def self.included(base)
-      base.class_eval do
-        include Interactor
+  class Pipe < Organizer
 
-        extend ClassMethods
-        include InstanceMethods
-      end
+    def self.[](*interactors)
+      anon_pipe = Class.new(self)
+      anon_pipe.interactors = interactors
+      anon_pipe
     end
 
-    module ClassMethods
-      def interactors
-        @interactors ||= []
-      end
-
-      def pipe(*interactors)
-        @interactors = interactors.flatten
-      end
+    def self.pipe(*interactors)
+      @interactors = interactors.flatten
     end
 
-    module InstanceMethods
-      def interactors
-        self.class.interactors
-      end
-
-      def perform(**options)
-        @results = interactors.inject(options) do |result, interactor|
-          interactor.perform(result).results
-        end
+    def perform(**options)
+      @results = interactors.inject(options) do |result, interactor|
+        interactor.perform(result).results
       end
     end
   end
