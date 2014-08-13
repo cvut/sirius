@@ -160,6 +160,9 @@ GEM
       rspec-support (~> 3.0.0)
     rspec-support (3.0.3)
     sequel (4.12.0)
+    sequel_pg (1.6.10)
+      pg (>= 0.8.0)
+      sequel (>= 3.39.0)
     simplecov (0.9.0)
       docile (~> 1.1.0)
       multi_json
@@ -215,5 +218,6 @@ DEPENDENCIES
   role_playing
   rspec (~> 3.0.0)
   sequel
+  sequel_pg
   timecop
   vcr
