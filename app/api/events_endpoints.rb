@@ -58,7 +58,10 @@ module API
       route_param :username do
         resource :events do
           get do
-            events = ::Person.with_pk!(params[:username]).events_dataset
+            #XXX check if user exists; ugly!
+            ::Person.with_pk!(params[:username])
+
+            events = Event.with_person(params[:username])
             represent FilterEvents.perform(events: events, params: params, format: api_format).events
           end
         end
@@ -73,6 +76,7 @@ module API
       route_param :course_code do
         resource :events do
           get do
+            #XXX check if course exists; ugly!
           end
         end
       end

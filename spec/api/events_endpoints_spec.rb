@@ -28,10 +28,6 @@ RSpec.shared_examples 'events endpoint' do
 
   subject { body }
 
-  it 'is sane' do
-    expect(Event.where(events_params).count).to eql events_cnt
-  end
-
   context 'with default parameters' do
     before { get path }
 
@@ -166,7 +162,7 @@ describe API::EventsEndpoints do
     end
 
     describe 'GET /people/:username/events' do
-      let(:path) { "/people/#{perosn.id}/events" }
+      let(:path) { "/people/#{person.id}/events" }
 
       context 'with non-existent person' do
         before { get path }
@@ -177,10 +173,8 @@ describe API::EventsEndpoints do
       end
 
       context 'with existing person' do
-        pending do
-          it_behaves_like 'events endpoint' do
-            let(:events_params) { { person: person } }
-          end
+        it_behaves_like 'events endpoint' do
+          let(:events_params) { { teacher_ids: [person.id] } }
         end
       end
     end
