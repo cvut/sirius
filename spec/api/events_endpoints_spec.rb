@@ -26,6 +26,10 @@ RSpec.shared_examples 'events endpoint' do
     }.to_json
   end
 
+  # it 'is sane' do
+  #   expect(Event.where(events_params).count).to eql events_cnt
+  # end
+
   subject { body }
 
   context 'with default parameters' do
@@ -175,6 +179,40 @@ describe API::EventsEndpoints do
       context 'with existing person' do
         it_behaves_like 'events endpoint' do
           let(:events_params) { { teacher_ids: [person.id] } }
+        end
+      end
+    end
+  end
+
+  describe 'filter by course' do
+    let(:course) { Fabricate(:course, id: 'MI-RUB') }
+
+    describe 'GET /courses' do
+      it_behaves_like 'invalid endpoint' do
+        let(:path) { '/courses' }
+      end
+    end
+
+    describe 'GET /courses/:course_id' do
+      it_behaves_like 'invalid endpoint' do
+        let(:path) { "/courses/#{course.id}" }
+      end
+    end
+
+    describe 'GET /courses/:course_id/events' do
+      let(:path) { "/courses/#{course.id}/events" }
+
+      context 'with non-existent course' do
+        before { get path }
+        let(:path) { "/courses/MI-COB/events" } # Programming in Cobol is a not thing, yet?
+        it 'returns a Not Found error' do
+          expect(status).to eql 404
+        end
+      end
+
+      context 'with existing course' do
+        it_behaves_like 'events endpoint' do
+          let(:events_params) { { course: course } }
         end
       end
     end
