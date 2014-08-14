@@ -23,4 +23,12 @@ describe Room do
     end
   end
 
+  describe '#to_s' do
+    subject(:room) { Room.new(kos_code: 'A-1442')}
+
+    it "returns a room's KOS code" do
+      expect(room.to_s).to eql 'A-1442'
+    end
+  end
+
 end
