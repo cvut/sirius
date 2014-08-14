@@ -39,16 +39,16 @@ class FormatEventsIcal
     # Maps {Event} attributes to {Icalendar::Event} object.
     # @return [Icalendar::Event]
     def to_ical
-      ical_event = Icalendar::Event.new.tap do |e|
+      Icalendar::Event.new.tap do |e|
         e.summary = name
         e.description = note
         e.dtstart = starts_at.strftime("%Y%m%dT%H%M%S")
         e.dtend = ends_at.strftime("%Y%m%dT%H%M%S")
-        e.location = '' # FIXME!
+        e.location = room.to_s
         e.ip_class = 'PUBLIC'
-        e.created = self.created_at
-        e.last_modified = self.updated_at
-        #e.uid = e.url = "/events/#{self.id}" # FIXME!
+        e.created = created_at
+        e.last_modified = updated_at
+        e.uid = e.url = "/events/#{self.id}" # FIXME! Absolute URL
         #e.add_comment()
       end
     end
