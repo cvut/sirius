@@ -2,20 +2,10 @@ require 'spec_helper'
 require 'interpipe/pipe'
 
 describe Interpipe::Pipe do
-  let(:pipe) { Class.new.send(:include, Interpipe::Pipe) }
+  let(:pipe) { Class.new(Interpipe::Pipe) }
   let(:interactor) { Class.new.send(:include, Interpipe::Interactor) }
   let(:interactor1) { double(:first).as_null_object }
   let(:interactor2) { double(:second).as_null_object }
-
-  describe '.pipe' do
-    it 'sets piped interactors' do
-      expect{
-        pipe.pipe [interactor1, interactor2]
-      }.to change {
-        pipe.interactors
-      }.from([]).to([interactor1, interactor2])
-    end
-  end
 
   describe '#perform' do
     before do
