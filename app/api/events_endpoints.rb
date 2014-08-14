@@ -1,6 +1,7 @@
 require 'models/event'
 require 'models/room'
 require 'models/person'
+require 'models/course'
 require 'events_representer'
 require 'api_helper'
 require 'filter_events'
@@ -58,7 +59,10 @@ module API
       route_param :username do
         resource :events do
           get do
-            events = ::Person.with_pk!(params[:username]).events_dataset
+            #XXX check if user exists; ugly!
+            ::Person.with_pk!(params[:username])
+
+            events = Event.with_person(params[:username])
             represent FilterEvents.perform(events: events, params: params, format: api_format).events
           end
         end
@@ -68,11 +72,14 @@ module API
     desc 'Filter events by course'
     segment :courses do
       params do
-        requires :course_code, type: String, desc: 'Course identification code (faculty-specific)'
+        requires :course_id, type: String, desc: 'Course identification code (faculty-specific)'
       end
-      route_param :course_code do
+      route_param :course_id do
         resource :events do
           get do
+            #XXX join is not necessary here (but let's planner handle this)
+            events = ::Course.with_pk!(params[:course_id]).events_dataset
+            represent FilterEvents.perform(events: events, params: params, format: api_format).events
           end
         end
       end

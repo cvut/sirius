@@ -5,10 +5,10 @@ class Event < Sequel::Model
   many_to_one :room
   many_to_one :course
 
-  def self.for_person(username)
+  def self.with_person(username)
     teacher_op = Sequel.pg_array(:teacher_ids, :varchar)
     student_op = Sequel.pg_array(:student_ids, :varchar)
-    filter(teacher_op.contains Sequel.pg_array([username]))#.or(student_op.contains [username])
+    filter(username => teacher_op.any).or(username => student_op.any)
   end
 
   def period

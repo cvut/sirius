@@ -5,6 +5,7 @@ gem 'rake'
 # Storage
 gem 'pg'
 gem 'sequel'
+gem 'sequel_pg'
 
 # REST API
 gem 'grape'

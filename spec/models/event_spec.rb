@@ -16,4 +16,21 @@ describe Event do
     expect(event.ends_at).to eq period.ends_at
   end
 
+  describe '.with_person' do
+    let!(:event) { Fabricate(:event, teacher_ids: %w[marnytom], student_ids: %w[skocdpet vomackar]) }
+
+    def with_person(person_id)
+      described_class.with_person(person_id).all
+    end
+
+    it 'looks up both teachers and students' do
+      expect(with_person 'marnytom').to eql [event]
+      expect(with_person 'skocdpet').to eql [event]
+    end
+
+    it 'returns an empty set for unknown username' do
+      expect(with_person 'novakj42').to be_empty
+    end
+  end
+
 end
