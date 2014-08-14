@@ -8,4 +8,7 @@ class Room < Sequel::Model
     first!(kos_code: kos_code)
   end
 
+  def to_s
+    kos_code
+  end
 end
