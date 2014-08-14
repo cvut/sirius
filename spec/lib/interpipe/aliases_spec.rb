@@ -11,7 +11,7 @@ describe Interpipe::Aliases do
 
     it 'calls Pipe[]' do
       expect(Interpipe::Pipe).to receive(:[]).with(:foo, :bar, :bah)
-      subject.pipe :foo, :bar, :bah
+      subject.pipe[ :foo, :bar, :bah ]
     end
 
   end
@@ -20,7 +20,7 @@ describe Interpipe::Aliases do
 
     it 'calls Splitter[]' do
       expect(Interpipe::Splitter).to receive(:[]).with(:foo, :bar, :bah)
-      subject.split :foo, :bar, :bah
+      subject.split[ :foo, :bar, :bah ]
     end
 
   end

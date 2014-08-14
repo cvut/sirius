@@ -1,15 +1,16 @@
 module Interpipe
   module Aliases
 
-    def pipe(*interactors)
+    def pipe
       require 'interpipe/pipe'
-      Pipe[*interactors]
+      Interpipe::Pipe
     end
 
-    def split(*interactors)
+    def split
       require 'interpipe/splitter'
-      Splitter[*interactors]
+      Interpipe::Splitter
     end
 
   end
 end
+
