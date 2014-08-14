@@ -10,8 +10,8 @@ describe Interpipe::Aliases do
   describe '.pipe' do
 
     it 'calls Pipe[]' do
-      expect(Interpipe::Pipe).to receive(:[]).with(:foo, :bar)
-      subject.pipe(:foo, :bar)
+      expect(Interpipe::Pipe).to receive(:[]).with(:foo, :bar, :bah)
+      subject.pipe :foo, :bar, :bah
     end
 
   end
@@ -19,8 +19,8 @@ describe Interpipe::Aliases do
   describe '.split' do
 
     it 'calls Splitter[]' do
-      expect(Interpipe::Splitter).to receive(:[]).with(:foo, :bar)
-      subject.split(:foo, :bar)
+      expect(Interpipe::Splitter).to receive(:[]).with(:foo, :bar, :bah)
+      subject.split :foo, :bar, :bah
     end
 
   end
