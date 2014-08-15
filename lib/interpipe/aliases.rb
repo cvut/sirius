@@ -1,16 +1,21 @@
+require 'interpipe/pipe'
+require 'interpipe/splitter'
 module Interpipe
   module Aliases
 
-    def pipe
-      require 'interpipe/pipe'
-      Interpipe::Pipe
+
+    def self.included(base)
+      base.extend(ClassMethods)
     end
 
-    def split
-      require 'interpipe/splitter'
-      Interpipe::Splitter
+    module ClassMethods
+      def pipe
+        Interpipe::Pipe
+      end
+      def split
+        Interpipe::Splitter
+      end
     end
-
   end
 end
 
