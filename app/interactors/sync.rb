@@ -21,8 +21,26 @@ class Sync
     end
   end
 
-
-  def perform(models)
-
+  def perform(args)
+    models = args[key_name]
+    raise "Missing key #{key_name} in Sync#perform arguments." unless models
+    models.each do |model|
+      existing_model = nil
+      existing_model = model_class[model.id] if model.id
+      if existing_model
+        existing_model.update_all(model.values)
+      else
+        model.save
+      end
+    end
   end
+
+  def key_name
+    self.class.key_name
+  end
+
+  def model_class
+    self.class.model_class
+  end
+
 end
