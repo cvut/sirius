@@ -16,8 +16,13 @@ describe Sync do
     end
 
     it 'can set key_name attribute' do
-      cls = described_class[String, :foo]
+      cls = described_class[String, key_name: :foo]
       expect(cls.key_name).to eq :foo
+    end
+
+    it 'can set key_name attribute' do
+      cls = described_class[String, matching_attribute: :foo]
+      expect(cls.matching_attribute).to eq :foo
     end
 
     it 'plularizes model_class as default key_name' do
@@ -67,6 +72,30 @@ describe Sync do
 
       it 'raises RuntimeError' do
         expect { sync.perform({}) }.to raise_error(RuntimeError)
+      end
+
+    end
+
+    context 'with custom key_name' do
+
+      subject(:sync) { described_class[Person, key_name: :foo] }
+
+      it 'accepts input from it' do
+        expect { sync.perform({foo: []}) }.not_to raise_error
+      end
+
+    end
+
+    context 'with custom matching_attribute' do
+
+      subject(:sync) { described_class[Person, matching_attribute: :full_name] }
+      let!(:existing_person) { Fabricate(:person, full_name: 'Pete') }
+      let(:person) { Fabricate.build(:person, id: existing_person.id, full_name: 'Pete') }
+
+      it 'looks up model according to it' do
+
+        expect(Person).to receive(:find).with(full_name: 'Pete').and_call_original
+        sync.perform({people: [person]})
       end
 
     end

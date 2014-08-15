@@ -6,12 +6,13 @@ class Sync
 
   class << self
 
-    attr_accessor :model_class, :key_name
+    attr_accessor :model_class, :key_name, :matching_attribute
 
-    def [](model_class, key_name = nil)
+    def [](model_class, key_name: nil, matching_attribute: :id)
       cls = Class.new(self)
       cls.model_class = model_class
       cls.key_name = generate_key_name(model_class, key_name)
+      cls.matching_attribute = matching_attribute
       cls
     end
 
@@ -25,8 +26,7 @@ class Sync
     models = args[key_name]
     raise "Missing key #{key_name} in Sync#perform arguments." unless models
     models.each do |model|
-      existing_model = nil
-      existing_model = model_class[model.id] if model.id
+      existing_model = find_existing_model(model)
       if existing_model
         existing_model.update_all(model.values)
       else
@@ -35,12 +35,23 @@ class Sync
     end
   end
 
+  private
+
+  def find_existing_model(model)
+    lookup_value = model.send(matching_attribute)
+    model_class.find(matching_attribute => lookup_value) if lookup_value
+  end
+
   def key_name
     self.class.key_name
   end
 
   def model_class
     self.class.model_class
+  end
+
+  def matching_attribute
+    self.class.matching_attribute
   end
 
 end
