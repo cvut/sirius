@@ -14,7 +14,7 @@ class ImportUpdatedParallels < Interpipe::Pipe
       split[ Sync[Person], Sync[Course], Sync[Parallel],
         pipe[
             ConvertTTS,
-            split[ Sync[Room], Sync[TimetableSlot] ]
+            split[ Sync[Room, matching_attribute: :kos_code], Sync[TimetableSlot] ]
         ]
       ]
   ]
