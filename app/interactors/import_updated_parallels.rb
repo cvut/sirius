@@ -1,10 +1,12 @@
+require 'interpipe/pipe'
+require 'interpipe/aliases'
 require 'interactors/fetch_updated_parallels'
 require 'interactors/convert_parallels'
 require 'interactors/sync'
 require 'interactors/convert_tts'
-require 'interpipe/pipe'
 
 class ImportUpdatedParallels < Interpipe::Pipe
+  include Interpipe::Aliases
 
   interactors = [
       FetchUpdatedParallels,
