@@ -3,6 +3,7 @@ require 'interpipe/aliases'
 require 'interactors/fetch_updated_parallels'
 require 'interactors/convert_parallels'
 require 'interactors/sync'
+require 'interactors/convert_rooms'
 require 'interactors/convert_tts'
 
 class ImportUpdatedParallels < Interpipe::Pipe
@@ -11,10 +12,13 @@ class ImportUpdatedParallels < Interpipe::Pipe
   interactors = [
       FetchUpdatedParallels,
       ConvertParallels,
-      split[ Sync[Person], Sync[Course], Sync[Parallel],
+      split[
+        Sync[Person], Sync[Course], Sync[Parallel],
         pipe[
+            ConvertRooms,
+            Sync[Room, matching_attribute: :kos_code],
             ConvertTTS,
-            split[ Sync[Room, matching_attribute: :kos_code], Sync[TimetableSlot] ]
+            Sync[TimetableSlot]
         ]
       ]
   ]
