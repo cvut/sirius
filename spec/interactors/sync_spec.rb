@@ -34,9 +34,9 @@ describe Sync do
   describe '#perform' do
 
     subject(:sync) { described_class[Person]}
+    let(:person) { Fabricate.build(:person) }
 
     it 'inserts new entity' do
-      person = Fabricate.build(:person)
       expect { sync.perform({people: [person]}) }.to change(person, :new?).from(true).to(false)
     end
 
@@ -98,6 +98,16 @@ describe Sync do
         sync.perform({people: [person]})
       end
 
+    end
+
+    it 'puts saved entities into results' do
+      results = sync.perform({people: [person]}).results
+      expect(results).to include people: [person]
+    end
+
+    it 'passes other data along' do
+      results = sync.perform({people: [], foo: :bar}).results
+      expect(results).to include foo: :bar
     end
 
   end

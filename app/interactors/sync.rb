@@ -23,9 +23,10 @@ class Sync
   end
 
   def perform(args)
-    models = args[key_name]
-    raise "Missing key #{key_name} in Sync#perform arguments." unless models
-    models.each do |model|
+    @models = args[key_name]
+    raise "Missing key #{key_name} in Sync#perform arguments." unless @models
+    @rest = args.select { |k,v| k != key_name }
+    @models.each do |model|
       existing_model = find_existing_model(model)
       if existing_model
         existing_model.update_all(model.values)
@@ -33,6 +34,10 @@ class Sync
         model.save
       end
     end
+  end
+
+  def results
+    {key_name => @models}.merge(@rest)
   end
 
   private
