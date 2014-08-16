@@ -3,5 +3,48 @@ require 'interactors/convert_tts'
 
 describe ConvertTTS do
 
+  describe '#perform' do
+
+    context 'with no slots' do
+
+      it 'returns empty result' do
+        slots = {}
+        results = described_class.perform(timetable_slots: slots, rooms: []).results
+        expect(results).to eq({timetable_slots: []})
+      end
+
+    end
+
+    context 'with slots' do
+
+      let(:slot) { double(id: 239019, to_hash: {day: 5, duration: 2, parity: :both, first_hour: 3}, room: double(link_title: 'MK:209')) }
+      let(:room) { Fabricate(:room, kos_code: 'MK:209') }
+      let(:slots) { {'1234' => [slot]} }
+
+      it 'converts timetable slots' do
+        results = described_class.perform(timetable_slots: slots, rooms: []).results
+        converted_slot = results[:timetable_slots].first
+        expect(converted_slot.id).to eq 239019
+        expect(converted_slot.day).to eq :friday
+        expect(converted_slot.duration).to eq 2
+        expect(converted_slot.parity).to eq :both
+        expect(converted_slot.first_hour).to eq 3
+      end
+
+      it 'loads rooms' do
+        results = described_class.perform(timetable_slots: slots, rooms: [room]).results
+        converted_slot = results[:timetable_slots].first
+        expect(converted_slot.room.kos_code).to eq 'MK:209'
+      end
+
+      it 'sets parallel id' do
+        results = described_class.perform(timetable_slots: slots, rooms: [room]).results
+        converted_slot = results[:timetable_slots].first
+        expect(converted_slot.parallel_id).to eq 1234
+      end
+
+    end
+
+  end
 
 end
