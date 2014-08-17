@@ -9,7 +9,7 @@ require 'interactors/convert_tts'
 class ImportUpdatedParallels < Interpipe::Pipe
   include Interpipe::Aliases
 
-  interactors = [
+  @interactors = [
       FetchUpdatedParallels,
       ConvertParallels,
       split[
