@@ -85,7 +85,13 @@ describe API::EventsEndpoints do
   end
 
   describe 'GET /events/:id' do
-    let(:event) { Fabricate(:event) }
+    let(:event) do
+      Fabricate(:event) do
+        teacher_ids ['vomackar']
+        student_ids ['bubenpro']
+        room { Fabricate(:room, kos_code: 'T9:350') }
+      end
+    end
     let(:event_json) do
       {
         id: event.id,
