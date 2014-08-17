@@ -12,6 +12,7 @@ class ConvertRooms
       slots.each { |slot| convert_room(slot.room) }
     end
     @options = options
+    @options[:timetable_slots] = timetable_slots
   end
 
   def results

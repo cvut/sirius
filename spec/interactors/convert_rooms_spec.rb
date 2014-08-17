@@ -19,7 +19,12 @@ describe ConvertRooms do
       expect(room.kos_code).to eq 'MK:209'
     end
 
-    it 'passes through other data' do
+    it 'passes timetable_slots through' do
+      results = convert.perform({timetable_slots: {}, foo: :bar}).results
+      expect(results).to include :timetable_slots
+    end
+
+    it 'passes other data through' do
       results = convert.perform({timetable_slots: {}, foo: :bar}).results
       expect(results).to include foo: :bar
     end
