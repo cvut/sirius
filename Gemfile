@@ -9,7 +9,7 @@ gem 'sequel_pg'
 
 # REST API
 gem 'grape'
-gem 'roar'
+gem 'roar', github: 'apotonick/roar'
 gem 'json'
 
 # Time & Space
