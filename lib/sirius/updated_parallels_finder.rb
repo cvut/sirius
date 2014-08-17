@@ -7,12 +7,22 @@ module Sirius
       @client = client
     end
 
-    def find_updated(since)
-      time_str = format_time_kosapi(since)
-      @client.parallels.where("lastUpdatedDate>=#{time_str},timetableSlot/lastUpdatedDate>=#{time_str}")
+    def find_updated(since, till = nil)
+      query = build_query(since, till)
+      @client.parallels.where(query)
     end
 
     private
+    def build_query(since, till)
+      since_str = format_time_kosapi(since)
+      if till
+        till_str = format_time_kosapi(till)
+        "(lastUpdatedDate>=#{since_str};lastUpdatedDate<=#{till_str}),(timetableSlot/lastUpdatedDate>=#{since_str};timetableSlot/lastUpdatedDate<=#{till_str})"
+      else
+        "lastUpdatedDate>=#{since_str},timetableSlot/lastUpdatedDate>=#{since_str}"
+      end
+    end
+
     def format_time_kosapi(time)
       time.strftime('%Y-%m-%dT%H:%M:%S')
     end
