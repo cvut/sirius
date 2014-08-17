@@ -2,14 +2,20 @@ require 'models/event'
 require 'models/room'
 require 'models/person'
 require 'models/course'
-require 'events_representer'
+require 'event_representer'
 require 'api_helper'
 require 'filter_events'
 module API
   class EventsEndpoints < Grape::API
     helpers ApiHelper
 
-    represent Event, with: EventsRepresenter
+    # represent Event, with: EventsRepresenter
+    helpers do
+      def represent(dataset)
+        events = FilterEvents.perform(events: events, params: params, format: api_format).events
+        events.extend(EventRepresenter.for_collection)
+      end
+    end
 
     resource :events do
 
@@ -19,8 +25,7 @@ module API
         optional :offset, type: Integer
       end
       get do
-        events = ::Event.dataset
-        represent FilterEvents.perform(events: events, params: params, format: api_format).events
+        represent ::Event.dataset
       end
 
       params do
@@ -30,7 +35,7 @@ module API
         desc 'Get an event'
         get do
           event = ::Event.with_pk!(params[:id])
-          represent event
+          event.extend(EventRepresenter)
         end
       end
 
@@ -44,8 +49,7 @@ module API
       route_param :kos_id do
         resource :events do
           get do
-            events = ::Room.with_code!(params[:kos_id]).events_dataset
-            represent FilterEvents.perform(events: events, params: params, format: api_format).events
+            represent ::Room.with_code!(params[:kos_id]).events_dataset
           end
         end
       end
@@ -61,9 +65,7 @@ module API
           get do
             #XXX check if user exists; ugly!
             ::Person.with_pk!(params[:username])
-
-            events = Event.with_person(params[:username])
-            represent FilterEvents.perform(events: events, params: params, format: api_format).events
+            represent Event.with_person(params[:username])
           end
         end
       end
@@ -78,8 +80,7 @@ module API
         resource :events do
           get do
             #XXX join is not necessary here (but let's planner handle this)
-            events = ::Course.with_pk!(params[:course_id]).events_dataset
-            represent FilterEvents.perform(events: events, params: params, format: api_format).events
+            represent ::Course.with_pk!(params[:course_id]).events_dataset
           end
         end
       end

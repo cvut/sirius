@@ -97,7 +97,13 @@ describe API::EventsEndpoints do
         id: event.id,
         name: event.name,
         starts_at: event.starts_at,
-        ends_at: event.ends_at
+        ends_at: event.ends_at,
+        note: event.note,
+        links: {
+          room: event.room.to_s,
+          students: event.student_ids,
+          teachers: event.teacher_ids
+        }
       }.to_json
     end
     context 'JSON-API format' do
@@ -107,10 +113,7 @@ describe API::EventsEndpoints do
       it 'returns OK' do
         expect(status).to eql(200)
       end
-
-      it { should have_json_size(1).at_path('events') }
-
-      it { should be_json_eql(event_json).at_path('events/0') }
+      it { should be_json_eql(event_json).at_path('events') }
 
     end
 
