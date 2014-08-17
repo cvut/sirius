@@ -16,6 +16,13 @@ describe FetchUpdatedParallels do
       fetch.perform
     end
 
+    it 'accepts optional range parameters' do
+      since = double(:since)
+      till = double(:till)
+      expect(finder).to receive(:find_updated).with(since, till)
+      fetch.perform(last_updated_since: since, last_updated_till: till)
+    end
+
   end
 
 end

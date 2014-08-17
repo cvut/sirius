@@ -8,14 +8,18 @@ class FetchUpdatedParallels
     @finder = finder
   end
 
-  def perform
+  def perform(last_updated_since: nil, last_updated_till: nil)
+    last_update_at = last_updated_since || get_last_updated_date
+    @finder.find_updated(last_update_at, last_updated_till)
+  end
+
+  def get_last_updated_date
     last_update_log = UpdateLog.last_partial_update
     if last_update_log
-      last_update_at = last_update_log.created_at
+      last_update_log.created_at
     else
-      last_update_at = Time.at(0) # start of unix epoch
+      Time.at(0) # start of unix epoch
     end
-    @finder.find_updated(last_update_at)
   end
 
 end
