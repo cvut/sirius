@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/apotonick/roar.git
+  revision: f27add78dea9cd1677e5f6bbf69a26b4bf5c3d95
+  specs:
+    roar (0.13.0)
+      representable (~> 2.0.0)
+
+GIT
   remote: git://github.com/cvut/kosapi_client.rb.git
   revision: 896d1ed4eb1860477f7565f108580631c76ed5d9
   specs:
@@ -139,12 +146,10 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    representable (1.8.5)
+    representable (2.0.3)
       multi_json
       nokogiri
       uber (~> 0.0.7)
-    roar (0.12.7)
-      representable (>= 1.6.0)
     role_playing (0.1.4)
       activesupport (>= 3.0.0)
     rspec (3.0.0)
@@ -177,7 +182,7 @@ GEM
     timers (1.1.0)
     tzinfo (1.2.1)
       thread_safe (~> 0.1)
-    uber (0.0.7)
+    uber (0.0.8)
     uri_template (0.7.0)
     vcr (2.9.2)
     virtus (1.0.3)
@@ -214,7 +219,7 @@ DEPENDENCIES
   pry-nav (~> 0.2.4)
   rack-test
   rake
-  roar
+  roar!
   role_playing
   rspec (~> 3.0.0)
   sequel
