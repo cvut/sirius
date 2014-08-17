@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/cvut/kosapi_client.rb.git
-  revision: 896d1ed4eb1860477f7565f108580631c76ed5d9
+  revision: 8287e8ab8b5ac0246cacf10badc05fd0a9ee1b7f
   specs:
     kosapi_client (0.0.1)
       activesupport
@@ -180,7 +180,7 @@ GEM
     thread_safe (0.3.4)
     timecop (0.7.1)
     timers (1.1.0)
-    tzinfo (1.2.1)
+    tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uber (0.0.8)
     uri_template (0.7.0)
