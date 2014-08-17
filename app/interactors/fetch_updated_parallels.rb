@@ -10,7 +10,7 @@ class FetchUpdatedParallels
 
   def perform(last_updated_since: nil, last_updated_till: nil)
     last_update_at = last_updated_since || get_last_updated_date
-    @finder.find_updated(last_update_at, last_updated_till)
+    @results = {kosapi_parallels: @finder.find_updated(last_update_at, last_updated_till) }
   end
 
   def get_last_updated_date

@@ -23,6 +23,12 @@ describe FetchUpdatedParallels do
       fetch.perform(last_updated_since: since, last_updated_till: till)
     end
 
+    it 'stores result in @results' do
+      expect(finder).to receive(:find_updated).and_return(:foo)
+      fetch.perform
+      expect(fetch.results).to include kosapi_parallels: :foo
+    end
+
   end
 
 end
