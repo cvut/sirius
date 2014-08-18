@@ -13,10 +13,12 @@ class EventsRepresenter
   def_delegators :@decorator, :to_json, :as_json, :to_hash
   attr_reader :events
 
-  def initialize(events, **options)
+  def initialize(events, singular: false, **options)
     @options = options
-    @decorator = EventsDecorator.new(self)
     @events = events
+
+    decorator_class = singular ? SingularDecorator : CollectionDecorator
+    @decorator = decorator_class.new(self)
   end
 
   # FIXME: this should be handled on API's level
@@ -25,18 +27,18 @@ class EventsRepresenter
   end
 
   protected
+
   attr_reader :options
-  def links
-    {
-      'posts.author' => {
-        href: "#{options[:base_url]}/authors/{posts.author}", type: 'authors'
-      }
-    }
+
+  class CollectionDecorator < Roar::Decorator
+    include Roar::Representer::JSON
+    # hash :links
+    collection :events, decorator: EventRepresenter
   end
 
-  class EventsDecorator < Roar::Decorator
+  class SingularDecorator < Roar::Decorator
     include Roar::Representer::JSON
-    hash :links
-    collection :events, decorator: EventRepresenter
+    # hash :links
+    property :events, decorator: EventRepresenter
   end
 end
