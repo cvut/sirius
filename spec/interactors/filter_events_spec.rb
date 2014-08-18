@@ -57,4 +57,10 @@ describe FilterEvents do
       expect(db.sqls).to eql ["SELECT count(*) AS count FROM test WHERE ((starts_at >= '#{params[:from]}') AND (ends_at <= '#{params[:to]}')) LIMIT 1"]
     end
   end
+
+  describe '#to_h' do
+    subject { result.to_h }
+
+    it { should include(:events, :count, :offset => params[:offset], :limit => params[:limit]) }
+  end
 end

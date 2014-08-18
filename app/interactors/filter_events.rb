@@ -36,6 +36,15 @@ class FilterEvents
     @count ||= @count_query.count
   end
 
+  def to_h
+    {
+      events: events,
+      count: count,
+      offset: offset,
+      limit: limit
+    }
+  end
+
   private
   def paginate?(format)
     format != :ical
