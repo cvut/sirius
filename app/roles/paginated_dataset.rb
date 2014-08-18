@@ -11,9 +11,4 @@ class PaginatedDataset < RolePlaying::Role
     self.limit(limit).offset(offset)
   end
 
-  # @todo This should send #unlimited first,
-  #   also it acutally executes a `COUNT` query
-  def total
-    self.count
-  end
 end
