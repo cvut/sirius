@@ -7,7 +7,7 @@ describe PaginatedDataset do
 
   describe '#paginate' do
     it 'returns an instance of self' do
-      expect(role.paginate).to be_a(described_class)
+      expect(role.paginate).to be_a(Sequel::Dataset)
     end
 
     context 'with default parameters' do
