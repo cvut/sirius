@@ -7,9 +7,9 @@ module Sirius
       @client = client
     end
 
-    def find_updated(since, till = nil)
+    def find_updated(since, till = nil, page_size: 100)
       query = build_query(since, till)
-      @client.parallels.where(query).limit(100)
+      @client.parallels.where(query).limit(page_size)
     end
 
     private
