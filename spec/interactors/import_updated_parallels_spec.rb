@@ -10,7 +10,7 @@ describe ImportUpdatedParallels, :integration, :vcr do
 
     it 'imports parallels' do
       expect do
-        subject.perform(last_updated_since: since, last_updated_till: till)
+        subject.perform(last_updated_since: since, last_updated_till: till, faculty: 18000)
       end.to change(Parallel, :count).from(0)
     end
 
