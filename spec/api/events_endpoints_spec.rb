@@ -46,7 +46,16 @@ RSpec.shared_examples 'events endpoint' do
 
   context 'with pagination' do
     before { get "#{path}?limit=1&offset=1" }
+    let(:meta) do
+      {
+        limit: 1,
+        offset: 1,
+        count: events_cnt
+      }
+    end
     it { should have_json_size(1).at_path('events') }
+
+    it { should be_json_eql(meta.to_json).at_path('meta') }
 
     context 'with invalid value' do
       before { get "#{path}?offset=asdasd" }
