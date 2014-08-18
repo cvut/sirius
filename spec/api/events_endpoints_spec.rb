@@ -47,11 +47,32 @@ RSpec.shared_examples 'events endpoint' do
   context 'with pagination' do
     before { get "#{path}?limit=1&offset=1" }
     it { should have_json_size(1).at_path('events') }
+
+    context 'with invalid value' do
+      before { get "#{path}?offset=asdasd" }
+      it 'returns an error' do
+        expect(response.status).to eql 400
+      end
+
+      context 'for invalid integer'
+      it 'returns an error' do
+        pending 'needs a custom validator'
+        get "#{path}?limit=-1"
+        expect(response.status).to eql 400
+      end
+    end
   end
 
   context 'with date filtering' do
     before { get "#{path}?from=2014-04-02T13:50&to=2014-04-03T00:00" }
     it { should have_json_size(1).at_path('events') }
+
+    context 'with invalid date' do
+      before { get "#{path}?from=asdasd" }
+      it 'returns an error' do
+        expect(response.status).to eql 400
+      end
+    end
   end
 
   context 'as an icalendar' do
