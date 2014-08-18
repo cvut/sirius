@@ -24,7 +24,7 @@ describe EventsRepresenter do
     let(:size) { 40 }
     let(:meta) do
       {
-        count: 40,
+        count: size,
         offset: 0,
         limit: 20
       }
@@ -32,7 +32,7 @@ describe EventsRepresenter do
     let(:options) { meta }
     subject(:json) { representer.to_json }
 
-    it { should have_json_size(3).at_path('events') }
+    it { should have_json_size(size).at_path('events') }
 
     it { should be_json_eql(meta.to_json).at_path('meta') }
   end

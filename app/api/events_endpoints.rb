@@ -12,6 +12,10 @@ module API
     # represent Event, with: EventsRepresenter
     helpers do
       def represent(dataset)
+        result = FilterEvents.perform(events: dataset, params: params, format: api_format).to_h
+        EventsRepresenter.new(result.delete(:events), result)
+      end
+
       params :pagination do
         optional :limit, type: Integer
         optional :offset, type: Integer
