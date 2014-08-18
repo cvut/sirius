@@ -30,9 +30,17 @@ class EventsRepresenter
 
   attr_reader :options
 
+  def meta
+    {
+      count: options[:count],
+      offset: options[:offset],
+      limit: options[:limit],
+    }
+  end
+
   class CollectionDecorator < Roar::Decorator
     include Roar::Representer::JSON
-    # hash :links
+    hash :meta
     collection :events, decorator: EventRepresenter
   end
 
