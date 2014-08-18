@@ -2,11 +2,9 @@ require 'spec_helper'
 require 'filter_events'
 
 describe FilterEvents do
-  let(:dataset) {  }
+  let(:db) { Sequel.mock(:fetch=>{:count=>120} ) }
+  let(:dataset) { db.from(:test).columns(:count) }
 
-  let(:dataset) do
-    Sequel.mock.dataset.from(:test)
-  end
   let(:interactor) { described_class }
 
   let(:params) do
@@ -19,23 +17,44 @@ describe FilterEvents do
   end
 
   let(:format) { :jsonapi }
-  let(:result) { interactor.perform(events: dataset, params: params, format: format).events }
-  let(:opts) { result.opts }
+  subject(:result) { interactor.perform(events: dataset, params: params, format: format) }
 
-  it 'returns a new dataset' do
-    expect(result).to be_a(Sequel::Dataset)
+  describe '#events' do
+    subject { result.events }
+    it { should be_a(Sequel::Dataset) }
   end
 
+
   context 'for JSON API format' do
-    it 'paginates records' do
-      expect(opts[:limit]).to eql(params[:limit])
+    describe 'paginates records' do
+      it 'sets limit' do
+        expect(result.limit).to eql(params[:limit])
+      end
+
+      it 'sets offset' do
+        expect(result.offset).to eql(params[:offset])
+      end
     end
   end
 
   context 'for ICal format' do
     let(:format) { :ical }
     it 'does not paginate records' do
-      expect(opts[:limit]).to be_nil
+      expect(result.limit).to be_nil
+    end
+  end
+
+  describe '#count' do
+
+    it 'executes query on call' do
+      expect_any_instance_of(Sequel::Dataset).to receive(:count).once
+      result.count
+    end
+
+    # FIXME: not really a best approach
+    it 'is limited by date but not by pagination' do
+      result.count
+      expect(db.sqls).to eql ["SELECT count(*) AS count FROM test WHERE ((starts_at >= '#{params[:from]}') AND (ends_at <= '#{params[:to]}')) LIMIT 1"]
     end
   end
 end
