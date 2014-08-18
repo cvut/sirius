@@ -2,7 +2,7 @@ require 'models/event'
 require 'models/room'
 require 'models/person'
 require 'models/course'
-require 'event_representer'
+require 'events_representer'
 require 'api_helper'
 require 'filter_events'
 module API
@@ -12,8 +12,8 @@ module API
     # represent Event, with: EventsRepresenter
     helpers do
       def represent(dataset)
-        events = FilterEvents.perform(events: events, params: params, format: api_format).events
-        events.extend(EventRepresenter.for_collection)
+        events = FilterEvents.perform(events: dataset, params: params, format: api_format).events
+        EventsRepresenter.new(events)
       end
     end
 
@@ -34,8 +34,7 @@ module API
       route_param :id do
         desc 'Get an event'
         get do
-          event = ::Event.with_pk!(params[:id])
-          event.extend(EventRepresenter)
+          EventsRepresenter.new ::Event.with_pk!(params[:id]), singular: true
         end
       end
 

@@ -90,6 +90,7 @@ describe API::EventsEndpoints do
         teacher_ids ['vomackar']
         student_ids ['bubenpro']
         room { Fabricate(:room, kos_code: 'T9:350') }
+        course { Fabricate(:course) }
       end
     end
     let(:event_json) do
@@ -101,6 +102,7 @@ describe API::EventsEndpoints do
         note: event.note,
         links: {
           room: event.room.to_s,
+          course: event.course_id,
           students: event.student_ids,
           teachers: event.teacher_ids
         }
