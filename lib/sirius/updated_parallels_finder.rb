@@ -9,7 +9,7 @@ module Sirius
 
     def find_updated(since, till = nil)
       query = build_query(since, till)
-      @client.parallels.where(query)
+      @client.parallels.where(query).limit(100)
     end
 
     private
