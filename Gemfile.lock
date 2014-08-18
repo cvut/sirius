@@ -180,7 +180,7 @@ GEM
     thread_safe (0.3.4)
     timecop (0.7.1)
     timers (1.1.0)
-    tzinfo (1.2.2)
+    tzinfo (1.2.1)
       thread_safe (~> 0.1)
     uber (0.0.8)
     uri_template (0.7.0)
