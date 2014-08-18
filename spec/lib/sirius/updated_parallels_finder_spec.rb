@@ -8,13 +8,14 @@ describe Sirius::UpdatedParallelsFinder, :vcr do
   subject(:finder) { Sirius::UpdatedParallelsFinder.new(client: create_kosapi_client) }
 
   it 'finds parallels updated since' do
-    parallels = finder.find_updated(since)
+    parallels = finder.find_updated(since, page_size: 10)
     parallels.auto_paginate = false
     expect(parallels.any? { |par| par.updated > since }).to be_truthy
   end
 
   it 'finds parallels updated between' do
-    parallels = finder.find_updated(since, till)
+    parallels = finder.find_updated(since, till, page_size: 10)
+    parallels.auto_paginate = false
     expect(parallels.any? { |par| par.updated > since && par.updated < till }).to be_truthy
   end
 

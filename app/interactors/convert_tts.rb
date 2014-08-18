@@ -28,9 +28,9 @@ class ConvertTTS
   end
 
   def convert_slot(slot, parallel_id)
-    room_code = slot.room.link_title
+    room_code = slot.room.link_title if slot.room
     slot_hash = slot.to_hash
-    slot_hash.select { |key,_| DB_KEYS.include? key }
+    slot_hash = slot_hash.select { |key,_| DB_KEYS.include? key }
     TimetableSlot.new(slot_hash) do |s|
       s.id = slot.id
       s.parallel_id = parallel_id
