@@ -12,8 +12,13 @@ module API
     # represent Event, with: EventsRepresenter
     helpers do
       def represent(dataset)
-        events = FilterEvents.perform(events: dataset, params: params, format: api_format).events
-        EventsRepresenter.new(events)
+      params :pagination do
+        optional :limit, type: Integer
+        optional :offset, type: Integer
+      end
+      params :date_filter do
+        optional :from, type: DateTime
+        optional :to, type: DateTime
       end
     end
 
@@ -21,8 +26,8 @@ module API
 
       desc 'Get all events'
       params do
-        optional :limit, type: Integer
-        optional :offset, type: Integer
+        use :pagination
+        use :date_filter
       end
       get do
         represent ::Event.dataset
@@ -44,6 +49,8 @@ module API
     segment :rooms do
       params do
         requires :kos_id, type: String, desc: 'Common room identification used by KOS'
+        use :pagination
+        use :date_filter
       end
       route_param :kos_id do
         resource :events do
@@ -58,6 +65,8 @@ module API
     segment :people do
       params do
         requires :username, type: String, regexp: /\A[a-z0-9]{8}\z/i, desc: '8-char unique username'
+        use :pagination
+        use :date_filter
       end
       route_param :username do
         resource :events do
@@ -74,6 +83,8 @@ module API
     segment :courses do
       params do
         requires :course_id, type: String, desc: 'Course identification code (faculty-specific)'
+        use :pagination
+        use :date_filter
       end
       route_param :course_id do
         resource :events do
