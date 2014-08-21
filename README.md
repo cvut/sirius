@@ -10,7 +10,7 @@
 
 ## Environment variables
 
-Variables put into `.env` file will be automatically loaded.
+Variables put into `.env` file will be automatically loaded by Foreman.
 
 You will need a KOSapi OAuth credentials from the [Apps Manager](https://auth.fit.cvut.cz/manager/).
 
