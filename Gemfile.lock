@@ -241,7 +241,6 @@ DEPENDENCIES
   codeclimate-test-reporter
   committee
   database_cleaner
-  dotenv
   fabrication
   foreman
   grape

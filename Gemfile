@@ -53,7 +53,6 @@ group :development, :test do
   gem 'pry-nav', '~> 0.2.4', require: false
   gem 'pry-byebug', require: false
   gem 'awesome_print'
-  gem 'dotenv'
 end
 
 group :documentation do
