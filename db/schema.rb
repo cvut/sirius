@@ -57,6 +57,7 @@ Sequel.migration do
       column :created_at, "timestamp without time zone"
       column :updated_at, "timestamp without time zone"
       column :teacher_ids, "text[]"
+      column :student_ids, "text[]"
     end
     
     create_table(:timetable_slots) do
@@ -115,5 +116,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140718175201_events_extension.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140724005656_create_update_log.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140807132353_add_course_id_to_events.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20140821125210_add_student_ids_to_parallels.rb')"
   end
 end
