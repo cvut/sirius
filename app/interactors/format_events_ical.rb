@@ -36,11 +36,19 @@ class FormatEventsIcal
   # Event to Icalendar::Event mapping.
   role :IcalEvent do
 
+    def ical_summary
+      # FIXME: Add localized #{event_type}
+      "#{course_id} #{sequence_number}. (#{parallel})"
+    end
+
+    def ical_description
+    end
+
     # Maps {Event} attributes to {Icalendar::Event} object.
     # @return [Icalendar::Event]
     def to_ical
       Icalendar::Event.new.tap do |e|
-        e.summary = name
+        e.summary = name || ical_summary
         e.description = note
         e.dtstart = starts_at.strftime("%Y%m%dT%H%M%S")
         e.dtend = ends_at.strftime("%Y%m%dT%H%M%S")
