@@ -2,16 +2,17 @@ module Initializer
   def self.run
     require_config
     require_initializers
-    add_lib_path
-    add_app_paths
+    add_paths
   end
 
   def self.require_config
     require_relative "../config/config"
   end
 
-  def self.add_app_paths
+  def self.add_paths
+    add_load_paths! Config.root
     add_load_paths! %w(
+      lib
       app
       app/api
       app/models
@@ -19,12 +20,6 @@ module Initializer
       app/helpers
       app/representers
       app/roles
-    )
-  end
-
-  def self.add_lib_path
-    add_load_paths! %w(
-      lib
     )
   end
 
