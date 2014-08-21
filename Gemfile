@@ -8,6 +8,7 @@ gem 'sequel'
 gem 'sequel_pg'
 
 # REST API
+gem 'pliny', '~> 0.2.1'
 gem 'grape'
 gem 'roar', github: 'apotonick/roar'
 gem 'json'
