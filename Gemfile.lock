@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/cvut/kosapi_client.rb.git
-  revision: bf15458ecd98473031ec622433fa58147f0183dd
+  revision: dc331d15d60648d667585d48426f94ebe60bbfa8
   specs:
     kosapi_client (0.0.1)
       activesupport
