@@ -1,0 +1,4 @@
+ShowCopNames: true
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
