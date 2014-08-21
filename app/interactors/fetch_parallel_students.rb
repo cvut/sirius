@@ -10,7 +10,7 @@ class FetchParallelStudents
 
   def perform(parallels:, **options)
     students = parallels.map do |parallel|
-      [parallel.id, fetch_students(parallel)]
+      [parallel, fetch_students(parallel)]
     end
     @students = Hash[students]
   end

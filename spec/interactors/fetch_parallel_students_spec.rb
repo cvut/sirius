@@ -15,7 +15,7 @@ describe FetchParallelStudents do
       fetch = FetchParallelStudents.new
       allow(fetch).to receive(:fetch_students).and_return([student])
       fetch.perform(parallels: [parallel])
-      expect(fetch.results[:students]).to eq({42 => [student]})
+      expect(fetch.results[:students]).to eq({parallel => [student]})
     end
 
     it 'fetches students from KOSapi' do
