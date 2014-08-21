@@ -1,7 +1,6 @@
-require File.join(File.dirname(__FILE__), 'init')
+require "bundler"
+Bundler.require
+require_relative "lib/initializer"
+require "config/routes"
 
-use Rack::CommonLogger, $logger
-use Middleware::Logger, $logger
-use Middleware::DBConnectionSweeper
-
-run API::Base
+run Routes
