@@ -21,6 +21,10 @@ class Parallel < Sequel::Model
     create_events(event_periods)
   end
 
+  def to_s
+    code.to_s
+  end
+
   private
   def teaching_times(time_converter)
     timetable_slots.map do |slot|
