@@ -1,20 +1,20 @@
-RACK_ENV = ENV['RACK_ENV'] || 'test'
+ENV['RACK_ENV'] = 'test'
+
+require "bundler"
+Bundler.require(:default, :test)
 
 if ENV['CODECLIMATE_REPO_TOKEN']
   require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
 end
 
-# FIXME: This should go to boot, probably with load_path
-# and APP_ROOT constant
-require File.expand_path('../config/boot', File.dirname(__FILE__))
+root = File.expand_path("../../", __FILE__)
+ENV.update(Pliny::Utils.parse_env("#{root}/.env.test"))
 
-require 'fabrication'
-require 'database_cleaner'
+require_relative "../lib/initializer"
 
-# Requires supporting ruby files with custom matchers and macros, etc,
-# in spec/support/ and its subdirectories.
-Dir['spec/support/**/*.rb'].sort.each { |f| require f }
+# pull in test initializers
+Pliny::Utils.require_glob("#{Config.root}/spec/support/**/*.rb")
 
 RSpec.configure do |config|
   config.include KOSapiClientConfigurator
@@ -31,19 +31,12 @@ RSpec.configure do |config|
       example.run
     end
   end
+
+  config.run_all_when_everything_filtered = true
+  config.filter_run :focus
+
+  config.order = 'random'
+
 end
 
-# VCR config
-require 'vcr'
-
-VCR.configure do |c|
-  c.configure_rspec_metadata!
-  c.hook_into :faraday
-  c.default_cassette_options = {
-      record: ENV['TRAVIS'] ? :none : :once
-  }
-  c.cassette_library_dir = 'spec/cassettes'
-end
-
-VCR.turn_off! ignore_cassettes: true if ENV['TRAVIS']
 
