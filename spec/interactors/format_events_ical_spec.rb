@@ -5,10 +5,12 @@ require 'models/event'
 
 describe FormatEventsIcal do
 
-  let(:event) { Fabricate.build(:event, name: nil) }
+  let(:event) { Fabricate.build(:event) }
   let(:interactor) { described_class.perform(events: event) }
   let(:result) { interactor.ical }
   let(:calendar) { Icalendar.parse(result).first } # Parser returns array of calendars
+
+  before { allow(event).to receive_messages(parallel: nil, name: nil, note: nil) }
 
   it 'formats an event to a string' do
     expect(result).to be_a(String)
@@ -27,18 +29,42 @@ describe FormatEventsIcal do
     end
 
     describe '#summary' do
-      subject { icevent.summary }
-      context 'for an event with an explicit name' do
+      subject(:summary) { icevent.summary }
+      context 'with an explicit name' do
         before { allow(event).to receive(:name).and_return('Groundhog day') }
-        it { should eql 'Groundhog day' }
+        it 'uses the name as a summary' do
+          expect(summary).to eql 'Groundhog day'
+        end
       end
 
       context 'without an explicit name' do
         before do
           allow(event).to receive_messages(sequence_number: 3, course_id: 'MI-RUB', parallel: '101', event_type: 'whatevs')
         end
-        it { should eql 'MI-RUB 3. (101)' }
+        it 'generates the name' do
+          should eql 'MI-RUB 3. (101)'
+        end
         pending 'event_type + locales'
+      end
+    end
+
+    describe '#description' do
+      subject(:description) { icevent.description }
+      context 'with an explicit note' do
+        before { allow(event).to receive(:note).and_return('Stomp the groundhogs!') }
+        it 'uses the note as a description' do
+          expect(description).to eql 'Stomp the groundhogs!'
+        end
+      end
+      context 'without an explicit note' do
+        let(:course) { double('Course', name: {'cs' => 'Programování v Ruby', 'en' => 'Programming in Ruby'}) }
+        before do
+          allow(event).to receive_messages(course: course, teacher_ids: ['vomackar'])
+        end
+
+        it 'generates the description' do
+          expect(description).to eql 'Programování v Ruby'
+        end
       end
     end
   end

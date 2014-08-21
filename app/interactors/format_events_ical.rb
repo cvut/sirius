@@ -42,6 +42,12 @@ class FormatEventsIcal
     end
 
     def ical_description
+      # Programování v Ruby (prof. Petr Skočdopole PhD., Ing. Karel Vomáčka)
+      # TODO: remove hardcoded locale, map usernames
+      # XXX: I don't like this chaining in particular; could we get some role or helper method?
+      "#{course.name['cs']}"
+    rescue
+      nil
     end
 
     # Maps {Event} attributes to {Icalendar::Event} object.
@@ -49,7 +55,7 @@ class FormatEventsIcal
     def to_ical
       Icalendar::Event.new.tap do |e|
         e.summary = name || ical_summary
-        e.description = note
+        e.description = note || ical_description
         e.dtstart = starts_at.strftime("%Y%m%dT%H%M%S")
         e.dtend = ends_at.strftime("%Y%m%dT%H%M%S")
         e.location = room.to_s
