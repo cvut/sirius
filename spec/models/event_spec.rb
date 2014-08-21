@@ -33,4 +33,11 @@ describe Event do
     end
   end
 
+  describe '#sequence_number' do
+    before { event.relative_sequence_number = 42 }
+    it 'aliases relative_sequence_number' do
+      expect(event.sequence_number).to eql 42
+    end
+  end
+
 end

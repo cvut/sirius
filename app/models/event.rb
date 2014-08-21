@@ -5,6 +5,8 @@ class Event < Sequel::Model
   many_to_one :room
   many_to_one :course
 
+  alias :sequence_number :relative_sequence_number
+
   def self.with_person(username)
     teacher_op = Sequel.pg_array(:teacher_ids, :varchar)
     student_op = Sequel.pg_array(:student_ids, :varchar)
