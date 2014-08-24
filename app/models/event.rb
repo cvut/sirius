@@ -1,4 +1,5 @@
 require 'period'
+require 'parallel'
 
 class Event < Sequel::Model
 
