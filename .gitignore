@@ -40,6 +40,9 @@
 ## dotenv config
 /.env
 
+## Dokkufy config
+/.dokkurc
+
 ## Documentation cache and generated files:
 /.yardoc/
 /_yardoc/
