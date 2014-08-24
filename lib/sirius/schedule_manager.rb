@@ -1,22 +1,27 @@
 require 'sirius/semester'
 require 'models/parallel'
 require 'roles/parallel_from_kosapi'
+require 'roles/planned_timetable_slot'
 
 module Sirius
   class ScheduleManager
 
-    def initialize(client: KOSapiClient.client)
+    DEFAULT_TIME_CONVERTER = TimeConverter.new(first_hour: Time.parse('7:30'), hour_length: 45, break_length: 15, break_after: 2)
+    DEFAULT_CALENDAR_PLANNER = EventPlanner.new(teaching_period: Period.parse('22.9.2014','19.12.2014'), first_week_parity: :even)
+
+    def initialize(client: KOSapiClient.client, time_converter: DEFAULT_TIME_CONVERTER, calendar_planner: DEFAULT_CALENDAR_PLANNER)
       @client = client
+      @time_converter = time_converter
+      @calendar_planner = calendar_planner
     end
 
     def plan_stored_parallels
-      semesters = load_semesters
-      semesters.map do |sem|
-        parallels = Parallel.all
-        events = sem.plan_parallels(parallels)
-        events.each { |event| event.save }
+      TimetableSlot.each do |sl|
+        PlannedTimetableSlot.new(sl, @time_converter, @calendar_planner).tap do |slot|
+          events = slot.generate_events
+          events.each(&:save)
+        end
       end
-
     end
 
     def fetch_and_store_parallels(parallels_limit = 20)
