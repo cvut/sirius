@@ -1,5 +1,6 @@
 require 'update_log'
 require 'interpipe/interactor'
+require 'sirius/updated_parallels_finder'
 
 class FetchUpdatedParallels
   include Interpipe::Interactor
