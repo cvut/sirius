@@ -14,5 +14,7 @@ end
 task :default => :spec
 
 Rake::Task['db:migrate'].enhance do
-  Rake::Task['db:schema:dump'].invoke
+  if ENV['RACK_ENV'] == 'development'
+    Rake::Task['db:schema:dump'].invoke
+  end
 end
