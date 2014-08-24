@@ -20,18 +20,19 @@ class UpdateParallelStudents
   end
 
   def convert_student(student)
-    @students[student.username] ||= Person.new do |p|
-      if student.username
-        p.id = student.username
-      else
-        p.id = student.personal_number
-      end
+    student_id = get_student_id(student)
+    @students[student_id] ||= Person.new do |p|
+      p.id = student_id
       p.full_name = student.full_name
     end
   end
 
   def results
     { people: @students.values }
+  end
+
+  def get_student_id(student)
+    student.username || student.personal_number
   end
 
 end
