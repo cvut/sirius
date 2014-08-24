@@ -30,6 +30,7 @@ class Sync
       existing_model = find_existing_model(model)
       if existing_model
         existing_model.update_all(model.values)
+        model.id ||= existing_model.id
       else
         model.save
       end
