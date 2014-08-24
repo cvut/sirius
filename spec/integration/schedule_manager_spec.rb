@@ -6,8 +6,9 @@ describe Sirius::ScheduleManager, :vcr do
   subject(:manager) { Sirius::ScheduleManager.new(client: create_kosapi_client) }
 
   it 'fetches parallels from KOSapi' do
-    manager.fetch_and_store_parallels
-    expect(Parallel.count).to be > 0
+    expect {
+      manager.fetch_and_store_parallels(fetch_all: false)
+    }.to change(Parallel, :count).from(0)
   end
 
 

@@ -25,15 +25,9 @@ module Sirius
       end
     end
 
-    def fetch_and_store_parallels(parallels_limit = 20)
-      total_parallels = 0
-      parallels = fetch_parallels(0, 20, 'B132')
+    def fetch_and_store_parallels(fetch_all: true)
       DB.transaction do
-        parallels.take_while do |parallel|
-          ParallelFromKOSapi.from_kosapi(parallel)
-          total_parallels += 1
-          total_parallels < parallels_limit
-        end
+        ImportUpdatedParallels.perform(faculty: 18000, semester: 'B141', fetch_all: fetch_all)
       end
     end
 
