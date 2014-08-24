@@ -16,10 +16,11 @@ module Sirius
     end
 
     def plan_stored_parallels
+      sync = Sync[Event, matching_attributes: [:timetable_slot_id, :absolute_sequence_number]]
       TimetableSlot.each do |sl|
         PlannedTimetableSlot.new(sl, @time_converter, @calendar_planner).tap do |slot|
           events = slot.generate_events
-          events.each(&:save)
+          sync.perform(events: events)
         end
       end
     end

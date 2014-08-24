@@ -5,12 +5,19 @@ describe Sirius::ScheduleManager do
 
   subject(:manager) { Sirius::ScheduleManager.new }
 
-  it 'plans all parallels stored in DB' do
+  it 'plans all slots stored in DB' do
     Fabricate(:timetable_slot)
-    manager.plan_stored_parallels
-    # expect(Events.all).to
+    expect {
+      manager.plan_stored_parallels
+    }.to change(Event, :count).from(0)
   end
 
-
+  it 'synchronizes already generated events' do
+    Fabricate(:timetable_slot)
+    manager.plan_stored_parallels
+    expect {
+      manager.plan_stored_parallels
+    }.not_to change(Event, :count)
+  end
 
 end
