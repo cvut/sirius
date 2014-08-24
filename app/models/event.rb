@@ -4,6 +4,8 @@ class Event < Sequel::Model
 
   many_to_one :room
   many_to_one :course
+  many_to_one :parallel
+  many_to_one :timetable_slot
 
   alias :sequence_number :relative_sequence_number
 
