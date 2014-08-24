@@ -51,7 +51,7 @@ class Sync
       hash
     end
 
-    model_class.find(lookup_hash)
+    model_class.find(lookup_hash) unless lookup_hash.empty?
   end
 
   def key_name
