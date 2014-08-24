@@ -16,7 +16,7 @@ class ImportUpdatedParallels < Interpipe::Pipe
         Sync[Person], Sync[Course], Sync[Parallel],
         pipe[
             ConvertRooms,
-            Sync[Room, matching_attribute: :kos_code],
+            Sync[Room, matching_attributes: [:kos_code]],
             ConvertTTS,
             Sync[TimetableSlot]
         ]

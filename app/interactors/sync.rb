@@ -6,13 +6,13 @@ class Sync
 
   class << self
 
-    attr_accessor :model_class, :key_name, :matching_attribute
+    attr_accessor :model_class, :key_name, :matching_attributes
 
-    def [](model_class, key_name: nil, matching_attribute: :id)
+    def [](model_class, key_name: nil, matching_attributes: [:id])
       cls = Class.new(self)
       cls.model_class = model_class
       cls.key_name = generate_key_name(model_class, key_name)
-      cls.matching_attribute = matching_attribute
+      cls.matching_attributes = matching_attributes
       cls
     end
 
@@ -43,8 +43,14 @@ class Sync
   private
 
   def find_existing_model(model)
-    lookup_value = model.send(matching_attribute)
-    model_class.find(matching_attribute => lookup_value) if lookup_value
+    lookup_hash = {}
+    matching_attributes.inject(lookup_hash) do |hash, attr|
+      lookup_value = model.send(attr)
+      hash[attr] = lookup_value if lookup_value
+      hash
+    end
+
+    model_class.find(lookup_hash)
   end
 
   def key_name
@@ -55,8 +61,8 @@ class Sync
     self.class.model_class
   end
 
-  def matching_attribute
-    self.class.matching_attribute
+  def matching_attributes
+    self.class.matching_attributes
   end
 
 end

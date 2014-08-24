@@ -21,8 +21,8 @@ describe Sync do
     end
 
     it 'can set key_name attribute' do
-      cls = described_class[String, matching_attribute: :foo]
-      expect(cls.matching_attribute).to eq :foo
+      cls = described_class[String, matching_attributes: [:foo]]
+      expect(cls.matching_attributes).to eq [:foo]
     end
 
     it 'plularizes model_class as default key_name' do
@@ -86,9 +86,9 @@ describe Sync do
 
     end
 
-    context 'with custom matching_attribute' do
+    context 'with custom matching_attributes' do
 
-      subject(:sync) { described_class[Person, matching_attribute: :full_name] }
+      subject(:sync) { described_class[Person, matching_attributes: [:full_name]] }
       let!(:existing_person) { Fabricate(:person, full_name: 'Pete') }
       let(:person) { Fabricate.build(:person, id: existing_person.id, full_name: 'Pete') }
 
