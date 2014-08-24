@@ -29,8 +29,7 @@ class PlannedTimetableSlot < RolePlaying::Role
   end
 
   def create_events(event_periods)
-    factory = Sirius::EventFactory.new
-    event_periods.map { |period| factory.build_event(period) }
+    Sirius::EventFactory.new(self).build_events(event_periods)
   end
 
 end
