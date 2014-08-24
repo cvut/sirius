@@ -1,4 +1,8 @@
-DB = Sequel.connect(Config.database_url, max_connections: Config.db_pool)
+# XXX: postgresql plugin passes the 'postgresql:' URL,
+# while Sequel expects 'postgres' adapter
+db_url = Config.database_url.sub(/\Apostgresql:/, 'postgres:')
+
+DB = Sequel.connect(db_url, max_connections: Config.db_pool)
 
 Sequel::Model.plugin :timestamps, update_on_create: true
 DB.extension :pg_hstore
