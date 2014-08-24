@@ -15,6 +15,8 @@ module Sirius
       @client = client
       @time_converter = time_converter
       @calendar_planner = calendar_planner
+      @semester = 'B141'
+      @faculty = 18000
     end
 
     def plan_stored_parallels
@@ -29,7 +31,7 @@ module Sirius
 
     def fetch_and_store_parallels(fetch_all: true)
       DB.transaction do
-        ImportUpdatedParallels.perform(faculty: 18000, semester: 'B141', fetch_all: fetch_all)
+        ImportUpdatedParallels.perform(faculty: @faculty, semester: @semester, fetch_all: fetch_all)
       end
     end
 
