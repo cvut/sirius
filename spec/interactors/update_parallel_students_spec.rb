@@ -31,6 +31,16 @@ describe UpdateParallelStudents do
       expect(converted_student.full_name).to eq 'Mr. Foo Bar'
     end
 
+    context 'with students without username' do
+      let(:kosapi_student) { double(:kosapi_student, username: nil, personal_number: 1234, full_name: 'Mr. Foo Bar') }
+
+      it 'uses students personal number as id' do
+        results = update.perform(students: {parallel => [kosapi_student]}).results
+        converted_student = results[:people].first
+        expect(converted_student.id).to eq '1234'
+      end
+    end
+
   end
 
 end
