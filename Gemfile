@@ -34,6 +34,10 @@ group :development do
   gem 'guard-shotgun', github: 'jnv/guard-shotgun', require: false
   gem 'guard-rspec', require: false
   gem 'foreman'
+
+  gem 'kramdown', require: false
+  gem 'guard-livereload', require: false
+  gem 'guard-yard', require: false
 end
 
 group :test do
@@ -55,9 +59,4 @@ group :development, :test do
   gem 'awesome_print'
 end
 
-group :documentation do
-  gem 'kramdown'
-  gem 'guard-livereload'
-  gem 'guard-yard'
-end
 
