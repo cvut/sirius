@@ -29,20 +29,16 @@ module Sirius
       end
     end
 
-    def fetch_and_store_parallels(fetch_all: true)
+    def import_parallels(fetch_all: true)
       DB.transaction do
         ImportUpdatedParallels.perform(faculty: @faculty, semester: @semester, fetch_all: fetch_all)
       end
     end
 
-
-    private
-    def load_semesters
-      [Semester.new]
-    end
-
-    def fetch_parallels(offset, limit, semester, faculty = 18000)
-      @client.parallels.where('course.faculty' => faculty, semester: semester).offset(offset).limit(limit)
+    def import_students
+      DB.transaction do
+        ImportStudents.perform
+      end
     end
 
   end
