@@ -7,13 +7,13 @@ module Sirius
       @client = client
     end
 
-    def find_updated(since, till = nil, page_size: 100, faculty: nil)
-      query = build_query(since, till, faculty)
+    def find_updated(since, till = nil, page_size: 100, faculty: nil, semester: nil)
+      query = build_query(since, till, faculty, semester)
       @client.parallels.where(query).limit(page_size)
     end
 
     private
-    def build_query(since, till, faculty)
+    def build_query(since, till, faculty, semester)
       since_str = format_time_kosapi(since)
       if till
         till_str = format_time_kosapi(till)
@@ -22,6 +22,7 @@ module Sirius
         query = "(lastUpdatedDate>=#{since_str},timetableSlot/lastUpdatedDate>=#{since_str})"
       end
       query += ";(course.faculty=#{faculty})" if faculty
+      query += ";(semester=#{semester})" if semester
       query
     end
 
