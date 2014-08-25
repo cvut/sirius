@@ -3,6 +3,8 @@ require 'models/parallel'
 require 'roles/planned_timetable_slot'
 require 'interactors/import_updated_parallels'
 require 'interactors/import_students'
+require 'models/schedule_exception'
+require 'roles/applied_schedule_exception'
 
 module Sirius
   class ScheduleManager
@@ -20,9 +22,11 @@ module Sirius
 
     def plan_stored_parallels
       sync = Sync[Event, matching_attributes: [:timetable_slot_id, :absolute_sequence_number]]
+      exceptions = ScheduleException.all.map { |e| AppliedScheduleException.new(e) }
       TimetableSlot.each do |sl|
         PlannedTimetableSlot.new(sl, @time_converter, @calendar_planner).tap do |slot|
           events = slot.generate_events
+          events.each {|evt| exceptions.each {|ex| ex.apply(evt) if ex.affects?(evt) } }
           sync.perform(events: events)
           slot.clear_extra_events(events)
         end
