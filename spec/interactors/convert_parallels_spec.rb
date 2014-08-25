@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'interactors/convert_parallels'
-require 'roles/parallel_from_kosapi'
 
 describe ConvertParallels do
 

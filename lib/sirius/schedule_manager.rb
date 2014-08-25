@@ -1,6 +1,5 @@
 require 'sirius/semester'
 require 'models/parallel'
-require 'roles/parallel_from_kosapi'
 require 'roles/planned_timetable_slot'
 require 'interactors/import_updated_parallels'
 require 'interactors/import_students'

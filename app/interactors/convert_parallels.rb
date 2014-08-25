@@ -1,5 +1,4 @@
 require 'interpipe/interactor'
-require 'roles/parallel_from_kosapi'
 
 class ConvertParallels
   include Interpipe::Interactor
