@@ -206,6 +206,44 @@ ALTER SEQUENCE rooms_id_seq OWNED BY rooms.id;
 
 
 --
+-- Name: schedule_exceptions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE schedule_exceptions (
+    id integer NOT NULL,
+    exception_type integer,
+    name text,
+    note text,
+    starts_at timestamp without time zone,
+    ends_at timestamp without time zone,
+    faculty integer,
+    semester text,
+    parallel_ids integer[],
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: schedule_exceptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE schedule_exceptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: schedule_exceptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE schedule_exceptions_id_seq OWNED BY schedule_exceptions.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -313,6 +351,13 @@ ALTER TABLE ONLY rooms ALTER COLUMN id SET DEFAULT nextval('rooms_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY schedule_exceptions ALTER COLUMN id SET DEFAULT nextval('schedule_exceptions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY timetable_slots ALTER COLUMN id SET DEFAULT nextval('timetable_slots_id_seq'::regclass);
 
 
@@ -361,6 +406,14 @@ ALTER TABLE ONLY people
 
 ALTER TABLE ONLY rooms
     ADD CONSTRAINT rooms_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schedule_exceptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY schedule_exceptions
+    ADD CONSTRAINT schedule_exceptions_pkey PRIMARY KEY (id);
 
 
 --
