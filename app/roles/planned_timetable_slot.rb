@@ -16,6 +16,13 @@ class PlannedTimetableSlot < RolePlaying::Role
     create_events(event_periods)
   end
 
+  def clear_extra_events(events)
+    event_ids = events.map(&:id)
+    saved_events = Event.where(timetable_slot_id: id)
+    extra_events = saved_events.find_all { |evt| !event_ids.include?(evt.id) }
+    extra_events.each(&:delete)
+  end
+
   private
   attr_reader :time_converter, :event_planner
 

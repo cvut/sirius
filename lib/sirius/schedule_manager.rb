@@ -25,6 +25,7 @@ module Sirius
         PlannedTimetableSlot.new(sl, @time_converter, @calendar_planner).tap do |slot|
           events = slot.generate_events
           sync.perform(events: events)
+          slot.clear_extra_events(events)
         end
       end
     end
