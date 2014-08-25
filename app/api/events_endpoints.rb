@@ -68,7 +68,7 @@ module API
     desc 'Filter events by person'
     segment :people do
       params do
-        requires :username, type: String, regexp: /\A[a-z0-9]{8}\z/i, desc: '8-char unique username'
+        requires :username, type: String, regexp: /\A[a-z0-9]+\z/i, desc: '8-char unique username'
         use :pagination
         use :date_filter
       end
