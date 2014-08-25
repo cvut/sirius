@@ -75,7 +75,7 @@ class FormatEventsIcal
     }
 
     def localized_event_type
-      EVENT_TYPE_TRANSLATIONS[event_type.to_sym]
+      EVENT_TYPE_TRANSLATIONS[event_type.to_sym] if event_type
     end
   end
 
