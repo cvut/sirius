@@ -38,7 +38,7 @@ class FormatEventsIcal
 
     def ical_summary
       # FIXME: Add localized #{event_type}
-      "#{course_id} #{sequence_number}. (#{parallel})"
+      "#{course_id} #{sequence_number}. #{localized_event_type} (#{parallel})"
     end
 
     def ical_description
@@ -65,6 +65,17 @@ class FormatEventsIcal
         e.uid = e.url = "/events/#{self.id}" # FIXME! Absolute URL
         #e.add_comment()
       end
+    end
+
+    # TODO: extract hardcoded strings to config file
+    EVENT_TYPE_TRANSLATIONS = {
+        tutorial: 'cvičení',
+        lecture: 'přednáška',
+        laboratory: 'laboratoř'
+    }
+
+    def localized_event_type
+      EVENT_TYPE_TRANSLATIONS[event_type.to_sym]
     end
   end
 
