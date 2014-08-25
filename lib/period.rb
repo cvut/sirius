@@ -17,4 +17,8 @@ class Period
     Period.new(Time.parse(start_str), Time.parse(end_str))
   end
 
+  def include?(other_period)
+    starts_at <= other_period.starts_at && ends_at >= other_period.ends_at
+  end
+
 end
