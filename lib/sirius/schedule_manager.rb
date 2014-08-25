@@ -9,7 +9,7 @@ module Sirius
   class ScheduleManager
 
     DEFAULT_TIME_CONVERTER = TimeConverter.new(first_hour: Time.parse('7:30'), hour_length: 45, break_length: 15, break_after: 2)
-    DEFAULT_CALENDAR_PLANNER = EventPlanner.new(teaching_period: Period.parse('22.9.2014','19.12.2014'), first_week_parity: :odd)
+    DEFAULT_CALENDAR_PLANNER = EventPlanner.new(teaching_period: Period.parse('22.9.2014','20.12.2014'), first_week_parity: :odd)
 
     def initialize(client: KOSapiClient.client, time_converter: DEFAULT_TIME_CONVERTER, calendar_planner: DEFAULT_CALENDAR_PLANNER)
       @client = client
