@@ -521,3 +521,23 @@ ALTER TABLE ONLY timetable_slots
 -- PostgreSQL database dump complete
 --
 
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140326000000_create_hstore.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140326184848_create_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140327012704_create_courses.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140327125618_add_timestamps_to_courses.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140327132523_create_parallels.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140327134045_create_rooms.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140327134320_create_timetable_slots.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140327154417_add_room_fk_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140710143245_update_rooms.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140716225640_courses_pk.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140716231715_create_people.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140716235800_add_teachers_parallels.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140717165013_delete_duplicate_parallels_columns.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140717175952_rename_type_to_parallel_type.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140717180517_drop_course_code.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140718175201_events_extension.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140724005656_create_update_log.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140807132353_add_course_id_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140821125210_add_student_ids_to_parallels.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('20140825020123_add_schedule_exceptions.rb');
