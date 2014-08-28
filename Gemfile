@@ -3,16 +3,19 @@ ruby '2.1.2'
 
 gem 'rake'
 
-# Storage
+## Storage
 gem 'pg'
 gem 'sequel'
 gem 'sequel_pg', require: 'sequel'
 gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
 
-# REST API
+## REST API
 gem 'pliny', '~> 0.2.1'
 gem 'grape'
+
+# JSON-API support: https://github.com/apotonick/roar/pull/98
 gem 'roar', github: 'apotonick/roar'
+
 # gem 'multi_json'
 # gem 'oj'
 gem 'json'
@@ -21,15 +24,17 @@ gem 'json'
 # gem "sinatra-router"
 gem 'thin'
 
-# Time & Space
+## Time & Space
 gem 'ice_cube' # Date/Time helper
-gem 'icalendar', '~> 2.1.0'
 
-# Helper stuff
+# TZNAME generation https://github.com/icalendar/icalendar/pull/86
+gem 'icalendar', github: 'jnv/icalendar', branch: 'tzinfo' # '~> 2.1.0'
+
+## Helper stuff
 gem 'activesupport'
 gem 'role_playing'
 
-# For console
+## For console
 gem 'pry', require: false
 
 group :development do
@@ -61,5 +66,3 @@ group :development, :test do
   gem 'pry-byebug', require: false
   gem 'awesome_print'
 end
-
-
