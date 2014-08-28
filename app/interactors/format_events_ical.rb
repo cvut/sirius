@@ -56,8 +56,8 @@ class FormatEventsIcal
       Icalendar::Event.new.tap do |e|
         e.summary = name || ical_summary
         e.description = note || ical_description
-        e.dtstart = starts_at.strftime("%Y%m%dT%H%M%S")
-        e.dtend = ends_at.strftime("%Y%m%dT%H%M%S")
+        e.dtstart = Icalendar::Values::DateTime.new(starts_at, tzid: Config.tz)
+        e.dtend = Icalendar::Values::DateTime.new(ends_at, tzid: Config.tz)
         e.location = room.to_s
         e.ip_class = 'PUBLIC'
         e.created = created_at

@@ -5,7 +5,7 @@ require 'models/event'
 
 describe FormatEventsIcal do
 
-  let(:event) { Fabricate.build(:event) }
+  let(:event) { Fabricate.build(:event, starts_at: '2014-04-05 14:30', ends_at: '2014-04-05 16:00') }
   let(:interactor) { described_class.perform(events: event) }
   let(:result) { interactor.ical }
   let(:calendar) { Icalendar.parse(result).first } # Parser returns array of calendars
@@ -64,6 +64,14 @@ describe FormatEventsIcal do
 
         it 'generates the description' do
           expect(description).to eql 'Programování v Ruby'
+        end
+      end
+    end
+
+    [:dtstart, :dtend].each do |method|
+      describe "##{method}" do
+        it 'has a correct timezone' do
+          expect(icevent.send(method).zone).to eql('CEST')
         end
       end
     end
