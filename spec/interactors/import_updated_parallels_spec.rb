@@ -3,6 +3,8 @@ require 'interactors/import_updated_parallels'
 
 describe ImportUpdatedParallels, :integration, :vcr do
 
+  before { allow(KOSapiClient).to receive(:client).and_return(create_kosapi_client) }
+
   describe '#perform' do
 
     let(:since) { Time.parse('1.7.2014') }
