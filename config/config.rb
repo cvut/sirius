@@ -17,7 +17,8 @@ module Config
   mandatory \
     :database_url,
     :kosapi_oauth_client_id,
-    :kosapi_oauth_client_secret
+    :kosapi_oauth_client_secret,
+    :domain
 
   # Optional -- value is returned or `nil` if it wasn't present.
   optional \

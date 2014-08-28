@@ -62,7 +62,8 @@ class FormatEventsIcal
         e.ip_class = 'PUBLIC'
         e.created = created_at
         e.last_modified = updated_at
-        e.uid = e.url = "/events/#{self.id}" # FIXME! Absolute URL
+        e.uid = "#{self.id}@#{Config.domain}"
+        e.url = "/events/#{self.id}" # FIXME! Absolute URL
         #e.add_comment()
       end
     end
