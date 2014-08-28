@@ -9,6 +9,7 @@ describe FormatEventsIcal do
   let(:interactor) { described_class.perform(events: event) }
   let(:result) { interactor.ical }
   let(:calendar) { Icalendar.parse(result).first } # Parser returns array of calendars
+  let(:tzid) { 'Europe/Prague' }
 
   before { allow(event).to receive_messages(parallel: nil, name: nil, note: nil) }
 
@@ -18,6 +19,28 @@ describe FormatEventsIcal do
 
   it 'creates a valid icalendar string' do
     expect(calendar.events.size).to eq 1
+  end
+
+  describe 'generated calendar' do
+    subject { calendar }
+
+    describe 'timezone component' do
+      subject(:timezone) { calendar.find_timezone(tzid) }
+      it { should_not be_nil }
+      it 'is a valid timezone' do
+        should be_valid # #valid? is implemented by Icalendar::Timezone component
+      end
+
+      describe 'daylight' do
+        subject { timezone.daylights.first.tzname }
+        it { should eql ['CEST'] }
+      end
+      describe 'standard' do
+        subject { timezone.standards.first.tzname }
+        it { should eql ['CET'] }
+      end
+    end
+
   end
 
   describe 'generated ICalendar event' do
@@ -69,17 +92,18 @@ describe FormatEventsIcal do
     end
 
     describe '#uid' do
-
       subject(:uid) { icevent.uid }
-
       it { is_expected.to eq '42@example.com' }
-
     end
 
     [:dtstart, :dtend].each do |method|
       describe "##{method}" do
-        it 'has a correct timezone' do
-          expect(icevent.send(method).zone).to eql('CEST')
+        subject(:dt) { icevent.send(method) }
+        it 'has a correct timezone part' do
+          expect(dt.zone).to eql('CEST')
+        end
+        it 'is associated with a correct tzid' do
+          expect(dt.ical_params['tzid']).to eql([tzid])
         end
       end
     end

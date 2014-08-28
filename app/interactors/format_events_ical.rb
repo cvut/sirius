@@ -1,6 +1,7 @@
 require 'role_playing'
 require 'interpipe/interactor'
 require 'icalendar'
+require 'icalendar/tzinfo'
 
 ##
 # Converts {Event}'s collection to an ICalendar.
@@ -11,6 +12,7 @@ class FormatEventsIcal
 
   def setup
     @calendar = Icalendar::Calendar.new
+    @calendar.add_timezone timezone(Config.tz)
   end
 
   ##
@@ -22,6 +24,11 @@ class FormatEventsIcal
     @events.each do |e|
       @calendar.add_event IcalEvent(e).to_ical
     end
+  end
+
+  def timezone(tzid)
+    tz = TZInfo::Timezone.get(tzid)
+    tz.ical_timezone(DateTime.new 2014) # XXX it needs _some_ date; maybe current year should be used instead?
   end
 
   def results
