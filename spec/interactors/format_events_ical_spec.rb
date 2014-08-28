@@ -5,7 +5,7 @@ require 'models/event'
 
 describe FormatEventsIcal do
 
-  let(:event) { Fabricate.build(:event, starts_at: '2014-04-05 14:30', ends_at: '2014-04-05 16:00') }
+  let(:event) { Fabricate.build(:event, id: 42, starts_at: '2014-04-05 14:30', ends_at: '2014-04-05 16:00') }
   let(:interactor) { described_class.perform(events: event) }
   let(:result) { interactor.ical }
   let(:calendar) { Icalendar.parse(result).first } # Parser returns array of calendars
@@ -66,6 +66,14 @@ describe FormatEventsIcal do
           expect(description).to eql 'Programování v Ruby'
         end
       end
+    end
+
+    describe '#uid' do
+
+      subject(:uid) { icevent.uid }
+
+      it { is_expected.to eq '42@example.com' }
+
     end
 
     [:dtstart, :dtend].each do |method|
