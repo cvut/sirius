@@ -35,5 +35,6 @@ module Config
     root:             File.expand_path("../../", __FILE__),
     timeout:          45,
     force_ssl:        'true',
-    versioning:       'false'
+    versioning:       'false',
+    tz:               'Europe/Prague'
 end
