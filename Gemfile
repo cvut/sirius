@@ -50,6 +50,7 @@ group :test do
   gem 'database_cleaner'
   gem 'timecop'
   gem 'codeclimate-test-reporter', require: nil
+  gem 'coveralls', require: false
   gem 'fabrication'
   gem 'json_spec', '~> 1.1.2'
   gem 'vcr'
