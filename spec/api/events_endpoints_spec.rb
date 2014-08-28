@@ -87,8 +87,8 @@ RSpec.shared_examples 'events endpoint' do
   context 'as an icalendar' do
     before { get '/events.ical' }
 
-    it 'returns a valid content-type' do
-      expect(headers['Content-Type']).to eql('text/calendar')
+    it 'returns a content-type with charset' do
+      expect(headers['Content-Type']).to eql('text/calendar; charset=utf-8')
     end
 
     it 'returns a valid iCalendar' do

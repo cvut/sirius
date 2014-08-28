@@ -13,7 +13,7 @@ module API
     content_type :jsonapi, 'application/json'
     format :jsonapi
 
-    content_type :ical, 'text/calendar'
+    content_type :ical, 'text/calendar; charset=utf-8'
     formatter :ical, lambda { |object, env| object.to_ical }
 
     rescue_from Grape::Exceptions::Validation do |e|
