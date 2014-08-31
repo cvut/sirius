@@ -42,7 +42,6 @@ class FormatEventsIcal
 
   # Event to Icalendar::Event mapping.
   role :IcalEvent do
-
     def ical_summary
       # FIXME: Add localized #{event_type}
       "#{course_id} #{sequence_number}. #{localized_event_type} (#{parallel})"
@@ -55,6 +54,10 @@ class FormatEventsIcal
       "#{course.name['cs']}"
     rescue
       nil
+    end
+
+    def ical_categories
+      [course_id, localized_event_type].compact
     end
 
     # Maps {Event} attributes to {Icalendar::Event} object.
@@ -70,8 +73,8 @@ class FormatEventsIcal
         e.created = created_at
         e.last_modified = updated_at
         e.uid = "#{self.id}@#{Config.domain}"
-        e.url = "/events/#{self.id}" # FIXME! Absolute URL
-        #e.add_comment()
+        e.url = "/events/#{self.id}" # FIXME: Absolute URL
+        e.categories = ical_categories
       end
     end
 
@@ -81,10 +84,10 @@ class FormatEventsIcal
         lecture: 'přednáška',
         laboratory: 'laboratoř'
     }
-
     def localized_event_type
       EVENT_TYPE_TRANSLATIONS[event_type.to_sym] if event_type
     end
+
   end
 
 end

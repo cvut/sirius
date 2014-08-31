@@ -5,7 +5,7 @@ require 'models/event'
 
 describe FormatEventsIcal do
 
-  let(:event) { Fabricate.build(:event, id: 42, starts_at: '2014-04-05 14:30', ends_at: '2014-04-05 16:00') }
+  let(:event) { Fabricate.build(:event, id: 42, starts_at: '2014-04-05 14:30', ends_at: '2014-04-05 16:00', course_id: 'MI-RUB', event_type: 'tutorial') }
   let(:interactor) { described_class.perform(events: event) }
   let(:result) { interactor.ical }
   let(:calendar) { Icalendar.parse(result).first } # Parser returns array of calendars
@@ -103,8 +103,15 @@ describe FormatEventsIcal do
           expect(dt.zone).to eql('CEST')
         end
         it 'is associated with a correct tzid' do
-          expect(dt.ical_params['tzid']).to eql([tzid])
+          expect(dt.ical_params['tzid']).to contain_exactly(tzid)
         end
+      end
+    end
+
+    describe '#categories' do
+      subject(:categories) { icevent.categories }
+      it 'contains course ID and event type' do
+        expect(categories).to contain_exactly('MI-RUB', 'cvičení')
       end
     end
   end
