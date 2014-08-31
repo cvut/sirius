@@ -16,7 +16,7 @@ describe Interpipe::Organizer do
 
     it 'sets interactors of newly created class' do
       anonymous_organizer = organizer[interactor1, interactor2]
-      expect(anonymous_organizer.interactors).to eq [interactor1, interactor2]
+      expect(anonymous_organizer.interactors).to eq [interactor1, interactor2] # need to maintain order
     end
 
   end

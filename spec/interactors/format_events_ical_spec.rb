@@ -33,11 +33,11 @@ describe FormatEventsIcal do
 
       describe 'daylight' do
         subject { timezone.daylights.first.tzname }
-        it { should eql ['CEST'] }
+        it { should contain_exactly 'CEST' }
       end
       describe 'standard' do
         subject { timezone.standards.first.tzname }
-        it { should eql ['CET'] }
+        it { should contain_exactly 'CET' }
       end
     end
 

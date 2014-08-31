@@ -10,7 +10,7 @@ describe ConvertRooms do
 
     it 'returns empty array when no slots' do
       results = convert.perform({timetable_slots: {}}).results
-      expect(results[:rooms]).to eq []
+      expect(results[:rooms]).to be_empty
     end
 
     it 'converts timetable slot rooms' do

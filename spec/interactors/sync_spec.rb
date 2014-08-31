@@ -22,7 +22,7 @@ describe Sync do
 
     it 'can set key_name attribute' do
       cls = described_class[String, matching_attributes: [:foo]]
-      expect(cls.matching_attributes).to eq [:foo]
+      expect(cls.matching_attributes).to contain_exactly :foo
     end
 
     it 'plularizes model_class as default key_name' do

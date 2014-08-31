@@ -24,8 +24,8 @@ describe Event do
     end
 
     it 'looks up both teachers and students' do
-      expect(with_person 'marnytom').to eql [event]
-      expect(with_person 'skocdpet').to eql [event]
+      expect(with_person 'marnytom').to contain_exactly event
+      expect(with_person 'skocdpet').to contain_exactly event
     end
 
     it 'returns an empty set for unknown username' do

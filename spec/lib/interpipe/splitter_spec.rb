@@ -32,7 +32,7 @@ describe Interpipe::Splitter do
     it 'sets results of all interactors' do
       rs = {lorem: 'ipsum', dolor: 'sit'}
       allow(interactor1).to receive(:results) { rs }
-      expect(results).to eq([rs])
+      expect(results).to contain_exactly rs
     end
   end
 

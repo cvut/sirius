@@ -54,7 +54,7 @@ describe FilterEvents do
     # FIXME: not really a best approach
     it 'is limited by date but not by pagination' do
       result.count
-      expect(db.sqls).to eql ["SELECT count(*) AS count FROM test WHERE ((starts_at >= '#{params[:from]}') AND (ends_at <= '#{params[:to]}')) LIMIT 1"]
+      expect(db.sqls).to contain_exactly "SELECT count(*) AS count FROM test WHERE ((starts_at >= '#{params[:from]}') AND (ends_at <= '#{params[:to]}')) LIMIT 1"
     end
   end
 
