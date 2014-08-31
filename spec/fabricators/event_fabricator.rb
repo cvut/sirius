@@ -8,4 +8,5 @@ Fabricator(:event) do
   ends_at '2014-04-05 16:00'
   teacher_ids ['vomackar']
   student_ids ['skocdpet']
+  event_type 'lecture'
 end
