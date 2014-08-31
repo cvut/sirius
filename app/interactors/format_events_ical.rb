@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'role_playing'
 require 'interpipe/interactor'
 require 'icalendar'
@@ -80,9 +81,9 @@ class FormatEventsIcal
 
     # TODO: extract hardcoded strings to config file
     EVENT_TYPE_TRANSLATIONS = {
-        tutorial: 'cvičení',
-        lecture: 'přednáška',
-        laboratory: 'laboratoř'
+        tutorial: 'cvičení'.freeze,
+        lecture: 'přednáška'.freeze,
+        laboratory: 'laboratoř'.freeze
     }
     def localized_event_type
       EVENT_TYPE_TRANSLATIONS[event_type.to_sym] if event_type
