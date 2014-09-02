@@ -39,6 +39,14 @@ namespace :db do
   Rake::Task['db:schema:dump'].enhance do
     file = File.join('db', 'schema.sql')
     url = database_urls.first # XXX private method from pliny/tasks/db
-    File.open(file, 'a') { |f| f.puts dump_schema_information(database_url: url, sql: true) }
+    migrations = dump_schema_information(database_url: url, sql: true)
+    File.open(file, 'r+') do |f|
+      schema = f.read
+      # redo comment stripping because it doesn't get flushed
+      schema.gsub!(/^COMMENT ON EXTENSION.*\n/, '')
+      schema << migrations
+      f.rewind
+      f.puts(schema)
+    end
   end
 end
