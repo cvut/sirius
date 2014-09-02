@@ -444,14 +444,28 @@ ALTER TABLE ONLY update_logs
 -- Name: events_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX events_student_ids_index ON events USING btree (student_ids);
+CREATE INDEX events_student_ids_index ON events USING gin (student_ids);
 
 
 --
 -- Name: events_teacher_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX events_teacher_ids_index ON events USING btree (teacher_ids);
+CREATE INDEX events_teacher_ids_index ON events USING gin (teacher_ids);
+
+
+--
+-- Name: parallels_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX parallels_student_ids_index ON parallels USING gin (student_ids);
+
+
+--
+-- Name: parallels_teacher_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX parallels_teacher_ids_index ON parallels USING gin (teacher_ids);
 
 
 --
@@ -541,3 +555,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('20140724005656_create_upda
 INSERT INTO "schema_migrations" ("filename") VALUES ('20140807132353_add_course_id_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('20140821125210_add_student_ids_to_parallels.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('20140825020123_add_schedule_exceptions.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1409657056_fix_array_indexes.rb');
