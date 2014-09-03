@@ -16,15 +16,19 @@ class PlannedTimetableSlot < RolePlaying::Role
     create_events(event_periods)
   end
 
-  def clear_extra_events(events)
-    event_ids = events.map(&:id)
-    saved_events = Event.where(timetable_slot_id: id)
-    extra_events = saved_events.find_all { |evt| !event_ids.include?(evt.id) }
+  def clear_extra_events(planned_events)
+    all_events = Event.where(timetable_slot_id: id)
+    extra_events = filter_extra_events(all_events, planned_events)
     extra_events.each(&:delete)
   end
 
   private
   attr_reader :time_converter, :event_planner
+
+  def filter_extra_events(all_events, planned_events)
+    planned_event_ids = planned_events.map(&:id)
+    all_events.find_all { |evt| !planned_event_ids.include?(evt.id) }
+  end
 
   def generate_teaching_periods
     teaching_period = time_converter.convert_time(first_hour, duration)
