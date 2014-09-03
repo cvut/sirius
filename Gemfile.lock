@@ -1,20 +1,4 @@
 GIT
-  remote: git://github.com/jnv/guard-shotgun.git
-  revision: a792fd849f267faf4e47ddf386c876049124475b
-  specs:
-    guard-shotgun (0.3.0)
-      ffi
-      guard (~> 2.0)
-      spoon
-
-GIT
-  remote: git://github.com/jnv/icalendar.git
-  revision: 2a9c7d4154a5a4b051a606543cd080077e720c1b
-  branch: tzinfo
-  specs:
-    icalendar (2.1.1)
-
-GIT
   remote: git://github.com/apotonick/roar.git
   revision: f27add78dea9cd1677e5f6bbf69a26b4bf5c3d95
   specs:
@@ -32,6 +16,22 @@ GIT
       oauth2
       ox
       uri_template
+
+GIT
+  remote: git://github.com/jnv/guard-shotgun.git
+  revision: a792fd849f267faf4e47ddf386c876049124475b
+  specs:
+    guard-shotgun (0.3.0)
+      ffi
+      guard (~> 2.0)
+      spoon
+
+GIT
+  remote: git://github.com/jnv/icalendar.git
+  revision: 2a9c7d4154a5a4b051a606543cd080077e720c1b
+  branch: tzinfo
+  specs:
+    icalendar (2.1.1)
 
 GEM
   remote: https://rubygems.org/
