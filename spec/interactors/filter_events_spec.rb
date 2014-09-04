@@ -71,10 +71,33 @@ describe FilterEvents do
       result.count
     end
 
-    # FIXME: not really a best approach
-    it 'is limited by date but not by pagination' do
-      result.count
-      expect(db.sqls).to contain_exactly "SELECT count(*) AS count FROM test WHERE ((starts_at >= '#{params[:from]}') AND (ends_at <= '#{params[:to]}')) LIMIT 1"
+    describe 'generated query' do
+      let(:deleted) { false }
+      before do
+        params[:deleted] = deleted
+        result.count
+      end
+      subject(:sql) { db.sqls.first }
+      it 'generates a single query' do
+        expect(db.sqls.size).to eql 1
+      end
+      # FIXME: not really a best approach
+      it 'is limited by date' do
+        expect(sql).to include "(starts_at >= '#{params[:from]}') AND (ends_at <= '#{params[:to]}')"
+      end
+      it 'is not limited by pagination' do
+        expect(sql).to_not match(/offset/i)
+      end
+      it "doesn't count deleted events" do
+        expect(sql).to include "deleted IS FALSE"
+      end
+
+      context 'with deleted param' do
+        let(:deleted) { true }
+        it 'counts deleted items too' do
+          expect(sql).to_not match(/deleted IS/i)
+        end
+      end
     end
   end
 
