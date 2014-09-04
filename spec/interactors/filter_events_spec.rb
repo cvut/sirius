@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'filter_events'
 
 describe FilterEvents do
-  let(:db) { Sequel.mock(:fetch=>{count:120, deleted: false} ) }
+  let(:db) { Sequel.mock(fetch: { count: 120, deleted: false }) }
   let(:dataset) { db.from(:test).columns(:count) }
 
   let(:interactor) { described_class }
@@ -83,13 +83,14 @@ describe FilterEvents do
       end
       # FIXME: not really a best approach
       it 'is limited by date' do
-        expect(sql).to include "(starts_at >= '#{params[:from]}') AND (ends_at <= '#{params[:to]}')"
+        sqlfrag = "(starts_at >= '#{params[:from]}') AND (ends_at <= '#{params[:to]}')"
+        expect(sql).to include sqlfrag
       end
       it 'is not limited by pagination' do
         expect(sql).to_not match(/offset/i)
       end
       it "doesn't count deleted events" do
-        expect(sql).to include "deleted IS FALSE"
+        expect(sql).to include 'deleted IS FALSE'
       end
 
       context 'with deleted param' do
