@@ -2,3 +2,9 @@ ShowCopNames: true
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
+
+Style/Blocks:
+  Enabled: false
+
+Style/DotPosition:
+  Enabled: false
