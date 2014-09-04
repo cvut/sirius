@@ -24,14 +24,21 @@ module API
         optional :from, type: DateTime
         optional :to, type: DateTime
       end
+      params :deleted do
+        optional :deleted, type: Boolean, default: false
+      end
+      params :filter_events do
+        use :pagination
+        use :date_filter
+        use :deleted
+      end
     end
 
     resource :events do
 
       desc 'Get all events'
       params do
-        use :pagination
-        use :date_filter
+        use :filter_events
       end
       get do
         represent ::Event.dataset
@@ -53,8 +60,7 @@ module API
     segment :rooms do
       params do
         requires :kos_id, type: String, desc: 'Common room identification used by KOS'
-        use :pagination
-        use :date_filter
+        use :filter_events
       end
       route_param :kos_id do
         resource :events do
@@ -69,8 +75,7 @@ module API
     segment :people do
       params do
         requires :username, type: String, regexp: /\A[a-z0-9]+\z/i, desc: '8-char unique username'
-        use :pagination
-        use :date_filter
+        use :filter_events
       end
       route_param :username do
         resource :events do
@@ -87,8 +92,7 @@ module API
     segment :courses do
       params do
         requires :course_id, type: String, desc: 'Course identification code (faculty-specific)'
-        use :pagination
-        use :date_filter
+        use :filter_events
       end
       route_param :course_id do
         resource :events do

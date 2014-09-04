@@ -9,4 +9,5 @@ Fabricator(:event) do
   teacher_ids ['vomackar']
   student_ids ['skocdpet']
   event_type 'lecture'
+  deleted false
 end
