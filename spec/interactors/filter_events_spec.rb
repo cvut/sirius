@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'filter_events'
 
 describe FilterEvents do
-  let(:db) { Sequel.mock(:fetch=>{:count=>120} ) }
+  let(:db) { Sequel.mock(:fetch=>{count:120, deleted: false} ) }
   let(:dataset) { db.from(:test).columns(:count) }
 
   let(:interactor) { described_class }
@@ -24,7 +24,6 @@ describe FilterEvents do
     it { should be_a(Sequel::Dataset) }
   end
 
-
   context 'for JSON API format' do
     describe 'paginates records' do
       it 'sets limit' do
@@ -35,12 +34,33 @@ describe FilterEvents do
         expect(result.offset).to eql(params[:offset])
       end
     end
+
+    describe 'deleted record' do
+      subject(:sql) { result.events.sql }
+      it 'is filtered out by default' do
+        expect(sql).to include 'deleted IS FALSE'
+      end
+      context 'with deleted param set to true' do
+        before { params[:deleted] = true }
+        it 'is not filtered out' do
+          expect(sql).not_to include 'deleted'
+        end
+      end
+    end
   end
 
   context 'for ICal format' do
     let(:format) { :ical }
     it 'does not paginate records' do
       expect(result.limit).to be_nil
+    end
+
+    describe 'deleted record' do
+      subject(:sql) { result.events.sql }
+      before { params[:deleted] = true }
+      it 'is always filtered out' do
+        expect(sql).to include 'deleted IS FALSE'
+      end
     end
   end
 
