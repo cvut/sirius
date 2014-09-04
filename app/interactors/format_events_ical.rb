@@ -3,6 +3,7 @@ require 'role_playing'
 require 'interpipe/interactor'
 require 'icalendar'
 require 'icalendar/tzinfo'
+require 'url_helper'
 
 ##
 # Converts {Event}'s collection to an ICalendar.
@@ -43,6 +44,8 @@ class FormatEventsIcal
 
   # Event to Icalendar::Event mapping.
   role :IcalEvent do
+    include UrlHelper
+
     def ical_summary
       # FIXME: Add localized #{event_type}
       "#{course_id} #{sequence_number}. #{localized_event_type} (#{parallel})"
@@ -74,7 +77,7 @@ class FormatEventsIcal
         e.created = created_at
         e.last_modified = updated_at
         e.uid = "#{self.id}@#{Config.domain}"
-        e.url = "/events/#{self.id}" # FIXME: Absolute URL
+        e.url = url_for "/events/#{self.id}"
         e.categories = ical_categories
       end
     end

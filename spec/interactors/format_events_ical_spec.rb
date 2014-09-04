@@ -114,5 +114,12 @@ describe FormatEventsIcal do
         expect(categories).to contain_exactly('MI-RUB', 'cvičení')
       end
     end
+
+    describe '#url' do
+      subject(:url) { icevent.url }
+      it 'contains an aboslute URL' do
+        expect(url.to_s).to eql 'https://example.com/api/v1/events/42'
+      end
+    end
   end
 end
