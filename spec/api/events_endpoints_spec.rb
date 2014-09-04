@@ -24,7 +24,8 @@ RSpec.shared_examples 'events endpoint' do
       id: event.id,
       name: event.name,
       starts_at: event.starts_at,
-      ends_at: event.ends_at
+      ends_at: event.ends_at,
+      deleted: false
     }.to_json
   end
 
@@ -132,6 +133,7 @@ describe API::EventsEndpoints do
         starts_at: event.starts_at,
         ends_at: event.ends_at,
         note: event.note,
+        deleted: false,
         links: {
           room: event.room.to_s,
           course: event.course_id,

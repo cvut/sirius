@@ -13,6 +13,7 @@ class EventRepresenter < Roar::Decorator
   property :relative_sequence_number, as: :sequence_number
   property :starts_at, render_nil: true
   property :ends_at, render_nil: true
+  property :deleted
   property :links, exec_context: :decorator
 
   def links
