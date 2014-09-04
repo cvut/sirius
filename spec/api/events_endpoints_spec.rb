@@ -13,7 +13,7 @@ RSpec.shared_examples 'events endpoint' do
   let!(:events) do
     i = 0
     Fabricate.times(events_cnt, :event, events_params) do
-      starts_at { "2014-04-0#{i+=1} 14:30" } # XXX sequencer in times doesn't work
+      starts_at { "2014-04-0#{i+=1} 14:30" } # XXX restart sequence for each fabrication
       ends_at { "2014-04-0#{i} 16:00" }
     end
   end
