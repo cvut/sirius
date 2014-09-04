@@ -6,10 +6,10 @@ module UrlHelper
   # Construct an absolute path to a given +url_fragment+,
   # expects a leading slash.
   def path_for url_fragment, **params
-    paramstr = ''
+    paramstr = nil
     # TODO: Use addressable
     unless params.empty?
-      paramstr += '?' + params.map { |k,v| "#{k}=#{URI.escape(v.to_s, /[^#{URI::PATTERN::UNRESERVED}]/)}" }.join('&')
+      paramstr = '?' + params.map { |k,v| "#{k}=#{URI.escape(v.to_s, /[^#{URI::PATTERN::UNRESERVED}]/)}" }.join('&')
     end
     "#{base_href}#{url_fragment}#{paramstr}"
   end
@@ -21,9 +21,9 @@ module UrlHelper
   end
 
   def base_domain(absolute: false)
-    scheme = ''
+    scheme = nil
     if absolute
-      scheme += Config.force_ssl ? 'https://' : 'http://'
+      scheme = Config.force_ssl ? 'https://' : 'http://'
     end
     "#{scheme}#{Config.domain}"
   end
