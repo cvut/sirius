@@ -17,6 +17,7 @@ class FilterEvents
   DEFAULT_LIMIT = 20
 
   def perform(events: , params: {}, format: :jsonapi)
+    @format = format
     @events = DateFilteredDataset.played_by(events) do |dataset|
       dataset
         .filter_by_date(from: params[:from], to: params[:to])
@@ -24,7 +25,7 @@ class FilterEvents
           @count = nil
           @count_query = d
         }
-        .then_if(paginate?(format)) { |d|
+        .then_if(paginate?) { |d|
           @offset = params[:offset] || 0
           @limit = params[:limit] || DEFAULT_LIMIT
           PaginatedDataset.new(d).paginate(offset: @offset, limit: @limit)
@@ -46,7 +47,7 @@ class FilterEvents
   end
 
   private
-  def paginate?(format)
-    format != :ical
+  def paginate?
+    @format != :ical
   end
 end
