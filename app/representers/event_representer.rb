@@ -14,7 +14,13 @@ class EventRepresenter < Roar::Decorator
   property :starts_at, render_nil: true
   property :ends_at, render_nil: true
   property :deleted
+  property :parallel, exec_context: :decorator, render_nil: true
   property :links, exec_context: :decorator
+
+  def parallel
+    represented.parallel.to_s
+  end
+
 
   def links
     # property :course_id, as: :course

@@ -25,7 +25,8 @@ RSpec.shared_examples 'events endpoint' do
       name: event.name,
       starts_at: event.starts_at,
       ends_at: event.ends_at,
-      deleted: false
+      deleted: false,
+      parallel: nil # FIXME: could be stubbed
     }.to_json
   end
 
@@ -124,6 +125,7 @@ describe API::EventsEndpoints do
         student_ids ['bubenpro']
         room { Fabricate(:room, kos_code: 'T9:350') }
         course { Fabricate(:course) }
+        parallel { Fabricate(:parallel, code: 101 ) }
       end
     end
     let(:event_json) do
@@ -134,6 +136,7 @@ describe API::EventsEndpoints do
         ends_at: event.ends_at,
         note: event.note,
         deleted: false,
+        parallel: '101',
         links: {
           room: event.room.to_s,
           course: event.course_id,
