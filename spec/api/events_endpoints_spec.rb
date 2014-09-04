@@ -4,6 +4,8 @@ require 'icalendar'
 RSpec.shared_examples 'events endpoint' do
   include_context 'API response'
 
+  let(:path) { path_for super() } # assume path is given as a context from outside
+
   let(:events_cnt) { 3 }
   let(:events_params) { Hash.new }
 
@@ -100,7 +102,7 @@ end
 
 RSpec.shared_examples 'invalid endpoint' do
   it 'returns a Not Found error' do
-    get path
+    get path_for(path)
     expect(response.status).to eql 404
   end
 end
@@ -139,7 +141,7 @@ describe API::EventsEndpoints do
       }.to_json
     end
     context 'JSON-API format' do
-      before { get "/events/#{event.id}" }
+      before { get path_for("/events/#{event.id}") }
       subject { body }
 
       it 'returns OK' do
@@ -150,7 +152,7 @@ describe API::EventsEndpoints do
     end
 
     context 'with non-existent resource' do
-      before { get "/events/9001" }
+      before { get path_for('/events/9001') }
       it 'returns a Not Found error' do
         expect(status).to eql(404)
       end
@@ -176,8 +178,8 @@ describe API::EventsEndpoints do
       let(:path) { "/rooms/#{room.kos_code}/events" }
 
       context 'with non-existent room' do
-        before { get path }
         let(:path) { "/rooms/YOLO/events" }
+        before { get path_for(path) }
         it 'returns a Not Found error' do
           expect(status).to eql 404
         end
@@ -210,8 +212,8 @@ describe API::EventsEndpoints do
       let(:path) { "/people/#{person.id}/events" }
 
       context 'with non-existent person' do
-        before { get path }
         let(:path) { "/people/mranonym/events" }
+        before { get path_for(path) }
         it 'returns a Not Found error' do
           expect(status).to eql 404
         end
@@ -244,7 +246,7 @@ describe API::EventsEndpoints do
       let(:path) { "/courses/#{course.id}/events" }
 
       context 'with non-existent course' do
-        before { get path }
+        before { get path_for(path) }
         let(:path) { "/courses/MI-COB/events" } # Programming in Cobol is a not thing, yet?
         it 'returns a Not Found error' do
           expect(status).to eql 404
