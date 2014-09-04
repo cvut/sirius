@@ -1,7 +1,7 @@
 require 'rack/test'
 require 'json_spec'
 require 'spec_helper'
-
+require 'url_helper'
 require 'api/base'
 
 module RackHelper
@@ -18,4 +18,5 @@ end
 RSpec.configure do |config|
   config.include RackHelper
   config.include JsonSpec::Helpers
+  config.include UrlHelper
 end
