@@ -165,21 +165,28 @@ describe API::EventsEndpoints do
         }
       }.to_json
     end
-    context 'JSON-API format' do
-      before { get path_for("/events/#{event.id}") }
-      subject { body }
-
-      it 'returns OK' do
-        expect(status).to eql(200)
-      end
-      it { should be_json_eql(event_json).at_path('events') }
-
+    it 'is not accessible without authentication' do
+      get path_for("/events/#{event.id}")
+      expect(status).to eql(401)
     end
 
-    context 'with non-existent resource' do
-      before { get path_for('/events/9001') }
-      it 'returns a Not Found error' do
-        expect(status).to eql(404)
+    context 'for authenticated user', authenticated: true do
+      context 'JSON-API format' do
+        before { auth_get path_for("/events/#{event.id}") }
+        subject { body }
+
+        it 'returns OK' do
+          expect(status).to eql(200)
+        end
+        it { should be_json_eql(event_json).at_path('events') }
+
+      end
+
+      context 'with non-existent resource' do
+        before { auth_get path_for('/events/9001') }
+        it 'returns a Not Found error' do
+          expect(status).to eql(404)
+        end
       end
     end
   end
