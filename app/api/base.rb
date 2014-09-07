@@ -25,6 +25,7 @@ module API
     rescue_status Grape::Exceptions::ValidationErrors, 400
     rescue_status Sequel::NoMatchingRow, 404
     rescue_status SiriusApi::Errors::Authentication, 401
+    rescue_status SiriusApi::Errors::Authorization, 403
 
     use Warden::Manager do |manager|
       manager.default_strategies :access_token

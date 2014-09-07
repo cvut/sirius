@@ -82,6 +82,9 @@ module API
         use :filter_events
       end
       route_param :username do
+        before do
+          authorize_user! params[:username]
+        end
         resource :events do
           get do
             #XXX check if user exists; ugly!

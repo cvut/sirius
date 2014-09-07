@@ -300,7 +300,7 @@ describe API::EventsEndpoints do
         end
       end
 
-      context 'atuhenticated person within scope for someone else' do
+      context 'authenticated person within scope for someone else' do
         it_behaves_like 'forbidden resource' do
           let(:path) { "/people/#{another_person.id}/events" }
         end
