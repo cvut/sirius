@@ -136,6 +136,9 @@ RSpec.shared_examples 'non-existent resource' do
     it 'returns a 404 Not Found error' do
       expect(status).to eql(404)
     end
+    it 'returns a meaningful message' do
+      expect(body).to be_json_eql('"Resource not found"').at_path('message')
+    end
   end
 end
 

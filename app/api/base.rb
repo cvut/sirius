@@ -23,7 +23,7 @@ module API
     formatter :ical, lambda { |object, env| object.to_ical }
 
     rescue_status Grape::Exceptions::ValidationErrors, 400
-    rescue_status Sequel::NoMatchingRow, 404
+    rescue_status Sequel::NoMatchingRow, 404, message: 'Resource not found'
     rescue_status SiriusApi::Errors::Authentication, 401
     rescue_status SiriusApi::Errors::Authorization, 403
 
