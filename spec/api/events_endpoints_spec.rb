@@ -123,12 +123,22 @@ RSpec.shared_examples 'events endpoint' do
 end
 
 RSpec.shared_examples 'invalid endpoint' do
-  it 'returns a Not Found error' do
-    get path_for(path)
-    expect(response.status).to eql 404
+  context 'for authenticated user', authenticated: true do
+    it 'returns a Not Found error' do
+      get path_for(path)
+      expect(response.status).to eql 404
+    end
   end
 end
 
+RSpec.shared_examples 'non-existent resource' do
+  context 'for authenticated user', authenticated: true do
+    before { auth_get path_for(path) }
+    it 'returns a Not Found error' do
+      expect(status).to eql(404)
+    end
+  end
+end
 
 describe API::EventsEndpoints do
   include_context 'API response'
@@ -182,11 +192,8 @@ describe API::EventsEndpoints do
 
       end
 
-      context 'with non-existent resource' do
-        before { auth_get path_for('/events/9001') }
-        it 'returns a Not Found error' do
-          expect(status).to eql(404)
-        end
+      it_behaves_like 'non-existent resource' do
+        let(:path) { '/events/9001' }
       end
     end
   end
@@ -209,12 +216,8 @@ describe API::EventsEndpoints do
     describe 'GET /rooms/:kos_code/events' do
       let(:path) { "/rooms/#{room.kos_code}/events" }
 
-      context 'with non-existent room' do
+      it_behaves_like 'non-existent resource' do
         let(:path) { "/rooms/YOLO/events" }
-        before { get path_for(path) }
-        it 'returns a Not Found error' do
-          expect(status).to eql 404
-        end
       end
 
       context 'with existing room' do
@@ -243,12 +246,8 @@ describe API::EventsEndpoints do
     describe 'GET /people/:username/events' do
       let(:path) { "/people/#{person.id}/events" }
 
-      context 'with non-existent person' do
+      it_behaves_like 'non-existent resource' do
         let(:path) { "/people/mranonym/events" }
-        before { get path_for(path) }
-        it 'returns a Not Found error' do
-          expect(status).to eql 404
-        end
       end
 
       context 'with existing person' do
@@ -277,12 +276,8 @@ describe API::EventsEndpoints do
     describe 'GET /courses/:course_id/events' do
       let(:path) { "/courses/#{course.id}/events" }
 
-      context 'with non-existent course' do
-        before { get path_for(path) }
+      it_behaves_like 'non-existent resource' do
         let(:path) { "/courses/MI-COB/events" } # Programming in Cobol is a not thing, yet?
-        it 'returns a Not Found error' do
-          expect(status).to eql 404
-        end
       end
 
       context 'with existing course' do
