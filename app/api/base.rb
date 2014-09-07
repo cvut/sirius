@@ -18,6 +18,7 @@ module API
     # content_type :jsonapi, CONTENT_TYPE
     content_type :jsonapi, 'application/json'
     format :jsonapi
+    default_format :jsonapi
 
     content_type :ical, 'text/calendar; charset=utf-8'
     formatter :ical, lambda { |object, env| object.to_ical }
