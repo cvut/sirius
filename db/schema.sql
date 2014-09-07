@@ -287,6 +287,17 @@ ALTER SEQUENCE timetable_slots_id_seq OWNED BY timetable_slots.id;
 
 
 --
+-- Name: tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tokens (
+    uuid uuid NOT NULL,
+    username text,
+    last_used_at timestamp without time zone
+);
+
+
+--
 -- Name: update_logs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -431,6 +442,14 @@ ALTER TABLE ONLY timetable_slots
 
 
 --
+-- Name: tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY tokens
+    ADD CONSTRAINT tokens_pkey PRIMARY KEY (uuid);
+
+
+--
 -- Name: update_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -554,3 +573,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('20140807132353_add_course_
 INSERT INTO "schema_migrations" ("filename") VALUES ('20140821125210_add_student_ids_to_parallels.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('20140825020123_add_schedule_exceptions.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1409657056_fix_array_indexes.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1410088335_create_tokens.rb');

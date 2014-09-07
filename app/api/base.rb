@@ -1,10 +1,13 @@
 require 'grape'
+require 'warden'
 require 'json'
-
+require 'errors_helper'
+require 'sirius_api'
 require 'api/events_endpoints'
-
 module API
   class Base < Grape::API
+    extend ErrorsHelper
+
     CONTENT_TYPE = "application/vnd.api+json"
     RACK_CONTENT_TYPE_HEADER = {"content-type" => CONTENT_TYPE}
     HTTP_STATUS_CODES = Rack::Utils::HTTP_STATUS_CODES.invert
@@ -19,17 +22,16 @@ module API
     content_type :ical, 'text/calendar; charset=utf-8'
     formatter :ical, lambda { |object, env| object.to_ical }
 
-    rescue_from Grape::Exceptions::Validation do |e|
-      Rack::Response.new({ message: e.message }.to_json, 422, RACK_CONTENT_TYPE_HEADER).finish
-    end
+    rescue_status Grape::Exceptions::ValidationErrors, 400
+    rescue_status Sequel::NoMatchingRow, 404
+    rescue_status SiriusApi::Errors::Authentication, 401
+    rescue_status SiriusApi::Errors::Authorization, 403
 
-    rescue_from Sequel::NoMatchingRow do |e|
-      Rack::Response.new({ message: e.message }.to_json, 404, RACK_CONTENT_TYPE_HEADER).finish
+    use Warden::Manager do |manager|
+      manager.default_strategies :access_token
+      # manager.store = false
+      manager.failure_app = lambda {|env| raise SiriusApi::Errors::Authentication, env['warden'].message }
     end
-
-    # rescue_from ActiveRecord::RecordNotFound do |e|
-    #   Rack::Response.new({ message: "The item you are looking for does not exist."}.to_json, 404, RACK_CONTENT_TYPE_HEADER).finish
-    # end
 
     # Mount your api classes here
     mount API::EventsEndpoints

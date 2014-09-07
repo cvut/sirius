@@ -1,11 +1,21 @@
 require 'api_spec_helper'
 require 'icalendar'
 
+
+RSpec.shared_context 'authenticated user', authenticated: true do
+  let(:username) { 'user' }
+  let(:token) { Fabricate(:token, username: username) }
+  let(:access_token) { { access_token: token.uuid } }
+
+  def auth_get path, **params
+    get path, params.merge(access_token)
+  end
+end
+
 RSpec.shared_examples 'events endpoint' do
   include_context 'API response'
 
   let(:path) { path_for super() } # assume path is given as a context from outside
-
   let(:events_cnt) { 3 }
   let(:events_params) { Hash.new }
 
@@ -36,76 +46,106 @@ RSpec.shared_examples 'events endpoint' do
 
   subject { body }
 
-  context 'with default parameters' do
+
+  context 'without access token' do
     before { get path }
-
-    it 'returns OK' do
-      expect(status).to eql(200)
-    end
-
-    it 'returns a JSON-API format' do
-      expect(body).to have_json_size(events_cnt).at_path('events')
+    it 'returns 401 Unauthorized' do
+      expect(status).to eql(401)
     end
   end
 
-  context 'with pagination' do
-    before { get "#{path}?limit=1&offset=1" }
-    let(:meta) do
-      {
-        limit: 1,
-        offset: 1,
-        count: events_cnt
-      }
-    end
-    it { should have_json_size(1).at_path('events') }
+  context 'for authenticated user', authenticated: true do
+    context 'with default parameters' do
+      before { auth_get path }
 
-    it { should be_json_eql(meta.to_json).at_path('meta') }
-
-    context 'with invalid value' do
-      before { get "#{path}?offset=asdasd" }
-      it 'returns an error' do
-        expect(response.status).to eql 400
+      it 'returns OK' do
+        expect(status).to eql(200)
       end
 
-      context 'for invalid integer'
-      it 'returns an error' do
-        pending 'needs a custom validator'
-        get "#{path}?limit=-1"
-        expect(response.status).to eql 400
+      it 'returns a JSON-API format' do
+        expect(body).to have_json_size(events_cnt).at_path('events')
       end
     end
-  end
 
-  context 'with date filtering' do
-    before { get "#{path}?from=2014-04-02T13:50&to=2014-04-03T00:00" }
-    it { should have_json_size(1).at_path('events') }
+    context 'with pagination' do
+      before { auth_get "#{path}?limit=1&offset=1" }
+      let(:meta) do
+        {
+          limit: 1,
+          offset: 1,
+          count: events_cnt
+        }
+      end
+      it { should have_json_size(1).at_path('events') }
 
-    context 'with invalid date' do
-      before { get "#{path}?from=asdasd" }
-      it 'returns an error' do
-        expect(response.status).to eql 400
+      it { should be_json_eql(meta.to_json).at_path('meta') }
+
+      context 'with invalid value' do
+        before { auth_get "#{path}?offset=asdasd" }
+        it 'returns an error' do
+          expect(response.status).to eql 400
+        end
+
+        context 'for invalid integer'
+        it 'returns an error' do
+          pending 'needs a custom validator'
+          auth_get "#{path}?limit=-1"
+          expect(response.status).to eql 400
+        end
       end
     end
-  end
 
-  context 'as an icalendar' do
-    before { get "#{path}.ical" }
+    context 'with date filtering' do
+      before { auth_get "#{path}?from=2014-04-02T13:50&to=2014-04-03T00:00", access_token }
+      it { should have_json_size(1).at_path('events') }
 
-    it 'returns a content-type with charset' do
-      expect(headers['Content-Type']).to eql('text/calendar; charset=utf-8')
+      context 'with invalid date' do
+        before { auth_get "#{path}?from=asdasd", access_token }
+        it 'returns an error' do
+          expect(response.status).to eql 400
+        end
+      end
     end
 
-    it 'returns a valid iCalendar' do
-      calendar = Icalendar.parse(body).first
-      expect(calendar.events.size).to eq(events_cnt)
+    context 'as an icalendar' do
+      before { auth_get "#{path}.ical", access_token }
+
+      it 'returns a content-type with charset' do
+        expect(headers['Content-Type']).to eql('text/calendar; charset=utf-8')
+      end
+
+      it 'returns a valid iCalendar' do
+        calendar = Icalendar.parse(body).first
+        expect(calendar.events.size).to eq(events_cnt)
+      end
     end
   end
 end
 
 RSpec.shared_examples 'invalid endpoint' do
-  it 'returns a Not Found error' do
-    get path_for(path)
-    expect(response.status).to eql 404
+  context 'for authenticated user', authenticated: true do
+    it 'returns a Not Found error' do
+      get path_for(path)
+      expect(response.status).to eql 404
+    end
+  end
+end
+
+RSpec.shared_examples 'non-existent resource' do
+  context 'for authenticated user', authenticated: true do
+    before { auth_get path_for(path) }
+    it 'returns a 404 Not Found error' do
+      expect(status).to eql(404)
+    end
+  end
+end
+
+RSpec.shared_examples 'forbidden resource' do
+  context 'for authenticated user', authenticated: true do
+    before { auth_get path_for(path) }
+    it 'returns a 403 Frobidden error' do
+      expect(status).to eql(403)
+    end
   end
 end
 
@@ -145,21 +185,25 @@ describe API::EventsEndpoints do
         }
       }.to_json
     end
-    context 'JSON-API format' do
-      before { get path_for("/events/#{event.id}") }
-      subject { body }
-
-      it 'returns OK' do
-        expect(status).to eql(200)
-      end
-      it { should be_json_eql(event_json).at_path('events') }
-
+    it 'is not accessible without authentication' do
+      get path_for("/events/#{event.id}")
+      expect(status).to eql(401)
     end
 
-    context 'with non-existent resource' do
-      before { get path_for('/events/9001') }
-      it 'returns a Not Found error' do
-        expect(status).to eql(404)
+    context 'for authenticated user', authenticated: true do
+      context 'JSON-API format' do
+        before { auth_get path_for("/events/#{event.id}") }
+        subject { body }
+
+        it 'returns OK' do
+          expect(status).to eql(200)
+        end
+        it { should be_json_eql(event_json).at_path('events') }
+
+      end
+
+      it_behaves_like 'non-existent resource' do
+        let(:path) { '/events/9001' }
       end
     end
   end
@@ -182,51 +226,13 @@ describe API::EventsEndpoints do
     describe 'GET /rooms/:kos_code/events' do
       let(:path) { "/rooms/#{room.kos_code}/events" }
 
-      context 'with non-existent room' do
+      it_behaves_like 'non-existent resource' do
         let(:path) { "/rooms/YOLO/events" }
-        before { get path_for(path) }
-        it 'returns a Not Found error' do
-          expect(status).to eql 404
-        end
       end
 
       context 'with existing room' do
         it_behaves_like 'events endpoint' do
           let(:events_params) { { room: room } }
-        end
-      end
-    end
-  end
-
-  describe 'filter by person' do
-    let(:person) { Fabricate(:person, id: 'vomackar') }
-
-    describe 'GET /people' do
-      it_behaves_like 'invalid endpoint' do
-        let(:path) { '/people' }
-      end
-    end
-
-    describe 'GET /people/:username' do
-      it_behaves_like 'invalid endpoint' do
-        let(:path) { "/people/#{person.id}" }
-      end
-    end
-
-    describe 'GET /people/:username/events' do
-      let(:path) { "/people/#{person.id}/events" }
-
-      context 'with non-existent person' do
-        let(:path) { "/people/mranonym/events" }
-        before { get path_for(path) }
-        it 'returns a Not Found error' do
-          expect(status).to eql 404
-        end
-      end
-
-      context 'with existing person' do
-        it_behaves_like 'events endpoint' do
-          let(:events_params) { { teacher_ids: [person.id] } }
         end
       end
     end
@@ -250,17 +256,53 @@ describe API::EventsEndpoints do
     describe 'GET /courses/:course_id/events' do
       let(:path) { "/courses/#{course.id}/events" }
 
-      context 'with non-existent course' do
-        before { get path_for(path) }
+      it_behaves_like 'non-existent resource' do
         let(:path) { "/courses/MI-COB/events" } # Programming in Cobol is a not thing, yet?
-        it 'returns a Not Found error' do
-          expect(status).to eql 404
-        end
       end
 
       context 'with existing course' do
         it_behaves_like 'events endpoint' do
           let(:events_params) { { course: course } }
+        end
+      end
+    end
+  end
+
+  describe 'filter by person', authenticated: true do
+    let(:username) { 'user' }
+    let(:person) { Fabricate(:person, id: username) }
+    let(:another_person) { Fabricate(:person, id: 'vomackar') }
+
+    describe 'GET /people' do
+      it_behaves_like 'invalid endpoint' do
+        let(:path) { '/people' }
+      end
+    end
+
+    describe 'GET /people/:username' do
+      it_behaves_like 'invalid endpoint' do
+        let(:path) { "/people/#{username}" }
+      end
+    end
+
+    describe 'GET /people/:username/events' do
+      let(:path) { "/people/#{username}/events" }
+
+      context 'non-existent person' do
+        it_behaves_like 'forbidden resource' do
+          let(:path) { "/people/mranonym/events" }
+        end
+      end
+
+      context 'authorized person within own scope' do
+        it_behaves_like 'events endpoint' do
+          let(:events_params) { { teacher_ids: [person.id] } }
+        end
+      end
+
+      context 'authenticated person within scope for someone else' do
+        it_behaves_like 'forbidden resource' do
+          let(:path) { "/people/#{another_person.id}/events" }
         end
       end
     end
