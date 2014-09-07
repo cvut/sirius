@@ -3,8 +3,8 @@ require 'icalendar'
 
 
 RSpec.shared_context 'authenticated user', authenticated: true do
-  let(:user) { 'user' }
-  let(:token) { Fabricate(:token, username: user) }
+  let(:username) { 'user' }
+  let(:token) { Fabricate(:token, username: username) }
   let(:access_token) { { access_token: token.uuid } }
 
   def auth_get path, **params
@@ -134,11 +134,21 @@ end
 RSpec.shared_examples 'non-existent resource' do
   context 'for authenticated user', authenticated: true do
     before { auth_get path_for(path) }
-    it 'returns a Not Found error' do
+    it 'returns a 404 Not Found error' do
       expect(status).to eql(404)
     end
   end
 end
+
+RSpec.shared_examples 'forbidden resource' do
+  context 'for authenticated user', authenticated: true do
+    before { auth_get path_for(path) }
+    it 'returns a 403 Frobidden error' do
+      expect(status).to eql(403)
+    end
+  end
+end
+
 
 describe API::EventsEndpoints do
   include_context 'API response'
@@ -228,36 +238,6 @@ describe API::EventsEndpoints do
     end
   end
 
-  describe 'filter by person' do
-    let(:person) { Fabricate(:person, id: 'vomackar') }
-
-    describe 'GET /people' do
-      it_behaves_like 'invalid endpoint' do
-        let(:path) { '/people' }
-      end
-    end
-
-    describe 'GET /people/:username' do
-      it_behaves_like 'invalid endpoint' do
-        let(:path) { "/people/#{person.id}" }
-      end
-    end
-
-    describe 'GET /people/:username/events' do
-      let(:path) { "/people/#{person.id}/events" }
-
-      it_behaves_like 'non-existent resource' do
-        let(:path) { "/people/mranonym/events" }
-      end
-
-      context 'with existing person' do
-        it_behaves_like 'events endpoint' do
-          let(:events_params) { { teacher_ids: [person.id] } }
-        end
-      end
-    end
-  end
-
   describe 'filter by course' do
     let(:course) { Fabricate(:course, id: 'MI-RUB') }
 
@@ -283,6 +263,46 @@ describe API::EventsEndpoints do
       context 'with existing course' do
         it_behaves_like 'events endpoint' do
           let(:events_params) { { course: course } }
+        end
+      end
+    end
+  end
+
+  describe 'filter by person', authenticated: true do
+    let(:username) { 'user' }
+    let(:person) { Fabricate(:person, id: username) }
+    let(:another_person) { Fabricate(:person, id: 'vomackar') }
+
+    describe 'GET /people' do
+      it_behaves_like 'invalid endpoint' do
+        let(:path) { '/people' }
+      end
+    end
+
+    describe 'GET /people/:username' do
+      it_behaves_like 'invalid endpoint' do
+        let(:path) { "/people/#{username}" }
+      end
+    end
+
+    describe 'GET /people/:username/events' do
+      let(:path) { "/people/#{username}/events" }
+
+      context 'non-existent person' do
+        it_behaves_like 'forbidden resource' do
+          let(:path) { "/people/mranonym/events" }
+        end
+      end
+
+      context 'authorized person within own scope' do
+        it_behaves_like 'events endpoint' do
+          let(:events_params) { { teacher_ids: [person.id] } }
+        end
+      end
+
+      context 'atuhenticated person within scope for someone else' do
+        it_behaves_like 'forbidden resource' do
+          let(:path) { "/people/#{another_person.id}/events" }
         end
       end
     end
