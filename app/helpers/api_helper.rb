@@ -4,4 +4,8 @@ module ApiHelper
   def api_format
     env['api.format'].to_sym
   end
+
+  def authenticate!
+    env['warden'].authenticate!
+  end
 end

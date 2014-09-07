@@ -11,6 +11,10 @@ module SiriusApi
         params['access_token']
       end
 
+      def store?
+        false
+      end
+
       def authenticate!
         if access_token.blank?
           fail!('Missing access token')

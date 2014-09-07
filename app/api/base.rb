@@ -1,6 +1,6 @@
 require 'grape'
+require 'warden'
 require 'json'
-
 require 'errors_helper'
 require 'sirius_api'
 require 'api/events_endpoints'
@@ -24,6 +24,13 @@ module API
 
     rescue_status Grape::Exceptions::ValidationErrors, 400
     rescue_status Sequel::NoMatchingRow, 404
+    rescue_status SiriusApi::Errors::Authentication, 401
+
+    use Warden::Manager do |manager|
+      manager.default_strategies :access_token
+      # manager.store = false
+      manager.failure_app = lambda {|env| raise SiriusApi::Errors::Authentication, env['warden'].message }
+    end
 
     # Mount your api classes here
     mount API::EventsEndpoints

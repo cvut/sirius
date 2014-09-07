@@ -34,6 +34,10 @@ module API
       end
     end
 
+    before do
+      authenticate!
+    end
+
     resource :events do
 
       desc 'Get all events'
