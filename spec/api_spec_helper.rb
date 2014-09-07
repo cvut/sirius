@@ -16,7 +16,6 @@ module RackHelper
 
 end
 
-
 RSpec.configure do |config|
   config.include RackHelper
   config.include JsonSpec::Helpers

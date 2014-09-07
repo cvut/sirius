@@ -1,5 +1,4 @@
 class Token < Sequel::Model
-
   def self.authenticate(token_id)
     token = self.with_pk!(token_id)
   rescue
@@ -7,5 +6,4 @@ class Token < Sequel::Model
   else
     token.username
   end
-
 end

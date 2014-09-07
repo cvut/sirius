@@ -30,7 +30,7 @@ module API
     use Warden::Manager do |manager|
       manager.default_strategies :access_token
       # manager.store = false
-      manager.failure_app = lambda {|env| raise SiriusApi::Errors::Authentication, env['warden'].message }
+      manager.failure_app = lambda { |env| raise SiriusApi::Errors::Authentication, env['warden'].message }
     end
 
     # Mount your api classes here

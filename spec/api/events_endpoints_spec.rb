@@ -1,13 +1,12 @@
 require 'api_spec_helper'
 require 'icalendar'
 
-
 RSpec.shared_context 'authenticated user', authenticated: true do
   let(:username) { 'user' }
   let(:token) { Fabricate(:token, username: username) }
   let(:access_token) { { access_token: token.uuid } }
 
-  def auth_get path, **params
+  def auth_get(path, **params)
     get path, params.merge(access_token)
   end
 end
@@ -257,7 +256,7 @@ describe API::EventsEndpoints do
       let(:path) { "/courses/#{course.id}/events" }
 
       it_behaves_like 'non-existent resource' do
-        let(:path) { "/courses/MI-COB/events" } # Programming in Cobol is a not thing, yet?
+        let(:path) { '/courses/MI-COB/events' } # Programming in Cobol is a not thing, yet?
       end
 
       context 'with existing course' do
@@ -290,7 +289,7 @@ describe API::EventsEndpoints do
 
       context 'non-existent person' do
         it_behaves_like 'forbidden resource' do
-          let(:path) { "/people/mranonym/events" }
+          let(:path) { '/people/mranonym/events' }
         end
       end
 
