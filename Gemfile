@@ -12,6 +12,7 @@ gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
 ## REST API
 gem 'pliny', '~> 0.2.1'
 gem 'grape'
+gem 'warden' # authentication middleware
 
 # JSON-API support: https://github.com/apotonick/roar/pull/98
 gem 'roar', github: 'apotonick/roar'
@@ -36,6 +37,7 @@ gem 'role_playing'
 
 ## For console
 gem 'pry', require: false
+
 
 group :development do
   gem 'guard-shotgun', github: 'jnv/guard-shotgun', require: false
