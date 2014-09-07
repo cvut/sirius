@@ -37,5 +37,8 @@ module Config
     timeout:          45,
     force_ssl:        'true',
     versioning:       'false',
-    tz:               'Europe/Prague'
+    tz:               'Europe/Prague',
+    puma_max_threads: 16,
+    puma_min_threads: 1,
+    puma_workers:     3
 end

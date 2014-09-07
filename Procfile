@@ -1,2 +1,1 @@
-# Foreman configuration
-web: bundle exec rackup -s thin -E production --port $PORT
+web: bundle exec puma --config config/puma.rb config.ru
