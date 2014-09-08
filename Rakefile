@@ -1,12 +1,12 @@
-require "pliny/tasks"
-
+require 'pliny/tasks'
+require 'raven/tasks'
 # Add your rake tasks to lib/tasks!
-Dir["./lib/tasks/*.rake"].each { |task| load task }
+Dir['./lib/tasks/*.rake'].each { |task| load task }
 
 task :spec do
-  require "rspec/core"
+  require 'rspec/core'
   code = RSpec::Core::Runner.run(
-    ["./spec"],
+    ['./spec'],
     $stderr, $stdout)
   exit(code) unless code == 0
 end

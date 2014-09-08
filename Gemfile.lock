@@ -217,6 +217,10 @@ GEM
     rspec-mocks (3.0.4)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.4)
+    sentry-raven (0.9.4)
+      faraday (>= 0.7.6)
+      hashie (>= 1.1.0)
+      uuidtools
     sequel (4.14.0)
     sequel_pg (1.6.10)
       pg (>= 0.8.0)
@@ -248,6 +252,7 @@ GEM
       thread_safe (~> 0.1)
     uber (0.0.8)
     uri_template (0.7.0)
+    uuidtools (2.1.5)
     vcr (2.9.2)
     virtus (1.0.3)
       axiom-types (~> 0.1)
@@ -293,6 +298,7 @@ DEPENDENCIES
   roar!
   role_playing
   rspec (~> 3.0.0)
+  sentry-raven
   sequel
   sequel_pg
   timecop

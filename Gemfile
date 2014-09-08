@@ -38,6 +38,7 @@ gem 'role_playing'
 ## For console
 gem 'pry', require: false
 
+gem 'sentry-raven'
 
 group :development do
   gem 'guard-shotgun', github: 'jnv/guard-shotgun', require: false

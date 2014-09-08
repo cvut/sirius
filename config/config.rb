@@ -25,7 +25,8 @@ module Config
     :console_banner,
     :placeholder,
     :versioning_default,
-    :versioning_app_name
+    :versioning_app_name,
+    :sentry_dsn
 
   # Override -- value is returned or the set default. Remember to typecast.
   override \
