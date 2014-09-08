@@ -52,7 +52,7 @@ end
 
 group :test do
   gem 'committee'
-  gem 'rspec', '~> 3.0.0'
+  gem 'rspec', '~> 3.1.0'
   gem 'rack-test'
   gem 'bogus'
   gem 'database_cleaner'
