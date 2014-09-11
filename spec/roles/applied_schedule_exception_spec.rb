@@ -7,14 +7,24 @@ describe AppliedScheduleException do
 
   describe '#apply' do
 
-    let(:event) { Fabricate.build(:event) }
+    let(:event) { Fabricate.build(:event, period: Period.parse('7:30', '9:00')) }
 
-    context 'with CANCEL exception type' do
+    context 'with CANCEL exception' do
 
       let(:wrapped_exception) { Fabricate.build(:schedule_exception, exception_type: Sirius::ScheduleExceptionType::CANCEL) }
 
       it 'deletes an event' do
         expect { exception.apply(event) }.to change(event, :deleted).from(false).to(true)
+      end
+
+    end
+
+    context 'with RELATIVE_MOVE exception' do
+
+      let(:wrapped_exception) { Fabricate.build(:schedule_exception, exception_type: Sirius::ScheduleExceptionType::RELATIVE_MOVE, options: Sequel.hstore(offset: 15)) }
+
+      it 'moves an event by a positive offset' do
+        expect { exception.apply(event) }.to change(event, :period).from(Period.parse('7:30', '9:00')).to(Period.parse('7:45', '9:15'))
       end
 
     end
