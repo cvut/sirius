@@ -40,4 +40,16 @@ describe Event do
     end
   end
 
+  describe '#move' do
+
+    it 'moves start and end by an positive offset' do
+      expect { event.move(5) }.to change(event, :period).from(Period.parse('11:00', '12:30')).to(Period.parse('11:05', '12:35'))
+    end
+
+    it 'moves start and end by an negative offset' do
+      expect { event.move(-15) }.to change(event, :period).from(Period.parse('11:00', '12:30')).to(Period.parse('10:45', '12:15'))
+    end
+
+  end
+
 end
