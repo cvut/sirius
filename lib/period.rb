@@ -36,6 +36,9 @@ class Period
     inside?(other_period.starts_at) || inside?(other_period.ends_at)
   end
 
+  alias_method :intersect?, :cover?
+  alias_method :overlap?, :cover?
+
   private
   def inside?(date)
     starts_at <= date && date <= ends_at
