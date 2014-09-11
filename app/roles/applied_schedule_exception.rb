@@ -4,7 +4,7 @@ require 'sirius/enums/schedule_exception_type'
 class AppliedScheduleException < RolePlaying::Role
 
   def affects?(event)
-    period.include?(event.period)
+    period.intersect?(event.period)
   end
 
   def apply(event)
