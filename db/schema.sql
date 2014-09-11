@@ -218,7 +218,8 @@ CREATE TABLE schedule_exceptions (
     semester text,
     parallel_ids integer[],
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    options hstore
 );
 
 
@@ -574,3 +575,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('20140821125210_add_student
 INSERT INTO "schema_migrations" ("filename") VALUES ('20140825020123_add_schedule_exceptions.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1409657056_fix_array_indexes.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410088335_create_tokens.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1410433713_add_options_to_schedule_exceptions.rb');
