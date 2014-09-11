@@ -1,5 +1,5 @@
 require 'period'
-require 'sirius/enums/exception_type'
+require 'sirius/enums/schedule_exception_type'
 
 class ScheduleException < Sequel::Model
 
@@ -13,11 +13,11 @@ class ScheduleException < Sequel::Model
   end
 
   def exception_type
-    Sirius::ExceptionType.from_numeric(super)
+    Sirius::ScheduleExceptionType.from_numeric(super)
   end
 
   def exception_type=(new_type)
-    super Sirius::ExceptionType.to_numeric(new_type)
+    super Sirius::ScheduleExceptionType.to_numeric(new_type)
   end
 
 end

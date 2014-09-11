@@ -1,7 +1,7 @@
 require 'enum'
 
 module Sirius
-  class ExceptionType
+  class ScheduleExceptionType
     extend Enum
 
     TYPES = [:cancel]

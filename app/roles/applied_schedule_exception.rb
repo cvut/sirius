@@ -1,5 +1,5 @@
 require 'role_playing'
-require 'sirius/enums/exception_type'
+require 'sirius/enums/schedule_exception_type'
 
 class AppliedScheduleException < RolePlaying::Role
 
@@ -9,9 +9,9 @@ class AppliedScheduleException < RolePlaying::Role
 
   def apply(event)
     case exception_type
-      when Sirius::ExceptionType::CANCEL then event.deleted = true
-      else
-        raise "Don't know how to apply #{exception_type}."
+    when Sirius::ScheduleExceptionType::CANCEL then event.deleted = true
+    else
+      raise "Don't know how to apply #{exception_type}."
     end
   end
 
