@@ -41,7 +41,10 @@ class Period
 
   private
   def inside?(date)
-    starts_at <= date && date <= ends_at
+    start_check = end_check = true
+    start_check = (starts_at <= date) if starts_at
+    end_check = (date <= ends_at) if ends_at
+    start_check && end_check
   end
 
 end

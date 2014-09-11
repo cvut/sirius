@@ -52,6 +52,17 @@ describe Period do
     it 'does not include crossing period' do
       expect(period).not_to include(Period.parse('8:00', '10:00'))
     end
+
+    context 'with nil start and end' do
+
+      subject(:period) { Period.new(nil, nil) }
+
+      it 'returns always true' do
+        expect(period).to include(Period.parse('8:00', '10:00'))
+      end
+
+    end
+
   end
 
   describe '#cover?' do
