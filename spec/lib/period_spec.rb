@@ -33,4 +33,46 @@ describe Period do
     end
   end
 
+  describe '#include?' do
+
+    subject(:period) { Period.parse('7:30', '9:00') }
+
+    it 'includes itself' do
+      expect(period).to include(period)
+    end
+
+    it 'includes period with start and end inside time range' do
+      expect(period).to include(Period.parse('8:00', '8:30'))
+    end
+
+    it 'does not include period with start and end outside time range' do
+      expect(period).not_to include(Period.parse('10:00', '12:00'))
+    end
+
+    it 'does not include crossing period' do
+      expect(period).not_to include(Period.parse('8:00', '10:00'))
+    end
+  end
+
+  describe '#cover?' do
+
+    subject(:period) { Period.parse('7:30', '9:00') }
+
+    it 'covers itself' do
+      expect(period).to cover(period)
+    end
+
+    it 'covers period with start and end inside' do
+      expect(period).to cover(Period.parse('8:00', '8:30'))
+    end
+
+    it 'does not cover period with start and end outside' do
+      expect(period).not_to cover(Period.parse('10:00', '12:00'))
+    end
+
+    it 'covers crossing period' do
+      expect(period).to cover(Period.parse('8:00', '10:00'))
+    end
+  end
+
 end
