@@ -6,14 +6,18 @@ describe Event do
   subject(:event) { Event.new(starts_at: Time.parse('11:00'), ends_at: Time.parse('12:30')) }
   let(:period) { Period.parse('7:30', '9:00') }
 
-  it 'returns correct calculated period' do
-    expect(event.period).to eq Period.parse('11:00', '12:30')
-  end
+  describe '#period' do
 
-  it 'sets starts_at and ends_at attributes from period=' do
-    event.period = period
-    expect(event.starts_at).to eq period.starts_at
-    expect(event.ends_at).to eq period.ends_at
+    it 'returns correct calculated period' do
+      expect(event.period).to eq Period.parse('11:00', '12:30')
+    end
+
+    it 'sets starts_at and ends_at attributes from period=' do
+      event.period = period
+      expect(event.starts_at).to eq period.starts_at
+      expect(event.ends_at).to eq period.ends_at
+    end
+
   end
 
   describe '.with_person' do
@@ -38,6 +42,18 @@ describe Event do
     it 'aliases relative_sequence_number' do
       expect(event.sequence_number).to eql 42
     end
+  end
+
+  describe '#move' do
+
+    it 'moves start and end by an positive offset' do
+      expect { event.move(5) }.to change(event, :period).from(Period.parse('11:00', '12:30')).to(Period.parse('11:05', '12:35'))
+    end
+
+    it 'moves start and end by an negative offset' do
+      expect { event.move(-15) }.to change(event, :period).from(Period.parse('11:00', '12:30')).to(Period.parse('10:45', '12:15'))
+    end
+
   end
 
 end

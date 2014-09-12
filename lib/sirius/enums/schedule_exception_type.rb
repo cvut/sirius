@@ -1,10 +1,10 @@
 require 'enum'
 
 module Sirius
-  class ExceptionType
+  class ScheduleExceptionType
     extend Enum
 
-    TYPES = [:cancel]
+    TYPES = [:cancel, :relative_move]
 
     # define all types as public uppercase constants of this class
     TYPES.each do |type|

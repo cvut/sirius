@@ -25,4 +25,10 @@ class Event < Sequel::Model
     self.ends_at = new_period.ends_at
   end
 
+  def move(offset)
+    offset_int = offset.to_i
+    self.starts_at += offset_int.minutes
+    self.ends_at += offset_int.minutes
+  end
+
 end
