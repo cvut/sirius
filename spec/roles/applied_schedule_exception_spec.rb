@@ -7,7 +7,7 @@ describe AppliedScheduleException do
 
   describe '#apply' do
 
-    let(:event) { Fabricate.build(:event, period: Period.parse('7:30', '9:00')) }
+    let(:event) { Fabricate.build(:event, period: Period.parse('7:30', '9:00'), room_id: 11) }
 
     context 'with CANCEL exception' do
 
@@ -25,6 +25,16 @@ describe AppliedScheduleException do
 
       it 'moves an event by a positive offset' do
         expect { exception.apply(event) }.to change(event, :period).from(Period.parse('7:30', '9:00')).to(Period.parse('7:45', '9:15'))
+      end
+
+    end
+
+    context 'with ROOM_CHANGE exception' do
+
+      let(:wrapped_exception) { Fabricate.build(:schedule_exception, exception_type: Sirius::ScheduleExceptionType::ROOM_CHANGE, options: Sequel.hstore(room_id: 42)) }
+
+      it 'changes room_id' do
+        expect { exception.apply(event) }.to change(event, :room_id).from(11).to(42)
       end
 
     end
