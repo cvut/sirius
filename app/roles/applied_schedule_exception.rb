@@ -6,7 +6,7 @@ class AppliedScheduleException < RolePlaying::Role
   def affects?(event)
     faculty_check = true
     semester_check = true
-    time_range_check(event) && faculty_check && semester_check && timetable_slot_check(event)
+    time_range_check(event) && faculty_check && semester_check && course_check(event) && timetable_slot_check(event)
   end
 
   def apply(event)
@@ -27,6 +27,11 @@ class AppliedScheduleException < RolePlaying::Role
   def timetable_slot_check(event)
     return true if timetable_slot_ids.nil? || timetable_slot_ids.empty?
     timetable_slot_ids.include?(event.timetable_slot_id)
+  end
+
+  def course_check(event)
+    return true if course_ids.nil? || course_ids.empty?
+    course_ids.include?(event.course_id)
   end
 
 

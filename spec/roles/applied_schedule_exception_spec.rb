@@ -75,7 +75,7 @@ describe AppliedScheduleException do
 
     describe 'timetable_slot matching' do
 
-      let(:wrapped_exception) { Fabricate.build(:schedule_exception, timetable_slot_ids: [123] ) }
+      let(:wrapped_exception) { Fabricate.build(:schedule_exception, timetable_slot_ids: [50, 123] ) }
 
       it 'matches with event from slot in exception' do
         event = Fabricate.build(:event, timetable_slot_id: 123)
@@ -98,6 +98,30 @@ describe AppliedScheduleException do
       end
 
     end
+
+    describe 'course matching' do
+      let(:wrapped_exception) { Fabricate.build(:schedule_exception, course_ids: %w(BI-CAO MI-PAR)) }
+
+      it 'matches with event from specified course' do
+        event = Fabricate.build(:event, course_id: 'MI-PAR')
+        expect( exception.affects?(event) ).to be_truthy
+      end
+
+      it 'does not match with event from different course' do
+        event = Fabricate.build(:event, course_id: 'MI-FOO')
+        expect( exception.affects?(event) ).to be_falsey
+      end
+
+      context 'with empty course_ids' do
+        let(:wrapped_exception) { Fabricate.build(:schedule_exception, course_ids: []) }
+
+        it 'always matches' do
+          event = Fabricate.build(:event, course_id: 124)
+          expect( exception.affects?(event) ).to be_truthy
+        end
+      end
+    end
+
   end
 
 end
