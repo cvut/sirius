@@ -42,23 +42,52 @@ describe AppliedScheduleException do
 
   describe '#affects?' do
 
-    let(:wrapped_exception) { Fabricate.build(:schedule_exception, period: Period.parse('9:00', '11:00') ) }
+    describe 'time matching' do
 
-    it 'returns true for an event in time range' do
-      event = Fabricate.build(:event, period: Period.parse('9:00', '10:00'))
-      expect( exception.affects?( event ) ).to be_truthy
+      let(:wrapped_exception) { Fabricate.build(:schedule_exception, period: Period.parse('9:00', '11:00') ) }
+
+      it 'returns true for an event in time range' do
+        event = Fabricate.build(:event, period: Period.parse('9:00', '10:00'))
+        expect( exception.affects?( event ) ).to be_truthy
+      end
+
+      it 'returns false for an event outside time range' do
+        event = Fabricate.build(:event, period: Period.parse('14:00', '15:00'))
+        expect( exception.affects?( event ) ).to be_falsey
+      end
+
+      it 'returns true for an event crossing time range' do
+        event = Fabricate.build(:event, period: Period.parse('10:00', '12:00'))
+        expect( exception.affects?( event ) ).to be_truthy
+      end
+
     end
 
-    it 'returns false for an event outside time range' do
-      event = Fabricate.build(:event, period: Period.parse('14:00', '15:00'))
-      expect( exception.affects?( event ) ).to be_falsey
-    end
+    describe 'timetable_slot matching' do
 
-    it 'returns true for an event crossing time range' do
-      event = Fabricate.build(:event, period: Period.parse('10:00', '12:00'))
-      expect( exception.affects?( event ) ).to be_truthy
-    end
+      let(:wrapped_exception) { Fabricate.build(:schedule_exception, timetable_slot_ids: [123] ) }
 
+      it 'matches with event from slot in exception' do
+        event = Fabricate.build(:event, timetable_slot_id: 123)
+        expect( exception.affects?(event) ).to be_truthy
+      end
+
+      it 'does not match with event from different slot' do
+        event = Fabricate.build(:event, timetable_slot_id: 124)
+        expect( exception.affects?(event) ).to be_falsey
+      end
+
+      context 'with empty timetable_slot_ids' do
+
+        let(:wrapped_exception) { Fabricate.build(:schedule_exception, timetable_slot_ids: [] ) }
+
+        it 'always matches' do
+          event = Fabricate.build(:event, timetable_slot_id: 124)
+          expect( exception.affects?(event) ).to be_truthy
+        end
+      end
+
+    end
   end
 
 end
