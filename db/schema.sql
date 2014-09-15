@@ -216,7 +216,7 @@ CREATE TABLE schedule_exceptions (
     ends_at timestamp without time zone,
     faculty integer,
     semester text,
-    parallel_ids integer[],
+    timetable_slot_ids integer[],
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     options hstore
@@ -576,3 +576,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('20140825020123_add_schedul
 INSERT INTO "schema_migrations" ("filename") VALUES ('1409657056_fix_array_indexes.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410088335_create_tokens.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410433713_add_options_to_schedule_exceptions.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1410790752_rename_parallel_ids_to_timetable_slot_ids.rb');
