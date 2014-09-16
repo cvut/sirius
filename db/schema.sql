@@ -295,7 +295,9 @@ ALTER SEQUENCE timetable_slots_id_seq OWNED BY timetable_slots.id;
 CREATE TABLE tokens (
     uuid uuid NOT NULL,
     username text,
-    last_used_at timestamp without time zone
+    last_used_at timestamp without time zone,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -579,3 +581,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1410088335_create_tokens.r
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410433713_add_options_to_schedule_exceptions.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410790752_rename_parallel_ids_to_timetable_slot_ids.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410795097_add_course_ids_to_schedule_exceptions.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1410867754_tokens_timestamp.rb');
