@@ -4,6 +4,8 @@ namespace :sirius do
   task :events => %w(events:import events:import_students events:plan)
 
   task :env do
+    require 'bundler'
+    Bundler.require
     require File.expand_path('../../lib/initializer', File.dirname(__FILE__))
   end
 
