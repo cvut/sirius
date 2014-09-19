@@ -78,7 +78,7 @@ ALTER SEQUENCE courses_id_seq OWNED BY courses.id;
 --
 
 CREATE TABLE events (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     name text,
     note text,
     starts_at timestamp without time zone,
@@ -563,3 +563,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1410790752_rename_parallel
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410795097_add_course_ids_to_schedule_exceptions.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410867754_tokens_timestamp.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411132487_ids_to_bigint.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1411147098_events_id_to_bigint.rb');
