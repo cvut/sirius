@@ -92,8 +92,8 @@ CREATE TABLE events (
     relative_sequence_number integer,
     deleted boolean,
     event_type text,
-    parallel_id integer,
-    timetable_slot_id integer,
+    parallel_id bigint,
+    timetable_slot_id bigint,
     course_id text
 );
 
@@ -122,7 +122,7 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 --
 
 CREATE TABLE parallels (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     parallel_type text,
     course_id text,
     code integer,
@@ -208,7 +208,7 @@ ALTER SEQUENCE rooms_id_seq OWNED BY rooms.id;
 --
 
 CREATE TABLE schedule_exceptions (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     exception_type integer,
     name text,
     note text,
@@ -216,7 +216,7 @@ CREATE TABLE schedule_exceptions (
     ends_at timestamp without time zone,
     faculty integer,
     semester text,
-    timetable_slot_ids integer[],
+    timetable_slot_ids bigint[],
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     options hstore,
@@ -257,13 +257,13 @@ CREATE TABLE schema_migrations (
 --
 
 CREATE TABLE timetable_slots (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     day integer,
     parity integer,
     first_hour integer,
     duration integer,
     room_id integer,
-    parallel_id integer,
+    parallel_id bigint,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -306,7 +306,7 @@ CREATE TABLE tokens (
 --
 
 CREATE TABLE update_logs (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     type integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
@@ -555,9 +555,11 @@ ALTER TABLE ONLY timetable_slots
 --
 -- PostgreSQL database dump complete
 --
+
 INSERT INTO "schema_migrations" ("filename") VALUES ('1409657056_fix_array_indexes.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410088335_create_tokens.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410433713_add_options_to_schedule_exceptions.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410790752_rename_parallel_ids_to_timetable_slot_ids.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410795097_add_course_ids_to_schedule_exceptions.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410867754_tokens_timestamp.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1411132487_ids_to_bigint.rb');
