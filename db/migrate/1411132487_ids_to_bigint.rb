@@ -1,12 +1,11 @@
 Sequel.migration do
   # Mass convert type of given columns in given tables
   IDS_MAPPING ||= {
-    events: %i(id parallel_id),
+    events: %i(id parallel_id timetable_slot_id),
     schedule_exceptions: :id,
     parallels: :id,
     timetable_slots: %i(id parallel_id),
     update_logs: :id,
-    events: :timetable_slot_id,
   }
 
   IDS_ARR_MAPPING ||= {

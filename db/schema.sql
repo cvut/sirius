@@ -564,3 +564,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1410795097_add_course_ids_
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410867754_tokens_timestamp.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411132487_ids_to_bigint.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411147098_events_id_to_bigint.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1411506543_parallel_id_to_bigint.rb');
