@@ -1,3 +1,5 @@
+require 'pliny/utils'
+
 module Initializer
   def self.run
     require_config
