@@ -1,13 +1,15 @@
 ENV['RACK_ENV'] = 'test'
 
-require "bundler"
-Bundler.require(:default, :test)
+require 'bundler'
+Bundler.setup(:default, :test)
 
 root = File.expand_path("../../", __FILE__)
 ENV.update(Pliny::Utils.parse_env("#{root}/.env")) if File.exists?("#{root}/.env") # Load default env…
 ENV.update(Pliny::Utils.parse_env("#{root}/.env.test")) # and overwrite it.
 
 require 'simplecov'
+require 'rspec'
+require 'fabrication'
 
 require_relative "../lib/initializer"
 
@@ -19,6 +21,7 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.before(:suite) do
+    require 'database_cleaner'
     DatabaseCleaner[:sequel, {:connection => DB}]
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)

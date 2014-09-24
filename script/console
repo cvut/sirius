@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require "bundler"
-Bundler.require
+Bundler.require # Keep require for convenience
 require "pry"
 require "./lib/initializer"
 
