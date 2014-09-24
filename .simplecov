@@ -8,5 +8,11 @@ if ENV['COVERAGE'] || ENV['CI']
   formatters << CodeClimate::TestReporter::Formatter if ENV['CODECLIMATE_REPO_TOKEN']
 
   SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[*formatters]
-  SimpleCov.start 'rails'
+  SimpleCov.start 'rails' do
+    add_group 'Models', 'app/models'
+    add_group 'Interactors', 'app/interactors'
+    add_group 'Roles', 'app/roles'
+    add_group 'Core', 'lib/sirius'
+    add_group 'API', '(app/api|lib/sirius_api)'
+  end
 end
