@@ -1,5 +1,4 @@
 require 'api_spec_helper'
-require 'icalendar'
 
 RSpec.shared_context 'authenticated user', authenticated: true do
   let(:username) { 'user' }
@@ -13,6 +12,8 @@ end
 
 RSpec.shared_examples 'events endpoint' do
   include_context 'API response'
+
+  include IcalendarHelper
 
   let(:path) { path_for super() } # assume path is given as a context from outside
   let(:events_cnt) { 3 }
@@ -114,7 +115,7 @@ RSpec.shared_examples 'events endpoint' do
       end
 
       it 'returns a valid iCalendar' do
-        calendar = Icalendar.parse(body).first
+        calendar = parse_icalendar(body).first
         expect(calendar.events.size).to eq(events_cnt)
       end
     end

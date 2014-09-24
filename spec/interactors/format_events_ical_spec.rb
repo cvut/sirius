@@ -1,14 +1,14 @@
 require 'spec_helper'
 require 'format_events_ical'
-require 'icalendar'
 require 'models/event'
 
 describe FormatEventsIcal do
+  include IcalendarHelper
 
   let(:event) { Fabricate.build(:event, id: 42, starts_at: '2014-04-05 14:30', ends_at: '2014-04-05 16:00', course_id: 'MI-RUB', event_type: 'tutorial') }
   let(:interactor) { described_class.perform(events: event) }
   let(:result) { interactor.ical }
-  let(:calendar) { Icalendar.parse(result).first } # Parser returns array of calendars
+  let(:calendar) { parse_icalendar(result).first } # Parser returns array of calendars
   let(:tzid) { 'Europe/Prague' }
 
   before { allow(event).to receive_messages(parallel: nil, name: nil, note: nil) }
