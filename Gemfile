@@ -28,8 +28,7 @@ gem 'puma'
 ## Time & Space
 gem 'ice_cube' # Date/Time helper
 
-# TZNAME generation https://github.com/icalendar/icalendar/pull/86
-gem 'icalendar', github: 'jnv/icalendar', branch: 'tzinfo' # '~> 2.1.0'
+gem 'icalendar', '~> 2.2.0'
 
 ## Helper stuff
 gem 'activesupport'
@@ -41,7 +40,7 @@ gem 'pry', require: false
 gem 'sentry-raven'
 
 group :development do
-  gem 'guard-shotgun', github: 'jnv/guard-shotgun', require: false
+  gem 'guard-shotgun', '~> 0.4.0', require: false
   gem 'guard-rspec', require: false
   gem 'foreman'
 
