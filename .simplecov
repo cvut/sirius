@@ -12,7 +12,7 @@ if ENV['COVERAGE'] || ENV['CI']
     add_group 'Models', 'app/models'
     add_group 'Interactors', 'app/interactors'
     add_group 'Roles', 'app/roles'
-    add_group 'Core', 'lib/sirius'
+    add_group 'Sirius', 'lib/sirius/'
     add_group 'API', '(app/api|lib/sirius_api)'
   end
 end
