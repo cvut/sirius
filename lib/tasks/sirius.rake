@@ -5,7 +5,7 @@ namespace :sirius do
 
   task :env do
     require 'bundler'
-    Bundler.require
+    Bundler.setup
     require File.expand_path('../../lib/initializer', File.dirname(__FILE__))
   end
 
