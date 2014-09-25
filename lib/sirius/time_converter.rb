@@ -7,15 +7,11 @@ module Sirius
     # Initializes converter with timetable
     # parameters required for conversion.
     #
-    # @param first_hour [Time] Time when the first hour of schedule starts.
+    # @param hour_starts [Array] Times when hours of schedule starts.
     # @param hour_length [Float] Duration of single teaching hour in minutes.
-    # @param break_length [Float] Duration of break in minutes.
-    # @param break_after [Integer] After how many teaching hours a break occurs.
-    def initialize( first_hour:, hour_length:, break_length:, break_after: )
-      @first_hour = first_hour
+    def initialize( hour_starts:, hour_length:)
+      @hour_starts = hour_starts
       @hour_length = hour_length
-      @break_length = break_length
-      @break_after = break_after
     end
 
     # Converts hour data from KOSapi
@@ -38,7 +34,7 @@ module Sirius
     #
     def convert_time( start_hour, duration )
       raise "Invalid start hour (#{start_hour}) or duration (#{duration})" if start_hour <= 0 || duration <= 0
-      start_time = @first_hour + ( ( start_hour - 1 ) * @hour_length ).minutes + ( ( ( start_hour - 1 ) / @break_after ) * @break_length ).minutes
+      start_time = @hour_starts[start_hour - 1]
       end_time = start_time + (@hour_length * duration).minutes
       Period.new(start_time, end_time)
     end

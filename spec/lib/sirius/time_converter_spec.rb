@@ -3,7 +3,8 @@ require 'sirius/time_converter'
 
 describe Sirius::TimeConverter do
 
-  let(:schedule_params) { { first_hour: Time.parse('7:30'), hour_length: 45, break_length: 15, break_after: 2 } }
+  let(:hour_starts) { %w(7:30 8:15 9:15 10:00 11:00 11:45 12:45 13:30 14:30 15:15 16:15 17:00 18:00 18:45 19:45).map { |t| Time.parse(t) } }
+  let(:schedule_params) { { hour_starts: hour_starts, hour_length: 45 } }
   subject(:converter) { Sirius::TimeConverter.new(schedule_params) }
 
   it 'calculates event start and end time' do
