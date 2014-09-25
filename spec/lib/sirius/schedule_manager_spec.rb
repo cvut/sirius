@@ -3,6 +3,7 @@ require 'sirius/schedule_manager'
 
 describe Sirius::ScheduleManager do
 
+  let!(:semester) { Fabricate(:faculty_semester) }
   subject(:manager) { Sirius::ScheduleManager.new }
 
   it 'plans all slots stored in DB' do
