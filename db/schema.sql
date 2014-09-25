@@ -118,6 +118,47 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 
 --
+-- Name: faculty_semesters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE faculty_semesters (
+    id integer NOT NULL,
+    code text,
+    faculty integer,
+    update_enabled boolean DEFAULT true,
+    first_week_parity integer,
+    starts_at date,
+    teaching_ends_at date,
+    exams_start_at date,
+    exams_end_at date,
+    ends_at date,
+    hour_starts time without time zone[],
+    hour_duration integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: faculty_semesters_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE faculty_semesters_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: faculty_semesters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE faculty_semesters_id_seq OWNED BY faculty_semesters.id;
+
+
+--
 -- Name: parallels; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -350,6 +391,13 @@ ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY faculty_semesters ALTER COLUMN id SET DEFAULT nextval('faculty_semesters_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY parallels ALTER COLUMN id SET DEFAULT nextval('parallels_id_seq'::regclass);
 
 
@@ -395,6 +443,22 @@ ALTER TABLE ONLY courses
 
 ALTER TABLE ONLY events
     ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: faculty_semesters_code_faculty_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY faculty_semesters
+    ADD CONSTRAINT faculty_semesters_code_faculty_key UNIQUE (code, faculty);
+
+
+--
+-- Name: faculty_semesters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY faculty_semesters
+    ADD CONSTRAINT faculty_semesters_pkey PRIMARY KEY (id);
 
 
 --
@@ -473,6 +537,20 @@ CREATE INDEX events_student_ids_index ON events USING gin (student_ids);
 --
 
 CREATE INDEX events_teacher_ids_index ON events USING gin (teacher_ids);
+
+
+--
+-- Name: faculty_semesters_code_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX faculty_semesters_code_index ON faculty_semesters USING btree (code);
+
+
+--
+-- Name: faculty_semesters_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX faculty_semesters_faculty_index ON faculty_semesters USING btree (faculty);
 
 
 --
@@ -565,3 +643,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1410867754_tokens_timestam
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411132487_ids_to_bigint.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411147098_events_id_to_bigint.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411506543_parallel_id_to_bigint.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1411653818_add_faculty_semesters.rb');
