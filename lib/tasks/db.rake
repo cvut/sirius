@@ -35,6 +35,8 @@ namespace :db do
     end
   end
 
+  Rake::Task['db:seed'].enhance ['sirius:env'] # set up load path for models
+
   # Append migration files to a generated schema file
   Rake::Task['db:schema:dump'].enhance do
     file = File.join('db', 'schema.sql')

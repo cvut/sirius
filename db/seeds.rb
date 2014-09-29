@@ -6,17 +6,9 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-scala = Course.create(code: 'MI-PSL', department: '18102', name: Sequel.hstore({cs:'Programování v jazyku Scala', en: 'Programming in Scala'}))
+require 'faculty_semester'
 
-room = Room.create({code: 'T9:350'})
-
-Event.create({name:'MI-PSL 1. cvičení', starts_at: DateTime.strptime('03/05/2014 9:15', '%m/%d/%Y %H:%M'), ends_at: DateTime.strptime('03/05/2014 10:45', '%m/%d/%Y %H:%M'), sequence_number: 1})
-Event.create({name:'MI-PSL 2. cvičení', starts_at: DateTime.strptime('03/12/2014 9:15', '%m/%d/%Y %H:%M'), ends_at: DateTime.strptime('03/12/2014 10:45', '%m/%d/%Y %H:%M'), sequence_number: 2})
-Event.create({name:'MI-PSL 3. cvičení', starts_at: DateTime.strptime('03/19/2014 9:15', '%m/%d/%Y %H:%M'), ends_at: DateTime.strptime('03/19/2014 10:45', '%m/%d/%Y %H:%M'), sequence_number: 3})
-
-scala_101 = Parallel.create({code: 101, capacity: 24, occupied: 24, semester: 'B132', course_id: scala.id})
-scala_102 = Parallel.create({code: 101, capacity: 24, occupied: 24, semester: 'B132', course_id: scala.id})
-
-TimetableSlot.create({day: 1, parity: 0, first_hour: 1, duration: 2, room_id: room.id, parallel_id: scala_101.id})
-TimetableSlot.create({day: 3, parity: 1, first_hour: 6, duration: 2, room_id: room.id, parallel_id: scala_102.id})
-
+FacultySemester.create(code: 'B141', faculty: 18000, update_enabled: true, first_week_parity: :odd,
+                        starts_at: '2014-09-22', teaching_ends_at: '2014-12-20', exams_start_at: '2015-01-05',
+                        exams_end_at: '2015-02-14', ends_at: '2015-02-14',
+                        hour_starts: %w(7:30 8:15 9:15 10:00 11:00 11:45 12:45 13:30 14:30 15:15 16:15 17:00 18:00 18:45 19:45), hour_duration: 45)
