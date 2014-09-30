@@ -87,8 +87,8 @@ CREATE TABLE events (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     room_id integer,
-    teacher_ids character varying(50)[],
-    student_ids character varying(50)[],
+    teacher_ids text[],
+    student_ids text[],
     relative_sequence_number integer,
     deleted boolean,
     event_type text,
@@ -644,3 +644,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1411132487_ids_to_bigint.r
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411147098_events_id_to_bigint.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411506543_parallel_id_to_bigint.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411653818_add_faculty_semesters.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1412095059_change_teacher_student_ids_type.rb');
