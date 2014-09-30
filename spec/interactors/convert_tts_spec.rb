@@ -17,7 +17,7 @@ describe ConvertTTS do
 
     context 'with slots' do
 
-      let(:slot) { double(id: 239019, to_hash: {day: 5, duration: 2, parity: :both, first_hour: 3}, room: double(link_title: 'MK:209')) }
+      let(:slot) { double(id: 239019, to_hash: {day: 5, duration: 2, parity: :both, first_hour: 3}, day: 5, room: double(link_title: 'MK:209')) }
       let(:room) { Fabricate(:room, kos_code: 'MK:209') }
       let(:slots) { {'1234' => [slot]} }
 
@@ -41,6 +41,18 @@ describe ConvertTTS do
         results = described_class.perform(timetable_slots: slots, rooms: [room]).results
         converted_slot = results[:timetable_slots].first
         expect(converted_slot.parallel_id).to eq 1234
+      end
+
+    end
+
+    context 'with invalid slots' do
+
+      let(:slot) { double(id: 239019, to_hash: {duration: 2, parity: :both, first_hour: 3}, day: nil, room: double(link_title: 'MK:209')) } # missing day
+      let(:slots) { {'1234' => [slot]} }
+
+      it 'rejects them' do
+        results = described_class.perform(timetable_slots: slots, rooms: []).results
+        expect(results[:timetable_slots]).to be_empty
       end
 
     end

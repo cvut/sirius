@@ -12,7 +12,7 @@ class ConvertTTS
   def perform(timetable_slots:, rooms:, **options)
     @rooms = build_rooms_hash(rooms)
     @timetable_slots = timetable_slots.map do |parallel_id, slots|
-      slots.map { |slot| convert_slot(slot, parallel_id) }
+      slots.reject {|slot| not valid?(slot) }.map { |slot| convert_slot(slot, parallel_id) }
     end.flatten
   end
 
@@ -36,6 +36,10 @@ class ConvertTTS
       s.parallel_id = parallel_id
       s.room = @rooms[room_code]
     end
+  end
+
+  def valid?(slot)
+    slot.day != nil
   end
 
 end
