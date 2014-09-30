@@ -11,9 +11,9 @@ class Event < Sequel::Model
   alias :sequence_number :relative_sequence_number
 
   def self.with_person(username)
-    teacher_op = Sequel.pg_array(:teacher_ids, :varchar)
-    student_op = Sequel.pg_array(:student_ids, :varchar)
-    filter(username => teacher_op.any).or(username => student_op.any)
+    teacher_op = Sequel.pg_array(:teacher_ids)
+    student_op = Sequel.pg_array(:student_ids)
+    filter(teacher_op.contains([username])).or(student_op.contains([username]))
   end
 
   def period
