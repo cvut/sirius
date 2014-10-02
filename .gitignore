@@ -53,3 +53,6 @@
 
 ## VCR cassetes
 /spec/cassettes
+
+# Local RSpec config
+/.rspec-local
