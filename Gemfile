@@ -51,6 +51,8 @@ group :development do
   gem 'kramdown', require: false
   gem 'guard-livereload', require: false
   gem 'guard-yard', require: false
+
+  gem 'stackprof'
 end
 
 group :test do
