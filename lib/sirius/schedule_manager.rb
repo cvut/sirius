@@ -11,10 +11,6 @@ require 'roles/planned_parallel'
 module Sirius
   class ScheduleManager
 
-    DEFAULT_START_TIMES = %w(7:30 8:15 9:15 10:00 11:00 11:45 12:45 13:30 14:30 15:15 16:15 17:00 18:00 18:45 19:45).map { |t| Time.parse(t) }
-    DEFAULT_TIME_CONVERTER = TimeConverter.new(hour_starts: DEFAULT_START_TIMES, hour_length: 45)
-    DEFAULT_CALENDAR_PLANNER = EventPlanner.new(teaching_period: Period.parse('22.9.2014','20.12.2014'), first_week_parity: :odd)
-
     def initialize
       @active_semesters = FacultySemester.active
     end
