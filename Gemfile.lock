@@ -17,6 +17,13 @@ GIT
       ox
       uri_template
 
+GIT
+  remote: git://github.com/jnv/role_playing.git
+  revision: 8bfab60b5308993926c0f5acfd5d7d404ca0c44d
+  specs:
+    role_playing (0.1.4)
+      activesupport (>= 3.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -195,8 +202,6 @@ GEM
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    role_playing (0.1.4)
-      activesupport (>= 3.0.0)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
@@ -289,7 +294,7 @@ DEPENDENCIES
   rack-test
   rake
   roar!
-  role_playing
+  role_playing!
   rspec (~> 3.1.0)
   sentry-raven
   sequel

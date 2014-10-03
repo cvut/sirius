@@ -35,7 +35,7 @@ gem 'clockwork', '~> 1.0.0', require: false
 
 ## Helper stuff
 gem 'activesupport'
-gem 'role_playing'
+gem 'role_playing', github: 'jnv/role_playing'
 
 ## For console
 gem 'pry', require: false
