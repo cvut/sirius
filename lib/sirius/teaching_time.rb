@@ -30,8 +30,5 @@ module Sirius
       @teaching_period == other.teaching_period && @day == other.day && @parity == other.parity
     end
 
-    def plan_calendar(semester_calendar)
-      semester_calendar.plan(self)
-    end
   end
 end

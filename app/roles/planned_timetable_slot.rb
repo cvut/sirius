@@ -11,8 +11,8 @@ class PlannedTimetableSlot < RolePlaying::Role
   end
 
   def generate_events
-    teaching_times = generate_teaching_periods
-    event_periods = plan_calendar(teaching_times)
+    teaching_time = generate_teaching_time
+    event_periods = plan_calendar(teaching_time)
     create_events(event_periods)
   end
 
@@ -30,13 +30,13 @@ class PlannedTimetableSlot < RolePlaying::Role
     all_events.find_all { |evt| !planned_event_ids.include?(evt.id) }
   end
 
-  def generate_teaching_periods
+  def generate_teaching_time
     teaching_period = time_converter.convert_time(first_hour, duration)
     Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, parity: parity)
   end
 
   def plan_calendar(teaching_time)
-    teaching_time.plan_calendar(semester_calendar)
+    semester_calendar.plan(teaching_time)
   end
 
   def create_events(event_periods)
