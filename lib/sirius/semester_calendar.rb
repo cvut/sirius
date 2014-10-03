@@ -3,7 +3,7 @@ require 'sirius/teaching_time'
 
 module Sirius
 
-  class EventPlanner
+  class SemesterCalendar
 
     def initialize( teaching_period:, first_week_parity: )
       @teaching_period = teaching_period

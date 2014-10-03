@@ -52,8 +52,8 @@ module Sirius
     private
     def create_converters(semester)
       time_converter = TimeConverter.new(hour_starts: semester.hour_starts, hour_length: semester.hour_duration)
-      calendar_planner = EventPlanner.new(teaching_period: Period.new(semester.starts_at, semester.teaching_ends_at), first_week_parity: semester.first_week_parity)
-      [time_converter, calendar_planner]
+      semester_calendar = SemesterCalendar.new(teaching_period: Period.new(semester.starts_at, semester.teaching_ends_at), first_week_parity: semester.first_week_parity)
+      [time_converter, semester_calendar]
     end
 
   end

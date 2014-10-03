@@ -1,5 +1,5 @@
 require 'sirius/time_converter'
-require 'sirius/event_planner'
+require 'sirius/semester_calendar'
 
 module Sirius
   class Semester
