@@ -10,9 +10,13 @@ module ApiHelper
     env['warden'].authenticate!
   end
 
+  def auth_user
+    env['warden'].user
+  end
+
   def user_allowed?(username)
-    user = env['warden'].user
-    !user.nil? && (user == username)
+    user = auth_user
+    !user.nil? && ((user == username) || (user == '*'))
   end
 
   def authorize_user!(user_scope)

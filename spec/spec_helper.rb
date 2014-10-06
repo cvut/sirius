@@ -1,7 +1,7 @@
 ENV['RACK_ENV'] = 'test'
 
 require 'bundler'
-Bundler.setup(:default, :test)
+require 'pliny/utils'
 
 root = File.expand_path("../../", __FILE__)
 ENV.update(Pliny::Utils.parse_env("#{root}/.env")) if File.exists?("#{root}/.env") # Load default env…
