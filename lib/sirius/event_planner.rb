@@ -1,6 +1,5 @@
 require 'models/schedule_exception'
 require 'roles/applied_schedule_exception'
-require 'roles/planned_parallel'
 require 'roles/planned_timetable_slot'
 require 'models/parallel'
 require 'sirius/time_converter'
@@ -17,7 +16,6 @@ module Sirius
     def plan_semester(semester)
       time_converter, calendar_planner = create_converters(semester)
       Parallel.eager_graph(:timetable_slots).all.each do |parallel|
-        parallel = PlannedParallel.new(parallel)
         parallel.timetable_slots.each do |sl|
           PlannedTimetableSlot.new(sl, time_converter, calendar_planner).tap do |slot|
             events = slot.generate_events
@@ -26,7 +24,18 @@ module Sirius
             slot.clear_extra_events(events)
           end
         end
-        parallel.renumber_events
+      end
+      renumber_events
+    end
+
+    def renumber_events
+      Parallel.each do |parallel|
+        events = Event.where(parallel_id: parallel.id, deleted: false).order(:starts_at).all
+        relative_seq = 0
+        events.each do |evt|
+          evt.relative_sequence_number = relative_seq += 1
+          evt.save
+        end
       end
     end
 

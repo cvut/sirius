@@ -2,7 +2,6 @@ require 'ice_cube'
 require 'sirius/teaching_time'
 
 module Sirius
-
   class SemesterCalendar
 
     def initialize( teaching_period:, first_week_parity: )
@@ -18,18 +17,17 @@ module Sirius
 
       event_schedule = IceCube::Schedule.new(scheduling_start, duration: event_duration)
       event_schedule.add_recurrence_rule to_recurrence_rule(teaching_time)
-      event_schedule.all_occurrences.map{ |event_start| Period.new(event_start.to_time, event_start + event_duration) }
+      event_schedule.all_occurrences.map { |event_start| Period.new(event_start.to_time, event_start + event_duration) }
     end
 
     private
     def to_recurrence_rule(teaching_time)
-      week_frequency = 1 #every week by default
+      week_frequency = 1 # every week by default
       week_frequency = 2 if teaching_time.parity != :both
 
       IceCube::Rule.weekly(week_frequency, :monday).day(teaching_time.day).until(@teaching_period.ends_at)
     end
 
   end
-
 end
 
