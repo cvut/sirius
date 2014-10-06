@@ -4,10 +4,9 @@ describe ApiHelper do
   subject(:helper) { Class.new { extend ApiHelper } }
 
   describe '#user_allowed?' do
-    WardenMock = Struct.new(:user)
     let(:auth_user) { '*' }
     before do
-      allow(helper).to receive(:env) { {'warden' => WardenMock.new(auth_user)} }
+      allow(helper).to receive(:auth_user).and_return(auth_user)
     end
     context 'standard user' do
       let(:auth_user) { 'vomackar' }
@@ -18,6 +17,14 @@ describe ApiHelper do
 
       it 'prevents authorization for different username' do
         expect(helper.user_allowed? 'skocdopet').to be false
+      end
+    end
+
+    context 'superuser' do
+      let(:auth_user) { '*' }
+
+      it 'grants authorization to all users' do
+        expect(helper.user_allowed? 'vomackar').to be true
       end
     end
   end
