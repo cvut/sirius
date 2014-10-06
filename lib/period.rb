@@ -36,6 +36,10 @@ class Period
     inside?(other_period.starts_at) || inside?(other_period.ends_at)
   end
 
+  def +(offset)
+    Period.new(starts_at + offset, ends_at + offset)
+  end
+
   alias_method :intersect?, :cover?
   alias_method :overlap?, :cover?
 
