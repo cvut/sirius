@@ -1,35 +1,59 @@
-require 'ice_cube'
-require 'sirius/teaching_time'
+require 'models/schedule_exception'
+require 'roles/applied_schedule_exception'
+require 'roles/planned_timetable_slot'
+require 'models/parallel'
+require 'sirius/time_converter'
+require 'sirius/semester_calendar'
 
 module Sirius
-
   class EventPlanner
 
-    def initialize( teaching_period:, first_week_parity: )
-      @teaching_period = teaching_period
-      @first_week_parity = first_week_parity
+    def initialize
+      @sync = Sync[Event, matching_attributes: [:timetable_slot_id, :absolute_sequence_number]]
+      @exceptions = ScheduleException.all.map { |e| AppliedScheduleException.new(e) }
     end
 
-    def plan(teaching_time)
-      week_offset = teaching_time.week_offset(@first_week_parity)
+    def plan_semester(semester)
+      time_converter, calendar_planner = create_converters(semester)
+      TimetableSlot.each do |sl|
+        PlannedTimetableSlot.new(sl, time_converter, calendar_planner).tap do |slot|
+          events = slot.generate_events
+          apply_exceptions(events)
+          @sync.perform(events: events)
+          slot.clear_extra_events(events)
+        end
+      end
+      renumber_events
+    end
 
-      scheduling_start = @teaching_period.starts_at + teaching_time.starts_at.seconds_since_midnight.seconds + week_offset
-      event_duration = (teaching_time.ends_at - teaching_time.starts_at)
+    # Recalculates relative_sequence_number for all Events in the database attached to a parallel.
+    #
+    # Numbering is calculated so that events in single parallel are ordered by start time and then numbered
+    # sequentially starting from 1.
+    def renumber_events
+      DB.run 'with positions as (
+          select
+            id,
+            row_number() over (partition by parallel_id order by starts_at) as position
+          from events
+          where deleted = false
+        )
+        update events
+          set relative_sequence_number = p.position
+        from positions p
+        where p.id = events.id;'
+    end
 
-      event_schedule = IceCube::Schedule.new(scheduling_start, duration: event_duration)
-      event_schedule.add_recurrence_rule to_recurrence_rule(teaching_time)
-      event_schedule.all_occurrences.map{ |event_start| Period.new(event_start.to_time, event_start + event_duration) }
+    def apply_exceptions(events)
+      events.each { |evt| @exceptions.each { |ex| ex.apply(evt) if ex.affects?(evt) } }
     end
 
     private
-    def to_recurrence_rule(teaching_time)
-      week_frequency = 1 #every week by default
-      week_frequency = 2 if teaching_time.parity != :both
-
-      IceCube::Rule.weekly(week_frequency, :monday).day(teaching_time.day).until(@teaching_period.ends_at)
+    def create_converters(semester)
+      time_converter = TimeConverter.new(hour_starts: semester.hour_starts, hour_length: semester.hour_duration)
+      semester_calendar = SemesterCalendar.new(teaching_period: Period.new(semester.starts_at, semester.teaching_ends_at), first_week_parity: semester.first_week_parity)
+      [time_converter, semester_calendar]
     end
 
   end
-
 end
-

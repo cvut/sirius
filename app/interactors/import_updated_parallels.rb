@@ -5,6 +5,9 @@ require 'interactors/convert_parallels'
 require 'interactors/sync'
 require 'interactors/convert_rooms'
 require 'interactors/convert_tts'
+require 'models/person'
+require 'models/course'
+require 'models/parallel'
 
 class ImportUpdatedParallels < Interpipe::Pipe
   include Interpipe::Aliases

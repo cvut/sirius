@@ -2,6 +2,9 @@ require 'spec_helper'
 require 'period'
 
 describe Period do
+
+  subject(:period) { Period.parse('7:30', '9:00') }
+
   describe '#parse' do
 
     it 'parses time values' do
@@ -35,8 +38,6 @@ describe Period do
 
   describe '#include?' do
 
-    subject(:period) { Period.parse('7:30', '9:00') }
-
     it 'includes itself' do
       expect(period).to include(period)
     end
@@ -67,8 +68,6 @@ describe Period do
 
   describe '#cover?' do
 
-    subject(:period) { Period.parse('7:30', '9:00') }
-
     it 'covers itself' do
       expect(period).to cover(period)
     end
@@ -84,6 +83,17 @@ describe Period do
     it 'covers crossing period' do
       expect(period).to cover(Period.parse('8:00', '10:00'))
     end
+  end
+
+  describe '#+' do
+
+    it 'adds time to start and end' do
+      offset = 15.minutes
+      moved_period = period + offset
+      expect(moved_period.starts_at).to eq(period.starts_at + offset)
+      expect(moved_period.ends_at).to eq(period.ends_at + offset)
+    end
+
   end
 
 end

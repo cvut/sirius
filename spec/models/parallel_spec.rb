@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'models/parallel'
 require 'models/person'
 require 'sirius/time_converter'
-require 'sirius/event_planner'
+require 'sirius/semester_calendar'
 
 describe Parallel do
 
