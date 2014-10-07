@@ -12,7 +12,9 @@ module Sirius
 
     def plan_stored_parallels
       @active_semesters.each do |semester|
-        EventPlanner.new.plan_semester(semester)
+        DB.transaction do
+          EventPlanner.new.plan_semester(semester)
+        end
       end
     end
 
