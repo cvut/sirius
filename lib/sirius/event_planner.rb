@@ -15,14 +15,12 @@ module Sirius
 
     def plan_semester(semester)
       time_converter, calendar_planner = create_converters(semester)
-      Parallel.eager_graph(:timetable_slots).all.each do |parallel|
-        parallel.timetable_slots.each do |sl|
-          PlannedTimetableSlot.new(sl, time_converter, calendar_planner).tap do |slot|
-            events = slot.generate_events
-            events.each { |evt| @exceptions.each { |ex| ex.apply(evt) if ex.affects?(evt) } }
-            @sync.perform(events: events)
-            slot.clear_extra_events(events)
-          end
+      TimetableSlot.each do |sl|
+        PlannedTimetableSlot.new(sl, time_converter, calendar_planner).tap do |slot|
+          events = slot.generate_events
+          apply_exceptions(events)
+          @sync.perform(events: events)
+          slot.clear_extra_events(events)
         end
       end
       renumber_events
@@ -44,6 +42,10 @@ module Sirius
           set relative_sequence_number = p.position
         from positions p
         where p.id = events.id;'
+    end
+
+    def apply_exceptions(events)
+      events.each { |evt| @exceptions.each { |ex| ex.apply(evt) if ex.affects?(evt) } }
     end
 
     private
