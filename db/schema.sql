@@ -94,7 +94,9 @@ CREATE TABLE events (
     event_type text,
     parallel_id bigint,
     timetable_slot_id bigint,
-    course_id text
+    course_id text,
+    semester text,
+    faculty integer
 );
 
 
@@ -526,6 +528,20 @@ ALTER TABLE ONLY update_logs
 
 
 --
+-- Name: events_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX events_faculty_index ON events USING btree (faculty);
+
+
+--
+-- Name: events_semester_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX events_semester_index ON events USING btree (semester);
+
+
+--
 -- Name: events_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -645,3 +661,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1411147098_events_id_to_bi
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411506543_parallel_id_to_bigint.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411653818_add_faculty_semesters.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1412095059_change_teacher_student_ids_type.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1412725971_add_semester_and_faculty_to_events.rb');
