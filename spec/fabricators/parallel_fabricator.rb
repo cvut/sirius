@@ -6,4 +6,5 @@ Fabricator(:parallel) do
   occupied 24
   semester 'B132'
   course
+  faculty 18_000
 end

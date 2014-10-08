@@ -15,7 +15,7 @@ module Sirius
 
     def plan_semester(semester)
       time_converter, calendar_planner = create_converters(semester)
-      TimetableSlot.each do |sl|
+      slots_dataset(semester).each do |sl|
         PlannedTimetableSlot.new(sl, time_converter, calendar_planner).tap do |slot|
           events = slot.generate_events(semester)
           apply_exceptions(events)
@@ -53,6 +53,10 @@ module Sirius
       time_converter = TimeConverter.new(hour_starts: semester.hour_starts, hour_length: semester.hour_duration)
       semester_calendar = SemesterCalendar.new(teaching_period: Period.new(semester.starts_at, semester.teaching_ends_at), first_week_parity: semester.first_week_parity)
       [time_converter, semester_calendar]
+    end
+
+    def slots_dataset(semester)
+      TimetableSlot.join(Parallel, id: :parallel_id).where(semester: semester.code, faculty: semester.faculty).select(Sequel.lit('timetable_slots.*'))
     end
 
   end
