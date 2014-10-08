@@ -12,7 +12,8 @@ class ConvertParallels
     @courses = {}
   end
 
-  def perform(kosapi_parallels:)
+  def perform(kosapi_parallels:, faculty: nil)
+    @faculty = faculty
     @parallels = kosapi_parallels.map do |kosapi_parallel|
       teachers = extract_teachers(kosapi_parallel)
       course = extract_course(kosapi_parallel)
@@ -28,6 +29,7 @@ class ConvertParallels
     parallel = Parallel.new(parallel_hash) { |p| p.id = kosapi_parallel.link.link_id }
     parallel.teacher_ids = teachers
     parallel.course = course
+    parallel.faculty = @faculty
     parallel
   end
 

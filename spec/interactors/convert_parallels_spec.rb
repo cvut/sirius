@@ -24,13 +24,14 @@ describe ConvertParallels do
       let(:parallel) { double(:kosapi_parallel, to_hash: parallel_attrs, link: double(link_id: '239018'), semester: semester, course: course, timetable_slots: [slot], teachers: [teacher]) }
 
       it 'converts parallels' do
-        results = convert.perform(kosapi_parallels: [parallel]).results
+        results = convert.perform(kosapi_parallels: [parallel], faculty: 18_000).results
         parallel = results[:parallels].first
         expect(parallel.parallel_type).to eq 'lecture'
         expect(parallel.code).to eq 1234
         expect(parallel.capacity).to eq 50
         expect(parallel.occupied).to eq 10
         expect(parallel.id).to eq 239018
+        expect(parallel.faculty).to eq 18_000
       end
 
       it 'extracts courses' do

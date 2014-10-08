@@ -13,7 +13,7 @@ class FetchUpdatedParallels
     last_update_at = last_updated_since || get_last_updated_date
     updated_parallels = @finder.find_updated(last_update_at, last_updated_till, faculty: faculty, semester: semester)
     updated_parallels.auto_paginate = fetch_all
-    @results = {kosapi_parallels: updated_parallels }
+    @results = {kosapi_parallels: updated_parallels, faculty: faculty }
   end
 
   def get_last_updated_date

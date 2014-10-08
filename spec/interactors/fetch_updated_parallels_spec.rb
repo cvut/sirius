@@ -30,6 +30,12 @@ describe FetchUpdatedParallels do
       expect(fetch.results).to include kosapi_parallels: result
     end
 
+    it 'stores current faculty in @results' do
+      expect(finder).to receive(:find_updated).and_return(result)
+      fetch.perform(faculty: 18_000)
+      expect(fetch.results).to include faculty: 18_000
+    end
+
   end
 
 end
