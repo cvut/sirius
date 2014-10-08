@@ -175,7 +175,8 @@ CREATE TABLE parallels (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     teacher_ids text[],
-    student_ids text[]
+    student_ids text[],
+    faculty integer
 );
 
 
@@ -570,6 +571,13 @@ CREATE INDEX faculty_semesters_faculty_index ON faculty_semesters USING btree (f
 
 
 --
+-- Name: parallels_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX parallels_faculty_index ON parallels USING btree (faculty);
+
+
+--
 -- Name: parallels_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -662,3 +670,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1411506543_parallel_id_to_
 INSERT INTO "schema_migrations" ("filename") VALUES ('1411653818_add_faculty_semesters.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1412095059_change_teacher_student_ids_type.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1412725971_add_semester_and_faculty_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1412730258_add_faculty_to_parallel.rb');
