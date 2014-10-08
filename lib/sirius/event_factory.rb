@@ -3,8 +3,9 @@ require 'models/event'
 module Sirius
   class EventFactory
 
-    def initialize(slot)
+    def initialize(slot, faculty_semester)
       @slot = slot
+      @faculty_semester = faculty_semester
     end
 
     def build_events(periods)
@@ -27,6 +28,8 @@ module Sirius
       event.student_ids = @slot.parallel.student_ids
       event.event_type = @slot.parallel.parallel_type
       event.deleted = false
+      event.faculty = @faculty_semester.faculty
+      event.semester = @faculty_semester.code
       event
     end
   end

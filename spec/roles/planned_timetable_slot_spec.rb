@@ -12,10 +12,11 @@ describe PlannedTimetableSlot do
     let(:period) { Period.parse('7:30', '9:00') }
     let(:converter) { instance_double(Sirius::TimeConverter, convert_time: period) }
     let(:semester_calendar) { instance_double(Sirius::SemesterCalendar, plan: [period]) }
+    let(:faculty_semester) { Fabricate.build(:faculty_semester) }
     subject(:planned_slot) { described_class.new(slot, converter, semester_calendar) }
 
     it 'converts Timetableslot to events' do
-      events = planned_slot.generate_events
+      events = planned_slot.generate_events(faculty_semester)
       expect(events.size).to be > 0
       expect(events.first).to be_an_instance_of(Event)
     end

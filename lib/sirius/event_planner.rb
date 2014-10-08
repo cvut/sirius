@@ -17,7 +17,7 @@ module Sirius
       time_converter, calendar_planner = create_converters(semester)
       TimetableSlot.each do |sl|
         PlannedTimetableSlot.new(sl, time_converter, calendar_planner).tap do |slot|
-          events = slot.generate_events
+          events = slot.generate_events(semester)
           apply_exceptions(events)
           @sync.perform(events: events)
           slot.clear_extra_events(events)

@@ -10,10 +10,10 @@ class PlannedTimetableSlot < RolePlaying::Role
     @semester_calendar = semester_calendar
   end
 
-  def generate_events
+  def generate_events(faculty_semester)
     teaching_time = generate_teaching_time
     event_periods = plan_calendar(teaching_time)
-    create_events(event_periods)
+    create_events(event_periods, faculty_semester)
   end
 
   def clear_extra_events(planned_events)
@@ -39,8 +39,8 @@ class PlannedTimetableSlot < RolePlaying::Role
     semester_calendar.plan(teaching_time)
   end
 
-  def create_events(event_periods)
-    Sirius::EventFactory.new(self).build_events(event_periods)
+  def create_events(event_periods, faculty_semester)
+    Sirius::EventFactory.new(self, faculty_semester).build_events(event_periods)
   end
 
 end
