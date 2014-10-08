@@ -10,4 +10,6 @@ Fabricator(:event) do
   student_ids ['skocdpet']
   event_type 'lecture'
   deleted false
+  faculty 18_000
+  semester 'B141'
 end

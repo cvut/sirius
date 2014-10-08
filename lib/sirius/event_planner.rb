@@ -23,25 +23,25 @@ module Sirius
           slot.clear_extra_events(events)
         end
       end
-      renumber_events
+      renumber_events(semester)
     end
 
     # Recalculates relative_sequence_number for all Events in the database attached to a parallel.
     #
     # Numbering is calculated so that events in single parallel are ordered by start time and then numbered
     # sequentially starting from 1.
-    def renumber_events
-      DB.run 'with positions as (
+    def renumber_events(semester)
+      DB['with positions as (
           select
             id,
             row_number() over (partition by parallel_id order by starts_at) as position
           from events
-          where deleted = false
+          where deleted = false and faculty = :faculty and semester = :semester
         )
         update events
           set relative_sequence_number = p.position
         from positions p
-        where p.id = events.id;'
+        where p.id = events.id;', faculty: semester.faculty, semester: semester.code ].update
     end
 
     def apply_exceptions(events)
