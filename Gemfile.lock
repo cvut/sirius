@@ -47,9 +47,6 @@ GEM
       slop (~> 3.6)
     celluloid (0.16.0)
       timers (~> 4.0.0)
-    clockwork (1.0.0)
-      activesupport
-      tzinfo
     codeclimate-test-reporter (0.4.0)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
@@ -214,6 +211,8 @@ GEM
     rspec-mocks (3.1.0)
       rspec-support (~> 3.1.0)
     rspec-support (3.1.0)
+    rufus-scheduler (3.0.9)
+      tzinfo
     sentry-raven (0.9.4)
       faraday (>= 0.7.6)
       hashie (>= 1.1.0)
@@ -267,7 +266,6 @@ DEPENDENCIES
   activesupport
   awesome_print
   bogus
-  clockwork (~> 1.0.0)
   codeclimate-test-reporter
   committee
   coveralls
@@ -296,6 +294,7 @@ DEPENDENCIES
   roar!
   role_playing!
   rspec (~> 3.1.0)
+  rufus-scheduler (~> 3.0.9)
   sentry-raven
   sequel
   sequel_pg
