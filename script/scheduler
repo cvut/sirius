@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+require 'bundler'
+Bundler.setup
+require './lib/initializer'
+require 'rufus-scheduler'
+
+scheduler = Rufus::Scheduler.new
+
+class SyncHandler
+  def initialize
+    require 'sirius/schedule_manager'
+  end
+
+  def call(job, time)
+    manager = Sirius::ScheduleManager.new
+    $stderr.puts "Import started at #{Time.now}"
+    manager.import_parallels
+    $stderr.puts "Parallels finished at #{Time.now}"
+    manager.import_students
+    $stderr.puts "Students finished at #{Time.now}"
+    manager.plan_stored_parallels
+    $stderr.puts "Planning finished at #{Time.now}"
+  end
+end
+
+
+def scheduler.on_error(job, error)
+  Raven.capture_exception(error, logger: 'scheduler', extra: { job: job })
+  super
+end
+
+if Config.sync_schedule
+  $stderr.puts "Setting automatic sync to '#{Config.sync_schedule}'"
+  scheduler.repeat Config.sync_schedule, SyncHandler.new, overlap: false, timeout: '1h'
+else
+  $stderr.puts 'SYNC_SCHEDULE not configured, automatic sync will be disabled'
+end
+
+scheduler.join

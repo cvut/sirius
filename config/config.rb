@@ -26,7 +26,8 @@ module Config
     :placeholder,
     :versioning_default,
     :versioning_app_name,
-    :sentry_dsn
+    :sentry_dsn,
+    :sync_schedule
 
   # Override -- value is returned or the set default. Remember to typecast.
   override \
