@@ -43,6 +43,9 @@ gem 'pry', require: false
 ## Error reporting
 gem 'sentry-raven'
 
+### New Relic RPM
+gem 'newrelic_rpm'
+
 group :development do
   gem 'guard-shotgun', '~> 0.4.0', require: false
   gem 'guard-rspec', require: false
