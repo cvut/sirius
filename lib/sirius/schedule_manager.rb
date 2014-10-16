@@ -12,7 +12,7 @@ module Sirius
     end
 
     def plan_stored_parallels
-      StackProf.run(mode: :cpu, out: 'tmp/stackprof-cpu-sirius.dump') do
+      StackProf.run(mode: :wall, out: 'tmp/stackprof-wall-sirius.dump') do
         @active_semesters.each do |semester|
           DB.transaction do
             EventPlanner.new.plan_semester(semester)
