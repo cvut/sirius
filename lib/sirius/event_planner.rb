@@ -9,7 +9,7 @@ module Sirius
   class EventPlanner
 
     def initialize
-      @sync = Sync[Event, matching_attributes: [:timetable_slot_id, :absolute_sequence_number]]
+      @sync = Sync[Event, matching_attributes: [:timetable_slot_id, :absolute_sequence_number], skip_updating: [:relative_sequence_number]]
       @exceptions = ScheduleException.all.map { |e| AppliedScheduleException.new(e) }
     end
 
