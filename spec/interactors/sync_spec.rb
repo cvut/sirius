@@ -110,6 +110,21 @@ describe Sync do
       expect(results).to include foo: :bar
     end
 
+    context 'with skip_updating' do
+
+      let!(:person) { Fabricate(:person, full_name: 'Pete') }
+      subject(:sync) { described_class[Person, skip_updating: [:full_name]] }
+
+      it 'skips updating specified attributes' do
+        person.full_name = 'Joe'
+        expect do
+          sync.perform({people: [person]})
+          person.refresh
+        end.to change(person, :full_name).from('Joe').to('Pete')
+      end
+
+    end
+
   end
 
 end

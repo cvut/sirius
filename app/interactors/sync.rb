@@ -6,13 +6,14 @@ class Sync
 
   class << self
 
-    attr_accessor :model_class, :key_name, :matching_attributes
+    attr_accessor :model_class, :key_name, :matching_attributes, :skip_updating
 
-    def [](model_class, key_name: nil, matching_attributes: [:id])
+    def [](model_class, key_name: nil, matching_attributes: [:id], skip_updating: [])
       cls = Class.new(self)
       cls.model_class = model_class
       cls.key_name = generate_key_name(model_class, key_name)
       cls.matching_attributes = matching_attributes
+      cls.skip_updating = skip_updating
       cls
     end
 
@@ -29,8 +30,7 @@ class Sync
     @models.each do |model|
       existing_model = find_existing_model(model)
       if existing_model
-        existing_model.update_all(model.values)
-        model.id ||= existing_model.id
+        update_existing(existing_model, model)
       else
         model.save
       end
@@ -54,6 +54,14 @@ class Sync
     model_class.find(lookup_hash) unless lookup_hash.empty?
   end
 
+  def update_existing(existing_model, new_model)
+    values = new_model.values
+    filtered_values = values.reject { |key| skip_updating.include?(key) }
+    existing_model.update_all(filtered_values)
+    new_model.id ||= existing_model.id
+    existing_model
+  end
+
   def key_name
     self.class.key_name
   end
@@ -64,6 +72,10 @@ class Sync
 
   def matching_attributes
     self.class.matching_attributes
+  end
+
+  def skip_updating
+    self.class.skip_updating
   end
 
 end
