@@ -52,8 +52,9 @@ group :development do
   gem 'guard-livereload', require: false
   gem 'guard-yard', require: false
 
-  gem 'stackprof'
 end
+
+gem 'stackprof'
 
 group :test do
   gem 'committee'
