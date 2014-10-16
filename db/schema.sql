@@ -529,6 +529,13 @@ ALTER TABLE ONLY update_logs
 
 
 --
+-- Name: events_absolute_sequence_number_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX events_absolute_sequence_number_index ON events USING btree (absolute_sequence_number);
+
+
+--
 -- Name: events_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -554,6 +561,13 @@ CREATE INDEX events_student_ids_index ON events USING gin (student_ids);
 --
 
 CREATE INDEX events_teacher_ids_index ON events USING gin (teacher_ids);
+
+
+--
+-- Name: events_timetable_slot_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX events_timetable_slot_id_index ON events USING btree (timetable_slot_id);
 
 
 --
@@ -671,3 +685,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1411653818_add_faculty_sem
 INSERT INTO "schema_migrations" ("filename") VALUES ('1412095059_change_teacher_student_ids_type.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1412725971_add_semester_and_faculty_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1412730258_add_faculty_to_parallel.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1413467599_add_indexes_to_events.rb');
