@@ -16,7 +16,7 @@ class ImportUpdatedParallels < Interpipe::Pipe
       FetchUpdatedParallels,
       ConvertParallels,
       split[
-        Sync[Person], Sync[Course], Sync[Parallel],
+        Sync[Person], Sync[Course], Sync[Parallel, skip_updating: [:student_ids]],
         pipe[
             ConvertRooms,
             Sync[Room, matching_attributes: [:kos_code]],
