@@ -31,3 +31,12 @@ FacultySemester.find_or_create(code: 'B141', faculty: 13000) do |s|
   s.hour_starts = %w(7:30 8:15 9:15 10:00 11:00 11:45 12:45 13:30 14:30 15:15 16:15 17:00 18:00 18:45 19:45)
   s.hour_duration = 45
 end
+
+if ENV['RACK_ENV'] == 'development'
+  require 'token'
+  faux_uuid = '11111111-1111-1111-8888-888888888888'
+  Token.unrestrict_primary_key
+  Token.find_or_create(uuid: faux_uuid) do |t|
+    t.username = '*'
+  end
+end
