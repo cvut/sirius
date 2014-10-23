@@ -91,6 +91,10 @@ RSpec.shared_examples 'events endpoint' do
             auth_get "#{path}?limit=0"
             expect(response.status).to eql 400
           end
+          it 'returns an error for invalid (negative) offset' do
+            auth_get "#{path}?offset=-1"
+            expect(response.status).to eql 400
+          end
         end
       end
     end
