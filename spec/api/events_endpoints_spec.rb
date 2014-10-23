@@ -23,7 +23,7 @@ RSpec.shared_examples 'events endpoint' do
   let!(:events) do
     i = 0
     Fabricate.times(events_cnt, :event, events_params) do
-      starts_at { "2014-04-0#{i+=1} 14:30" } # XXX restart sequence for each fabrication
+      starts_at { "2014-04-0#{i += 1} 14:30" } # XXX restart sequence for each fabrication
       ends_at { "2014-04-0#{i} 16:00" }
     end
   end
@@ -86,11 +86,11 @@ RSpec.shared_examples 'events endpoint' do
           expect(response.status).to eql 400
         end
 
-        context 'for invalid integer'
-        it 'returns an error' do
-          pending 'needs a custom validator'
-          auth_get "#{path}?limit=-1"
-          expect(response.status).to eql 400
+        context 'for invalid integer' do
+          it 'returns an error for zero limit' do
+            auth_get "#{path}?limit=0"
+            expect(response.status).to eql 400
+          end
         end
       end
     end

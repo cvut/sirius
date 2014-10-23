@@ -17,7 +17,7 @@ module API
       end
 
       params :pagination do
-        optional :limit, type: Integer
+        optional :limit, type: Integer, values: (1..200)
         optional :offset, type: Integer
       end
       params :date_filter do
