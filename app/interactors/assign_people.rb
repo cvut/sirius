@@ -6,7 +6,8 @@ class AssignPeople
   def perform(faculty_semester:, **options)
     DB[:events].from(:events, :parallels)
     .where(parallel_id: :parallels__id, events__faculty: faculty_semester.faculty, events__semester: faculty_semester.code)
-    .update(student_ids: :parallels__student_ids, teacher_ids: :parallels__teacher_ids)
+    .where(Sequel.~(events__student_ids: :parallels__student_ids, events__teacher_ids: :parallels__teacher_ids))
+    .update(student_ids: :parallels__student_ids, teacher_ids: :parallels__teacher_ids, updated_at: Sequel.function(:NOW))
   end
 
 end

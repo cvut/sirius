@@ -39,6 +39,24 @@ describe AssignPeople do
       end.not_to change(event, :teacher_ids)
     end
 
+    it 'changes updated_at column' do
+      expect do
+        described_class.perform(faculty_semester: faculty_semester)
+        event.refresh
+      end.to change(event, :updated_at)
+    end
+
+    context 'with not changed event' do
+      let(:event) { Fabricate(:event, parallel: parallel, semester: faculty_semester.code, faculty: faculty_semester.faculty, teacher_ids: %w(skocdop), student_ids: %w(vomackar dude2)) }
+
+      it 'does not update records with unchanged data' do
+        expect do
+          described_class.perform(faculty_semester: faculty_semester)
+          event.refresh
+        end.not_to change(event, :updated_at)
+      end
+    end
+
   end
 
 end
