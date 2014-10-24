@@ -1,7 +1,7 @@
 namespace :sirius do
 
   desc 'Fetches parallels and students from KOSapi and plans stored parallels'
-  task :events => %w(events:import events:import_students events:plan)
+  task :events => %w(events:import events:import_students events:plan events:assign_people)
 
   task :env do
     require 'bundler'
@@ -27,6 +27,12 @@ namespace :sirius do
     task :plan => :env do
       puts 'Planning parallels.'
       build_manager.plan_stored_parallels
+    end
+
+    desc 'Assigns people from parallels to events.'
+    task :assign_people => :env do
+      puts 'Assigning people to events.'
+      build_manager.assign_people
     end
 
   end
