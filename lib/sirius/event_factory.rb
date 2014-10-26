@@ -23,9 +23,6 @@ module Sirius
       event.course = @slot.parallel.course
       event.period = event_period
       event.absolute_sequence_number = absolute_seq
-      event.relative_sequence_number = absolute_seq
-      event.teacher_ids = @slot.parallel.teacher_ids
-      event.student_ids = @slot.parallel.student_ids
       event.event_type = @slot.parallel.parallel_type
       event.deleted = false
       event.faculty = @faculty_semester.faculty

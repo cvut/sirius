@@ -1,6 +1,7 @@
 require 'models/faculty_semester'
 require 'interactors/import_updated_parallels'
 require 'interactors/import_students'
+require 'interactors/assign_people'
 require 'sirius/event_planner'
 
 module Sirius
@@ -29,6 +30,14 @@ module Sirius
     def import_students
       DB.transaction do
         ImportStudents.perform
+      end
+    end
+
+    def assign_people
+      DB.transaction do
+        @active_semesters.each do |sem|
+          AssignPeople.perform(faculty_semester: sem)
+        end
       end
     end
 
