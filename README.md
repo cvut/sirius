@@ -15,6 +15,11 @@ Main timetable data source is KOS IS, which is accessed via [KOSapi](https://kos
 are then converted to events according to scheduling rules and exceptions stored in local Sirius database.
 Currently supported output data formats are JSON (for client apps) and iCalendar (for users).
 
+## API documentation
+
+Documentation of resources which Sirius provides is currently available at
+[MuleSoft API portal](http://api-portal.anypoint.mulesoft.com/raml/console?raml=http://api-portal.anypoint.mulesoft.com/cvut/api/sirius/Sirius.raml).
+
 # Looking for help?
 
 If you need help with adding you personal calendar to the calendar software you are using, check out our
@@ -59,4 +64,5 @@ To load parallels from KOSapi and and schedule them, call `foreman run rake siri
 * `sirius:events:import` - fetches parallels from KOSapi to local database
 * `sirius:events:import_students` - fetches students assigned to stored parallels
 * `sirius:events:plan` - plans stored parallels
+* `sirius:events:assign_people` - assigns people (students and teachers) to planned events
  
