@@ -96,7 +96,8 @@ CREATE TABLE events (
     timetable_slot_id bigint,
     course_id text,
     semester text,
-    faculty integer
+    faculty integer,
+    capacity integer
 );
 
 
@@ -686,3 +687,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1412095059_change_teacher_
 INSERT INTO "schema_migrations" ("filename") VALUES ('1412725971_add_semester_and_faculty_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1412730258_add_faculty_to_parallel.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1413467599_add_indexes_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1415024054_add_capacity_to_events.rb');
