@@ -167,7 +167,7 @@ describe API::EventsEndpoints do
 
   describe 'GET /events/:id' do
     let(:event) do
-      Fabricate(:event) do
+      Fabricate(:event, capacity: 20) do
         teacher_ids ['vomackar']
         student_ids ['bubenpro']
         room { Fabricate(:room, kos_code: 'T9:350') }
@@ -184,6 +184,7 @@ describe API::EventsEndpoints do
         note: event.note,
         deleted: false,
         parallel: '101',
+        capacity: 20,
         links: {
           room: event.room.to_s,
           course: event.course_id,

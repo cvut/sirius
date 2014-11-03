@@ -12,4 +12,5 @@ Fabricator(:event) do
   deleted false
   faculty 18_000
   semester 'B141'
+  capacity 20
 end
