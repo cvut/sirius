@@ -14,6 +14,7 @@ class EventRepresenter < Roar::Decorator
   property :starts_at, render_nil: true
   property :ends_at, render_nil: true
   property :deleted
+  property :capacity
   property :parallel, exec_context: :decorator, render_nil: true
   property :links, exec_context: :decorator
 
