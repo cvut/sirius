@@ -18,7 +18,7 @@ Currently supported output data formats are JSON (for client apps) and iCalendar
 ## API documentation
 
 Documentation of resources which Sirius provides is currently available at
-[MuleSoft API portal](http://api-portal.anypoint.mulesoft.com/raml/console?raml=http://api-portal.anypoint.mulesoft.com/cvut/api/sirius/Sirius.raml).
+[MuleSoft API portal](http://api-portal.anypoint.mulesoft.com/raml/console?raml=https://github-cors-proxy.herokuapp.com/cvut/sirius/master/docs/Sirius.raml).
 
 # Looking for help?
 
