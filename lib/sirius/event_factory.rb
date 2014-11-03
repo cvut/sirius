@@ -27,6 +27,7 @@ module Sirius
       event.deleted = false
       event.faculty = @faculty_semester.faculty
       event.semester = @faculty_semester.code
+      event.capacity = @slot.parallel.capacity
       event
     end
   end

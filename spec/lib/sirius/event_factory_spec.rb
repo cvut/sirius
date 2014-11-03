@@ -3,7 +3,8 @@ require 'sirius/event_factory'
 
 describe Sirius::EventFactory do
 
-  let(:slot) { Fabricate(:timetable_slot) }
+  let(:parallel) { Fabricate(:parallel, capacity: 20) }
+  let(:slot) { Fabricate(:timetable_slot, parallel: parallel) }
   let(:faculty_semester) { Fabricate.build(:faculty_semester) { code 'B141'; faculty 18_000 } }
   subject(:factory) { described_class.new(slot, faculty_semester) }
   let(:period) { Period.parse('7:30', '9:00') }
@@ -22,6 +23,11 @@ describe Sirius::EventFactory do
     event = factory.build_event(period, 1)
     expect(event.faculty).to eq 18_000
     expect(event.semester).to eq 'B141'
+  end
+
+  it 'sets capacity from parallel' do
+    event = factory.build_event(period, 1)
+    expect(event.capacity).to eq 20
   end
 
 end
