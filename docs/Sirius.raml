@@ -1,0 +1,220 @@
+#%RAML 0.8
+title: CTU Sirius API
+#baseUri: https://sirius.fit.cvut.cz/
+baseUri: http://mocksvc.mulesoft.com/mocks/bc8294bc-1d82-4488-8338-996b8fce551c
+version: v1
+traits:
+  - paged:
+      usage: Retreive further pages in collection
+      description: Use `offset` and `limit` to paginate the records.
+      queryParameters:
+        limit:
+          description: The number of entries in collection to return
+          type: number
+          default: 10
+          maximum: 100
+        offset:
+          description: Offset of the first entry in collection
+          type: number
+          default: 0
+  - dateScoped:
+      queryParameters:
+        from:
+          description: Return events from this date
+          type: date
+        to:
+          description: Return events up to this date
+          type: date
+  - filterable:
+      queryParameters:
+        rooms:
+          description: Filter by room's GTF code, comma separated
+          type: string
+          example: 026A--n13-1333
+        courses:
+          description: Filter by associated course, comma separated
+          type: string
+          example: MI-RUB,BI-PYT
+        people:
+          description: Filter by associated persons' usernames, comma separated
+          type: string
+          example: vomackar,kadleto2
+  - includable:
+      queryParameters:
+        include:
+          description: Include linked resources per JSON API
+          type: string
+          example: people
+resourceTypes:
+  - events-collection:
+      get:
+        is: [ paged, dateScoped ]
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                    {
+                      "events": [
+                        {
+                          "id": 42,
+                          "name": "MI-RUB",
+                          "note": "Yadda yadda yadda",
+                          "starts_at": "2014-04-23T07:30:00Z",
+                          "ends_at": "2014-04-23T11:00:00Z",
+                          "sequence_number": 12, //
+                          "links": {
+                            "room": "026A--n13-1333",
+                            "course": "MI-RUB",
+                            "parallel": "yadda yadda yadda"
+                          }
+                        },
+                        {
+                          "id": 43,
+                          "name": "MI-PYT",
+                          "note": "Kurz programovani v Pythonu",
+                          "starts_at": "2014-04-24T09:15:00Z",
+                          "ends_at": "2014-04-24T10:45:00Z",
+                          "sequence_number": 12, //
+                          "links": {
+                            "room": "026A--n13-1330",
+                            "course": "MI-PYT",
+                            "parallel": "yadda yadda yadda"
+                          }
+                        }
+                      ]
+                    }
+              text/calendar:
+                example: |
+                  BEGIN:VCALENDAR
+                  VERSION:2.0
+                  CALSCALE:GREGORIAN
+                  BEGIN:VEVENT
+                  DTSTAMP:20140702T140133Z
+                  UID:https://sirius.fit.cvut.cz/events/123
+                  DTSTART:20140312T101500
+                  DTEND:20140312T114500
+                  CLASS:PUBLIC
+                  CREATED:20140410T182546
+                  LAST-MODIFIED:20140410T182546
+                  LOCATION:T9:130
+                  SUMMARY:MI-PSL 2. cvičení
+                  END:VEVENT
+                  BEGIN:VEVENT
+                  DTSTAMP:20140702T140133Z
+                  UID:https://sirius.fit.cvut.cz/events/125
+                  DTSTART:20140312T101500
+                  DTEND:20140312T114500
+                  CLASS:PUBLIC
+                  CREATED:20140410T182546
+                  LAST-MODIFIED:20140410T182546
+                  LOCATION:T9:130
+                  SUMMARY:MI-PSL 2. cvičení
+                  END:VEVENT
+                  END:VCALENDAR
+          404:
+            description: There are no events within the current scope
+  - event:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "events": {
+                      "id": 42,
+                      "name": "MI-RUB",
+                      "note": "Yadda yadda yadda",
+                      "starts_at": "2014-04-23T07:30:00Z",
+                      "ends_at": "2014-04-23T11:00:00Z",
+                      "sequence_number": 12,
+                      "links": {
+                        "room": "T9-350",
+                        "course": "MI-RUB",
+                        "teachers": ["kadleto2"],
+                        "students": ["jirutjak"]
+                      }
+                    }
+                  }
+              text/calendar:
+                example: |
+                  BEGIN:VCALENDAR
+                  VERSION:2.0
+                  CALSCALE:GREGORIAN
+                  BEGIN:VEVENT
+                  DTSTAMP:20140702T140133Z
+                  UID:https://sirius.fit.cvut.cz/events/123
+                  DTSTART:20140312T101500
+                  DTEND:20140312T114500
+                  CLASS:PUBLIC
+                  CREATED:20140410T182546
+                  LAST-MODIFIED:20140410T182546
+                  LOCATION:T9:130
+                  SUMMARY:MI-PSL 2. cvičení
+                  END:VEVENT
+                  END:VCALENDAR
+/events:
+  type: events-collection
+  get:
+    description: "Get all events without any scope"
+  /{eventId}:
+    type: event
+/people/{username}/events:
+  type: events-collection
+  description: Get a calendar for a person
+  uriParameters:
+    username:
+      description: 8-char unique username
+      required: true
+      pattern: "[a-z0-9]{8}"
+      example: vomackar
+/rooms/{kosId}/events:
+  type: events-collection
+  description: Get a calendar for a room
+  uriParameters:
+    kosId:
+      description: |
+        Common room identification used by KOS, for details see [the documentation](https://rozvoj.fit.cvut.cz/Main/znaceni-mistnosti#HKOSEDzna10DenED-102).
+      required: true
+      pattern: "[A-Z0-9]{2}:([A-Z0-9]+-)?[a-z0-9]+"
+      example: "TH:A-1333"
+/courses/{courseCode}/events:
+  type: events-collection
+  description: Get events instances for a given course
+  uriParameters:
+    courseCode:
+      description: |
+        Course code, faculty specific.
+      required: true
+      example: BI-PA1
+/exceptions:
+  description: Manage calendar exceptions
+  is: [paged]
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "exceptions": [
+                  {
+                    "id": 43,
+                    "name": "statni svatek",
+                    "action": "cancel",
+                    "starts_at": "2014-04-23T15:00:00Z",
+                    "ends_at": "2014-04-23T19:00:00Z",
+                    "recurrence": "FREQ=YEARLY",
+                    "links": {
+                      "parallels": ["", ""],
+                      "divisions": ["18001"],
+                      "semester": "abc123"
+                    }
+                  },
+                  {
+
+                  }
+
+                ]
+              }
