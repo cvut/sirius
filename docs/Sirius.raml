@@ -55,27 +55,40 @@ resourceTypes:
               application/json:
                 example: |
                     {
+                      "meta": {
+                        "count": 2,
+                        "offset": 0,
+                        "limit": 20
+                      },
                       "events": [
                         {
                           "id": 42,
-                          "name": "MI-RUB",
-                          "note": "Yadda yadda yadda",
-                          "starts_at": "2014-04-23T07:30:00Z",
-                          "ends_at": "2014-04-23T11:00:00Z",
-                          "sequence_number": 12, //
+                          "name": null,
+                          "sequence_number": 12,
+                          "starts_at": "2014-04-23T07:30:00.000+02:00",
+                          "ends_at": "2014-04-23T11:00:00.000+02:00",
+                          "deleted" : false,
+                          "capacity": 24,
+                          "parallel": "106"
                           "links": {
                             "room": "026A--n13-1333",
                             "course": "MI-RUB",
-                            "parallel": "yadda yadda yadda"
+                            "teachers": [
+                              "skocdopet"
+                            ],
+                            "students": [
+                              "szolatib",
+                              "vomackar"
+                            ]
                           }
                         },
                         {
                           "id": 43,
-                          "name": "MI-PYT",
+                          "name": null,
                           "note": "Kurz programovani v Pythonu",
-                          "starts_at": "2014-04-24T09:15:00Z",
-                          "ends_at": "2014-04-24T10:45:00Z",
-                          "sequence_number": 12, //
+                          "starts_at": "2014-04-24T09:15:00.000+02:00",
+                          "ends_at": "2014-04-24T10:45:00.000+02:00",
+                          "sequence_number": 12,
                           "links": {
                             "room": "026A--n13-1330",
                             "course": "MI-PYT",
@@ -124,11 +137,12 @@ resourceTypes:
                   {
                     "events": {
                       "id": 42,
-                      "name": "MI-RUB",
+                      "name": null,
                       "note": "Yadda yadda yadda",
-                      "starts_at": "2014-04-23T07:30:00Z",
-                      "ends_at": "2014-04-23T11:00:00Z",
+                      "starts_at": "2014-04-23T07:30:00.000+02:00",
+                      "ends_at": "2014-04-23T11:00:00.000+02:00",
                       "sequence_number": 12,
+                      "capacity": 24,
                       "links": {
                         "room": "T9-350",
                         "course": "MI-RUB",
