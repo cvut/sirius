@@ -63,10 +63,18 @@ traits:
           description: Include linked resources per JSON API
           type: string
           example: people
+  - secured:
+      description: Marks resource as secured. You need to be authenticated and authorized to access it. 
+      queryParameters:
+        access_token:
+          description: Authentication and authorization is required. You need to set your `access_token` in URL.
+          type: string
+          example: 07a855e0-6920-11e4-a40a-0002a5d5c51b
+          required: true
 resourceTypes:
   - events-collection:
       get:
-        is: [ paged, dateScoped ]
+        is: [ paged, dateScoped, secured ]
         responses:
           200:
             body:
@@ -147,6 +155,7 @@ resourceTypes:
             description: There are no events within the current scope
   - event:
       get:
+        is: [ secured ]
         responses:
           200:
             body:
@@ -222,7 +231,7 @@ resourceTypes:
       example: BI-PA1
 /exceptions:
   description: Manage calendar exceptions
-  is: [paged]
+  is: [ paged, secured ]
   get:
     responses:
       200:
