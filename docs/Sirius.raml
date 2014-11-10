@@ -1,8 +1,26 @@
 #%RAML 0.8
 title: CTU Sirius API
-#baseUri: https://sirius.fit.cvut.cz/
-baseUri: http://mocksvc.mulesoft.com/mocks/bc8294bc-1d82-4488-8338-996b8fce551c
 version: v1
+baseUri: https://sirius.fit.cvut.cz/api/{version}
+securedBy: [access_token]
+securitySchemes:
+  - access_token:
+      description: |
+        All Sirius read-only resources are secured by an access token. The token is either
+        associated with an username (personal) or is set as global. This authorization
+        scheme uses the same query parameter as OAuth 2.0, and will be later
+        replaced by OAuth 2.0.
+      type: x-access-token
+      describedBy:
+        queryParameters:
+          access_token:
+            description: |
+              Used to send a valid access token.
+            type: string
+        responses:
+          401:
+            description: |
+              Missing or invalid token. Authorization token was not specified or is not valid. 
 traits:
   - paged:
       usage: Retreive further pages in collection
