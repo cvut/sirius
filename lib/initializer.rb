@@ -3,8 +3,8 @@ require 'pliny/utils'
 module Initializer
   def self.run
     require_config
-    require_initializers
     add_paths
+    require_initializers
   end
 
   def self.require_config
