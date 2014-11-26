@@ -57,6 +57,19 @@ describe AssignPeople do
       end
     end
 
+     context 'with null values' do
+       let!(:event) { Fabricate(:event, parallel: parallel, semester: faculty_semester.code, faculty: faculty_semester.faculty, teacher_ids: nil, student_ids: nil)}
+       subject(:assign_people) { -> { described_class.perform(faculty_semester: faculty_semester); event.refresh } }
+
+       it 'updates events with null student_ids' do
+          expect { assign_people.call }.to change(event, :student_ids).from(nil).to(%w(vomackar dude2))
+       end
+
+       it 'updates events with null teacher_ids' do
+          expect { assign_people.call }.to change(event, :teacher_ids).from(nil).to(%w(skocdop))
+       end
+     end
+
   end
 
 end
