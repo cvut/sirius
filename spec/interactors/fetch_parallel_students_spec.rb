@@ -10,11 +10,12 @@ describe FetchParallelStudents do
     let(:student) { double(:student) }
     let(:parallel) { double(:parallel, id: 42) }
     let(:client) { double(:client).as_null_object }
+    let(:semester) { double(faculty: 18_000) }
 
     it 'returns students in results' do
       fetch = FetchParallelStudents.new
       allow(fetch).to receive(:fetch_students).and_return([student])
-      fetch.perform(parallels: [parallel])
+      fetch.perform(parallels: [parallel], faculty_semester: semester)
       expect(fetch.results[:students]).to eq({parallel => [student]})
     end
 
@@ -22,7 +23,7 @@ describe FetchParallelStudents do
       expect(client).to receive(:students)
       fetch = FetchParallelStudents.new
       fetch.setup(client: client)
-      fetch.perform(parallels: [parallel])
+      fetch.perform(parallels: [parallel], faculty_semester: semester)
     end
 
 

@@ -28,8 +28,10 @@ module Sirius
     end
 
     def import_students
-      DB.transaction do
-        ImportStudents.perform
+      @active_semesters.each do |sem|
+        DB.transaction do
+          ImportStudents.perform(faculty_semester: sem)
+        end
       end
     end
 
