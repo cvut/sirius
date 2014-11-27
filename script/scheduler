@@ -21,6 +21,8 @@ class SyncHandler
     $stderr.puts "Students finished at #{Time.now}"
     manager.plan_stored_parallels
     $stderr.puts "Planning finished at #{Time.now}"
+    manager.assign_people
+    $stderr.puts "Assigning people finished at #{Time.now}"
   end
 end
 
