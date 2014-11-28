@@ -10,9 +10,9 @@ class FetchParallelStudents
   end
 
   def perform(parallels:, faculty_semester:, **options)
-    @kosapi_client = get_kosapi_client(faculty_semester)
+    client = kosapi_client(faculty_semester)
     students = parallels.map do |parallel|
-      [parallel, fetch_students(parallel)]
+      [parallel, fetch_students(parallel, client)]
     end
     @students = Hash[students]
   end
@@ -21,12 +21,12 @@ class FetchParallelStudents
     {students: @students}
   end
 
-  def fetch_students(parallel)
-    @kosapi_client.parallels.find(parallel.id).students.limit(100).offset(0)
+  def fetch_students(parallel, client)
+    client.parallels.find(parallel.id).students.limit(100).offset(0)
   end
 
   private
-  def get_kosapi_client(faculty_semester)
+  def kosapi_client(faculty_semester)
     @forced_client || Sirius::KOSapiClientRegistry.instance.client_for_faculty(faculty_semester.faculty)
   end
 
