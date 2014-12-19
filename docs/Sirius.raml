@@ -20,7 +20,7 @@ securitySchemes:
         responses:
           401:
             description: |
-              Missing or invalid token. Authorization token was not specified or is not valid. 
+              Missing or invalid token. Authorization token was not specified or is not valid.
 traits:
   - paged:
       usage: Retreive further pages in collection
@@ -45,18 +45,10 @@ traits:
           type: date
   - filterable:
       queryParameters:
-        rooms:
-          description: Filter by room's GTF code, comma separated
+        event_type:
+          description: Filter by event's type
           type: string
-          example: 026A--n13-1333
-        courses:
-          description: Filter by associated course, comma separated
-          type: string
-          example: MI-RUB,BI-PYT
-        people:
-          description: Filter by associated persons' usernames, comma separated
-          type: string
-          example: vomackar,kadleto2
+          enum: [ tutorial,lecture,laboratory ] # TODO: exam,custom?
   - includable:
       queryParameters:
         include:
@@ -64,7 +56,7 @@ traits:
           type: string
           example: people
   - secured:
-      description: Marks resource as secured. You need to be authenticated and authorized to access it. 
+      description: Marks resource as secured. You need to be authenticated and authorized to access it.
       queryParameters:
         access_token:
           description: Authentication and authorization is required. You need to set your `access_token` in URL.
@@ -74,7 +66,7 @@ traits:
 resourceTypes:
   - events-collection:
       get:
-        is: [ paged, dateScoped, secured ]
+        is: [ paged, dateScoped, secured, filterable ]
         responses:
           200:
             body:
@@ -95,7 +87,8 @@ resourceTypes:
                           "ends_at": "2014-04-23T11:00:00.000+02:00",
                           "deleted" : false,
                           "capacity": 24,
-                          "parallel": "106"
+                          "parallel": "106",
+                          "event_type": "lecture",
                           "links": {
                             "room": "026A--n13-1333",
                             "course": "MI-RUB",
@@ -115,6 +108,7 @@ resourceTypes:
                           "starts_at": "2014-04-24T09:15:00.000+02:00",
                           "ends_at": "2014-04-24T10:45:00.000+02:00",
                           "sequence_number": 12,
+                          "event_type": "tutorial",
                           "links": {
                             "room": "026A--n13-1330",
                             "course": "MI-PYT",
@@ -170,6 +164,7 @@ resourceTypes:
                       "ends_at": "2014-04-23T11:00:00.000+02:00",
                       "sequence_number": 12,
                       "capacity": 24,
+                      "event_type": "laboratory",
                       "links": {
                         "room": "T9-350",
                         "course": "MI-RUB",
