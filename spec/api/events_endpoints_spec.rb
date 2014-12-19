@@ -113,6 +113,16 @@ RSpec.shared_examples 'events endpoint' do
     end
 
     context 'with event type filtering' do
+      before { auth_get "#{path}?event_type=laboratory", access_token }
+      it { should have_json_size(0).at_path('events') }
+      pending 'Actually test this'
+
+      context 'with invalid value' do
+        before { auth_get "#{path}?event_type=party", access_token }
+        it 'returns an error' do
+          expect(response.status).to eql 400
+        end
+      end
 
     end
 

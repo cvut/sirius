@@ -27,10 +27,14 @@ module API
       params :deleted do
         optional :deleted, type: Boolean, default: false
       end
+      params :event_type do
+        optional :event_type, type: String, values: ['lecture', 'exam', 'laboratory']
+      end
       params :filter_events do
         use :pagination
         use :date_filter
         use :deleted
+        use :event_type
       end
     end
 
