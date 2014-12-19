@@ -36,7 +36,8 @@ RSpec.shared_examples 'events endpoint' do
       starts_at: event.starts_at,
       ends_at: event.ends_at,
       deleted: false,
-      parallel: nil # FIXME: could be stubbed
+      parallel: nil, # FIXME: could be stubbed
+      event_type: 'lecture'
     }.to_json
   end
 
@@ -109,6 +110,10 @@ RSpec.shared_examples 'events endpoint' do
           expect(response.status).to eql 400
         end
       end
+    end
+
+    context 'with event type filtering' do
+
     end
 
     context 'as an icalendar' do
@@ -185,6 +190,7 @@ describe API::EventsEndpoints do
         deleted: false,
         parallel: '101',
         capacity: 20,
+        event_type: 'lecture',
         links: {
           room: event.room.to_s,
           course: event.course_id,
