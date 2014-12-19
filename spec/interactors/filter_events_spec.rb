@@ -1,6 +1,29 @@
 require 'spec_helper'
 require 'filter_events'
 
+RSpec.shared_examples 'filtered by params' do
+  subject(:sql) { events.sql }
+  describe 'deleted record' do
+    it 'is filtered out by default' do
+      expect(sql).to include 'deleted IS FALSE'
+    end
+  end
+
+  describe 'event type' do
+    it 'is not used by default' do
+      expect(sql).not_to include 'event_type'
+    end
+
+    context 'with event_type param set to true' do
+      before { params[:event_type] = 'lecture' }
+      it 'looks up only events of specified type' do
+        expect(sql).to include "event_type = 'lecture'"
+      end
+    end
+  end
+end
+
+
 describe FilterEvents do
   let(:db) { Sequel.mock(fetch: { count: 120, deleted: false }) }
   let(:dataset) { db.from(:test).columns(:count) }
@@ -18,9 +41,10 @@ describe FilterEvents do
 
   let(:format) { :jsonapi }
   subject(:result) { interactor.perform(events: dataset, params: params, format: format) }
+  let(:events) { result.events }
 
   describe '#events' do
-    subject { result.events }
+    subject { events }
     it { should be_a(Sequel::Dataset) }
   end
 
@@ -35,16 +59,11 @@ describe FilterEvents do
       end
     end
 
-    describe 'deleted record' do
-      subject(:sql) { result.events.sql }
-      it 'is filtered out by default' do
-        expect(sql).to include 'deleted IS FALSE'
-      end
-      context 'with deleted param set to true' do
-        before { params[:deleted] = true }
-        it 'is not filtered out' do
-          expect(sql).not_to include 'deleted'
-        end
+    it_behaves_like 'filtered by params'
+    context 'with deleted param set to true' do
+      before { params[:deleted] = true }
+      it 'filters out deleted events' do
+        expect(events.sql).not_to include 'deleted'
       end
     end
   end
@@ -55,11 +74,11 @@ describe FilterEvents do
       expect(result.limit).to be_nil
     end
 
-    describe 'deleted record' do
-      subject(:sql) { result.events.sql }
+    it_behaves_like 'filtered by params'
+    context 'with deleted param set to true' do
       before { params[:deleted] = true }
-      it 'is always filtered out' do
-        expect(sql).to include 'deleted IS FALSE'
+      it 'always filters out deleted events' do
+        expect(events.sql).to include 'deleted'
       end
     end
   end
