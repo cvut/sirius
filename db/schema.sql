@@ -97,7 +97,8 @@ CREATE TABLE events (
     course_id text,
     semester text,
     faculty integer,
-    capacity integer
+    capacity integer,
+    source hstore
 );
 
 
@@ -688,3 +689,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1412725971_add_semester_an
 INSERT INTO "schema_migrations" ("filename") VALUES ('1412730258_add_faculty_to_parallel.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1413467599_add_indexes_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1415024054_add_capacity_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1419305160_add_source_to_events.rb');
