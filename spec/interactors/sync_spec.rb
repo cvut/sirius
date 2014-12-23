@@ -100,6 +100,30 @@ describe Sync do
 
     end
 
+    context 'with key-value matching_attributes' do
+
+      subject(:sync) { described_class[ScheduleException, matching_attributes: [options: :stuff_id]] }
+
+      let!(:existing_exception) { Fabricate(:schedule_exception, name: 'Foo', options: {stuff_id: 42})}
+      let(:exception) { Fabricate.build(:schedule_exception, name: 'Bar', options: {stuff_id: 42})}
+      let(:other_exception) { Fabricate.build(:schedule_exception, name: 'Bar', options: {stuff_id: 99999})}
+
+      it 'updates correct record' do
+        expect {
+          sync.perform({schedule_exceptions: [exception]})
+          existing_exception.refresh
+        }.to change(existing_exception, :name).from('Foo').to('Bar')
+      end
+
+      it 'does not update different record' do
+        expect {
+          sync.perform({schedule_exceptions: [other_exception]})
+          existing_exception.refresh
+        }.not_to change(existing_exception, :name)
+      end
+
+    end
+
     it 'puts saved entities into results' do
       results = sync.perform({people: [person]}).results
       expect(results).to include people: [person]
