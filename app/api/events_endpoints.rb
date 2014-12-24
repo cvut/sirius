@@ -28,7 +28,7 @@ module API
         optional :deleted, type: Boolean, default: false
       end
       params :event_type do
-        optional :event_type, type: String, values: ['lecture', 'exam', 'laboratory']
+        optional :event_type, type: String, values: %w{exam laboratory lecture tutorial}
       end
       params :filter_events do
         use :pagination
