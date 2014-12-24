@@ -113,9 +113,25 @@ RSpec.shared_examples 'events endpoint' do
     end
 
     context 'with event type filtering' do
-      before { auth_get "#{path}?event_type=laboratory", access_token }
-      it { should have_json_size(0).at_path('events') }
-      pending 'Actually test this'
+      context 'for event type lecture' do # lecture is a shared implicit type here; FIXME?
+        before { auth_get "#{path}?event_type=lecture", access_token }
+        it 'returns all lectures' do
+          expect(body).to have_json_size(events_cnt).at_path('events')
+        end
+      end
+
+      %w{laboratory exam tutorial}.each do |event_type|
+        context "for alternate type of event #{event_type}" do
+          before do
+            event.update(event_type: event_type)
+            auth_get "#{path}?event_type=#{event_type}", access_token
+          end
+
+          it 'returns at least one event' do
+            expect(body).to have_json_size(1).at_path('events')
+          end
+        end
+      end
 
       context 'with invalid value' do
         before { auth_get "#{path}?event_type=party", access_token }
