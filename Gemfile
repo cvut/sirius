@@ -5,14 +5,14 @@ gem 'rake'
 
 ## Storage
 gem 'pg'
-gem 'sequel'
+gem 'sequel', '~> 4.17'
 gem 'sequel_pg', require: 'sequel'
 gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
 
 ## REST API
 gem 'pliny', '~> 0.2.1'
-gem 'grape'
-gem 'warden' # authentication middleware
+gem 'grape', '~> 0.9.0'
+gem 'warden', '~> 1.2.3' # authentication middleware
 
 # JSON-API support: https://github.com/apotonick/roar/pull/98
 gem 'roar', github: 'apotonick/roar'

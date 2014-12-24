@@ -217,7 +217,7 @@ GEM
       faraday (>= 0.7.6)
       hashie (>= 1.1.0)
       uuidtools
-    sequel (4.14.0)
+    sequel (4.17.0)
     sequel_pg (1.6.10)
       pg (>= 0.8.0)
       sequel (>= 3.39.0)
@@ -272,7 +272,7 @@ DEPENDENCIES
   database_cleaner
   fabrication
   foreman
-  grape
+  grape (~> 0.9.0)
   guard-livereload
   guard-rspec
   guard-shotgun (~> 0.4.0)
@@ -296,8 +296,8 @@ DEPENDENCIES
   rspec (~> 3.1.0)
   rufus-scheduler (~> 3.0.9)
   sentry-raven
-  sequel
+  sequel (~> 4.17)
   sequel_pg
   timecop
   vcr
-  warden
+  warden (~> 1.2.3)
