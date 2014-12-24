@@ -1,4 +1,5 @@
 language: ruby
+sudo: false
 rvm:
   - 2.1.3
 addons:
@@ -18,7 +19,6 @@ notifications:
       - "https://webhooks.gitter.im/e/812b55a107e34f5ad03a"
     on_success: change  # options: [always|never|change] default: always
     on_failure: always  # options: [always|never|change] default: always
-
 env:
   global:
   - secure: YHwUt3DrGNASEsmSpiaTM5Lm7Cw3ONi2bc1rSSq3rPebLNp5aQ0trFZ3nI97eG/4kZzjjFC5JqEF7MFnqPC5CFOUugspJa3x4XkUjZCX6QT6CJfCrN87cgslmJxCdjfXTiLonjr9XzAkTepPk+FKqKcjWLRgZidpwvoc9hA0/1Q=
