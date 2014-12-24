@@ -39,13 +39,13 @@ class EventsRepresenter
   end
 
   class CollectionDecorator < Roar::Decorator
-    include Roar::Representer::JSON
+    include Roar::JSON
     hash :meta
     collection :events, decorator: EventRepresenter
   end
 
   class SingularDecorator < Roar::Decorator
-    include Roar::Representer::JSON
+    include Roar::JSON
     # hash :links
     property :events, decorator: EventRepresenter
   end

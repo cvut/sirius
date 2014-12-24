@@ -5,7 +5,7 @@ class EventRepresenter < Roar::Decorator
   # include Roar::JSON::JsonApi
   # name :events
 
-  include Roar::Representer::JSON
+  include Roar::JSON
 
   property :id, render_nil: true
   property :name, render_nil: true

@@ -15,7 +15,7 @@ gem 'grape', '~> 0.9.0'
 gem 'warden', '~> 1.2.3' # authentication middleware
 
 # JSON-API support: https://github.com/apotonick/roar/pull/98
-gem 'roar', github: 'apotonick/roar'
+gem 'roar', '~> 1.0.0'
 
 # gem 'multi_json'
 # gem 'oj'
