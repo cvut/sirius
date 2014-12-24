@@ -36,7 +36,8 @@ RSpec.shared_examples 'events endpoint' do
       starts_at: event.starts_at,
       ends_at: event.ends_at,
       deleted: false,
-      parallel: nil # FIXME: could be stubbed
+      parallel: nil, # FIXME: could be stubbed
+      event_type: 'lecture'
     }.to_json
   end
 
@@ -109,6 +110,36 @@ RSpec.shared_examples 'events endpoint' do
           expect(response.status).to eql 400
         end
       end
+    end
+
+    context 'with event type filtering' do
+      context 'for event type lecture' do # lecture is a shared implicit type here; FIXME?
+        before { auth_get "#{path}?event_type=lecture", access_token }
+        it 'returns all lectures' do
+          expect(body).to have_json_size(events_cnt).at_path('events')
+        end
+      end
+
+      %w{laboratory exam tutorial}.each do |event_type|
+        context "for alternate type of event #{event_type}" do
+          before do
+            event.update(event_type: event_type)
+            auth_get "#{path}?event_type=#{event_type}", access_token
+          end
+
+          it 'returns at least one event' do
+            expect(body).to have_json_size(1).at_path('events')
+          end
+        end
+      end
+
+      context 'with invalid value' do
+        before { auth_get "#{path}?event_type=party", access_token }
+        it 'returns an error' do
+          expect(response.status).to eql 400
+        end
+      end
+
     end
 
     context 'as an icalendar' do
@@ -185,6 +216,7 @@ describe API::EventsEndpoints do
         deleted: false,
         parallel: '101',
         capacity: 20,
+        event_type: 'lecture',
         links: {
           room: event.room.to_s,
           course: event.course_id,
