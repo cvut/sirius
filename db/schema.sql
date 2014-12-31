@@ -552,6 +552,13 @@ CREATE INDEX events_semester_index ON events USING btree (semester);
 
 
 --
+-- Name: events_source_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX events_source_index ON events USING gin (source);
+
+
+--
 -- Name: events_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -690,3 +697,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1412730258_add_faculty_to_
 INSERT INTO "schema_migrations" ("filename") VALUES ('1413467599_add_indexes_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1415024054_add_capacity_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1419305160_add_source_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1420032483_add_index_to_events_source.rb');
