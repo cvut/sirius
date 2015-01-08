@@ -8,8 +8,7 @@ describe ConvertExams do
   let(:kosapi_room) { double(link_id: 'T9:105') }
   let(:kosapi_rooms) { [kosapi_room]}
   let(:teacher) { double(link_id: 'kordikp', link_title: 'Ing. Pavel Kordík Ph.D.') }
-  let(:exam) { double(:exam, link: double(link_id: 620283180005), start_date: Time.parse('2015-01-12T11:00:00'), end_date: Time.parse('2015-01-12T12:00:00'),
-                      capacity: 10, course: course, room: kosapi_room, examiner: teacher, term_type: :final_exam)}
+  let(:exam) { create_exam }
   let(:exams) { [exam] }
   let(:faculty_semester) { Fabricate.build(:faculty_semester) }
   let(:rooms) { [Fabricate.build(:room, id: 42, kos_code: 'T9:105')] }
@@ -63,8 +62,7 @@ describe ConvertExams do
 
     context 'with missing end time' do
 
-      let(:exam) { double(:exam, link: double(link_id: 620283180005), start_date: Time.parse('2015-01-12T11:00:00'), end_date: nil,
-                      capacity: 10, course: course, room: kosapi_room, examiner: teacher, term_type: :final_exam)}
+      let(:exam) { create_exam(end_date: nil) }
 
       it 'sets default duration of 90 minutes' do
         instance = subject.perform(exams: exams, faculty_semester: faculty_semester, rooms: rooms)
