@@ -5,17 +5,19 @@ describe ConvertExams do
 
   subject { described_class }
   let(:course) { double(link_id: 'BI-ZUM', link_title: 'Sample course') }
-  let(:room) { double(link_id: 'T9:105') }
+  let(:kosapi_room) { double(link_id: 'T9:105') }
+  let(:kosapi_rooms) { [kosapi_room]}
   let(:teacher) { double(link_id: 'kordikp', link_title: 'Ing. Pavel Kordík Ph.D.') }
   let(:exam) { double(:exam, link: double(link_id: 620283180005), start_date: Time.parse('2015-01-12T11:00:00'), end_date: Time.parse('2015-01-12T12:00:00'),
-                      capacity: 10, course: course, room: room, examiner: teacher, term_type: :final_exam)}
+                      capacity: 10, course: course, room: kosapi_room, examiner: teacher, term_type: :final_exam)}
   let(:exams) { [exam] }
   let(:faculty_semester) { Fabricate.build(:faculty_semester) }
+  let(:rooms) { [Fabricate.build(:room, id: 42, kos_code: 'T9:105')] }
 
   describe '#perform' do
 
     it 'converts exams to events' do
-      instance = subject.perform(exams: exams, faculty_semester: faculty_semester)
+      instance = subject.perform(exams: exams, faculty_semester: faculty_semester, rooms: rooms)
       events = instance.results[:events]
       event = events.first
       expect(events).to be
@@ -31,7 +33,7 @@ describe ConvertExams do
     end
 
     it 'outputs people' do
-      instance = subject.perform(exams: exams, faculty_semester: faculty_semester)
+      instance = subject.perform(exams: exams, faculty_semester: faculty_semester, rooms: rooms)
       people = instance.results[:people]
       person = people.first
       expect(person.full_name).to eq 'Ing. Pavel Kordík Ph.D.'
@@ -39,7 +41,7 @@ describe ConvertExams do
     end
 
     it 'outputs courses' do
-      instance = subject.perform(exams: exams, faculty_semester: faculty_semester)
+      instance = subject.perform(exams: exams, faculty_semester: faculty_semester, rooms: rooms)
       courses = instance.results[:courses]
       course = courses.first
       expect(course.id).to eq 'BI-ZUM'
@@ -51,7 +53,7 @@ describe ConvertExams do
       let(:teacher) { nil }
 
       it 'sets empty teacher_ids array' do
-        instance = subject.perform(exams: exams, faculty_semester: faculty_semester)
+        instance = subject.perform(exams: exams, faculty_semester: faculty_semester, rooms: rooms)
         events = instance.results[:events]
         event = events.first
         expect(event.teacher_ids).to eq []

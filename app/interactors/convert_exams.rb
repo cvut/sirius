@@ -3,10 +3,11 @@ require 'interpipe/interactor'
 class ConvertExams
   include Interpipe::Interactor
 
-  def perform(exams:, faculty_semester:)
+  def perform(exams:, faculty_semester:, rooms:, **args)
     @courses = {}
     @people = {}
     @faculty_semester = faculty_semester
+    @rooms_map = build_room_map(rooms)
     @events = exams.map do |exam|
       convert_exam(exam)
     end
@@ -36,6 +37,7 @@ class ConvertExams
     event.source = Sequel.hstore({exam_id: exam.link.link_id})
     event.semester = @faculty_semester.code
     event.faculty = @faculty_semester.faculty
+    event.room = @rooms_map[exam.room.link_id] if exam.room
     event
   end
 
@@ -47,6 +49,10 @@ class ConvertExams
   def export_course(course_link)
     course_code = course_link.link_id
     @courses[course_code] ||= Course.new(name: Sequel.hstore({cs: course_link.link_title})) { |c| c.id = course_code }
+  end
+
+  def build_room_map(rooms)
+    Hash[rooms.map{|room| [room.kos_code, room]}]
   end
 
 end
