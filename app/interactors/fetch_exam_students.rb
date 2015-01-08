@@ -26,7 +26,7 @@ class FetchExamStudents < KOSapiInteractor
   end
 
   def fetch_exam_students(client, exam)
-    client.exams.find(exam.source['exam_id'].to_i).attendees.limit(100)
+    client.exams.find(exam.source['exam_id'].to_i).limit(100).attendees
   end
 
   def update_exam_students(exam, students)

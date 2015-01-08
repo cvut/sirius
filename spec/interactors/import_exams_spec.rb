@@ -9,7 +9,7 @@ describe ImportExams, :vcr do
   describe '#perform' do
 
     it 'imports exams from KOSapi' do
-      subject.perform(faculty_semester: faculty_semester)
+      subject.perform(faculty_semester: faculty_semester, paginate: false)
     end
 
   end
