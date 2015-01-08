@@ -61,6 +61,20 @@ describe ConvertExams do
 
     end
 
+    context 'with missing end time' do
+
+      let(:exam) { double(:exam, link: double(link_id: 620283180005), start_date: Time.parse('2015-01-12T11:00:00'), end_date: nil,
+                      capacity: 10, course: course, room: kosapi_room, examiner: teacher, term_type: :final_exam)}
+
+      it 'sets default duration of 90 minutes' do
+        instance = subject.perform(exams: exams, faculty_semester: faculty_semester, rooms: rooms)
+        events = instance.results[:events]
+        event = events.first
+        expect(event.ends_at).to eq(event.starts_at + 90.minutes)
+      end
+
+    end
+
   end
 end
 
