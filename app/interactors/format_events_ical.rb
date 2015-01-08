@@ -48,7 +48,14 @@ class FormatEventsIcal
 
     def ical_summary
       # FIXME: Add localized #{event_type}
-      "#{course_id} #{sequence_number}. #{localized_event_type} (#{parallel})"
+      case event_type
+      when 'exam', 'assessment'
+        "#{course_id} #{localized_event_type}"
+      when 'tutorial', 'lecture', 'laboratory'
+        "#{course_id} #{sequence_number}. #{localized_event_type} (#{parallel})"
+      else
+        raise "Don't know how to format iCalendar summary for event with type: '#{event_type}'"
+      end
     end
 
     def ical_description
@@ -86,8 +93,11 @@ class FormatEventsIcal
     EVENT_TYPE_TRANSLATIONS = {
         tutorial: 'cvičení'.freeze,
         lecture: 'přednáška'.freeze,
-        laboratory: 'laboratoř'.freeze
+        laboratory: 'laboratoř'.freeze,
+        assessment: 'zápočet'.freeze,
+        exam: 'zkouška'.freeze
     }
+
     def localized_event_type
       EVENT_TYPE_TRANSLATIONS[event_type.to_sym] if event_type
     end

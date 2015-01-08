@@ -61,11 +61,22 @@ describe FormatEventsIcal do
       end
 
       context 'without an explicit name' do
-        before do
-          allow(event).to receive_messages(sequence_number: 3, course_id: 'MI-RUB', parallel: '101', event_type: 'tutorial')
+        context 'with tutorial event type' do
+          before do
+            allow(event).to receive_messages(sequence_number: 3, course_id: 'MI-RUB', parallel: '101', event_type: 'tutorial')
+          end
+          it 'generates the name' do
+            should eql 'MI-RUB 3. cvičení (101)'
+          end
         end
-        it 'generates the name' do
-          should eql 'MI-RUB 3. cvičení (101)'
+
+        context 'with exam event type' do
+          before do
+            allow(event).to receive_messages(course_id: 'MI-RUB', event_type: 'exam')
+          end
+          it 'generates the name' do
+            should eql 'MI-RUB zkouška'
+          end
         end
         pending 'event_type + locales'
       end
