@@ -75,6 +75,27 @@ describe ConvertExams do
 
     end
 
+    context 'with assessment instead of exam' do
+       let(:exam) { create_exam(term_type: :assessment) }
+
+       it 'sets event type as assessment' do
+         instance = subject.perform(exams: exams, faculty_semester: faculty_semester, rooms: rooms)
+         events = instance.results[:events]
+         event = events.first
+         expect(event.event_type).to eq 'assessment'
+       end
+
+    end
+
   end
+
+  def create_exam(end_date: Time.parse('2015-01-12T12:00:00'), term_type: :final_exam)
+    double(:exam,
+     link: double(link_id: 620283180005),
+     start_date: Time.parse('2015-01-12T11:00:00'),
+     end_date: end_date,
+     capacity: 10, course: course, room: kosapi_room, examiner: teacher, term_type: term_type)
+  end
+
 end
 

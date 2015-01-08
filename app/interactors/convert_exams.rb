@@ -36,7 +36,7 @@ class ConvertExams
       export_person(exam.examiner)
     end
     event.capacity = exam.capacity
-    event.event_type = 'exam'
+    event.event_type = (exam.term_type == :assessment ? 'assessment' : 'exam')
     event.source = Sequel.hstore({exam_id: exam.link.link_id})
     event.semester = @faculty_semester.code
     event.faculty = @faculty_semester.faculty
