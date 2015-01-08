@@ -35,6 +35,18 @@ namespace :sirius do
       build_manager.assign_people
     end
 
+    desc 'Imports exams from KOSapi and generates corresponding events.'
+    task :import_exams => :env do
+      puts 'Importing exams.'
+      build_manager.import_exams
+    end
+
+    desc 'Import students for saved exam events for all active semesters.'
+    task :import_exam_students => :env do
+      puts 'Importing exam students.'
+      build_manager.import_exam_students
+    end
+
   end
 
 end
