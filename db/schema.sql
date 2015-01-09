@@ -90,7 +90,7 @@ CREATE TABLE events (
     teacher_ids text[],
     student_ids text[],
     relative_sequence_number integer,
-    deleted boolean,
+    deleted boolean DEFAULT false NOT NULL,
     event_type text,
     parallel_id bigint,
     timetable_slot_id bigint,
@@ -698,3 +698,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1413467599_add_indexes_to_
 INSERT INTO "schema_migrations" ("filename") VALUES ('1415024054_add_capacity_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1419305160_add_source_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1420032483_add_index_to_events_source.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1420765805_set_events_deleted_as_not_null_default_false.rb');
