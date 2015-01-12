@@ -23,6 +23,10 @@ class SyncHandler
     $stderr.puts "Planning finished at #{Time.now}"
     manager.assign_people
     $stderr.puts "Assigning people finished at #{Time.now}"
+    manager.import_exams
+    $stderr.puts "Importing exams finished at #{Time.now}"
+    manager.import_exam_students
+    $stderr.puts "Importing exam students finished at #{Time.now}"
   end
 end
 

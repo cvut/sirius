@@ -44,14 +44,26 @@ class Sync
   private
 
   def find_existing_model(model)
+    lookup_args = []
     lookup_hash = {}
-    matching_attributes.inject(lookup_hash) do |hash, attr|
-      lookup_value = model.send(attr)
-      hash[attr] = lookup_value if lookup_value
-      hash
+    matching_attributes.each do |attr|
+      if attr.instance_of?(Symbol)
+        lookup_value = model.send(attr)
+        lookup_hash[attr] = lookup_value if lookup_value
+      else
+        args = attr.map do |column, key|
+          lookup_attribute = model.send(column)
+          lookup_value = lookup_attribute[key]
+          h = Sequel.hstore_op(column)
+          h.contains(Sequel.hstore({key => lookup_value}))
+        end
+        lookup_args.concat(args)
+      end
     end
 
-    model_class.find(lookup_hash) unless lookup_hash.empty?
+    lookup_args << lookup_hash unless lookup_hash.empty?
+
+    model_class.find(*lookup_args) unless lookup_args.empty?
   end
 
   def update_existing(existing_model, new_model)

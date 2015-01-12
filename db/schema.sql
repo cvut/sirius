@@ -90,14 +90,15 @@ CREATE TABLE events (
     teacher_ids text[],
     student_ids text[],
     relative_sequence_number integer,
-    deleted boolean,
+    deleted boolean DEFAULT false NOT NULL,
     event_type text,
     parallel_id bigint,
     timetable_slot_id bigint,
     course_id text,
     semester text,
     faculty integer,
-    capacity integer
+    capacity integer,
+    source hstore
 );
 
 
@@ -551,6 +552,13 @@ CREATE INDEX events_semester_index ON events USING btree (semester);
 
 
 --
+-- Name: events_source_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX events_source_index ON events USING gin (source);
+
+
+--
 -- Name: events_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -688,3 +696,6 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1412725971_add_semester_an
 INSERT INTO "schema_migrations" ("filename") VALUES ('1412730258_add_faculty_to_parallel.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1413467599_add_indexes_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1415024054_add_capacity_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1419305160_add_source_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1420032483_add_index_to_events_source.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1420765805_set_events_deleted_as_not_null_default_false.rb');

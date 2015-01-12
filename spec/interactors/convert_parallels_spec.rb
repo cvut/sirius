@@ -10,13 +10,14 @@ describe ConvertParallels do
     context 'when parallels empty' do
       it 'returns empty result' do
         results = convert.perform(kosapi_parallels: []).results
-        expect(results).to eq({parallels: [], timetable_slots: {}, people: [], courses: []})
+        expect(results).to eq({parallels: [], timetable_slots: {}, people: [], courses: [], kosapi_rooms: []})
       end
     end
 
     context 'with parallels' do
 
-      let(:slot) { double(:slot) }
+      let(:room) { double(:room, link_id: 'T9:351', link_title: 'Foo')}
+      let(:slot) { double(:slot, room: room) }
       let(:teacher) { double(:teacher, link_id: 'vomackar', link_title: 'Ing. Karel Vomáčka CSc.') }
       let(:parallel_attrs) { {id: 239018, parallel_type: :lecture, code: 1234, capacity: 50, occupied: 10} }
       let(:course) { double(:course, link_id: 'BI-ZUM', link_title: 'Course title') }
@@ -56,6 +57,12 @@ describe ConvertParallels do
         results = convert.perform(kosapi_parallels: [parallel]).results
         parallel = results[:parallels].first
         expect(results[:timetable_slots]).to eq({'239018' => [slot]})
+      end
+
+      it 'extracts rooms' do
+        results = convert.perform(kosapi_parallels: [parallel]).results
+        extracted_room = results[:kosapi_rooms].first
+        expect(extracted_room).to eq room
       end
 
     end

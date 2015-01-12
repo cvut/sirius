@@ -7,12 +7,11 @@ class ConvertRooms
     @rooms = {}
   end
 
-  def perform(timetable_slots:, **options)
-    timetable_slots.each do |parallel_id, slots|
-      slots.each { |slot| convert_room(slot.room) }
+  def perform(kosapi_rooms:, **options)
+    kosapi_rooms.map do |room|
+      convert_room(room)
     end
     @options = options
-    @options[:timetable_slots] = timetable_slots
   end
 
   def results

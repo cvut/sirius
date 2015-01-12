@@ -10,6 +10,7 @@ class ConvertParallels
     @timetable_slots = {}
     @people = {}
     @courses = {}
+    @rooms = {}
   end
 
   def perform(kosapi_parallels:, faculty: nil)
@@ -49,7 +50,12 @@ class ConvertParallels
 
   def extract_slots(kosapi_parallel)
     parallel_id = kosapi_parallel.link.link_id
+    kosapi_parallel.timetable_slots.each { |slot| extract_rooms(slot) }
     @timetable_slots[parallel_id] = kosapi_parallel.timetable_slots
+  end
+
+  def extract_rooms(timetable_slot)
+    @rooms[timetable_slot.room.link_id] = timetable_slot.room if timetable_slot.room
   end
 
   def results
@@ -57,7 +63,8 @@ class ConvertParallels
         parallels: @parallels,
         timetable_slots: @timetable_slots,
         people: @people.values,
-        courses: @courses.values
+        courses: @courses.values,
+        kosapi_rooms: @rooms.values
     }
   end
 
