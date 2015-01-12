@@ -8,16 +8,13 @@ class FetchExams < KOSapiInteractor
     client = kosapi_client(faculty_semester)
     @exams = client.exams.where("course.faculty==#{faculty_semester.faculty};semester==#{faculty_semester.code}").limit(limit)
     @exams.auto_paginate = paginate
-    @exams.each { |exam| extract_room(exam) }
+    @exams.lazy.map(&:room).reject(&:nil?).each do |room|
+      @rooms[room.link_id] ||= room
+    end
   end
 
   def results
     { exams: @exams, faculty_semester: @faculty_semester, kosapi_rooms: @rooms.values }
-  end
-
-  def extract_room(exam)
-    room = exam.room
-    @rooms[room.link_id] ||= room if room
   end
 
 end
