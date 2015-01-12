@@ -1,10 +1,10 @@
 require 'active_support/core_ext/numeric/time'
 require 'interpipe/interactor'
 
+require 'roles/imported_exam'
+
 class ConvertExams
   include Interpipe::Interactor
-
-  DEFAULT_EXAM_DURATION = 90.minutes
 
   def perform(exams:, faculty_semester:, rooms:, **args)
     @courses = {}
@@ -26,21 +26,23 @@ class ConvertExams
 
   def convert_exam(exam)
     event = Event.new
-    event.starts_at = exam.start_date
-    event.ends_at = (exam.end_date ? exam.end_date : exam.start_date + DEFAULT_EXAM_DURATION)
-    event.course_id = exam.course.link_id
-    export_course(exam.course)
-    event.teacher_ids = []
-    if exam.examiner
-      event.teacher_ids = [exam.examiner.link_id]
-      export_person(exam.examiner)
+    ImportedExam.played_by(exam) do |exam|
+      event.starts_at = exam.start_date
+      event.ends_at = exam.end_date
+      event.course_id = exam.course.link_id
+      export_course(exam.course)
+      event.teacher_ids = []
+      if exam.examiner
+        event.teacher_ids = [exam.examiner.link_id]
+        export_person(exam.examiner)
+      end
+      event.capacity = exam.capacity
+      event.event_type = exam.event_type
+      event.source = Sequel.hstore({exam_id: exam.link.link_id})
+      event.semester = @faculty_semester.code
+      event.faculty = @faculty_semester.faculty
+      event.room = @rooms_map[exam.room.link_id] if exam.room
     end
-    event.capacity = exam.capacity
-    event.event_type = (exam.term_type == :assessment ? 'assessment' : 'exam')
-    event.source = Sequel.hstore({exam_id: exam.link.link_id})
-    event.semester = @faculty_semester.code
-    event.faculty = @faculty_semester.faculty
-    event.room = @rooms_map[exam.room.link_id] if exam.room
     event
   end
 
