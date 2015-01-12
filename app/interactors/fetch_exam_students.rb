@@ -7,10 +7,10 @@ class FetchExamStudents < KOSapiInteractor
     @people = {}
   end
 
-  def perform(faculty_semester:)
+  def perform(faculty_semester:, future_exams_only: true)
     client = kosapi_client(faculty_semester)
 
-    @exams = load_exam_events(faculty_semester).map do |exam|
+    @exams = load_exam_events(faculty_semester, future_exams_only).map do |exam|
       students = fetch_exam_students(client, exam)
       update_exam_students(exam, students)
       exam
@@ -21,8 +21,10 @@ class FetchExamStudents < KOSapiInteractor
     { events: @exams, people: @people.values }
   end
 
-  def load_exam_events(faculty_semester)
-    Event.where(event_type: 'exam', faculty: faculty_semester.faculty, semester: faculty_semester.code)#.where('starts_at > NOW()')
+  def load_exam_events(faculty_semester, future_exams_only)
+    query = Event.where(event_type: 'exam', faculty: faculty_semester.faculty, semester: faculty_semester.code)
+    query = query.where('starts_at > NOW()') if future_exams_only
+    query
   end
 
   def fetch_exam_students(client, exam)

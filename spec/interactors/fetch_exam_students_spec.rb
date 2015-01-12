@@ -8,6 +8,7 @@ describe FetchExamStudents do
   let(:faculty_semester) { Fabricate.build(:faculty_semester) }
   let(:kosapi_students) { [double(:student, full_name: 'Dude', username: 'skocdopet' ) ] }
   let(:exam) { Fabricate.build(:event, event_type: 'exam', source: {'exam_id' => 42}) }
+  let!(:future_exam) { Fabricate(:event, event_type: 'exam', starts_at: Time.new + 1.hour, ends_at: Time.new + 2.hours, source: {'exam_id' => 42}) }
 
   before(:example) do
     subject.setup(client: kosapi_client)
@@ -16,7 +17,6 @@ describe FetchExamStudents do
   describe '#perform' do
 
     it 'returns updated exam events' do
-      allow(Event).to receive(:where).and_return([exam])
       allow(kosapi_client).to receive(:attendees).and_return(kosapi_students)
       subject.perform(faculty_semester: faculty_semester)
       events = subject.results[:events]
@@ -24,7 +24,6 @@ describe FetchExamStudents do
     end
 
     it 'returns associated students' do
-      allow(Event).to receive(:where).and_return([exam])
       allow(kosapi_client).to receive(:attendees).and_return(kosapi_students)
       subject.perform(faculty_semester: faculty_semester)
       people = subject.results[:people]
@@ -37,7 +36,13 @@ describe FetchExamStudents do
 
     it 'queries database for exams' do
       expect(Event).to receive(:where)
-      subject.load_exam_events(faculty_semester)
+      subject.load_exam_events(faculty_semester, false)
+    end
+
+    it 'loads only future exams when asked to' do
+      past_exam = Fabricate(:event, event_type: 'exam', starts_at: Time.new - 2.hour, ends_at: Time.new - 1.hours)
+      events = subject.load_exam_events(faculty_semester, true)
+      expect(events).to contain_exactly(future_exam)
     end
 
   end
