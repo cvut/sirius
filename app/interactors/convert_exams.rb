@@ -25,24 +25,23 @@ class ConvertExams
   end
 
   def convert_exam(exam)
-    event = Event.new
-    ImportedExam.played_by(exam) do |exam|
-      event.starts_at = exam.start_date
-      event.ends_at = exam.end_date
-      event.course_id = exam.course.link_id
-      export_course(exam.course)
-      event.teacher_ids = []
-      if exam.examiner
-        event.teacher_ids = [exam.examiner.link_id]
-        export_person(exam.examiner)
-      end
-      event.capacity = exam.capacity
-      event.event_type = exam.event_type
-      event.source = Sequel.hstore({exam_id: exam.link.link_id})
-      event.semester = @faculty_semester.code
-      event.faculty = @faculty_semester.faculty
-      event.room = @rooms_map[exam.room.link_id] if exam.room
+    event = ImportedExam.played_by(exam) do |exam|
+      Event.new(
+        starts_at: exam.start_date,
+        ends_at: exam.end_date,
+        course_id: exam.course.link_id,
+        teacher_ids: [],
+        capacity: exam.capacity,
+        event_type: exam.event_type,
+        source: Sequel.hstore({exam_id: exam.link.link_id}),
+        semester: @faculty_semester.code,
+        faculty: @faculty_semester.faculty
+      )
     end
+    event.room = @rooms_map[exam.room.link_id] if exam.room
+    event.teacher_ids = [exam.examiner.link_id] if exam.examiner
+    export_course(exam.course)
+    export_person(exam.examiner) if exam.examiner
     event
   end
 
