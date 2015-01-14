@@ -34,7 +34,7 @@ module Sirius
       DB['with positions as (
           select
             id,
-            row_number() over (partition by parallel_id order by starts_at) as position
+            row_number() over (partition by event_type, course_id, parallel_id order by starts_at) as position
           from events
           where deleted = false and faculty = :faculty and semester = :semester
         )

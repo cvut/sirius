@@ -61,6 +61,21 @@ describe Sirius::EventPlanner do
       expect(events.map(&:sequence_number)).to eq [nil, nil]
     end
 
+    it 'separates different event types' do
+      events = [ Fabricate(:event, event_type: :exam), Fabricate(:event, event_type: :tutorial) ]
+      planner.renumber_events(semester)
+      events.each(&:refresh)
+      expect(events.map(&:sequence_number)).to eq [1, 1]
+    end
+
+    it 'separates different courses' do
+      Fabricate(:course, id: 'BI-MLO')
+      Fabricate(:course, id: 'MI-PAR')
+      events = [ Fabricate(:event, course_id: 'BI-MLO'), Fabricate(:event, course_id: 'MI-PAR') ]
+      planner.renumber_events(semester)
+      events.each(&:refresh)
+      expect(events.map(&:sequence_number)).to eq [1, 1]
+    end
   end
 
 end
