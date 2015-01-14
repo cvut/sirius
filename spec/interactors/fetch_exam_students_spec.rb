@@ -45,6 +45,12 @@ describe FetchExamStudents do
       expect(events).to contain_exactly(future_exam)
     end
 
+    it 'loads exams and assessments' do
+      assessment = Fabricate(:event, event_type: :assessment)
+      events = subject.load_exam_events(faculty_semester, false)
+      expect(events).to contain_exactly(future_exam, assessment)
+    end
+
   end
 
   describe '#fetch_exam_students' do
@@ -59,7 +65,7 @@ describe FetchExamStudents do
   end
 
   describe '#update_exam_students' do
-    
+
     it 'sets student ids to event' do
       subject.update_exam_students(exam, kosapi_students)
       expect(exam.student_ids).to eq ['skocdopet']
