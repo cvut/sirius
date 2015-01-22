@@ -129,7 +129,7 @@ CREATE TABLE faculty_semesters (
     id integer NOT NULL,
     code text,
     faculty integer,
-    update_enabled boolean DEFAULT true,
+    update_parallels boolean DEFAULT true,
     first_week_parity integer,
     starts_at date,
     teaching_ends_at date,
@@ -139,7 +139,8 @@ CREATE TABLE faculty_semesters (
     hour_starts time without time zone[],
     hour_duration integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    update_other boolean DEFAULT false NOT NULL
 );
 
 
@@ -699,3 +700,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1415024054_add_capacity_to
 INSERT INTO "schema_migrations" ("filename") VALUES ('1419305160_add_source_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1420032483_add_index_to_events_source.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1420765805_set_events_deleted_as_not_null_default_false.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1421860982_add_faculty_semester_planning_parametrization.rb');

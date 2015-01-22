@@ -3,7 +3,8 @@ require 'faculty_semester'
 Fabricator(:faculty_semester) do
   code 'B141'
   faculty 18000
-  update_enabled true
+  update_parallels true
+  update_other true
   first_week_parity :odd
   starts_at '2014-09-22'
   teaching_ends_at '2014-12-20'

@@ -9,12 +9,8 @@ require 'sirius/event_planner'
 module Sirius
   class ScheduleManager
 
-    def initialize
-      @active_semesters = FacultySemester.active
-    end
-
     def plan_stored_parallels
-      @active_semesters.each do |semester|
+      active_semesters(:parallels).each do |semester|
         DB.transaction do
           EventPlanner.new.plan_semester(semester)
         end
@@ -22,7 +18,7 @@ module Sirius
     end
 
     def import_parallels(fetch_all: true)
-      @active_semesters.each do |sem|
+      active_semesters(:parallels).each do |sem|
         DB.transaction do
           ImportUpdatedParallels.perform(faculty: sem.faculty, semester: sem.code, fetch_all: fetch_all)
         end
@@ -30,32 +26,36 @@ module Sirius
     end
 
     def import_students
-      perform_with_active_semesters(ImportStudents)
+      perform_with_active_semesters(ImportStudents, :parallels)
     end
 
     def assign_people
-      perform_with_active_semesters(AssignPeople)
+      perform_with_active_semesters(AssignPeople, :parallels)
     end
 
     def import_course_events
-      perform_with_active_semesters(ImportCourseEvents)
+      perform_with_active_semesters(ImportCourseEvents, :course_events)
     end
 
     def import_exams
-      perform_with_active_semesters(ImportExams)
+      perform_with_active_semesters(ImportExams, :exams)
     end
 
     def import_exam_students
-      perform_with_active_semesters(ImportExamStudents)
+      perform_with_active_semesters(ImportExamStudents, :exams)
     end
 
     private
-    def perform_with_active_semesters(interactor_class)
-      @active_semesters.each do |sem|
+    def perform_with_active_semesters(interactor_class, source_type)
+      active_semesters(source_type).each do |sem|
         DB.transaction do
           interactor_class.perform(faculty_semester: sem)
         end
       end
+    end
+
+    def active_semesters(source_type)
+      FacultySemester.active_for(source_type)
     end
 
   end
