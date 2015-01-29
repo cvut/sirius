@@ -19,7 +19,7 @@ class ImportUpdatedParallels < Interpipe::Pipe
         Sync[Person], Sync[Course], Sync[Parallel, skip_updating: [:student_ids]],
         pipe[
             ConvertRooms,
-            Sync[Room, matching_attributes: [:kos_code]],
+            Sync[Room],
             ConvertTTS,
             Sync[TimetableSlot]
         ]

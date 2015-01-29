@@ -11,7 +11,7 @@ class ImportExams < Interpipe::Pipe
   @interactors = [
     FetchExams,
     ConvertRooms,
-    Sync[Room, matching_attributes: [:kos_code]],
+    Sync[Room],
     ConvertExams,
     split[
       Sync[Person],

@@ -7,7 +7,7 @@ describe AppliedScheduleException do
 
   describe '#apply' do
 
-    let(:event) { Fabricate.build(:event, period: Period.parse('7:30', '9:00'), room_id: 11) }
+    let(:event) { Fabricate.build(:event, period: Period.parse('7:30', '9:00'), room_id: 'T9:355') }
 
     context 'with CANCEL exception' do
 
@@ -31,10 +31,10 @@ describe AppliedScheduleException do
 
     context 'with ROOM_CHANGE exception' do
 
-      let(:wrapped_exception) { Fabricate.build(:schedule_exception, exception_type: Sirius::ScheduleExceptionType::ROOM_CHANGE, options: Sequel.hstore(room_id: 42)) }
+      let(:wrapped_exception) { Fabricate.build(:schedule_exception, exception_type: Sirius::ScheduleExceptionType::ROOM_CHANGE, options: Sequel.hstore(room_id: 'T9:155')) }
 
       it 'changes room_id' do
-        expect { exception.apply(event) }.to change(event, :room_id).from(11).to(42)
+        expect { exception.apply(event) }.to change(event, :room_id).from('T9:355').to('T9:155')
       end
 
     end
