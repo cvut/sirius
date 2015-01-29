@@ -86,7 +86,6 @@ CREATE TABLE events (
     absolute_sequence_number integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    room_id integer,
     teacher_ids text[],
     student_ids text[],
     relative_sequence_number integer,
@@ -98,7 +97,8 @@ CREATE TABLE events (
     semester text,
     faculty integer,
     capacity integer,
-    source hstore
+    source hstore,
+    room_id text
 );
 
 
@@ -219,8 +219,7 @@ CREATE TABLE people (
 --
 
 CREATE TABLE rooms (
-    id integer NOT NULL,
-    kos_code text,
+    id text NOT NULL,
     name hstore,
     capacity hstore,
     division text,
@@ -229,25 +228,6 @@ CREATE TABLE rooms (
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
-
-
---
--- Name: rooms_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE rooms_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: rooms_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE rooms_id_seq OWNED BY rooms.id;
 
 
 --
@@ -309,10 +289,10 @@ CREATE TABLE timetable_slots (
     parity integer,
     first_hour integer,
     duration integer,
-    room_id integer,
     parallel_id bigint,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    room_id text
 );
 
 
@@ -405,13 +385,6 @@ ALTER TABLE ONLY faculty_semesters ALTER COLUMN id SET DEFAULT nextval('faculty_
 --
 
 ALTER TABLE ONLY parallels ALTER COLUMN id SET DEFAULT nextval('parallels_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY rooms ALTER COLUMN id SET DEFAULT nextval('rooms_id_seq'::regclass);
 
 
 --
@@ -616,13 +589,6 @@ CREATE INDEX parallels_teacher_ids_index ON parallels USING gin (teacher_ids);
 
 
 --
--- Name: rooms_kos_code_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX rooms_kos_code_index ON rooms USING btree (kos_code);
-
-
---
 -- Name: events_course_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -701,3 +667,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1419305160_add_source_to_e
 INSERT INTO "schema_migrations" ("filename") VALUES ('1420032483_add_index_to_events_source.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1420765805_set_events_deleted_as_not_null_default_false.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1421860982_add_faculty_semester_planning_parametrization.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1422545075_change_rooms_primary_key_to_kos_code.rb');
