@@ -81,6 +81,20 @@ RSpec.shared_examples 'events endpoint' do
 
       it { should be_json_eql(meta.to_json).at_path('meta') }
 
+      context 'with offset 0 and default limit' do
+        before { auth_get "#{path}?offset=0" }
+        let(:meta) do
+          {
+            limit: FilterEvents::DEFAULT_LIMIT,
+            offset: 0,
+            count: events_cnt
+          }
+        end
+        it { should have_json_size(events_cnt).at_path('events') }
+
+        it { should be_json_eql(meta.to_json).at_path('meta') }
+      end
+
       context 'with invalid value' do
         before { auth_get "#{path}?offset=asdasd" }
         it 'returns an error' do
