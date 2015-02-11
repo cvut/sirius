@@ -1,26 +1,27 @@
 require 'interpipe/interactor'
 
-class ExtractRooms
+class ExtractItems
   include Interpipe::Interactor
 
   def perform(**options)
     @options = options
     collection = options[collection_key]
     raise "#{self.class.name}: Missing collection key '#{collection_key}'." unless collection
-    @rooms = collection.map { |item| item.send(attribute) }.reject(&:nil?).uniq { |i| i.link_id }
+    @items = collection.map { |item| item.send(attribute) }.reject(&:nil?).uniq { |i| i.link_id }
   end
 
   def results
-    {kosapi_rooms: @rooms}.merge(@options)
+    { result_key => @items }.merge(@options)
   end
 
   class << self
-    attr_accessor :collection, :attribute
+    attr_accessor :collection, :attribute, :result_key
 
-    def [](collection:, attribute: :room)
+    def [](result_key, from:, attr:)
       Class.new(self).tap do |cls|
-        cls.collection = collection
-        cls.attribute = attribute
+        cls.collection = from
+        cls.attribute = attr
+        cls.result_key = result_key
       end
     end
   end
@@ -32,5 +33,9 @@ class ExtractRooms
 
   def attribute
     self.class.attribute
+  end
+
+  def result_key
+    self.class.result_key
   end
 end

@@ -31,22 +31,6 @@ describe ConvertExams do
       expect(event.source).to eq(Sequel.hstore({ exam_id: 620283180005 }))
     end
 
-    it 'outputs people' do
-      instance = subject.perform(exams: exams, faculty_semester: faculty_semester, rooms: rooms)
-      people = instance.results[:people]
-      person = people.first
-      expect(person.full_name).to eq 'Ing. Pavel Kordík Ph.D.'
-      expect(person.id).to eq 'kordikp'
-    end
-
-    it 'outputs courses' do
-      instance = subject.perform(exams: exams, faculty_semester: faculty_semester, rooms: rooms)
-      courses = instance.results[:courses]
-      course = courses.first
-      expect(course.id).to eq 'BI-ZUM'
-      expect(course.name).to eq({'cs' => 'Sample course'})
-    end
-
     context 'with no examiner' do
 
       let(:teacher) { nil }
