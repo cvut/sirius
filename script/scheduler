@@ -32,8 +32,15 @@ end
 
 
 def scheduler.on_error(job, error)
-  Raven.capture_exception(error, logger: 'scheduler', extra: { job: job })
-  super
+  begin
+    Raven.capture_exception(error, logger: 'scheduler', extra: { job: job })
+  rescue => e
+    $stderr.puts("Failure in reporting scheduler error to Raven (Sentry).")
+    $stderr.puts(e.inspect)
+    $stderr.puts(e.backtrace)
+  ensure
+    super
+  end
 end
 
 if Config.sync_schedule
