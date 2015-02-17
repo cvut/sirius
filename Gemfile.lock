@@ -208,7 +208,7 @@ GEM
     rspec-support (3.1.2)
     rufus-scheduler (3.0.9)
       tzinfo
-    sentry-raven (0.12.2)
+    sentry-raven (0.12.3)
       faraday (>= 0.7.6)
     sequel (4.17.0)
     sequel_pg (1.6.11)
