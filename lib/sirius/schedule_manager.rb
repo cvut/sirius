@@ -4,6 +4,7 @@ require 'interactors/import_students'
 require 'interactors/assign_people'
 require 'interactors/import_exams'
 require 'interactors/import_exam_students'
+require 'interactors/import_course_events'
 require 'sirius/event_planner'
 
 module Sirius
