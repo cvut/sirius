@@ -76,7 +76,7 @@ describe ConvertExams do
      link: double(link_id: 620283180005),
      start_date: Time.parse('2015-01-12T11:00:00'),
      end_date: end_date,
-     capacity: 10, course: course, room: kosapi_room, examiner: teacher, term_type: term_type)
+     capacity: 10, course: course, room: kosapi_room, examiner: teacher, term_type: term_type, note: 'Foo')
   end
 
 end

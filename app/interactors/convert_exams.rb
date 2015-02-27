@@ -31,6 +31,7 @@ class ConvertExams
       ).tap do |event|
         event.room_id = exam.room.link_id if exam.room
         event.teacher_ids = [exam.examiner.link_id] if exam.examiner
+        event.note = {cs: exam.note} if exam.note
       end
     end
   end
