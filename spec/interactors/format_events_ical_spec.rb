@@ -54,7 +54,7 @@ describe FormatEventsIcal do
     describe '#summary' do
       subject(:summary) { icevent.summary }
       context 'with an explicit name' do
-        before { allow(event).to receive(:name).and_return('Groundhog day') }
+        before { allow(event).to receive(:name).and_return({'cs' => 'Groundhog day'}) }
         it 'uses the name as a summary' do
           expect(summary).to eql 'Groundhog day'
         end
@@ -85,7 +85,7 @@ describe FormatEventsIcal do
     describe '#description' do
       subject(:description) { icevent.description }
       context 'with an explicit note' do
-        before { allow(event).to receive(:note).and_return('Stomp the groundhogs!') }
+        before { allow(event).to receive(:note).and_return({'cs' => 'Stomp the groundhogs!'}) }
         it 'uses the note as a description' do
           expect(description).to eql 'Stomp the groundhogs!'
         end
