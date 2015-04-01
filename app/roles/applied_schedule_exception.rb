@@ -4,9 +4,7 @@ require 'sirius/enums/schedule_exception_type'
 class AppliedScheduleException < RolePlaying::Role
 
   def affects?(event)
-    faculty_check = true
-    semester_check = true
-    time_range_check(event) && faculty_check && semester_check && course_check(event) && timetable_slot_check(event)
+    time_range_check(event) && faculty_check(event) && semester_check(event) && course_check(event) && timetable_slot_check(event)
   end
 
   def apply(event)
@@ -34,5 +32,14 @@ class AppliedScheduleException < RolePlaying::Role
     course_ids.include?(event.course_id)
   end
 
+  def faculty_check(event)
+    return true if faculty.nil?
+    faculty == event.faculty
+  end
+
+  def semester_check(event)
+    return true if semester.nil?
+    semester == event.semester
+  end
 
 end

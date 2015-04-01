@@ -122,6 +122,51 @@ describe AppliedScheduleException do
       end
     end
 
-  end
 
+    describe 'faculty matching' do
+      let(:wrapped_exception) { Fabricate.build(:schedule_exception, faculty: 18000) }
+
+      it 'matches with event from specified faculty' do
+        event = Fabricate.build(:event, faculty: 18000)
+        expect( exception.affects?(event) ).to be_truthy
+      end
+
+      it 'does not match with event from other faculty' do
+        event = Fabricate.build(:event, faculty: 13000)
+        expect( exception.affects?(event) ).to be_falsey
+      end
+
+      context 'with no faculty set' do
+        let(:wrapped_exception) { Fabricate.build(:schedule_exception, faculty: nil) }
+
+        it 'always matches' do
+          event = Fabricate.build(:event, faculty: 13000)
+          expect( exception.affects?(event) ).to be_truthy
+        end
+      end
+    end
+
+    describe 'semester matching' do
+      let(:wrapped_exception) { Fabricate.build(:schedule_exception, semester: 'B141') }
+  
+      it 'matches an event with same semester' do
+        event = Fabricate.build(:event, semester: 'B141')
+        expect( exception.affects?(event) ).to be_truthy
+      end
+
+      it 'does not match an event with different semester' do
+        event = Fabricate.build(:event, semester: 'B132')
+        expect( exception.affects?(event) ).to be_falsey
+      end
+
+      context 'with no semester set' do
+      let(:wrapped_exception) { Fabricate.build(:schedule_exception, semester: nil) }
+
+        it 'always matches' do
+          event = Fabricate.build(:event, semester: 'B132')
+          expect( exception.affects?(event) ).to be_truthy
+        end
+      end
+    end
+  end
 end
