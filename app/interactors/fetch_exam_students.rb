@@ -23,7 +23,7 @@ class FetchExamStudents < KOSapiInteractor
 
   def load_exam_events(faculty_semester, future_exams_only)
     query = Event.where(event_type: ['exam', 'assessment'], faculty: faculty_semester.faculty, semester: faculty_semester.code)
-    query = query.where('starts_at > NOW()') if future_exams_only
+    query = query.where('starts_at > ?', Time.new) if future_exams_only
     query
   end
 
