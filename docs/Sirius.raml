@@ -215,9 +215,9 @@ resourceTypes:
   description: Get a calendar for a person
   uriParameters:
     username:
-      description: 8-char unique username
+      description: person's unique username
       required: true
-      pattern: "[a-z0-9]{8}"
+      pattern: "[a-z0-9]{3,8}"
       example: vomackar
 /rooms/{kosId}/events:
   type: events-collection
