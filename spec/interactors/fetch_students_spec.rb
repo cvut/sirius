@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'interactors/fetch_exam_students'
+require 'interactors/fetch_students'
 
-describe FetchExamStudents do
+describe FetchStudents do
 
-  subject { described_class.new }
+  subject { described_class[:exams, source_key: :exam_id, event_types: ['exam', 'assessment']].new }
   let(:kosapi_client) { spy }
   let(:faculty_semester) { Fabricate.build(:faculty_semester) }
   let(:kosapi_students) { [double(:student, full_name: 'Dude', username: 'skocdopet' ) ] }
@@ -32,31 +32,31 @@ describe FetchExamStudents do
 
   end
 
-  describe '#load_exam_events' do
+  describe '#load_events' do
 
     it 'queries database for exams' do
       expect(Event).to receive(:where)
-      subject.load_exam_events(faculty_semester, false)
+      subject.load_events(faculty_semester, false)
     end
 
     it 'loads only future exams when asked to' do
       past_exam = Fabricate(:event, event_type: 'exam', starts_at: Time.new - 2.hour, ends_at: Time.new - 1.hours)
-      events = subject.load_exam_events(faculty_semester, true)
+      events = subject.load_events(faculty_semester, true)
       expect(events).to contain_exactly(future_exam)
     end
 
     it 'loads exams and assessments' do
       assessment = Fabricate(:event, event_type: :assessment)
-      events = subject.load_exam_events(faculty_semester, false)
+      events = subject.load_events(faculty_semester, false)
       expect(events).to contain_exactly(future_exam, assessment)
     end
 
   end
 
-  describe '#fetch_exam_students' do
+  describe '#fetch_event_students' do
 
-    it 'fetches exam studennts from KOSapi' do
-      subject.fetch_exam_students(kosapi_client, exam)
+    it 'fetches event studennts from KOSapi' do
+      subject.fetch_event_students(kosapi_client, exam)
       expect(kosapi_client).to have_received(:exams).ordered
       expect(kosapi_client).to have_received(:find).with(42).ordered
       expect(kosapi_client).to have_received(:attendees).ordered
@@ -64,15 +64,15 @@ describe FetchExamStudents do
 
   end
 
-  describe '#update_exam_students' do
+  describe '#update_event_students' do
 
     it 'sets student ids to event' do
-      subject.update_exam_students(exam, kosapi_students)
+      subject.update_event_students(exam, kosapi_students)
       expect(exam.student_ids).to eq ['skocdopet']
     end
 
     it 'stores people info in results' do
-      subject.update_exam_students(exam, kosapi_students)
+      subject.update_event_students(exam, kosapi_students)
       person = subject.results[:people].first
       expect(person.id).to eq 'skocdopet'
     end
