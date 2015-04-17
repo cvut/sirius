@@ -5,6 +5,7 @@ require 'interactors/assign_people'
 require 'interactors/import_exams'
 require 'interactors/import_exam_students'
 require 'interactors/import_course_events'
+require 'interactors/import_course_event_students'
 require 'sirius/event_planner'
 
 module Sirius
@@ -36,6 +37,10 @@ module Sirius
 
     def import_course_events
       perform_with_active_semesters(ImportCourseEvents, :course_events)
+    end
+
+    def import_course_event_students
+      perform_with_active_semesters(ImportCourseEventStudents, :course_events)
     end
 
     def import_exams

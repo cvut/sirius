@@ -1,7 +1,7 @@
 namespace :sirius do
 
   desc 'Fetches parallels and students from KOSapi and plans stored parallels'
-  task :events => %w(events:import events:import_students events:plan events:assign_people events:import_exams events:import_exam_students events:import_course_events)
+  task :events => %w(events:import events:import_students events:plan events:assign_people events:import_exams events:import_exam_students events:import_course_events events:import_course_event_students)
 
   task :env do
     require 'bundler'
@@ -53,6 +53,11 @@ namespace :sirius do
       build_manager.import_course_events
     end
 
+    desc 'Import course event students for all active semesters.'
+    task :import_course_event_students => :env do
+      puts 'Importing course event students.'
+      build_manager.import_course_event_students
+    end
   end
 
 end
