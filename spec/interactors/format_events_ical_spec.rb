@@ -99,6 +99,14 @@ describe FormatEventsIcal do
         it 'generates the description' do
           expect(description).to eql 'Programování v Ruby'
         end
+
+        context 'without a course' do
+          let(:course) { nil }
+
+          it 'returns nil' do
+            expect(description).to be_nil
+          end
+        end
       end
     end
 
