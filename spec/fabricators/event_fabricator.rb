@@ -2,8 +2,8 @@ require 'sequel/extensions/pg_array'
 require 'models/event'
 
 Fabricator(:event) do
-  name 'Event name'
-  note 'Event note'
+  name { {cs: 'Event name'} }
+  note { {cs: 'Event note'} }
   starts_at DateTime.parse('2014-04-05 14:30')
   ends_at DateTime.parse('2014-04-05 16:00')
   teacher_ids ['vomackar']

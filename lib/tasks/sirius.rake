@@ -1,7 +1,7 @@
 namespace :sirius do
 
   desc 'Fetches parallels and students from KOSapi and plans stored parallels'
-  task :events => %w(events:import events:import_students events:plan events:assign_people events:import_exams events:import_exam_students)
+  task :events => %w(events:import events:import_students events:plan events:assign_people events:import_exams events:import_exam_students events:import_course_events events:import_course_event_students events:renumber)
 
   task :env do
     require 'bundler'
@@ -47,6 +47,23 @@ namespace :sirius do
       build_manager.import_exam_students
     end
 
+    desc 'Import course events for all active semesters.'
+    task :import_course_events => :env do
+      puts 'Importing course events.'
+      build_manager.import_course_events
+    end
+
+    desc 'Import course event students for all active semesters.'
+    task :import_course_event_students => :env do
+      puts 'Importing course event students.'
+      build_manager.import_course_event_students
+    end
+
+    desc 'Recalculates relative sequence number for all existing non-deleted events in active semesters.'
+    task :renumber => :env do
+      puts 'Renumbering events.'
+      build_manager.renumber_events
+    end
   end
 
 end

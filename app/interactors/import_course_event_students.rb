@@ -6,11 +6,11 @@ require 'models/person'
 require 'models/course'
 require 'models/parallel'
 
-class ImportExamStudents < Interpipe::Pipe
+class ImportCourseEventStudents < Interpipe::Pipe
   include Interpipe::Aliases
 
   @interactors = [
-    FetchStudents[:exams, source_key: :exam_id, event_types: ['exam', 'assessment']],
+    FetchStudents[:course_events, source_key: :course_event_id, event_types: ['course_event']],
     split[
       Sync[Person],
       Sync[Event]

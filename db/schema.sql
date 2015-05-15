@@ -79,8 +79,8 @@ ALTER SEQUENCE courses_id_seq OWNED BY courses.id;
 
 CREATE TABLE events (
     id bigint NOT NULL,
-    name text,
-    note text,
+    name hstore,
+    note hstore,
     starts_at timestamp without time zone,
     ends_at timestamp without time zone,
     absolute_sequence_number integer,
@@ -668,3 +668,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1420032483_add_index_to_ev
 INSERT INTO "schema_migrations" ("filename") VALUES ('1420765805_set_events_deleted_as_not_null_default_false.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1421860982_add_faculty_semester_planning_parametrization.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1422545075_change_rooms_primary_key_to_kos_code.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1424431659_change_events_name_note_to_hstore.rb');

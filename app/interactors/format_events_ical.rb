@@ -46,6 +46,8 @@ class FormatEventsIcal
   role :IcalEvent do
     include UrlHelper
 
+     DEFAULT_LOCALE = 'cs'
+
     def ical_summary
       # FIXME: Add localized #{event_type}
       case event_type
@@ -62,7 +64,7 @@ class FormatEventsIcal
       # Programování v Ruby (prof. Petr Skočdopole PhD., Ing. Karel Vomáčka)
       # TODO: remove hardcoded locale, map usernames
       # XXX: I don't like this chaining in particular; could we get some role or helper method?
-      "#{course.name['cs']}"
+      "#{course.name[DEFAULT_LOCALE]}"
     rescue
       nil
     end
@@ -75,8 +77,8 @@ class FormatEventsIcal
     # @return [Icalendar::Event]
     def to_ical
       Icalendar::Event.new.tap do |e|
-        e.summary = name || ical_summary
-        e.description = note || ical_description
+        e.summary = (name && name[DEFAULT_LOCALE]) || ical_summary
+        e.description = (note && note[DEFAULT_LOCALE]) || ical_description
         e.dtstart = Icalendar::Values::DateTime.new(starts_at, tzid: Config.tz)
         e.dtend = Icalendar::Values::DateTime.new(ends_at, tzid: Config.tz)
         e.location = room.to_s

@@ -27,6 +27,12 @@ class SyncHandler
     $stderr.puts "Importing exams finished at #{Time.now}"
     manager.import_exam_students
     $stderr.puts "Importing exam students finished at #{Time.now}"
+    manager.import_course_events
+    $stderr.puts "Importing course events finished at #{Time.now}"
+    manager.import_course_event_students
+    $stderr.puts "Importing course event students finished at #{Time.now}"
+    manager.renumber_events
+    $stderr.puts "Renumbering events finished at #{Time.now}"
   end
 end
 
