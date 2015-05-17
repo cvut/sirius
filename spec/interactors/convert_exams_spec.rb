@@ -8,6 +8,7 @@ describe ConvertExams do
   let(:kosapi_room) { double(link_id: 'T9:105') }
   let(:kosapi_rooms) { [kosapi_room]}
   let(:teacher) { double(link_id: 'kordikp', link_title: 'Ing. Pavel Kordík Ph.D.') }
+  let(:examiners) { nil }
   let(:exam) { create_exam }
   let(:exams) { [exam] }
   let(:faculty_semester) { Fabricate.build(:faculty_semester) }
@@ -44,6 +45,19 @@ describe ConvertExams do
 
     end
 
+    context 'with multiple examiners' do
+      let(:teacher) { nil }
+      let(:examiners) { [double(link_id: 'vomackar', link_title: 'Ing. Karel Vomáčka Ph.D.'), double(link_id: 'skocdpet', link_title: 'Petr Skočdopole')]}
+
+      it 'sets multiple assigned teachers' do
+        instance = subject.perform(exams: exams, faculty_semester: faculty_semester, rooms: rooms)
+        events = instance.results[:events]
+        event = events.first
+        expect(event.teacher_ids).to contain_exactly('vomackar', 'skocdpet')
+      end
+
+    end
+
     context 'with missing end time' do
 
       let(:exam) { create_exam(end_date: nil) }
@@ -76,7 +90,7 @@ describe ConvertExams do
      link: double(link_id: 620283180005),
      start_date: Time.parse('2015-01-12T11:00:00'),
      end_date: end_date,
-     capacity: 10, course: course, room: kosapi_room, examiner: teacher, term_type: term_type, note: 'Foo')
+     capacity: 10, course: course, room: kosapi_room, examiner: teacher, term_type: term_type, note: 'Foo', examiners: examiners)
   end
 
 end

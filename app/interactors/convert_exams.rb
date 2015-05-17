@@ -30,7 +30,11 @@ class ConvertExams
         faculty: @faculty_semester.faculty
       ).tap do |event|
         event.room_id = exam.room.link_id if exam.room
-        event.teacher_ids = [exam.examiner.link_id] if exam.examiner
+        if exam.examiner
+          event.teacher_ids = [exam.examiner.link_id]
+        elsif exam.examiners
+          event.teacher_ids = exam.examiners.map(&:link_id)
+        end
         event.note = {cs: exam.note} if exam.note
       end
     end
