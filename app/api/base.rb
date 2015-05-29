@@ -4,6 +4,7 @@ require 'json'
 require 'errors_helper'
 require 'sirius_api'
 require 'api/events_endpoints'
+require 'api/schedule_exceptions_endpoints'
 module API
   class Base < Grape::API
     extend ErrorsHelper
@@ -36,5 +37,6 @@ module API
 
     # Mount your api classes here
     mount API::EventsEndpoints
+    mount API::ScheduleExceptionsEndpoints
   end
 end
