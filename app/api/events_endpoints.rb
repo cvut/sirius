@@ -16,10 +16,6 @@ module API
         EventsRepresenter.new(result.delete(:events), result)
       end
 
-      params :pagination do
-        optional :limit, type: Integer, values: (1..1000)
-        optional :offset, type: Integer, min: 0
-      end
       params :date_filter do
         optional :from, type: DateTime
         optional :to, type: DateTime

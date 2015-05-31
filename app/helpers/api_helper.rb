@@ -2,6 +2,13 @@ require 'sirius_api'
 ##
 # Helper methods used in Grape's API endpoints.
 module ApiHelper
+  extend Grape::API::Helpers
+
+  params :pagination do
+    optional :limit, type: Integer, values: (1..1000)
+    optional :offset, type: Integer, min: 0
+  end
+
   def api_format
     env['api.format'].to_sym
   end
