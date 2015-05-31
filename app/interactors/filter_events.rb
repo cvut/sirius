@@ -14,8 +14,6 @@ class FilterEvents
 
   attr_reader :events, :limit, :offset
 
-  DEFAULT_LIMIT = 20
-
   def perform(events: , params: {}, format: :jsonapi)
     @format = format
     @deleted = params[:deleted] || false
@@ -30,8 +28,8 @@ class FilterEvents
           @count_query = d
         }
         .then_if(paginate?) { |d|
-          @offset = params[:offset] || 0
-          @limit = params[:limit] || DEFAULT_LIMIT
+          @offset = params[:offset]
+          @limit = params[:limit]
           PaginatedDataset.new(d).paginate(offset: @offset, limit: @limit)
         }
     end

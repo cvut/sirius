@@ -4,9 +4,12 @@ require 'sirius_api'
 module ApiHelper
   extend Grape::API::Helpers
 
+  DEFAULT_LIMIT = 20
+  DEFAULT_OFFSET = 0
+
   params :pagination do
-    optional :limit, type: Integer, values: (1..1000)
-    optional :offset, type: Integer, min: 0
+    optional :limit, type: Integer, values: (1..1000), default: DEFAULT_LIMIT
+    optional :offset, type: Integer, min: 0, default: DEFAULT_OFFSET
   end
 
   def api_format

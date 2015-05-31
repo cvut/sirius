@@ -85,8 +85,8 @@ RSpec.shared_examples 'events endpoint' do
         before { auth_get "#{path}?offset=0" }
         let(:meta) do
           {
-            limit: FilterEvents::DEFAULT_LIMIT,
-            offset: 0,
+            limit: ApiHelper::DEFAULT_LIMIT,
+            offset: ApiHelper::DEFAULT_OFFSET,
             count: events_cnt
           }
         end
