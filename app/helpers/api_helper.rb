@@ -34,4 +34,11 @@ module ApiHelper
       raise SiriusApi::Errors::Authorization, "You don't have access to the scope for #{user_scope}."
     end
   end
+
+  def paginate(dataset)
+    dataset
+      .tap { |ds| ds.opts[:total_count] = ds.count }
+      .limit(params[:limit] || DEFAULT_LIMIT)
+      .offset(params[:offset] || DEFAULT_OFFSET)
+  end
 end
