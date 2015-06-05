@@ -15,6 +15,8 @@ class AppliedScheduleException < RolePlaying::Role
     else
       raise "Don't know how to apply #{exception_type}."
     end
+    event.applied_schedule_exception_ids ||= []
+    event.applied_schedule_exception_ids << id
   end
 
   private

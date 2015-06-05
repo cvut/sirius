@@ -8,6 +8,19 @@ describe AppliedScheduleException do
   describe '#apply' do
 
     let(:event) { Fabricate.build(:event, period: Period.parse('7:30', '9:00'), room_id: 'T9:355') }
+    let(:wrapped_exception) { Fabricate.build(:schedule_exception, id: 42, exception_type: Sirius::ScheduleExceptionType::ROOM_CHANGE, options: Sequel.hstore(room_id: 'T9:155')) }
+    let(:exception2) { described_class.new(Fabricate.build(:schedule_exception, id: 7, exception_type: Sirius::ScheduleExceptionType::ROOM_CHANGE, options: Sequel.hstore(room_id: 'T9:105'))) }
+
+    it 'adds own id to event applied_schedule_exception_ids' do
+      exception.apply(event)
+      expect(event.applied_schedule_exception_ids).to contain_exactly(42)
+    end
+
+    it 'concatenates multiple schedule exception ids to event applied_schedule_exception_ids' do
+      exception.apply(event)
+      exception2.apply(event)
+      expect(event.applied_schedule_exception_ids).to contain_exactly(42, 7)
+    end
 
     context 'with CANCEL exception' do
 

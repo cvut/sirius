@@ -98,7 +98,8 @@ CREATE TABLE events (
     faculty integer,
     capacity integer,
     source hstore,
-    room_id text
+    room_id text,
+    applied_schedule_exception_ids bigint[]
 );
 
 
@@ -669,3 +670,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1420765805_set_events_dele
 INSERT INTO "schema_migrations" ("filename") VALUES ('1421860982_add_faculty_semester_planning_parametrization.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1422545075_change_rooms_primary_key_to_kos_code.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1424431659_change_events_name_note_to_hstore.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1433519124_add_applied_schedule_exception_ids_to_events.rb');
