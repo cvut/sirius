@@ -17,6 +17,7 @@ class EventRepresenter < Roar::Decorator
   property :capacity
   property :event_type
   property :parallel, exec_context: :decorator, render_nil: true
+  property :applied_schedule_exception_ids, as: :applied_schedule_exceptions
   property :links, exec_context: :decorator
 
   def parallel
