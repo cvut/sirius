@@ -238,9 +238,9 @@ resourceTypes:
         Course code, faculty specific.
       required: true
       example: BI-PA1
-/exceptions:
-  description: Manage calendar exceptions
-  is: [ paged, secured ]
+/schedule_exceptions:
+  description: Manage schedule exceptions
+  is: [ paged ]
   get:
     responses:
       200:
@@ -248,19 +248,67 @@ resourceTypes:
           application/json:
             example: |
               {
+                "meta": {
+                  "count": 2,
+                  "offset": 0,
+                  "limit": 20
+                },
                 "exceptions": [
                   {
-                    "id": 43,
-                    "name": "statni svatek",
-                    "action": "cancel",
-                    "starts_at": "2014-04-23T15:00:00Z",
-                    "ends_at": "2014-04-23T19:00:00Z",
-                    "recurrence": "FREQ=YEARLY",
-                    "links": {
-                      "parallels": ["", ""],
-                      "divisions": ["18001"],
-                      "semester": "B142"
+                    "id": 1,
+                    "type": "CANCEL",
+                    "name": "Den české státnosti",
+                    "scope": {
+                      "starts_at": "2014-09-28T00:00:00.000+02:00",
+                      "ends_at": "2014-09-29T00:00:00.000+02:00",
+                      "faculty": null,
+                      "semester": null,
+                      "courses": null,
+                      "timetable_slots": null
+                    }
+                  },
+                  {
+                    "id": 11,
+                    "type": "CANCEL"
+                    "name": "Děkanský den FIT",
+                    "note": "Výuka odpadá",
+                    "scope": {
+                      "starts_at": "2015-04-30T00:00:00Z",
+                      "ends_at": "2015-05-01T00:00:00Z",
+                      "faculty": 18000,
+                      "semester": "B142",
+                      "courses": null,
+                      "timetable_slots": null
                     }
                   }
                 ]
               }
+  /{id}:
+    uriParameters:
+      id:
+        description: ID of the schedule exception
+        required: true
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "exceptions": {
+                    "id": 7,
+                    "type": "ROOM_CHANGE",
+                    "name": "MI-MPI - přednáška 24. 9. 2014 přesunuta do T9:105",
+                    "scope": {
+                      "starts_at": "2014-09-24T00:00:00.000+02:00",
+                      "ends_at": "2014-09-25T00:00:00.000+02:00",
+                      "faculty": 18000,
+                      "semester": "B141",
+                      "courses": null,
+                      "timetable_slots": [ 392651000 ]
+                    },
+                    "options": {
+                      "room_id": "T9:105"
+                    }
+                  }
+                }
