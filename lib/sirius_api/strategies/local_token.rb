@@ -3,8 +3,8 @@ require 'models/token'
 
 module SiriusApi
   module Strategies
+    class LocalToken < Warden::Strategies::Base
 
-    class AccessToken < Warden::Strategies::Base
       def access_token
         params['access_token']
       end
@@ -26,4 +26,4 @@ module SiriusApi
   end
 end
 
-Warden::Strategies.add(:access_token, SiriusApi::Strategies::AccessToken)
+Warden::Strategies.add(:local_token, SiriusApi::Strategies::LocalToken)

@@ -30,7 +30,7 @@ module API
     rescue_status SiriusApi::Errors::Authorization, 403
 
     use Warden::Manager do |manager|
-      manager.default_strategies :access_token
+      manager.default_strategies :local_token
       # manager.store = false
       manager.failure_app = lambda { |env| raise SiriusApi::Errors::Authentication, env['warden'].message }
     end
