@@ -8,6 +8,7 @@ class ScheduleExceptionRepresenter < Roar::Decorator
   property :type, exec_context: :decorator
   property :name, render_nil: true
   property :note
+  property :is_regular, exec_context: :decorator
   nested :scope do
     property :starts_at, render_nil: true
     property :ends_at, render_nil: true
@@ -20,5 +21,9 @@ class ScheduleExceptionRepresenter < Roar::Decorator
 
   def type
     represented.exception_type.upcase
+  end
+
+  def is_regular
+    !represented.starts_at.present? && !represented.ends_at.present?
   end
 end
