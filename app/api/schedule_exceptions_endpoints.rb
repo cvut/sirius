@@ -6,20 +6,11 @@ module API
   class ScheduleExceptionsEndpoints < Grape::API
     helpers ApiHelper
 
-    helpers do
-      def represent(dataset)
-        meta = {
-          count: dataset.count,
-          offset: 0,
-          limit: -1
-        }
-        ScheduleExceptionsRepresenter.for_collection.prepare(dataset)
-      end
-    end
-
     resource :schedule_exceptions do
+      params { use :pagination }
+
       get do
-        represent ::ScheduleException.dataset
+        represent_paginated(ScheduleException.dataset, ScheduleExceptionsRepresenter)
       end
 
       params do
