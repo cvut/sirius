@@ -10,8 +10,7 @@ module API
       params { use :pagination }
 
       get do
-        dataset = paginate(ScheduleException.dataset)
-        ScheduleExceptionsRepresenter.new(dataset)
+        represent_paginated(ScheduleException.dataset, ScheduleExceptionsRepresenter)
       end
 
       params do
