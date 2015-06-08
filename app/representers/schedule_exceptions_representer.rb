@@ -1,30 +1,30 @@
 require 'roar/decorator'
 require 'roar/json/json_api'
-require 'schedule_exception_representer'
 
 class ScheduleExceptionsRepresenter < Roar::Decorator
-  include Roar::JSON
+  include Roar::JSON::JSONAPI
+  type :schedule_exceptions
 
-  attr_reader :exceptions
+  property :id, render_nil: true
+  property :type, exec_context: :decorator
+  property :name, render_nil: true
+  property :note
+  property :is_regular, exec_context: :decorator
+  nested :scope do
+    property :starts_at, render_nil: true
+    property :ends_at, render_nil: true
+    property :faculty, render_nil: true
+    property :semester, render_nil: true
+    property :course_ids, render_nil: true, as: :courses
+    property :timetable_slot_ids, render_nil: true, as: :timetable_slots
+  end
+  hash :options
 
-  hash :meta, exec_context: :decorator
-  collection :exceptions, decorator: ScheduleExceptionRepresenter
-
-  def initialize(exceptions, **options)
-    @options = options
-    @exceptions = exceptions
-    super self
+  def type
+    represented.exception_type.upcase
   end
 
-  protected
-
-  attr_reader :options
-
-  def meta
-    {
-      count: options[:count],
-      offset: options[:offset],
-      limit: options[:limit],
-    }
+  def is_regular
+    !represented.starts_at.present? && !represented.ends_at.present?
   end
 end

@@ -13,7 +13,7 @@ module API
           offset: 0,
           limit: -1
         }
-        ScheduleExceptionsRepresenter.new(dataset, meta)
+        ScheduleExceptionsRepresenter.for_collection.prepare(dataset)
       end
     end
 
