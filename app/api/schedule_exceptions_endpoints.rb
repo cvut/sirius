@@ -21,6 +21,15 @@ module API
       get do
         represent ::ScheduleException.dataset
       end
+
+      params do
+        requires :id, type: Integer, desc: 'ID of the schedule exception'
+      end
+      route_param :id do
+        get do
+          ScheduleExceptionsRepresenter.new ::ScheduleException.with_pk!(params[:id])
+        end
+      end
     end
   end
 end
