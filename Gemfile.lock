@@ -75,6 +75,8 @@ GEM
     fabrication (2.11.3)
     faraday (0.8.9)
       multipart-post (~> 1.2.0)
+    faraday_middleware (0.8.8)
+      faraday (>= 0.7.4, < 0.9)
     ffi (1.9.6)
     foreman (0.64.0)
       dotenv (~> 0.7.0)
@@ -265,6 +267,8 @@ DEPENDENCIES
   coveralls
   database_cleaner
   fabrication
+  faraday (~> 0.8.9)
+  faraday_middleware (~> 0.8.8)
   foreman
   grape (~> 0.9.0)
   guard-livereload

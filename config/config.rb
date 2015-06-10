@@ -31,16 +31,17 @@ module Config
 
   # Override -- value is returned or the set default. Remember to typecast.
   override \
-    db_pool:          5,
-    port:             5000,
-    rack_env:         'development',
-    raise_errors:     'false',
-    root:             File.expand_path("../../", __FILE__),
-    timeout:          45,
-    force_ssl:        'true',
-    versioning:       'false',
-    tz:               'Europe/Prague',
-    puma_max_threads: 16,
-    puma_min_threads: 1,
-    puma_workers:     3
+    db_pool:               5,
+    port:                  5000,
+    rack_env:              'development',
+    raise_errors:          'false',
+    root:                  File.expand_path("../../", __FILE__),
+    timeout:               45,
+    force_ssl:             'true',
+    versioning:            'false',
+    tz:                    'Europe/Prague',
+    puma_max_threads:      16,
+    puma_min_threads:      1,
+    puma_workers:          3,
+    oauth_check_token_uri: 'https://auth.fit.cvut.cz/oauth/api/v1/tokeninfo'
 end

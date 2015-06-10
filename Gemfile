@@ -13,6 +13,8 @@ gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
 gem 'pliny', '~> 0.2.1'
 gem 'grape', '~> 0.9.0'
 gem 'warden', '~> 1.2.3' # authentication middleware
+gem 'faraday', '~> 0.8.9'
+gem 'faraday_middleware', '~> 0.8.8'
 
 # JSON-API support: https://github.com/apotonick/roar/pull/98
 gem 'roar', '~> 1.0.0'
