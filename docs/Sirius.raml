@@ -248,12 +248,7 @@ resourceTypes:
           application/json:
             example: |
               {
-                "meta": {
-                  "count": 2,
-                  "offset": 0,
-                  "limit": 20
-                },
-                "exceptions": [
+                "schedule_exceptions": [
                   {
                     "id": 1,
                     "type": "CANCEL",
@@ -281,7 +276,12 @@ resourceTypes:
                       "timetable_slots": null
                     }
                   }
-                ]
+                ],
+                "meta": {
+                  "count": 2,
+                  "offset": 0,
+                  "limit": 20
+                }
               }
   /{id}:
     uriParameters:
@@ -295,7 +295,7 @@ resourceTypes:
             application/json:
               example: |
                 {
-                  "exceptions": {
+                  "schedule_exceptions": {
                     "id": 7,
                     "type": "ROOM_CHANGE",
                     "name": "MI-MPI - přednáška 24. 9. 2014 přesunuta do T9:105",
