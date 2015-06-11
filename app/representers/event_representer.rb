@@ -17,7 +17,6 @@ class EventRepresenter < Roar::Decorator
   property :capacity
   property :event_type
   property :parallel, exec_context: :decorator, render_nil: true
-  property :applied_schedule_exception_ids, as: :applied_schedule_exceptions
   property :links, exec_context: :decorator
 
   def parallel
@@ -34,7 +33,8 @@ class EventRepresenter < Roar::Decorator
       course: represented.course_id,
       room: represented.room.try(:to_s),
       teachers: represented.teacher_ids,
-      students: represented.student_ids
+      students: represented.student_ids,
+      applied_exceptions: represented.applied_schedule_exception_ids
     }
   end
   # has_one :course

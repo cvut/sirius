@@ -235,7 +235,8 @@ describe API::EventsEndpoints do
           room: event.room.to_s,
           course: event.course_id,
           students: event.student_ids,
-          teachers: event.teacher_ids
+          teachers: event.teacher_ids,
+          applied_exceptions: nil
         }
       }.to_json
     end
