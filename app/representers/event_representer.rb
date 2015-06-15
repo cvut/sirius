@@ -20,7 +20,7 @@ class EventRepresenter < Roar::Decorator
     property :room, getter: -> (args) { room.to_s }
     collection :teacher_ids, as: :teachers
     collection :student_ids, as: :students
-    property :applied_schedule_exception_ids, as: :applied_schedule_exceptions
+    property :applied_schedule_exception_ids, as: :applied_exceptions
   end
 
   def parallel
