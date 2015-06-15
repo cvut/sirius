@@ -40,6 +40,7 @@ class FormatEventsIcal
   def ical
     @calendar.to_ical
   end
+  alias_method :to_ical, :ical
 
 
   # Event to Icalendar::Event mapping.

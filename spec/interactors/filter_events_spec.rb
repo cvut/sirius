@@ -49,16 +49,6 @@ describe FilterEvents do
   end
 
   context 'for JSON API format' do
-    describe 'paginates records' do
-      it 'sets limit' do
-        expect(result.limit).to eql(params[:limit])
-      end
-
-      it 'sets offset' do
-        expect(result.offset).to eql(params[:offset])
-      end
-    end
-
     it_behaves_like 'filtered by params'
     context 'with deleted param set to true' do
       before { params[:deleted] = true }
@@ -70,9 +60,6 @@ describe FilterEvents do
 
   context 'for ICal format' do
     let(:format) { :ical }
-    it 'does not paginate records' do
-      expect(result.limit).to be_nil
-    end
 
     it_behaves_like 'filtered by params'
     context 'with deleted param set to true' do
@@ -83,47 +70,9 @@ describe FilterEvents do
     end
   end
 
-  describe '#count' do
-
-    it 'executes query on call' do
-      expect_any_instance_of(Sequel::Dataset).to receive(:count).once
-      result.count
-    end
-
-    describe 'generated query' do
-      let(:deleted) { false }
-      before do
-        params[:deleted] = deleted
-        result.count
-      end
-      subject(:sql) { db.sqls.first }
-      it 'generates a single query' do
-        expect(db.sqls.size).to eql 1
-      end
-      # FIXME: not really a best approach
-      it 'is limited by date' do
-        sqlfrag = "(starts_at >= '#{params[:from]}') AND (ends_at <= '#{params[:to]}')"
-        expect(sql).to include sqlfrag
-      end
-      it 'is not limited by pagination' do
-        expect(sql).to_not match(/offset/i)
-      end
-      it "doesn't count deleted events" do
-        expect(sql).to include 'deleted IS FALSE'
-      end
-
-      context 'with deleted param' do
-        let(:deleted) { true }
-        it 'counts deleted items too' do
-          expect(sql).to_not match(/deleted IS/i)
-        end
-      end
-    end
-  end
-
   describe '#to_h' do
     subject { result.to_h }
 
-    it { should include(:events, :count, :offset => params[:offset], :limit => params[:limit]) }
+    it { should include(:events) }
   end
 end

@@ -2,9 +2,10 @@ require 'models/event'
 require 'models/room'
 require 'models/person'
 require 'models/course'
-require 'events_representer'
+require 'event_representer'
 require 'api_helper'
 require 'filter_events'
+require 'format_events_ical'
 module API
   class EventsEndpoints < Grape::API
     helpers ApiHelper
@@ -13,7 +14,14 @@ module API
     helpers do
       def represent(dataset)
         result = FilterEvents.perform(events: dataset, params: params, format: api_format).to_h
-        EventsRepresenter.new(result.delete(:events), result)
+        case api_format #XXX this is not great, it should be handled by Grape formatters
+        when :jsonapi
+          represent_paginated(result[:events], EventRepresenter)
+        when :ical
+          FormatEventsIcal.perform(events: result[:events])
+        else
+          raise "Unknown output format '#{api_format}'"
+        end
       end
 
       params :date_filter do
@@ -54,7 +62,7 @@ module API
       route_param :id do
         desc 'Get an event'
         get do
-          EventsRepresenter.new ::Event.with_pk!(params[:id]), singular: true
+          EventRepresenter.new ::Event.with_pk!(params[:id])
         end
       end
 
