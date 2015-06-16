@@ -134,7 +134,7 @@ RSpec.shared_examples 'events endpoint' do
         end
       end
 
-      %w{laboratory exam tutorial}.each do |event_type|
+      %w{assessment course_event exam laboratory tutorial}.each do |event_type|
         context "for alternate type of event #{event_type}" do
           before do
             event.update(event_type: event_type)
