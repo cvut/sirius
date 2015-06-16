@@ -10,6 +10,9 @@ cache: bundler
 bundler_args: --without development doc
 before_script:
   - bundle exec rake --trace db:setup db:schema:load
+after_success:
+  - npm install -g raml2html
+  - bundle exec rake raml:publish
 notifications:
   email:
     on_success: never # default: change
@@ -23,3 +26,4 @@ env:
   global:
   - secure: YHwUt3DrGNASEsmSpiaTM5Lm7Cw3ONi2bc1rSSq3rPebLNp5aQ0trFZ3nI97eG/4kZzjjFC5JqEF7MFnqPC5CFOUugspJa3x4XkUjZCX6QT6CJfCrN87cgslmJxCdjfXTiLonjr9XzAkTepPk+FKqKcjWLRgZidpwvoc9hA0/1Q=
   - secure: JyFPRYEYWJnFq6ejxKF7SsnaIkG+5lm01rlw7Mn0Waemp8GnIa8/am+vStOo1dtzI0QpxJG1suPq0GbfdxK7DbRceTTEHSnx2scdR4EyLW2b8O6m0pwL6iZAb2AbiQQ28lz45b6RehET2JJf4VNB4D/Bz1TepmV8Ny7eKHxlOJY=
+  - secure: We8Glu+3KWdnBa3JnahtotsjYSUjyYPaXrMR6bOR90xln20/VYifecmj37PWIO8hdUj4xZ4uKqNNPx6OQaZtxDT+eofOY0/pLxD/3yHS3WBRV5n8w79jh8xQt6Zg2H1/Ic4KIVqoHyQj9fg//Qde8poFSg6GnMezQLAj+vLH460=  # GH_TOKEN
