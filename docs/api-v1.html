@@ -1,0 +1,557 @@
+<!DOCTYPE HTML><html><head><title>CTU Sirius API API documentation</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="https://github.com/kevinrenskers/raml2html 2.0.1"><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css"><script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script><script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script><script type="text/javascript">
+      $(document).ready(function() {
+        $('.page-header pre code, .top-resource-description pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+
+        $('[data-toggle]').click(function() {
+          var selector = $(this).data('target') + ' pre code';
+          $(selector).each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        });
+
+        // open modal on hashes like #_action_get
+        $(window).bind('hashchange', function(e) {
+          var anchor_id = document.location.hash.substr(1); //strip #
+          var element = $('#' + anchor_id);
+
+          // do we have such element + is it a modal?  --> show it
+          if (element.length && element.hasClass('modal')) {
+            element.modal('show');
+          }
+        });
+
+        // execute hashchange on first page load
+        $(window).trigger('hashchange');
+
+        // remove url fragment on modal hide
+        $('.modal').on('hidden.bs.modal', function() {
+          if(history && history.replaceState) {
+            history.replaceState({}, '', '#');
+          }
+        });
+      });
+    </script><style>
+      .hljs {
+        background: transparent;
+      }
+      .parent {
+        color: #999;
+      }
+      .list-group-item > .badge {
+        float: none;
+        margin-right: 6px;
+      }
+      .panel-title > .methods {
+        float: right;
+      }
+      .badge {
+        border-radius: 0;
+        text-transform: uppercase;
+        width: 70px;
+        font-weight: normal;
+        color: #f3f3f6;
+        line-height: normal;
+      }
+      .badge_get {
+        background-color: #63a8e2;
+      }
+      .badge_post {
+        background-color: #6cbd7d;
+      }
+      .badge_put {
+        background-color: #22bac4;
+      }
+      .badge_delete {
+        background-color: #d26460;
+      }
+      .badge_patch {
+        background-color: #ccc444;
+      }
+      .list-group, .panel-group {
+        margin-bottom: 0;
+      }
+      .panel-group .panel+.panel-white {
+        margin-top: 0;
+      }
+      .panel-group .panel-white {
+        border-bottom: 1px solid #F5F5F5;
+        border-radius: 0;
+      }
+      .panel-white:last-child {
+        border-bottom-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      .panel-white .panel-heading {
+        background: white;
+      }
+      .tab-pane ul {
+        padding-left: 2em;
+      }
+      .tab-pane h2 {
+        font-size: 1.2em;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #ddd;
+      }
+      .tab-pane h3 {
+        font-size: 1.1em;
+      }
+      .tab-content {
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+      }
+      #sidebar {
+        margin-top: 30px;
+        padding-right: 5px;
+        overflow: auto;
+        height: 90%;
+      }
+      .top-resource-description {
+        border-bottom: 1px solid #ddd;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description {
+        border-bottom: 1px solid #fcfcfc;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description p:last-child {
+        margin: 0;
+      }
+      .list-group .badge {
+        float: left;
+      }
+      .method_description {
+        margin-left: 85px;
+      }
+      .method_description p:last-child {
+        margin: 0;
+      }
+      .list-group-item {
+        cursor: pointer;
+      }
+      .list-group-item:hover {
+        background-color: #f5f5f5;
+      }
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>CTU Sirius API API documentation <small>version v1</small></h1><p>https://sirius.fit.cvut.cz/api/v1</p></div><div class="panel panel-default"><div class="panel-heading"><h3 id="events" class="panel-title">/events</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_events"><span class="parent"></span>/events</a> <span class="methods"><a href="#events_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_events" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#events_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Get all events without any scope</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="events_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/events</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get all events without any scope</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by access_token</div><ul class="nav nav-tabs"><li class="active"><a href="#events_get_request" data-toggle="tab">Request</a></li><li><a href="#events_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="events_get_request"><h3>Query Parameters</h3><ul><li><strong>event_type</strong>: <em>(one of assessment, course_event, exam, laboratory, lecture, tutorial)</em><p>Filter by event&#39;s type</p></li><li><strong>access_token</strong>: <em>required (string)</em><p>Authentication and authorization is required. You need to set your <code>access_token</code> in URL.</p><p><strong>Example</strong>:</p><pre>07a855e0-6920-11e4-a40a-0002a5d5c51b</pre></li><li><strong>from</strong>: <em>(date)</em><p>Return events from this date</p></li><li><strong>to</strong>: <em>(date)</em><p>Return events up to this date</p></li><li><strong>limit</strong>: <em>(number - default: 10 - maximum: 100)</em><p>The number of entries in collection to return</p></li><li><strong>offset</strong>: <em>(number)</em><p>Offset of the first entry in collection</p></li></ul></div><div class="tab-pane" id="events_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "meta": {
+    "count": 2,
+    "offset": 0,
+    "limit": 20
+  },
+  "events": [
+    {
+      "id": 42,
+      "name": null,
+      "sequence_number": 12,
+      "starts_at": "2014-04-23T07:30:00.000+02:00",
+      "ends_at": "2014-04-23T11:00:00.000+02:00",
+      "deleted" : false,
+      "capacity": 24,
+      "event_type": "tutorial",
+      "parallel": "106",
+      "links": {
+        "room": "T9:350",
+        "course": "MI-RUB",
+        "teachers": [
+          "skocdopet"
+        ],
+        "students": [
+          "szolatib",
+          "vomackar"
+        ],
+        "applied_exceptions": [ 10, 15 ]
+      }
+    },
+    {
+      "id": 43,
+      "name": null,
+      "sequence_number": 12,
+      "starts_at": "2014-04-24T09:15:00.000+02:00",
+      "ends_at": "2014-04-24T10:45:00.000+02:00",
+      "deleted" : false,
+      "capacity": 196,
+      "event_type": "lecture",
+      "parallel": "1",
+      "links": {
+        "room": "T9:155",
+        "course": "MI-W20",
+        "teachers": [
+          "kuchajar",
+          "vitvatom"
+        ],
+        "students": [
+          "jirutjak"
+        ]
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Type: text/calendar</strong></p><p><strong>Example</strong>:</p><pre><code>BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+DTSTAMP:20140702T140133Z
+UID:https://sirius.fit.cvut.cz/events/123
+DTSTART:20140312T101500
+DTEND:20140312T114500
+CLASS:PUBLIC
+CREATED:20140410T182546
+LAST-MODIFIED:20140410T182546
+LOCATION:T9:130
+SUMMARY:MI-PSL 2. cvičení
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20140702T140133Z
+UID:https://sirius.fit.cvut.cz/events/125
+DTSTART:20140312T101500
+DTEND:20140312T114500
+CLASS:PUBLIC
+CREATED:20140410T182546
+LAST-MODIFIED:20140410T182546
+LOCATION:T9:130
+SUMMARY:MI-PSL 2. cvičení
+END:VEVENT
+END:VCALENDAR
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>There are no events within the current scope</p></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_events__eventId_"><span class="parent">/events</span>/{eventId}</a> <span class="methods"><a href="#events__eventId__get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_events__eventId_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#events__eventId__get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Marks resource as secured. You need to be authenticated and authorized to access it.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="events__eventId__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/events</span>/{eventId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Marks resource as secured. You need to be authenticated and authorized to access it.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by access_token</div><ul class="nav nav-tabs"><li class="active"><a href="#events__eventId__get_request" data-toggle="tab">Request</a></li><li><a href="#events__eventId__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="events__eventId__get_request"><h3>URI Parameters</h3><ul><li><strong>eventId</strong>: <em>required (string)</em></li></ul><h3>Query Parameters</h3><ul><li><strong>access_token</strong>: <em>required (string)</em><p>Authentication and authorization is required. You need to set your <code>access_token</code> in URL.</p><p><strong>Example</strong>:</p><pre>07a855e0-6920-11e4-a40a-0002a5d5c51b</pre></li></ul></div><div class="tab-pane" id="events__eventId__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "events": {
+    "id": 42,
+    "name": null,
+    "sequence_number": 12,
+    "starts_at": "2014-04-23T07:30:00.000+02:00",
+    "ends_at": "2014-04-23T11:00:00.000+02:00",
+    "deleted" : false,
+    "capacity": 24,
+    "event_type": "tutorial",
+    "parallel": "106",
+    "links": {
+      "room": "T9:350",
+      "course": "MI-RUB",
+      "teachers": [
+        "skocdopet"
+      ],
+      "students": [
+        "szolatib",
+        "vomackar"
+      ],
+      "applied_exceptions": [ 10, 15 ]
+    }
+  }
+}
+</code></pre><p><strong>Type: text/calendar</strong></p><p><strong>Example</strong>:</p><pre><code>BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+DTSTAMP:20140702T140133Z
+UID:https://sirius.fit.cvut.cz/events/123
+DTSTART:20140312T101500
+DTEND:20140312T114500
+CLASS:PUBLIC
+CREATED:20140410T182546
+LAST-MODIFIED:20140410T182546
+LOCATION:T9:130
+SUMMARY:MI-PSL 2. cvičení
+END:VEVENT
+END:VCALENDAR
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="people__username__events" class="panel-title">/people/{username}/events</h3></div><div class="panel-body"><div class="top-resource-description"><p>Get a calendar for a person</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_people__username__events"><span class="parent"></span>/people/{username}/events</a> <span class="methods"><a href="#people__username__events_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_people__username__events" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#people__username__events_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Use <code>offset</code> and <code>limit</code> to paginate the records.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="people__username__events_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/people/{username}/events</h4></div><div class="modal-body"><div class="alert alert-info"><p>Use <code>offset</code> and <code>limit</code> to paginate the records.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by access_token</div><ul class="nav nav-tabs"><li class="active"><a href="#people__username__events_get_request" data-toggle="tab">Request</a></li><li><a href="#people__username__events_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="people__username__events_get_request"><h3>URI Parameters</h3><ul><li><strong>username</strong>: <em>required (string - pattern: [a-z0-9]{3,8})</em><p>person&#39;s unique username</p><p><strong>Example</strong>:</p><pre>vomackar</pre></li></ul><h3>Query Parameters</h3><ul><li><strong>event_type</strong>: <em>(one of assessment, course_event, exam, laboratory, lecture, tutorial)</em><p>Filter by event&#39;s type</p></li><li><strong>access_token</strong>: <em>required (string)</em><p>Authentication and authorization is required. You need to set your <code>access_token</code> in URL.</p><p><strong>Example</strong>:</p><pre>07a855e0-6920-11e4-a40a-0002a5d5c51b</pre></li><li><strong>from</strong>: <em>(date)</em><p>Return events from this date</p></li><li><strong>to</strong>: <em>(date)</em><p>Return events up to this date</p></li><li><strong>limit</strong>: <em>(number - default: 10 - maximum: 100)</em><p>The number of entries in collection to return</p></li><li><strong>offset</strong>: <em>(number)</em><p>Offset of the first entry in collection</p></li></ul></div><div class="tab-pane" id="people__username__events_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "meta": {
+    "count": 2,
+    "offset": 0,
+    "limit": 20
+  },
+  "events": [
+    {
+      "id": 42,
+      "name": null,
+      "sequence_number": 12,
+      "starts_at": "2014-04-23T07:30:00.000+02:00",
+      "ends_at": "2014-04-23T11:00:00.000+02:00",
+      "deleted" : false,
+      "capacity": 24,
+      "event_type": "tutorial",
+      "parallel": "106",
+      "links": {
+        "room": "T9:350",
+        "course": "MI-RUB",
+        "teachers": [
+          "skocdopet"
+        ],
+        "students": [
+          "szolatib",
+          "vomackar"
+        ],
+        "applied_exceptions": [ 10, 15 ]
+      }
+    },
+    {
+      "id": 43,
+      "name": null,
+      "sequence_number": 12,
+      "starts_at": "2014-04-24T09:15:00.000+02:00",
+      "ends_at": "2014-04-24T10:45:00.000+02:00",
+      "deleted" : false,
+      "capacity": 196,
+      "event_type": "lecture",
+      "parallel": "1",
+      "links": {
+        "room": "T9:155",
+        "course": "MI-W20",
+        "teachers": [
+          "kuchajar",
+          "vitvatom"
+        ],
+        "students": [
+          "jirutjak"
+        ]
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Type: text/calendar</strong></p><p><strong>Example</strong>:</p><pre><code>BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+DTSTAMP:20140702T140133Z
+UID:https://sirius.fit.cvut.cz/events/123
+DTSTART:20140312T101500
+DTEND:20140312T114500
+CLASS:PUBLIC
+CREATED:20140410T182546
+LAST-MODIFIED:20140410T182546
+LOCATION:T9:130
+SUMMARY:MI-PSL 2. cvičení
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20140702T140133Z
+UID:https://sirius.fit.cvut.cz/events/125
+DTSTART:20140312T101500
+DTEND:20140312T114500
+CLASS:PUBLIC
+CREATED:20140410T182546
+LAST-MODIFIED:20140410T182546
+LOCATION:T9:130
+SUMMARY:MI-PSL 2. cvičení
+END:VEVENT
+END:VCALENDAR
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>There are no events within the current scope</p></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="rooms__kosId__events" class="panel-title">/rooms/{kosId}/events</h3></div><div class="panel-body"><div class="top-resource-description"><p>Get a calendar for a room</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_rooms__kosId__events"><span class="parent"></span>/rooms/{kosId}/events</a> <span class="methods"><a href="#rooms__kosId__events_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_rooms__kosId__events" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#rooms__kosId__events_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Use <code>offset</code> and <code>limit</code> to paginate the records.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="rooms__kosId__events_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/rooms/{kosId}/events</h4></div><div class="modal-body"><div class="alert alert-info"><p>Use <code>offset</code> and <code>limit</code> to paginate the records.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by access_token</div><ul class="nav nav-tabs"><li class="active"><a href="#rooms__kosId__events_get_request" data-toggle="tab">Request</a></li><li><a href="#rooms__kosId__events_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="rooms__kosId__events_get_request"><h3>URI Parameters</h3><ul><li><strong>kosId</strong>: <em>required (string - pattern: [A-Z0-9]{2}:([A-Z0-9]+-)?[a-z0-9]+)</em><p>Common room identification used by KOS, for details see <a href="https://rozvoj.fit.cvut.cz/Main/znaceni-mistnosti#HKOSEDzna10DenED-102">the documentation</a>.</p><p><strong>Example</strong>:</p><pre>TH:A-1333</pre></li></ul><h3>Query Parameters</h3><ul><li><strong>event_type</strong>: <em>(one of assessment, course_event, exam, laboratory, lecture, tutorial)</em><p>Filter by event&#39;s type</p></li><li><strong>access_token</strong>: <em>required (string)</em><p>Authentication and authorization is required. You need to set your <code>access_token</code> in URL.</p><p><strong>Example</strong>:</p><pre>07a855e0-6920-11e4-a40a-0002a5d5c51b</pre></li><li><strong>from</strong>: <em>(date)</em><p>Return events from this date</p></li><li><strong>to</strong>: <em>(date)</em><p>Return events up to this date</p></li><li><strong>limit</strong>: <em>(number - default: 10 - maximum: 100)</em><p>The number of entries in collection to return</p></li><li><strong>offset</strong>: <em>(number)</em><p>Offset of the first entry in collection</p></li></ul></div><div class="tab-pane" id="rooms__kosId__events_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "meta": {
+    "count": 2,
+    "offset": 0,
+    "limit": 20
+  },
+  "events": [
+    {
+      "id": 42,
+      "name": null,
+      "sequence_number": 12,
+      "starts_at": "2014-04-23T07:30:00.000+02:00",
+      "ends_at": "2014-04-23T11:00:00.000+02:00",
+      "deleted" : false,
+      "capacity": 24,
+      "event_type": "tutorial",
+      "parallel": "106",
+      "links": {
+        "room": "T9:350",
+        "course": "MI-RUB",
+        "teachers": [
+          "skocdopet"
+        ],
+        "students": [
+          "szolatib",
+          "vomackar"
+        ],
+        "applied_exceptions": [ 10, 15 ]
+      }
+    },
+    {
+      "id": 43,
+      "name": null,
+      "sequence_number": 12,
+      "starts_at": "2014-04-24T09:15:00.000+02:00",
+      "ends_at": "2014-04-24T10:45:00.000+02:00",
+      "deleted" : false,
+      "capacity": 196,
+      "event_type": "lecture",
+      "parallel": "1",
+      "links": {
+        "room": "T9:155",
+        "course": "MI-W20",
+        "teachers": [
+          "kuchajar",
+          "vitvatom"
+        ],
+        "students": [
+          "jirutjak"
+        ]
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Type: text/calendar</strong></p><p><strong>Example</strong>:</p><pre><code>BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+DTSTAMP:20140702T140133Z
+UID:https://sirius.fit.cvut.cz/events/123
+DTSTART:20140312T101500
+DTEND:20140312T114500
+CLASS:PUBLIC
+CREATED:20140410T182546
+LAST-MODIFIED:20140410T182546
+LOCATION:T9:130
+SUMMARY:MI-PSL 2. cvičení
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20140702T140133Z
+UID:https://sirius.fit.cvut.cz/events/125
+DTSTART:20140312T101500
+DTEND:20140312T114500
+CLASS:PUBLIC
+CREATED:20140410T182546
+LAST-MODIFIED:20140410T182546
+LOCATION:T9:130
+SUMMARY:MI-PSL 2. cvičení
+END:VEVENT
+END:VCALENDAR
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>There are no events within the current scope</p></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="courses__courseCode__events" class="panel-title">/courses/{courseCode}/events</h3></div><div class="panel-body"><div class="top-resource-description"><p>Get events instances for a given course</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_courses__courseCode__events"><span class="parent"></span>/courses/{courseCode}/events</a> <span class="methods"><a href="#courses__courseCode__events_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_courses__courseCode__events" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#courses__courseCode__events_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Use <code>offset</code> and <code>limit</code> to paginate the records.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="courses__courseCode__events_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/courses/{courseCode}/events</h4></div><div class="modal-body"><div class="alert alert-info"><p>Use <code>offset</code> and <code>limit</code> to paginate the records.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by access_token</div><ul class="nav nav-tabs"><li class="active"><a href="#courses__courseCode__events_get_request" data-toggle="tab">Request</a></li><li><a href="#courses__courseCode__events_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="courses__courseCode__events_get_request"><h3>URI Parameters</h3><ul><li><strong>courseCode</strong>: <em>required (string)</em><p>Course code, faculty specific.</p><p><strong>Example</strong>:</p><pre>BI-PA1</pre></li></ul><h3>Query Parameters</h3><ul><li><strong>event_type</strong>: <em>(one of assessment, course_event, exam, laboratory, lecture, tutorial)</em><p>Filter by event&#39;s type</p></li><li><strong>access_token</strong>: <em>required (string)</em><p>Authentication and authorization is required. You need to set your <code>access_token</code> in URL.</p><p><strong>Example</strong>:</p><pre>07a855e0-6920-11e4-a40a-0002a5d5c51b</pre></li><li><strong>from</strong>: <em>(date)</em><p>Return events from this date</p></li><li><strong>to</strong>: <em>(date)</em><p>Return events up to this date</p></li><li><strong>limit</strong>: <em>(number - default: 10 - maximum: 100)</em><p>The number of entries in collection to return</p></li><li><strong>offset</strong>: <em>(number)</em><p>Offset of the first entry in collection</p></li></ul></div><div class="tab-pane" id="courses__courseCode__events_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "meta": {
+    "count": 2,
+    "offset": 0,
+    "limit": 20
+  },
+  "events": [
+    {
+      "id": 42,
+      "name": null,
+      "sequence_number": 12,
+      "starts_at": "2014-04-23T07:30:00.000+02:00",
+      "ends_at": "2014-04-23T11:00:00.000+02:00",
+      "deleted" : false,
+      "capacity": 24,
+      "event_type": "tutorial",
+      "parallel": "106",
+      "links": {
+        "room": "T9:350",
+        "course": "MI-RUB",
+        "teachers": [
+          "skocdopet"
+        ],
+        "students": [
+          "szolatib",
+          "vomackar"
+        ],
+        "applied_exceptions": [ 10, 15 ]
+      }
+    },
+    {
+      "id": 43,
+      "name": null,
+      "sequence_number": 12,
+      "starts_at": "2014-04-24T09:15:00.000+02:00",
+      "ends_at": "2014-04-24T10:45:00.000+02:00",
+      "deleted" : false,
+      "capacity": 196,
+      "event_type": "lecture",
+      "parallel": "1",
+      "links": {
+        "room": "T9:155",
+        "course": "MI-W20",
+        "teachers": [
+          "kuchajar",
+          "vitvatom"
+        ],
+        "students": [
+          "jirutjak"
+        ]
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Type: text/calendar</strong></p><p><strong>Example</strong>:</p><pre><code>BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+DTSTAMP:20140702T140133Z
+UID:https://sirius.fit.cvut.cz/events/123
+DTSTART:20140312T101500
+DTEND:20140312T114500
+CLASS:PUBLIC
+CREATED:20140410T182546
+LAST-MODIFIED:20140410T182546
+LOCATION:T9:130
+SUMMARY:MI-PSL 2. cvičení
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20140702T140133Z
+UID:https://sirius.fit.cvut.cz/events/125
+DTSTART:20140312T101500
+DTEND:20140312T114500
+CLASS:PUBLIC
+CREATED:20140410T182546
+LAST-MODIFIED:20140410T182546
+LOCATION:T9:130
+SUMMARY:MI-PSL 2. cvičení
+END:VEVENT
+END:VCALENDAR
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>There are no events within the current scope</p></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="schedule_exceptions" class="panel-title">/schedule_exceptions</h3></div><div class="panel-body"><div class="top-resource-description"><p>Manage schedule exceptions</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_schedule_exceptions"><span class="parent"></span>/schedule_exceptions</a> <span class="methods"><a href="#schedule_exceptions_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_schedule_exceptions" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#schedule_exceptions_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Use <code>offset</code> and <code>limit</code> to paginate the records.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="schedule_exceptions_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/schedule_exceptions</h4></div><div class="modal-body"><div class="alert alert-info"><p>Use <code>offset</code> and <code>limit</code> to paginate the records.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by access_token</div><ul class="nav nav-tabs"><li class="active"><a href="#schedule_exceptions_get_request" data-toggle="tab">Request</a></li><li><a href="#schedule_exceptions_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="schedule_exceptions_get_request"><h3>Query Parameters</h3><ul><li><strong>limit</strong>: <em>(number - default: 10 - maximum: 100)</em><p>The number of entries in collection to return</p></li><li><strong>offset</strong>: <em>(number)</em><p>Offset of the first entry in collection</p></li></ul></div><div class="tab-pane" id="schedule_exceptions_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "schedule_exceptions": [
+    {
+      "id": 1,
+      "type": "CANCEL",
+      "name": "Den české státnosti",
+      "scope": {
+        "starts_at": "2014-09-28T00:00:00.000+02:00",
+        "ends_at": "2014-09-29T00:00:00.000+02:00",
+        "faculty": null,
+        "semester": null,
+        "courses": null,
+        "timetable_slots": null
+      }
+    },
+    {
+      "id": 11,
+      "type": "CANCEL"
+      "name": "Děkanský den FIT",
+      "note": "Výuka odpadá",
+      "scope": {
+        "starts_at": "2015-04-30T00:00:00Z",
+        "ends_at": "2015-05-01T00:00:00Z",
+        "faculty": 18000,
+        "semester": "B142",
+        "courses": null,
+        "timetable_slots": null
+      }
+    }
+  ],
+  "meta": {
+    "count": 2,
+    "offset": 0,
+    "limit": 20
+  }
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_schedule_exceptions__id_"><span class="parent">/schedule_exceptions</span>/{id}</a> <span class="methods"><a href="#schedule_exceptions__id__get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_schedule_exceptions__id_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#schedule_exceptions__id__get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="schedule_exceptions__id__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/schedule_exceptions</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by access_token</div><ul class="nav nav-tabs"><li class="active"><a href="#schedule_exceptions__id__get_request" data-toggle="tab">Request</a></li><li><a href="#schedule_exceptions__id__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="schedule_exceptions__id__get_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (string)</em><p>ID of the schedule exception</p></li></ul></div><div class="tab-pane" id="schedule_exceptions__id__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "schedule_exceptions": {
+    "id": 7,
+    "type": "ROOM_CHANGE",
+    "name": "MI-MPI - přednáška 24. 9. 2014 přesunuta do T9:105",
+    "scope": {
+      "starts_at": "2014-09-24T00:00:00.000+02:00",
+      "ends_at": "2014-09-25T00:00:00.000+02:00",
+      "faculty": 18000,
+      "semester": "B141",
+      "courses": null,
+      "timetable_slots": [ 392651000 ]
+    },
+    "options": {
+      "room_id": "T9:105"
+    }
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#events">/events</a></li><li><a href="#people__username__events">/people/{username}/events</a></li><li><a href="#rooms__kosId__events">/rooms/{kosId}/events</a></li><li><a href="#courses__courseCode__events">/courses/{courseCode}/events</a></li><li><a href="#schedule_exceptions">/schedule_exceptions</a></li></ul></div></div></div></div></body></html>
