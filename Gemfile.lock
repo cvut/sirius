@@ -186,6 +186,8 @@ GEM
     rack-test (0.6.2)
       rack (>= 1.0)
     rake (10.4.2)
+    rake-jekyll (1.0.4)
+      rake (~> 10.0)
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
@@ -289,6 +291,7 @@ DEPENDENCIES
   puma
   rack-test
   rake
+  rake-jekyll
   roar (~> 1.0.0)
   role_playing!
   rspec (~> 3.1.0)

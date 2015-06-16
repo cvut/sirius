@@ -68,6 +68,7 @@ group :test do
   gem 'fabrication'
   gem 'json_spec', '~> 1.1.2'
   gem 'vcr'
+  gem 'rake-jekyll', require: false
 end
 
 group :development, :test do
