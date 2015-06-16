@@ -10,9 +10,10 @@ cache: bundler
 bundler_args: --without development doc
 before_script:
   - bundle exec rake --trace db:setup db:schema:load
-after_success:
-  - npm install -g raml2html
-  - bundle exec rake raml:publish
+after_success: |
+  if [[ "$TRAVIS_BRANCH" == master ]]; then
+      npm install -g raml2html && bundle exec rake raml:publish
+  fi
 notifications:
   email:
     on_success: never # default: change
