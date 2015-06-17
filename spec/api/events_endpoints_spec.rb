@@ -1,16 +1,6 @@
 require 'api_spec_helper'
 
-RSpec.shared_context 'authenticated user', authenticated: true do
-  let(:username) { 'user' }
-  let(:token) { Fabricate(:token, username: username) }
-  let(:access_token) { { access_token: token.uuid } }
-
-  def auth_get(path, **params)
-    get path, params.merge(access_token)
-  end
-end
-
-RSpec.shared_examples 'events endpoint' do
+shared_examples 'events endpoint' do
   include_context 'API response'
 
   include IcalendarHelper
@@ -170,37 +160,6 @@ RSpec.shared_examples 'events endpoint' do
     end
   end
 end
-
-RSpec.shared_examples 'invalid endpoint' do
-  context 'for authenticated user', authenticated: true do
-    it 'returns a Not Found error' do
-      get path_for(path)
-      expect(response.status).to eql 404
-    end
-  end
-end
-
-RSpec.shared_examples 'non-existent resource' do
-  context 'for authenticated user', authenticated: true do
-    before { auth_get path_for(path) }
-    it 'returns a 404 Not Found error' do
-      expect(status).to eql(404)
-    end
-    it 'returns a meaningful message' do
-      expect(body).to be_json_eql('"Resource not found"').at_path('message')
-    end
-  end
-end
-
-RSpec.shared_examples 'forbidden resource' do
-  context 'for authenticated user', authenticated: true do
-    before { auth_get path_for(path) }
-    it 'returns a 403 Frobidden error' do
-      expect(status).to eql(403)
-    end
-  end
-end
-
 
 describe API::EventsEndpoints do
   include_context 'API response'
