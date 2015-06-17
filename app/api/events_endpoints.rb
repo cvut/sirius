@@ -40,6 +40,10 @@ module API
         use :deleted
         use :event_type
       end
+      # FIXME: This should be coerced to Set with predefined allowed tokens
+      params :compound do
+        optional :include, type: String, regexp: /\A[a-z,]+\z/
+      end
     end
 
     before do
@@ -73,6 +77,7 @@ module API
       params do
         requires :kos_id, type: String, desc: 'Common room identification used by KOS'
         use :filter_events
+        use :compound
       end
       route_param :kos_id do
         resource :events do
@@ -88,6 +93,7 @@ module API
       params do
         requires :username, type: String, regexp: /\A[a-z0-9]+\z/i, desc: '8-char unique username'
         use :filter_events
+        use :compound
       end
       route_param :username do
         before do
@@ -108,6 +114,7 @@ module API
       params do
         requires :course_id, type: String, desc: 'Course identification code (faculty-specific)'
         use :filter_events
+        use :compound
       end
       route_param :course_id do
         resource :events do
