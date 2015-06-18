@@ -28,6 +28,13 @@ shared_examples 'forbidden resource' do
   end
 end
 
+shared_examples 'secured resource' do
+  before { get path_for(path) }
+  it 'is not accessible without access token' do
+    expect(status).to eql 401
+  end
+end
+
 
 shared_examples 'paginated resource' do
 

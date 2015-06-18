@@ -146,9 +146,9 @@ describe API::EventsEndpoints do
         }
       }.to_json
     end
-    it 'is not accessible without authentication' do
-      get path_for("/events/#{event.id}")
-      expect(status).to eql(401)
+
+    it_behaves_like 'secured resource' do
+      let(:path) { "/events/#{event.id}" }
     end
 
     context 'for authenticated user', authenticated: true do
