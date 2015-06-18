@@ -17,14 +17,13 @@ Currently supported output data formats are JSON (for client apps) and iCalendar
 
 ## API documentation
 
-Documentation of resources which Sirius provides is currently available at
-[MuleSoft API portal](http://api-portal.anypoint.mulesoft.com/raml/console?raml=https://github-cors-proxy.herokuapp.com/cvut/sirius/master/docs/Sirius.raml).
+Documentation of resources which Sirius provides is currently available [here](http://cvut.github.io/sirius/docs/api-v1.html).
 
 # Looking for help?
 
 If you need help with adding you personal calendar to the calendar software you are using, check out our
 [wiki tutorial page](https://github.com/cvut/sirius/wiki/Nastaven%C3%AD-kalend%C3%A1%C5%99e).
-  
+
 If you have an issue with your personal calendar or any other problems, feel free to use
 [project issues on Github](https://github.com/cvut/sirius/issues) or you could just message us directly.
 
@@ -32,7 +31,7 @@ If you have an issue with your personal calendar or any other problems, feel fre
 
 We are welcome to suggestions and ideas about this project. Please use [project issues](https://github.com/cvut/sirius/issues)
 to discuss it if you have one.
- 
+
 If you feel you could improve project in some way, you can fork this repo and send a pull request with your change.
 If you consider adding a new feature or significantly changing behaviour of an existing one, it would be nice
 to discuss it with project maintainers beforehand, otherwise there is a possibility that your pull request might not get accepted.
@@ -58,11 +57,10 @@ KOSAPI_OAUTH_CLIENT_SECRET=yyyyyyyyy
 
 To start the API server, just run `foreman start`. If everything is configured properly, server should start and be
 accessible on port 5000 by default.
- 
+
 To load parallels from KOSapi and and schedule them, call `foreman run rake sirius:events`. Or you can call individual tasks:
 
 * `sirius:events:import` - fetches parallels from KOSapi to local database
 * `sirius:events:import_students` - fetches students assigned to stored parallels
 * `sirius:events:plan` - plans stored parallels
 * `sirius:events:assign_people` - assigns people (students and teachers) to planned events
- 
