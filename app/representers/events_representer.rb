@@ -1,6 +1,6 @@
 require 'roar/json/json_api'
 
-class EventRepresenter < Roar::Decorator
+class EventsRepresenter < Roar::Decorator
   include Roar::JSON::JSONAPI
   type :events
 

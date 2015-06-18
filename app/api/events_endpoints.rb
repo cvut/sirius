@@ -2,7 +2,7 @@ require 'models/event'
 require 'models/room'
 require 'models/person'
 require 'models/course'
-require 'event_representer'
+require 'events_representer'
 require 'api_helper'
 require 'filter_events'
 require 'format_events_ical'
@@ -16,7 +16,7 @@ module API
         result = FilterEvents.perform(events: dataset, params: params, format: api_format).to_h
         case api_format #XXX this is not great, it should be handled by Grape formatters
         when :jsonapi
-          represent_paginated(result[:events], EventRepresenter)
+          represent_paginated(result[:events], EventsRepresenter)
         when :ical
           FormatEventsIcal.perform(events: result[:events])
         else
@@ -62,7 +62,7 @@ module API
       route_param :id do
         desc 'Get an event'
         get do
-          EventRepresenter.new ::Event.with_pk!(params[:id])
+          EventsRepresenter.new ::Event.with_pk!(params[:id])
         end
       end
 
