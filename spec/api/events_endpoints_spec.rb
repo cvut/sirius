@@ -46,62 +46,10 @@ shared_examples 'events endpoint' do
   end
 
   context 'for authenticated user', authenticated: true do
-    context 'with default parameters' do
-      before { auth_get path }
 
-      it 'returns OK' do
-        expect(status).to eql(200)
-      end
-
-      it 'returns a JSON-API format' do
-        expect(body).to have_json_size(events_cnt).at_path('events')
-      end
-    end
-
-    context 'with pagination' do
-      before { auth_get "#{path}?limit=1&offset=1" }
-      let(:meta) do
-        {
-          limit: 1,
-          offset: 1,
-          count: events_cnt
-        }
-      end
-      it { should have_json_size(1).at_path('events') }
-
-      it { should be_json_eql(meta.to_json).at_path('meta') }
-
-      context 'with offset 0 and default limit' do
-        before { auth_get "#{path}?offset=0" }
-        let(:meta) do
-          {
-            limit: ApiHelper::DEFAULT_LIMIT,
-            offset: ApiHelper::DEFAULT_OFFSET,
-            count: events_cnt
-          }
-        end
-        it { should have_json_size(events_cnt).at_path('events') }
-
-        it { should be_json_eql(meta.to_json).at_path('meta') }
-      end
-
-      context 'with invalid value' do
-        before { auth_get "#{path}?offset=asdasd" }
-        it 'returns an error' do
-          expect(response.status).to eql 400
-        end
-
-        context 'for invalid integer' do
-          it 'returns an error for zero limit' do
-            auth_get "#{path}?limit=0"
-            expect(response.status).to eql 400
-          end
-          it 'returns an error for invalid (negative) offset' do
-            auth_get "#{path}?offset=-1"
-            expect(response.status).to eql 400
-          end
-        end
-      end
+    it_behaves_like 'paginated resource' do
+      let(:json_type) { 'events' }
+      let(:total_count) { events_cnt }
     end
 
     context 'with date filtering' do
