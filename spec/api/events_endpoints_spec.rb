@@ -1,16 +1,6 @@
 require 'api_spec_helper'
 
-RSpec.shared_context 'authenticated user', authenticated: true do
-  let(:username) { 'user' }
-  let(:token) { Fabricate(:token, username: username) }
-  let(:access_token) { { access_token: token.uuid } }
-
-  def auth_get(path, **params)
-    get path, params.merge(access_token)
-  end
-end
-
-RSpec.shared_examples 'events endpoint' do
+shared_examples 'events endpoint' do
   include_context 'API response'
 
   include IcalendarHelper
@@ -56,62 +46,10 @@ RSpec.shared_examples 'events endpoint' do
   end
 
   context 'for authenticated user', authenticated: true do
-    context 'with default parameters' do
-      before { auth_get path }
 
-      it 'returns OK' do
-        expect(status).to eql(200)
-      end
-
-      it 'returns a JSON-API format' do
-        expect(body).to have_json_size(events_cnt).at_path('events')
-      end
-    end
-
-    context 'with pagination' do
-      before { auth_get "#{path}?limit=1&offset=1" }
-      let(:meta) do
-        {
-          limit: 1,
-          offset: 1,
-          count: events_cnt
-        }
-      end
-      it { should have_json_size(1).at_path('events') }
-
-      it { should be_json_eql(meta.to_json).at_path('meta') }
-
-      context 'with offset 0 and default limit' do
-        before { auth_get "#{path}?offset=0" }
-        let(:meta) do
-          {
-            limit: ApiHelper::DEFAULT_LIMIT,
-            offset: ApiHelper::DEFAULT_OFFSET,
-            count: events_cnt
-          }
-        end
-        it { should have_json_size(events_cnt).at_path('events') }
-
-        it { should be_json_eql(meta.to_json).at_path('meta') }
-      end
-
-      context 'with invalid value' do
-        before { auth_get "#{path}?offset=asdasd" }
-        it 'returns an error' do
-          expect(response.status).to eql 400
-        end
-
-        context 'for invalid integer' do
-          it 'returns an error for zero limit' do
-            auth_get "#{path}?limit=0"
-            expect(response.status).to eql 400
-          end
-          it 'returns an error for invalid (negative) offset' do
-            auth_get "#{path}?offset=-1"
-            expect(response.status).to eql 400
-          end
-        end
-      end
+    it_behaves_like 'paginated resource' do
+      let(:json_type) { 'events' }
+      let(:total_count) { events_cnt }
     end
 
     context 'with date filtering' do
@@ -171,37 +109,6 @@ RSpec.shared_examples 'events endpoint' do
   end
 end
 
-RSpec.shared_examples 'invalid endpoint' do
-  context 'for authenticated user', authenticated: true do
-    it 'returns a Not Found error' do
-      get path_for(path)
-      expect(response.status).to eql 404
-    end
-  end
-end
-
-RSpec.shared_examples 'non-existent resource' do
-  context 'for authenticated user', authenticated: true do
-    before { auth_get path_for(path) }
-    it 'returns a 404 Not Found error' do
-      expect(status).to eql(404)
-    end
-    it 'returns a meaningful message' do
-      expect(body).to be_json_eql('"Resource not found"').at_path('message')
-    end
-  end
-end
-
-RSpec.shared_examples 'forbidden resource' do
-  context 'for authenticated user', authenticated: true do
-    before { auth_get path_for(path) }
-    it 'returns a 403 Frobidden error' do
-      expect(status).to eql(403)
-    end
-  end
-end
-
-
 describe API::EventsEndpoints do
   include_context 'API response'
 
@@ -239,9 +146,9 @@ describe API::EventsEndpoints do
         }
       }.to_json
     end
-    it 'is not accessible without authentication' do
-      get path_for("/events/#{event.id}")
-      expect(status).to eql(401)
+
+    it_behaves_like 'secured resource' do
+      let(:path) { "/events/#{event.id}" }
     end
 
     context 'for authenticated user', authenticated: true do
