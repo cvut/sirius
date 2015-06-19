@@ -17,6 +17,7 @@ end
 
 Fabricator(:full_event, from: :event) do
   course
-  teacher_ids { Fabricate.times(2, :person).map{|person| person.id} }
-  student_ids { Fabricate.times(5, :person).map{|person| person.id} }
+  transient teachers: 1, students: 2
+  teacher_ids { |tr| Fabricate.times(tr[:teachers], :person).map{|person| person.id} }
+  student_ids { |tr| Fabricate.times(tr[:students], :person).map{|person| person.id} }
 end

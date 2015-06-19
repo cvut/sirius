@@ -23,11 +23,7 @@ module Interactors
       end
 
       def compounds
-        ret = {}
-        @joins.each do |compound|
-          ret[compound.to_sym] = self.send(compound)
-        end
-        ret
+        @joins.map { |name| [name.to_sym, self.send(name)] }.to_h
       end
 
       # FIXME: invalid params will be silently ignored

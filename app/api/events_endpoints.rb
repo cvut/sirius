@@ -2,23 +2,28 @@ require 'models/event'
 require 'models/room'
 require 'models/person'
 require 'models/course'
-require 'events_representer'
 require 'api_helper'
+
 require 'filter_events'
 require 'format_events_ical'
+require 'interactors/api/represent_events_json'
+require 'events_representer'
+
 module API
   class EventsEndpoints < Grape::API
+    using Corefines::Object::then
+
     helpers ApiHelper
 
     # represent Event, with: EventsRepresenter
     helpers do
       def represent(dataset)
-        result = FilterEvents.perform(events: dataset, params: params, format: api_format).to_h
+        filtered = FilterEvents.perform(events: dataset, params: params, format: api_format)
         case api_format #XXX this is not great, it should be handled by Grape formatters
         when :jsonapi
-          represent_paginated(result[:events], EventsRepresenter)
+          Interactors::Api::RepresentEventsJson.perform(events: filtered.events, params: params).to_hash
         when :ical
-          FormatEventsIcal.perform(events: result[:events])
+          FormatEventsIcal.perform(events: filtered.events)
         else
           raise "Unknown output format '#{api_format}'"
         end
@@ -55,6 +60,7 @@ module API
       desc 'Get all events'
       params do
         use :filter_events
+        use :compound
       end
       get do
         represent ::Event.dataset
