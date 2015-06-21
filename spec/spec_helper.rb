@@ -9,6 +9,7 @@ ENV.update(Pliny::Utils.parse_env("#{root}/.env.test")) # and overwrite it.
 
 require 'simplecov'
 require 'rspec'
+require 'rspec/collection_matchers'
 require 'fabrication'
 
 require_relative "../lib/initializer"
