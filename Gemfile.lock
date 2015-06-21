@@ -302,3 +302,6 @@ DEPENDENCIES
   timecop
   vcr
   warden (~> 1.2.3)
+
+BUNDLED WITH
+   1.10.4
