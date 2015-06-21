@@ -50,11 +50,14 @@ traits:
           type: string
           enum: [ assessment, course_event, exam, laboratory, lecture, tutorial ]
   - includable:
+      description: >
+        Includes the specified linked resources into the response (similar to compound documents
+        in the JSON API format).
       queryParameters:
         include:
-          description: Include linked resources per JSON API
+          description: A comma-separated list of the link names to include.
           type: string
-          example: people
+          example: courses,teachers
   - secured:
       description: Marks resource as secured. You need to be authenticated and authorized to access it.
       queryParameters:
@@ -66,7 +69,7 @@ traits:
 resourceTypes:
   - events-collection:
       get:
-        is: [ paged, dateScoped, secured, filterable ]
+        is: [ dateScoped, filterable, includable, paged, secured ]
         responses:
           200:
             body:
