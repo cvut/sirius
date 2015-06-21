@@ -34,14 +34,17 @@ module Interactors
       end
 
       def courses
-        course_ids = events.distinct.select(:course_id)
+        # SELECT id, name FROM courses
+        # WHERE id IN (SELECT course_id FROM events WHERE ...)
+        course_ids = events.select(:course_id)
         Course.where(id: course_ids).select(:id, :name)
       end
 
       def teachers
-        # SELECT id, full_name FROM people WHERE id IN (SELECT DISTINCT unnest(teacher_ids) FROM EVENTS)
+        # SELECT id, full_name FROM people
+        # WHERE id IN (SELECT unnest(teacher_ids) FROM events WHERE ...)
         array_op = Sequel.pg_array(:teacher_ids)
-        teacher_ids = events.select(array_op.unnest).distinct
+        teacher_ids = events.select(array_op.unnest)
 
         Person.where(id: teacher_ids).select(:id, :full_name)
       end
