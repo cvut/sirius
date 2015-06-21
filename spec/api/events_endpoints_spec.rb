@@ -91,7 +91,19 @@ shared_examples 'events endpoint' do
           expect(response.status).to eql 400
         end
       end
+    end
 
+    context 'with compound resources' do
+      let(:events_cnt) { 1 }
+      let!(:full_event) { Fabricate(:full_event, teachers: 1, **events_params) }
+      let(:included) { 'courses,teachers' }
+      before { auth_get "#{path}?include=#{included}", access_token }
+
+      it { should have_json_path('linked') }
+      it { should have_json_size(1).at_path('linked/courses') }
+      it { should have_json_size(1).at_path('linked/teachers') }
+      it { should have_json_type(String).at_path('linked/teachers/0/full_name')}
+      it { should have_json_type(Hash).at_path('linked/courses/0/name')}
     end
 
     context 'as an icalendar' do
