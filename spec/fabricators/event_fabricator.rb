@@ -14,3 +14,9 @@ Fabricator(:event) do
   semester 'B141'
   capacity 20
 end
+
+Fabricator(:full_event, from: :event) do
+  course
+  teacher_ids { Fabricate.times(2, :person).map{|person| person.id} }
+  student_ids { Fabricate.times(5, :person).map{|person| person.id} }
+end
