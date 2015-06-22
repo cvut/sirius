@@ -1,5 +1,4 @@
 require 'models/schedule_exception'
-require 'roles/applied_schedule_exception'
 require 'roles/planned_timetable_slot'
 require 'models/parallel'
 require 'sirius/time_converter'
@@ -10,7 +9,7 @@ module Sirius
 
     def initialize
       @sync = Sync[Event, matching_attributes: [:timetable_slot_id, :absolute_sequence_number], skip_updating: [:relative_sequence_number]]
-      @exceptions = ScheduleException.all.map { |e| AppliedScheduleException.new(e) }
+      @exceptions = ScheduleException.all
     end
 
     def plan_semester(semester)
