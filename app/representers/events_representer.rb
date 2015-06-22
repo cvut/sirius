@@ -14,6 +14,11 @@ class EventsRepresenter < Roar::Decorator
   property :capacity
   property :event_type
   property :parallel, exec_context: :decorator, render_nil: true
+  nested :original_data do
+    property :original_starts_at, as: :starts_at
+    property :original_ends_at, as: :ends_at
+    property :original_room_id, as: :room_id
+  end
 
   links do
     property :course_id, as: :course
