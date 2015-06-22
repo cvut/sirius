@@ -99,7 +99,10 @@ CREATE TABLE events (
     capacity integer,
     source hstore,
     room_id text,
-    applied_schedule_exception_ids bigint[]
+    applied_schedule_exception_ids bigint[],
+    original_starts_at timestamp without time zone,
+    original_ends_at timestamp without time zone,
+    original_room_id text
 );
 
 
@@ -671,3 +674,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1421860982_add_faculty_sem
 INSERT INTO "schema_migrations" ("filename") VALUES ('1422545075_change_rooms_primary_key_to_kos_code.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1424431659_change_events_name_note_to_hstore.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1433519124_add_applied_schedule_exception_ids_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1434994575_add_original_fields_to_events.rb');

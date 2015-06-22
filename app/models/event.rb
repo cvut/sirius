@@ -27,6 +27,8 @@ class Event < Sequel::Model
 
   def move(offset)
     offset_int = offset.to_i
+    self.original_starts_at ||= self.starts_at
+    self.original_ends_at ||= self.ends_at
     self.starts_at += offset_int.minutes
     self.ends_at += offset_int.minutes
   end
