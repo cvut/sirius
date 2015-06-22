@@ -146,6 +146,7 @@ describe API::EventsEndpoints do
         starts_at: event.starts_at,
         ends_at: event.ends_at,
         note: event.note,
+        original_data: { },
         deleted: false,
         parallel: '101',
         capacity: 20,
