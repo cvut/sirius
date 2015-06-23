@@ -43,6 +43,13 @@ traits:
         to:
           description: Return events up to this date
           type: date
+        with_original_date:
+          description: >
+            When the date of event has been changed by a schedule exception, original date is not
+            considered for date filtering (by from/to parameters). With this parameter Sirius will
+            include events’ original date in a date filter.
+          type: boolean
+          default: false
   - filterable:
       queryParameters:
         event_type:
