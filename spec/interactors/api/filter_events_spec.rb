@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'filter_events'
+require 'interactors/api/filter_events'
 
 RSpec.shared_examples 'filtered by params' do
   subject(:sql) { events.sql }
@@ -24,7 +24,7 @@ RSpec.shared_examples 'filtered by params' do
 end
 
 
-describe FilterEvents do
+describe Interactors::Api::FilterEvents do
   let(:db) { Sequel.mock(fetch: { count: 120, deleted: false }) }
   let(:dataset) { db.from(:test).columns(:count) }
 
