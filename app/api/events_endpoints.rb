@@ -4,8 +4,8 @@ require 'models/person'
 require 'models/course'
 require 'api_helper'
 
-require 'filter_events'
 require 'format_events_ical'
+require 'interactors/api/filter_events'
 require 'interactors/api/represent_events_json'
 require 'events_representer'
 
@@ -18,7 +18,7 @@ module API
     # represent Event, with: EventsRepresenter
     helpers do
       def represent(dataset)
-        filtered = FilterEvents.perform(events: dataset, params: params, format: api_format)
+        filtered = Interactors::Api::FilterEvents.perform(events: dataset, params: params, format: api_format)
         case api_format #XXX this is not great, it should be handled by Grape formatters
         when :jsonapi
           Interactors::Api::RepresentEventsJson.perform(events: filtered.events, params: params).to_hash
@@ -32,6 +32,7 @@ module API
       params :date_filter do
         optional :from, type: DateTime
         optional :to, type: DateTime
+        optional :with_original_date, type: Boolean, default: false
       end
       params :deleted do
         optional :deleted, type: Boolean, default: false
