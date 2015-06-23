@@ -22,7 +22,7 @@ class EventsRepresenter < Roar::Decorator
 
   links do
     property :course_id, as: :course
-    property :room, getter: -> (*) { room.to_s }
+    property :room_id, as: :room
     collection :teacher_ids, as: :teachers
     collection :student_ids, as: :students
     property :applied_schedule_exception_ids, as: :applied_exceptions
