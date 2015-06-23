@@ -1,6 +1,7 @@
 require 'role_playing'
 require 'interpipe/interactor'
 require 'core_ext/then'
+require 'corefines'
 
 require 'date_filtered_dataset'
 
@@ -12,6 +13,7 @@ module Interactors
     class FilterEvents
       include RolePlaying::Context
       include Interpipe::Interactor
+      using Corefines::Hash[:only, :rekey]
 
       attr_reader :events
 
@@ -21,7 +23,7 @@ module Interactors
         @type = params[:event_type]
         @events = DateFilteredDataset.played_by(events) do |dataset|
           dataset
-            .filter_by_date(from: params[:from], to: params[:to])
+            .filter_by_date(**params.only(:from, :to, :with_original_date).to_h.rekey!)
             .then_if(hide_deleted?) { |q| q.where(deleted: false) }
             .then_if(@type) { |q| q.where(event_type: @type) }
         end

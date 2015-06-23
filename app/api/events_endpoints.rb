@@ -32,6 +32,7 @@ module API
       params :date_filter do
         optional :from, type: DateTime
         optional :to, type: DateTime
+        optional :with_original_date, type: Boolean, default: false
       end
       params :deleted do
         optional :deleted, type: Boolean, default: false
