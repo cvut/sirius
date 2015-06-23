@@ -43,6 +43,12 @@ traits:
         to:
           description: Return events up to this date
           type: date
+  - deletable:
+      queryParameters:
+        deleted:
+          description: Return even events that have been deleted.
+          type: boolean
+          default: false
   - filterable:
       queryParameters:
         event_type:
@@ -69,7 +75,7 @@ traits:
 resourceTypes:
   - events-collection:
       get:
-        is: [ dateScoped, filterable, includable, paged, secured ]
+        is: [ dateScoped, deletable, filterable, includable, paged, secured ]
         responses:
           200:
             body:
