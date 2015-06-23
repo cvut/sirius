@@ -19,7 +19,10 @@ module Interactors
       end
 
       def to_hash(options = {})
-        representer.to_hash(teachers: compounds[:teachers], courses: compounds[:courses], 'meta' => meta)
+        representer.to_hash(
+          teachers: compounds[:teachers].to_a,
+          courses: compounds[:courses].to_a,
+          'meta' => meta)
       end
 
     end

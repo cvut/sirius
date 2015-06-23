@@ -22,7 +22,7 @@ class EventsRepresenter < Roar::Decorator
 
   links do
     property :course_id, as: :course
-    property :room, getter: -> (*) { room.to_s }
+    property :room_id, as: :room
     collection :teacher_ids, as: :teachers
     collection :student_ids, as: :students
     property :applied_schedule_exception_ids, as: :applied_exceptions
@@ -31,12 +31,12 @@ class EventsRepresenter < Roar::Decorator
   # Compound requests are injected separately from to_hash
   compound do
 
-    collection :courses, getter: -> (args) { args[:courses] } do
+    collection :courses, render_empty: false, getter: -> (args) { args[:courses] } do
       property :id
       property :name
     end
 
-    collection :teachers, getter: -> (args) { args[:teachers] } do
+    collection :teachers, render_empty: false, getter: -> (args) { args[:teachers] } do
       property :id
       property :full_name
     end
