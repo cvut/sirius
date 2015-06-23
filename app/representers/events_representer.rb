@@ -31,12 +31,12 @@ class EventsRepresenter < Roar::Decorator
   # Compound requests are injected separately from to_hash
   compound do
 
-    collection :courses, getter: -> (args) { args[:courses] } do
+    collection :courses, render_empty: false, getter: -> (args) { args[:courses] } do
       property :id
       property :name
     end
 
-    collection :teachers, getter: -> (args) { args[:teachers] } do
+    collection :teachers, render_empty: false, getter: -> (args) { args[:teachers] } do
       property :id
       property :full_name
     end
