@@ -46,7 +46,7 @@ module ApiHelper
   # @return [Boolean] `true` if authenticated user is allowed to access, `false` otherwise
   # @todo Move this to a separate interactor or something, this is starting to get complicated
   def user_allowed?(username)
-    return false if user.nil?
+    return false if auth_scope.nil?
     # FIXME: use actual role permissions, this is just a temporary workaround
     auth_scope == username || auth_scope == '*' || Person.teacher?(username) || Person.teacher?(auth_scope)
   end
