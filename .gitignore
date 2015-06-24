@@ -38,6 +38,7 @@
 
 ## dotenv config
 /.env
+/.envrc
 
 ## Dokkufy config
 /.dokkurc
