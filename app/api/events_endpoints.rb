@@ -123,7 +123,7 @@ module API
         use :filter_events
         use :compound
       end
-      route_param :course_id do
+      route_param :course_id, requirements: { course_id: /[a-z0-9\.\-\:]+/i } do
         resource :events do
           get do
             #XXX join is not necessary here (but let's planner handle this)
