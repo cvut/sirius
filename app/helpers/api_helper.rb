@@ -23,12 +23,17 @@ module ApiHelper
     env['warden'].authenticate!
   end
 
-  def auth_user
+  # Scope of authenticated user derived from access token
+  #
+  # @return [String, nil] `nil` if no user was authenticated,
+  #                       `'*'` if user has unlimited access to all resources,
+  #                       otherwise username of authenticated user
+  def auth_scope
     env['warden'].user
   end
 
   def user_allowed?(username)
-    user = auth_user
+    user = auth_scope
     return false if user.nil?
     # FIXME: use actual role permissions, this is just a temporary workaround
     user == username || user == '*' || Person.teacher?(username) || Person.teacher?(user)
