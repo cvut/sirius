@@ -33,11 +33,22 @@ module ApiHelper
     env['warden'].user
   end
 
+  # Checks permissions of authenticated user to access data for a given user.
+  # Based on permissions of authenticated user, user will be allowed if:
+  # - The authenticated user is the same for which we request data.
+  # - The authenticated user has unlimited permissions (`auth_scope` is `*`)
+  # - The authenticated user is a teacher (currently same as having unlimited permissions)
+  # - The person we request data for is a teacher
+  #
+  # Users without authentication won't be allowed.
+  #
+  # @param [String] username for which to check access to data
+  # @return [Boolean] `true` if authenticated user is allowed to access, `false` otherwise
+  # @todo Move this to a separate interactor or something, this is starting to get complicated
   def user_allowed?(username)
-    user = auth_scope
     return false if user.nil?
     # FIXME: use actual role permissions, this is just a temporary workaround
-    user == username || user == '*' || Person.teacher?(username) || Person.teacher?(user)
+    auth_scope == username || auth_scope == '*' || Person.teacher?(username) || Person.teacher?(auth_scope)
   end
 
   def authorize_user!(user_scope)
