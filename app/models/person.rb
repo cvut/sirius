@@ -1,3 +1,5 @@
+require 'models/parallel'
+
 class Person < Sequel::Model
 
   def self.teacher?(username)

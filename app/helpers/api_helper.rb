@@ -1,5 +1,6 @@
 require 'corefines'
 require 'sirius_api'
+require 'models/person'
 
 using Corefines::Hash[:only, :rekey]
 ##
