@@ -29,7 +29,9 @@ module ApiHelper
 
   def user_allowed?(username)
     user = auth_user
-    !user.nil? && ((user == username) || (user == '*'))
+    return false if user.nil?
+    # FIXME: use actual role permissions, this is just a temporary workaround
+    user == username || user == '*' || Person.teacher?(username) || Person.teacher?(user)
   end
 
   def authorize_user!(user_scope)
