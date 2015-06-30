@@ -410,3 +410,37 @@ resourceTypes:
                     ]
                   }
                 }
+/search:
+  is: [ paged, secured ]
+  queryParameters:
+    q:
+      description: Search query
+      type: string
+      required: true
+  get:
+    description: >
+      Seach courses, people and rooms with the queried string in ID or title.
+      This resource is designed especially for an instant search (aka result autosuggestion).
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "results": [
+                  {
+                    "id": "MI-RUB",
+                    "title": "Programování v Ruby",
+                    "type": "course"
+                  },
+                  {
+                    "id": "rubyelis",
+                    "title": "Ing. Elisia Ruby",
+                    "type": "person"
+                  }
+                ],
+                "meta": {
+                  "offset": 0,
+                  "limit": 2
+                }
+              }
