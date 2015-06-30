@@ -35,6 +35,19 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 
 
 
+--
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -42,7 +55,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: courses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: courses; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE courses (
@@ -74,7 +87,7 @@ ALTER SEQUENCE courses_id_seq OWNED BY courses.id;
 
 
 --
--- Name: events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: events; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE events (
@@ -126,7 +139,7 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 
 --
--- Name: faculty_semesters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: faculty_semesters; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE faculty_semesters (
@@ -168,7 +181,7 @@ ALTER SEQUENCE faculty_semesters_id_seq OWNED BY faculty_semesters.id;
 
 
 --
--- Name: parallels; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: parallels; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE parallels (
@@ -207,7 +220,7 @@ ALTER SEQUENCE parallels_id_seq OWNED BY parallels.id;
 
 
 --
--- Name: people; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: people; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE people (
@@ -219,7 +232,7 @@ CREATE TABLE people (
 
 
 --
--- Name: rooms; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: rooms; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE rooms (
@@ -235,7 +248,7 @@ CREATE TABLE rooms (
 
 
 --
--- Name: schedule_exceptions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schedule_exceptions; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE schedule_exceptions (
@@ -275,7 +288,7 @@ ALTER SEQUENCE schedule_exceptions_id_seq OWNED BY schedule_exceptions.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE schema_migrations (
@@ -284,7 +297,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: timetable_slots; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: timetable_slots; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE timetable_slots (
@@ -320,7 +333,7 @@ ALTER SEQUENCE timetable_slots_id_seq OWNED BY timetable_slots.id;
 
 
 --
--- Name: tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tokens; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE tokens (
@@ -333,7 +346,7 @@ CREATE TABLE tokens (
 
 
 --
--- Name: update_logs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: update_logs; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE update_logs (
@@ -413,7 +426,7 @@ ALTER TABLE ONLY update_logs ALTER COLUMN id SET DEFAULT nextval('update_logs_id
 
 
 --
--- Name: courses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: courses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY courses
@@ -421,7 +434,7 @@ ALTER TABLE ONLY courses
 
 
 --
--- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY events
@@ -429,7 +442,7 @@ ALTER TABLE ONLY events
 
 
 --
--- Name: faculty_semesters_code_faculty_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: faculty_semesters_code_faculty_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY faculty_semesters
@@ -437,7 +450,7 @@ ALTER TABLE ONLY faculty_semesters
 
 
 --
--- Name: faculty_semesters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: faculty_semesters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY faculty_semesters
@@ -445,7 +458,7 @@ ALTER TABLE ONLY faculty_semesters
 
 
 --
--- Name: parallels_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: parallels_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY parallels
@@ -453,7 +466,7 @@ ALTER TABLE ONLY parallels
 
 
 --
--- Name: people_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: people_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY people
@@ -461,7 +474,7 @@ ALTER TABLE ONLY people
 
 
 --
--- Name: rooms_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: rooms_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY rooms
@@ -469,7 +482,7 @@ ALTER TABLE ONLY rooms
 
 
 --
--- Name: schedule_exceptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: schedule_exceptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY schedule_exceptions
@@ -477,7 +490,7 @@ ALTER TABLE ONLY schedule_exceptions
 
 
 --
--- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY schema_migrations
@@ -485,7 +498,7 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
--- Name: timetable_slots_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: timetable_slots_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY timetable_slots
@@ -493,7 +506,7 @@ ALTER TABLE ONLY timetable_slots
 
 
 --
--- Name: tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY tokens
@@ -501,7 +514,7 @@ ALTER TABLE ONLY tokens
 
 
 --
--- Name: update_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: update_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY update_logs
@@ -509,87 +522,108 @@ ALTER TABLE ONLY update_logs
 
 
 --
--- Name: events_absolute_sequence_number_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: courses_id_trgm_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX courses_id_trgm_index ON courses USING gin (id gin_trgm_ops);
+
+
+--
+-- Name: events_absolute_sequence_number_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX events_absolute_sequence_number_index ON events USING btree (absolute_sequence_number);
 
 
 --
--- Name: events_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: events_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX events_faculty_index ON events USING btree (faculty);
 
 
 --
--- Name: events_semester_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: events_semester_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX events_semester_index ON events USING btree (semester);
 
 
 --
--- Name: events_source_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: events_source_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX events_source_index ON events USING gin (source);
 
 
 --
--- Name: events_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: events_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX events_student_ids_index ON events USING gin (student_ids);
 
 
 --
--- Name: events_teacher_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: events_teacher_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX events_teacher_ids_index ON events USING gin (teacher_ids);
 
 
 --
--- Name: events_timetable_slot_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: events_timetable_slot_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX events_timetable_slot_id_index ON events USING btree (timetable_slot_id);
 
 
 --
--- Name: faculty_semesters_code_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: faculty_semesters_code_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX faculty_semesters_code_index ON faculty_semesters USING btree (code);
 
 
 --
--- Name: faculty_semesters_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: faculty_semesters_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX faculty_semesters_faculty_index ON faculty_semesters USING btree (faculty);
 
 
 --
--- Name: parallels_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: parallels_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX parallels_faculty_index ON parallels USING btree (faculty);
 
 
 --
--- Name: parallels_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: parallels_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX parallels_student_ids_index ON parallels USING gin (student_ids);
 
 
 --
--- Name: parallels_teacher_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: parallels_teacher_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX parallels_teacher_ids_index ON parallels USING gin (teacher_ids);
+
+
+--
+-- Name: people_id_trgm_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX people_id_trgm_index ON people USING gin (id gin_trgm_ops);
+
+
+--
+-- Name: rooms_id_trgm_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX rooms_id_trgm_index ON rooms USING gin (id gin_trgm_ops);
 
 
 --
@@ -675,3 +709,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1422545075_change_rooms_pr
 INSERT INTO "schema_migrations" ("filename") VALUES ('1424431659_change_events_name_note_to_hstore.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1433519124_add_applied_schedule_exception_ids_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1434994575_add_original_fields_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1434060996_add_indexes_for_global_search.rb');
