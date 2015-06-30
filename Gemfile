@@ -8,6 +8,9 @@ gem 'pg'
 gem 'sequel', '~> 4.17'
 gem 'sequel_pg', require: 'sequel'
 gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
+# TODO: replace with upstream's version after merging
+# https://github.com/toptal/chewy/pull/207
+gem 'chewy', github: 'jirutka/chewy', branch: 'master'
 
 ## REST API
 gem 'pliny', '~> 0.2.1'

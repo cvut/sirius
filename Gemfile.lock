@@ -11,6 +11,15 @@ GIT
       uri_template
 
 GIT
+  remote: git://github.com/jirutka/chewy.git
+  revision: 6df3580817a97f202458028159fef2b4ed7a8d1a
+  branch: master
+  specs:
+    chewy (0.8.1)
+      activesupport (>= 3.2)
+      elasticsearch (>= 1.0.0)
+
+GIT
   remote: git://github.com/jnv/role_playing.git
   revision: 8bfab60b5308993926c0f5acfd5d7d404ca0c44d
   specs:
@@ -65,6 +74,14 @@ GEM
     diff-lcs (1.2.5)
     docile (1.1.5)
     dotenv (0.7.0)
+    elasticsearch (1.0.12)
+      elasticsearch-api (= 1.0.12)
+      elasticsearch-transport (= 1.0.12)
+    elasticsearch-api (1.0.12)
+      multi_json
+    elasticsearch-transport (1.0.12)
+      faraday
+      multi_json
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
@@ -269,6 +286,7 @@ DEPENDENCIES
   activesupport
   awesome_print
   bogus
+  chewy!
   codeclimate-test-reporter
   committee
   corefines (~> 1.6)
@@ -310,6 +328,3 @@ DEPENDENCIES
   timecop
   vcr
   warden (~> 1.2.3)
-
-BUNDLED WITH
-   1.10.4
