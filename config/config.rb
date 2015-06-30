@@ -16,6 +16,7 @@ module Config
   # Mandatory -- exception is raised for these variables when missing.
   mandatory \
     :database_url,
+    :elastic_url,
     :kosapi_oauth_client_id,
     :kosapi_oauth_client_secret,
     :domain
@@ -43,5 +44,6 @@ module Config
     puma_max_threads:      16,
     puma_min_threads:      1,
     puma_workers:          3,
-    oauth_check_token_uri: 'https://auth.fit.cvut.cz/oauth/api/v1/tokeninfo'
+    oauth_check_token_uri: 'https://auth.fit.cvut.cz/oauth/api/v1/tokeninfo',
+    elastic_prefix:        'sirius'
 end
