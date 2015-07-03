@@ -134,6 +134,10 @@ GEM
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
+    little-plugger (1.1.3)
+    logging (2.0.0)
+      little-plugger (~> 1.1)
+      multi_json (~> 1.10)
     lumberjack (1.0.9)
     method_source (0.8.2)
     mime-types (2.4.3)
@@ -285,6 +289,7 @@ DEPENDENCIES
   json_spec (~> 1.1.2)
   kosapi_client!
   kramdown
+  logging
   pg
   pliny (~> 0.2.1)
   pry
