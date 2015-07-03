@@ -10,50 +10,35 @@ scheduler = Rufus::Scheduler.new
 class SyncHandler
   def initialize
     require 'sirius/schedule_manager'
+    require 'pliny/tasks'
+    Dir['lib/tasks/*.rake'].each { |task| load task }
+    @logger = Logging.logger[self]
   end
 
   def call(job, time)
-    manager = Sirius::ScheduleManager.new
-    $stderr.puts "Import started at #{Time.now}"
-    manager.import_parallels
-    $stderr.puts "Parallels finished at #{Time.now}"
-    manager.import_students
-    $stderr.puts "Students finished at #{Time.now}"
-    manager.plan_stored_parallels
-    $stderr.puts "Planning finished at #{Time.now}"
-    manager.assign_people
-    $stderr.puts "Assigning people finished at #{Time.now}"
-    manager.import_exams
-    $stderr.puts "Importing exams finished at #{Time.now}"
-    manager.import_exam_students
-    $stderr.puts "Importing exam students finished at #{Time.now}"
-    manager.import_course_events
-    $stderr.puts "Importing course events finished at #{Time.now}"
-    manager.import_course_event_students
-    $stderr.puts "Importing course event students finished at #{Time.now}"
-    manager.renumber_events
-    $stderr.puts "Renumbering events finished at #{Time.now}"
+    @logger.info "Scheduled import started."
+    start = Time.now
+    Rake::Task['sirius:events'].invoke
+    finish = Time.now
+    @logger.info "Scheduled import finished. Time taken: #{finish - start} s."
   end
 end
-
 
 def scheduler.on_error(job, error)
   begin
     Raven.capture_exception(error, logger: 'scheduler', extra: { job: job })
   rescue => e
-    $stderr.puts("Failure in reporting scheduler error to Raven (Sentry).")
-    $stderr.puts(e.inspect)
-    $stderr.puts(e.backtrace)
+    Logging.logger[self].error e
   ensure
     super
   end
 end
 
 if Config.sync_schedule
-  $stderr.puts "Setting automatic sync to '#{Config.sync_schedule}'"
+  Logging.logger[:scheduler].info "Setting automatic sync to '#{Config.sync_schedule}'"
   scheduler.repeat Config.sync_schedule, SyncHandler.new, overlap: false, timeout: '1h'
 else
-  $stderr.puts 'SYNC_SCHEDULE not configured, automatic sync will be disabled'
+  Logging.logger[:scheduler].info 'SYNC_SCHEDULE not configured, automatic sync will be disabled'
 end
 
 scheduler.join
