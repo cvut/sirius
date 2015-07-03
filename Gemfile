@@ -74,6 +74,7 @@ group :test do
   gem 'json_spec', '~> 1.1.2'
   gem 'vcr'
   gem 'rake-jekyll', require: false
+  gem 'elasticsearch-extensions'
 end
 
 group :development, :test do
