@@ -8,6 +8,7 @@ VCR.configure do |c|
       record: ENV['CI'] ? :none : :once
   }
   c.cassette_library_dir = 'spec/cassettes'
+  c.ignore_localhost = true
 end
 
 VCR.turn_off! ignore_cassettes: true if ENV['CI']
