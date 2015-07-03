@@ -39,6 +39,7 @@ gem 'rufus-scheduler', '~> 3.0.9', require: false
 gem 'activesupport'
 gem 'corefines', '~> 1.6'
 gem 'role_playing', github: 'jnv/role_playing'
+gem 'logging'
 
 ## For console
 gem 'pry', require: false
