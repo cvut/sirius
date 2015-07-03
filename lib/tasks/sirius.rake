@@ -1,7 +1,11 @@
 namespace :sirius do
 
-  desc 'Fetches parallels and students from KOSapi and plans stored parallels'
-  task :events => %w(events:import events:import_students events:plan events:assign_people events:import_exams events:import_exam_students events:import_course_events events:import_course_event_students events:renumber)
+  desc 'Fetches parallels and students from KOSapi, plans stored parallels and rebuilds indexes'
+  task :events => %w[
+    events:import events:import_students events:plan events:assign_people events:import_exams
+    events:import_exam_students events:import_course_events events:import_course_event_students
+    events:renumber indexes:reset
+  ]
 
   task :env do
     require 'bundler'
