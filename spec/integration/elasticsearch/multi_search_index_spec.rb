@@ -2,8 +2,10 @@
 require 'integration/elasticsearch/spec_helper'
 require 'chewy/multi_search_index'
 require 'ostruct'
+require 'rspec-parameterized'
 
 describe MultiSearchIndex, :elasticsearch do
+  using RSpec::Parameterized::TableSyntax
 
   before(:context) do
     DatabaseCleaner.cleaning do
@@ -35,115 +37,74 @@ describe MultiSearchIndex, :elasticsearch do
 
   describe '.search' do
 
-    describe 'finds course by' do
-
-      it 'exact code' do
-        expect( search_ids('MI-RUB') ).to eq ['MI-RUB']
-      end
-
-      it 'code in different case' do
-        expect( search_ids('mi-Rub') ).to eq ['MI-RUB']
-      end
-
-      it 'parts of FIT code' do
-        expect( search_ids('BI') ).to eq ['BI-PYT']
-        expect( search_ids('PYT') ).to eq ['BI-PYT']
-      end
-
-      it 'first two chars from second part of FIT code' do
-        expect( search_ids('PY') ).to eq ['BI-PYT']
-      end
-
-      it 'last part of FEL code' do
-        expect( search_ids('DBS') ).to eq ['A7B36DBS']
-      end
-
-      it 'one word from czech name without accents' do
-        expect( search_ids('databaze') ).to eq ['A7B36DBS']
-      end
-
-      it 'one word from czech name in different inflection' do
-        expect( search_ids('pythonem') ).to eq ['BI-PYT']
-      end
-
-      it 'two words from czech name' do
-        expect( search_ids('programovani ruby') ).to eq ['MI-RUB']
+    shared_examples :search_results do |type|
+      with_them ->{ "by #{desc}: \"#{input}\"" } do
+        it "finds #{type}: #{row.expected.map(&:inspect).join(', ') }" do
+          expect( search(input).map(&:id) ).to match_array expected
+        end
       end
     end
 
-    describe 'finds person by' do
-
-      it 'exact username' do
-        expect( search_ids('flynnkev') ).to eq ['flynnkev']
+    describe 'courses' do
+      where :input,           :expected,     :desc do
+        'MI-RUB'            | ['MI-RUB']   | 'exact code'
+        'mi-Rub'            | ['MI-RUB']   | 'code in different case'
+        'BI'                | ['BI-PYT']   | 'part of FIT code'
+        'PYT'               | ['BI-PYT']   | 'part of FIT code'
+        'PY'                | ['BI-PYT']   | 'first two chars from second part of FIT code'
+        'DBS'               | ['A7B36DBS'] | 'last part of FEL code'
+        'databaze'          | ['A7B36DBS'] | 'one word from czech name without accents'
+        'pythonem'          | ['BI-PYT']   | 'one word from czech name in different inflection'
+        'programovani ruby' | ['MI-RUB']   | 'two words from czech name'
       end
-
-      it 'username in different case' do
-        expect( search_ids('FLYNNkev') ).to eq ['flynnkev']
-      end
-
-      it 'first three chars of username' do
-        expect( search_ids('fly') ).to match_array ['flynnkev', 'flynnsam']
-      end
-
-      it 'exact last name' do
-        expect( search_ids('Šílená') ).to eq ['inkogeli']
-      end
-
-      it 'last name in different case and without accents' do
-        expect( search_ids('silena') ).to eq ['inkogeli']
-      end
-
-      it 'first three chars of last name' do
-        expect( search_ids('sil') ).to eq ['inkogeli']
-      end
-
-      it 'first name in different case and without accents' do
-        expect( search_ids('eliska') ).to eq ['inkogeli']
-      end
-
-      it 'first three chars of first name' do
-        expect( search_ids('eli') ).to match_array ['rubyelis', 'inkogeli']
-      end
-
-      it 'first two chars of first name and last name' do
-        expect( search_ids('sa fl') ).to eq ['flynnsam']
-      end
+      include_examples :search_results, 'courses'
     end
 
-    describe 'finds room by' do
-
-      it 'exact code' do
-        expect( search_ids('T9:105') ).to eq ['T9:105']
+    describe 'people' do
+      where :input,  :expected,                 :desc do
+        'flynnkev' | ['flynnkev']             | 'exact username'
+        'FLYNNkev' | ['flynnkev']             | 'username in different case'
+        'fly'      | ['flynnkev', 'flynnsam'] | 'first three chars of username'
+        'Šílená'   | ['inkogeli']             | 'exact last name'
+        'silena'   | ['inkogeli']             | 'last name in different case and without accents'
+        'sil'      | ['inkogeli']             | 'first three chars of last name'
+        'eliska'   | ['inkogeli']             | 'first name in different case and without accents'
+        'eli'      | ['rubyelis', 'inkogeli'] | 'first three chars of first name'
+        'sa fl'    | ['flynnsam']             | 'first two chars of first name and last name'
       end
-
-      it 'code in different case' do
-        expect( search_ids('th:a-1342') ).to eq ['TH:A-1342']
-      end
-
-      it 'one part of code' do
-        expect( search_ids('105') ).to eq ['T9:105']  # FIXME!
-        expect( search_ids('t9') ).to match_array ['T9:105', 'T9:350']
-      end
+      include_examples :search_results, 'people'
     end
 
-    describe 'finds mixed types' do
+    describe 'rooms' do
+      where :input,   :expected,             :desc do
+        'T9:105'    | ['T9:105']           | 'exact code'
+        'th:a-1342' | ['TH:A-1342']        | 'code in different case'
+        't9'        | ['T9:105', 'T9:350'] | 'letter part of code'
+        'TH:A'      | ['TH:A-1342']        | 'letter part of code'
+        '105'       | ['T9:105']           | 'numeric part of code'
+        '1342'      | ['TH:A-1342']        | 'numeric part of code'
+      end
+      include_examples :search_results, 'rooms'
+    end
 
-      it 'course and person' do
-        expect( search_ids('ruby') ).to match_array ['MI-RUB', 'rubyelis']
+    describe 'mixed types' do
+      it "finds course and person" do
+        expect( search('ruby').map(&:id) ).to match_array ['MI-RUB', 'rubyelis']
       end
     end
   end
 
 
   describe '.extract_last_name' do
-    {
-      'Sam Flynn'                     => 'Flynn',
-      'Dr. Kevin Flynn, PhD.'         => 'Flynn',
-      'Mgr. Eliška Šílená MBA'        => 'Šílená',
-      'RNDr. Ender Noname, CSc. PhD.' => 'Noname'
-    }
-    .each do |input, expected|
-      it "returns '#{expected}' for '#{input}'" do
+    where :input,                       :expected do
+      'Sam Flynn'                     | 'Flynn'
+      'Dr. Kevin Flynn, PhD.'         | 'Flynn'
+      'Mgr. Eliška Šílená MBA'        | 'Šílená'
+      'RNDr. Ender Noname, CSc. PhD.' | 'Noname'
+    end
+
+    with_them ->{ "for '#{input}'" } do
+      it "returns '#{row.expected}'" do
         expect( described_class.send(:extract_last_name, input) ).to eq expected
       end
     end
@@ -181,9 +142,5 @@ describe MultiSearchIndex, :elasticsearch do
 
   def search(*args)
     described_class.search(*args)
-  end
-
-  def search_ids(*args)
-    described_class.search(*args).map(&:id)
   end
 end
