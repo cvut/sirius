@@ -16,7 +16,7 @@ namespace :indexes do
   end
 
   def indexes
-    Chewy::Index.descendants
+    [ MultiSearchIndex ]
   end
 
 

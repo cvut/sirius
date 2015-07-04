@@ -8,9 +8,8 @@ gem 'pg'
 gem 'sequel', '~> 4.17'
 gem 'sequel_pg', require: 'sequel'
 gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
-# TODO: replace with upstream's version after merging
-# https://github.com/toptal/chewy/pull/207
-gem 'chewy', github: 'jirutka/chewy', branch: 'master'
+# TODO: replace with version after 0.9.0 is released.
+gem 'chewy', github: 'toptal/chewy', branch: 'ec41aca'
 
 ## REST API
 gem 'pliny', '~> 0.2.1'
@@ -40,7 +39,7 @@ gem 'rufus-scheduler', '~> 3.0.9', require: false
 
 ## Helper stuff
 gem 'activesupport'
-gem 'corefines', '~> 1.6'
+gem 'corefines', '~> 1.8'
 gem 'role_playing', github: 'jnv/role_playing'
 gem 'logging'
 

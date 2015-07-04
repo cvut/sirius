@@ -11,15 +11,6 @@ GIT
       uri_template
 
 GIT
-  remote: git://github.com/jirutka/chewy.git
-  revision: 6df3580817a97f202458028159fef2b4ed7a8d1a
-  branch: master
-  specs:
-    chewy (0.8.1)
-      activesupport (>= 3.2)
-      elasticsearch (>= 1.0.0)
-
-GIT
   remote: git://github.com/jnv/role_playing.git
   revision: 8bfab60b5308993926c0f5acfd5d7d404ca0c44d
   specs:
@@ -37,6 +28,15 @@ GIT
       proc_to_ast
       rspec (>= 2.13, < 4)
       unparser
+
+GIT
+  remote: git://github.com/toptal/chewy.git
+  revision: ec41acaeabed57c6d48bb0ec95dcad6ca6a8bf23
+  branch: ec41aca
+  specs:
+    chewy (0.8.1)
+      activesupport (>= 3.2)
+      elasticsearch (>= 1.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -82,7 +82,7 @@ GEM
     concord (0.1.5)
       adamantium (~> 0.2.0)
       equalizer (~> 0.0.9)
-    corefines (1.6.0)
+    corefines (1.8.0)
     coveralls (0.7.2)
       multi_json (~> 1.3)
       rest-client (= 1.6.7)
@@ -334,7 +334,7 @@ DEPENDENCIES
   chewy!
   codeclimate-test-reporter
   committee
-  corefines (~> 1.6)
+  corefines (~> 1.8)
   coveralls
   database_cleaner
   elasticsearch-extensions
