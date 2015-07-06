@@ -5,18 +5,21 @@ module UrlHelper
 
   # Construct an absolute path to a given +url_fragment+,
   # expects a leading slash.
-  def path_for url_fragment, **params
-    paramstr = nil
-    # TODO: Use addressable
-    unless params.empty?
-      paramstr = '?' + params.map { |k,v| "#{k}=#{URI.escape(v.to_s, /[^#{URI::PATTERN::UNRESERVED}]/)}" }.join('&')
-    end
-    "#{base_href}#{url_fragment}#{paramstr}"
+  def path_for(url_fragment, **params)
+    uri = URI.parse(url_fragment)
+
+    # TODO: Use addressable and refactor this ugly sh*t!
+    query = params.map { |k,v|
+      "#{k}=#{URI.escape(v.to_s, /[^#{URI::PATTERN::UNRESERVED}]/)}"
+    }.unshift(uri.query).compact.join('&')
+    uri.query = query unless query.empty?
+
+    "#{base_href}#{uri}"
   end
 
   # Construct a full URL to `url_fragment`, which should be given relative to
   # the base of an API.
-  def url_for url_fragment, **params
+  def url_for(url_fragment, **params)
     "#{base_domain(absolute: true)}#{path_for url_fragment, params}"
   end
 
