@@ -628,4 +628,22 @@ END:VCALENDAR
     ]
   }
 }
-</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#events">/events</a></li><li><a href="#people__username__events">/people/{username}/events</a></li><li><a href="#rooms__kosId__events">/rooms/{kosId}/events</a></li><li><a href="#courses__courseCode__events">/courses/{courseCode}/events</a></li><li><a href="#schedule_exceptions">/schedule_exceptions</a></li><li><a href="#semesters">/semesters</a></li></ul></div></div></div></div></body></html>
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="search" class="panel-title">/search</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_search"><span class="parent"></span>/search</a> <span class="methods"><a href="#search_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_search" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#search_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Seach courses, people and rooms with the queried string in ID or title. This resource is designed especially for an instant search (aka result autosuggestion).</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="search_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/search</h4></div><div class="modal-body"><div class="alert alert-info"><p>Seach courses, people and rooms with the queried string in ID or title. This resource is designed especially for an instant search (aka result autosuggestion).</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by access_token</div><ul class="nav nav-tabs"><li class="active"><a href="#search_get_request" data-toggle="tab">Request</a></li><li><a href="#search_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="search_get_request"><h3>Query Parameters</h3><ul><li><strong>access_token</strong>: <em>required (string)</em><p>Authentication and authorization is required. You need to set your <code>access_token</code> in URL.</p><p><strong>Example</strong>:</p><pre>07a855e0-6920-11e4-a40a-0002a5d5c51b</pre></li><li><strong>limit</strong>: <em>(number - default: 10 - maximum: 100)</em><p>The number of entries in collection to return</p></li><li><strong>offset</strong>: <em>(number)</em><p>Offset of the first entry in collection</p></li><li><strong>q</strong>: <em>required (string)</em><p>Search query</p></li></ul></div><div class="tab-pane" id="search_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "results": [
+    {
+      "id": "MI-RUB",
+      "title": "Programování v Ruby",
+      "type": "course"
+    },
+    {
+      "id": "rubyelis",
+      "title": "Ing. Elisia Ruby",
+      "type": "person"
+    }
+  ],
+  "meta": {
+    "offset": 0,
+    "limit": 2
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#events">/events</a></li><li><a href="#people__username__events">/people/{username}/events</a></li><li><a href="#rooms__kosId__events">/rooms/{kosId}/events</a></li><li><a href="#courses__courseCode__events">/courses/{courseCode}/events</a></li><li><a href="#schedule_exceptions">/schedule_exceptions</a></li><li><a href="#semesters">/semesters</a></li><li><a href="#search">/search</a></li></ul></div></div></div></div></body></html>
