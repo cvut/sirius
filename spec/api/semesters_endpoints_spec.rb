@@ -7,6 +7,7 @@ describe API::SemestersEndpoints do
 
   describe 'GET /semesters' do
 
+    let(:path) { '/semesters' }
     let(:json_type) { 'semesters' }
     let(:total_count) { 3 }
 
@@ -17,18 +18,16 @@ describe API::SemestersEndpoints do
       end
     end
 
-    it_behaves_like 'secured resource' do
-      let(:path) { '/semesters' }
-    end
+    it_behaves_like 'secured resource'
 
     context 'for authenticated user', authenticated: true do
-      let(:path) { path_for('/semesters') }
       it_behaves_like 'paginated resource'
     end
   end
 
   describe 'GET /semesters/:faculty_semester' do
 
+    let(:path) { "/semesters/#{entity.faculty}-#{entity.code}" }
     let(:entity) { Fabricate(:faculty_semester) }
 
     let(:json) do
@@ -47,14 +46,12 @@ describe API::SemestersEndpoints do
       }.to_json
     end
 
-    it_behaves_like 'secured resource' do
-      let(:path) { "/semesters/#{entity.faculty}-#{entity.code}" }
-    end
+    it_behaves_like 'secured resource'
 
     context 'for authenticated user', authenticated: true do
 
       context 'existing faculty-semester' do
-        before { auth_get path_for("/semesters/#{entity.faculty}-#{entity.code}") }
+        before { auth_get path_for(path) }
 
         it 'returns OK' do
           expect(status).to eql 200
