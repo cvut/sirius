@@ -41,14 +41,22 @@ to discuss it with project maintainers beforehand, otherwise there is a possibil
 After cloning this repo, run `script/setup` to bootstrap your configuration. This will create `.env` file in project root
 with reasonable defaults that you can change after that.
 
+## Prerequisites
+
+* Ruby/MRI 2.1+
+* PostgreSQL 9.3+
+* ElasticSearch 1.6+ (not mandatory, used only for `/search` resource)
+
 ## Environment variables
 
 Variables put into `.env` file will be automatically loaded by Foreman.
 
-You will need a KOSapi OAuth credentials from the [Apps Manager](https://auth.fit.cvut.cz/manager/). You will also need
-local PostgreSQL database, database url can be configured in `.env` as well.
+You will need a KOSapi OAuth credentials from the [Apps Manager](https://auth.fit.cvut.cz/manager/) and local PostgreSQL database and ElasticSearch.
+If you don’t need the `/search` resource, then you can omit ElasticSearch (just put any URI into `ELASTIC_URL` to pass check).
 
 ```
+DATABASE_URL=postgres://localhost:5432/sirius-development
+ELASTIC_URL=http://localhost:9200
 KOSAPI_OAUTH_CLIENT_ID=xxx-xxxx-xxxx
 KOSAPI_OAUTH_CLIENT_SECRET=yyyyyyyyy
 ```
