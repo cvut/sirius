@@ -1,6 +1,7 @@
 require 'corefines'
-require 'sirius_api'
+require 'interactors/api/paginate'
 require 'models/person'
+require 'sirius_api'
 
 using Corefines::Hash[:only, :rekey, :symbolize_keys]
 
@@ -62,18 +63,11 @@ module ApiHelper
     end
   end
 
-  def paginate(dataset)
-    dataset
-      .tap { |ds| ds.opts[:total_count] = ds.count }
-      .limit(params[:limit] || DEFAULT_LIMIT)
-      .offset(params[:offset] || DEFAULT_OFFSET)
-  end
-
   def represent_paginated(dataset, representer)
-    paginated_dataset = paginate(dataset)
-    meta = paginated_dataset.opts
-      .rekey(:total_count => :count)
-      .only(:count, :offset, :limit)
-    representer.for_collection.new(paginated_dataset).to_hash({'meta' => meta})
+    paginated = Interactors::Api::Paginate.perform(dataset: dataset, params: params)
+    representer
+      .for_collection
+      .new(paginated.dataset)
+      .to_hash('meta' => paginated.meta)
   end
 end
