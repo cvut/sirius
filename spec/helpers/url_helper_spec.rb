@@ -46,6 +46,13 @@ describe UrlHelper do
         end
       end
     end
+
+    context 'when url_fragment starts with base_href' do
+      subject(:path) { helper.path_for "#{helper.base_href}/foo" }
+      it 'does not prepend base_href' do
+        should eql "#{helper.base_href}/foo"
+      end
+    end
   end
 
   describe '#url_for' do

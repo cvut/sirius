@@ -14,7 +14,7 @@ module UrlHelper
     }.unshift(uri.query).compact.join('&')
     uri.query = query unless query.empty?
 
-    "#{base_href}#{uri}"
+    url_fragment.start_with?(base_href) ? uri.to_s : "#{base_href}#{uri}"
   end
 
   # Construct a full URL to `url_fragment`, which should be given relative to
