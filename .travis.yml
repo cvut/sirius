@@ -6,6 +6,8 @@ addons:
   postgresql: '9.3'
   code_climate:
     repo_token: a813ce884be14a158262d4e05906c0b6f4e7f4533c41cdf88bda7da84d88297f
+services:
+  - elasticsearch
 cache: bundler
 bundler_args: --without development doc
 before_script:

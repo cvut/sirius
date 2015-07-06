@@ -32,10 +32,25 @@ describe UrlHelper do
   describe '#path_for' do
     subject { helper.path_for '/foo' }
     it { should eql '/api/v1/foo' }
+
     context 'with params' do
       subject(:path) { helper.path_for '/foo', bar: 'baz', quaz: 'quar'}
       it 'should encode params' do
         expect(path).to eql '/api/v1/foo?bar=baz&quaz=quar'
+      end
+
+      context 'when url_fragment has params' do
+        subject(:path) { helper.path_for '/foo?bar=baz', quaz: 'quar'}
+        it 'appends new params' do
+          expect(path).to eql '/api/v1/foo?bar=baz&quaz=quar'
+        end
+      end
+    end
+
+    context 'when url_fragment starts with base_href' do
+      subject(:path) { helper.path_for "#{helper.base_href}/foo" }
+      it 'does not prepend base_href' do
+        should eql "#{helper.base_href}/foo"
       end
     end
   end

@@ -2,13 +2,23 @@ require 'pliny/tasks'
 # Add your rake tasks to lib/tasks!
 Dir['./lib/tasks/*.rake'].each { |task| load task }
 
-task :spec do
-  require 'rspec/core'
-  code = RSpec::Core::Runner.run(
-    ['./spec'],
-    $stderr, $stdout)
-  exit(code) unless code == 0
+namespace :spec do
+
+  desc 'Run all tests'
+  task(:all) { run_rspec! }
+
+  desc 'Run all unit tests'
+  task(:unit) { run_rspec! '~elasticsearch', '~vcr' }
+
+  desc 'Run all integration tests'
+  task :integration => [:elasticsearch]
+
+  desc 'Run integration tests with ElasticSearch'
+  task(:elasticsearch) { run_rspec! 'elasticsearch' }
 end
+
+task :spec => 'spec:all'
+task :test => :spec
 
 begin
   require 'rake-jekyll'
@@ -28,3 +38,13 @@ rescue LoadError => e
 end
 
 task :default => :spec
+
+
+def run_rspec!(*tags)
+  require 'rspec/core'
+
+  args = tags.map { |tag| ['--tag', tag] }.flatten << './spec'
+  status = RSpec::Core::Runner.run(args, $stderr, $stdout).to_i
+
+  exit status if status != 0
+end

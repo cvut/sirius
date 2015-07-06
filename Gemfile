@@ -8,6 +8,8 @@ gem 'pg'
 gem 'sequel', '~> 4.17'
 gem 'sequel_pg', require: 'sequel'
 gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
+# TODO: replace with version after 0.9.0 is released.
+gem 'chewy', github: 'toptal/chewy', branch: 'ec41aca'
 
 ## REST API
 gem 'pliny', '~> 0.2.1'
@@ -37,7 +39,7 @@ gem 'rufus-scheduler', '~> 3.0.9', require: false
 
 ## Helper stuff
 gem 'activesupport'
-gem 'corefines', '~> 1.6'
+gem 'corefines', '~> 1.8'
 gem 'role_playing', github: 'jnv/role_playing'
 gem 'logging'
 
@@ -61,6 +63,7 @@ group :test do
   gem 'committee'
   gem 'rspec', '~> 3.1.0'
   gem 'rspec-collection_matchers'
+  gem 'rspec-parameterized', github: 'jnv/rspec-parameterized', branch: 'badbf07'
   gem 'rack-test'
   gem 'bogus'
   gem 'database_cleaner'
@@ -71,6 +74,7 @@ group :test do
   gem 'json_spec', '~> 1.1.2'
   gem 'vcr'
   gem 'rake-jekyll', require: false
+  gem 'elasticsearch-extensions'
 end
 
 group :development, :test do
