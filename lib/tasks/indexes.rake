@@ -1,28 +1,14 @@
 namespace :indexes do
 
-  # Copyied from chewy rake tasks.
-  def subscribe_task_stats!
-    ActiveSupport::Notifications.subscribe('import_objects.chewy') do |name, start, finish, id, payload|
-      duration = (finish - start).round(2)
-      puts "  Imported #{payload[:type]} for #{duration}s, documents total: #{payload[:import].try(:[], :index).to_i}"
-      payload[:errors].each do |action, errors|
-        puts "    #{action.to_s.humanize} errors:"
-        errors.each do |error, documents|
-          puts "      `#{error}`"
-          puts "        on #{documents.count} documents: #{documents}"
-        end
-      end if payload[:errors]
-    end
-  end
-
   def indexes
     [ MultiSearchIndex ]
   end
 
-
   task :env => 'sirius:env' do
+    require 'chewy/rake_helper'
     require 'chewy/multi_search_index'
-    subscribe_task_stats!
+
+    Chewy::RakeHelper.subscribe_task_stats!
   end
 
   desc 'Destroy all indexes'
