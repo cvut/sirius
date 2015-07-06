@@ -7,7 +7,7 @@ class SearchResultsRepresenter < Roar::Decorator
   type :results
 
   property :id
-  property :type, getter: ->(*) { _data['_type'] }
-  property :title
+  property :type
+  property :title, render_nil: true
 
 end

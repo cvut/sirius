@@ -1,4 +1,5 @@
 require 'chewy'
+require 'roles/page_meta'
 require 'models/course'
 require 'models/person'
 require 'models/room'
@@ -7,6 +8,8 @@ require 'models/room'
 # Definition of ElasticSearch index for the /search resource.
 #
 class MultiSearchIndex < Chewy::Index
+
+  SearchResult = Struct.new(:id, :title, :type)
 
   DEFAULT_OPTS = {
     index_analyzer: 'standard_ascii_engram',
@@ -49,15 +52,17 @@ class MultiSearchIndex < Chewy::Index
   # Search courses, people and rooms with the given string in ID or title.
   #
   # @param str [String] a string to search.
-  # @return [MultiSearchIndex::Query] a query.
+  # @param offset [Integer]
+  # @param limit [Integer]
+  # @return [Array<SearchResult>] an wrapped with {PageMeta}.
   #
-  def self.search(str)
-    query multi_match: {
+  def self.search(str, offset: 0, limit: 10)
+    transform_result query(multi_match: {
       query: str,
       type: 'best_fields',
       fields: %w[course.id^2 course.title person.id person.last_name person.title room.id],
       operator: 'and'
-    }
+    }).only(:id, :title).limit(limit).offset(offset)
   end
 
   private
@@ -66,5 +71,14 @@ class MultiSearchIndex < Chewy::Index
     # Very simple heuristic to detect a degree.
     is_degree = ->(s) { s.include?('.') || s[1] =~ /[[:upper:]]/ }
     full_name.split.reject(&is_degree).last.chomp(',')
+  end
+
+  def self.transform_result(query)
+    data = query.map do |entry|
+      SearchResult.new(entry.id, entry.title, entry._data['_type'])
+    end
+    opts = query.criteria.request_options
+
+    PageMeta.new(data, limit: opts[:size], offset: opts[:from], count: query.total)
   end
 end

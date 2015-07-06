@@ -2,7 +2,8 @@ require 'corefines'
 require 'sirius_api'
 require 'models/person'
 
-using Corefines::Hash[:only, :rekey]
+using Corefines::Hash[:only, :rekey, :symbolize_keys]
+
 ##
 # Helper methods used in Grape's API endpoints.
 module ApiHelper
@@ -14,6 +15,10 @@ module ApiHelper
   params :pagination do
     optional :limit, type: Integer, values: (1..1000), default: DEFAULT_LIMIT
     optional :offset, type: Integer, min: 0, default: DEFAULT_OFFSET
+  end
+
+  def params_h
+    params.to_h.symbolize_keys
   end
 
   def api_format

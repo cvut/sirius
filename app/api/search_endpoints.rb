@@ -18,12 +18,9 @@ module API
       end
 
       get do
-        dataset = MultiSearchIndex.search(params.q)
-            .limit(params.limit).offset(params.offset)
-
+        results = MultiSearchIndex.search(params.q, **params_h.only(:limit, :offset))
         SearchResultsRepresenter.for_collection
-          .new(dataset)
-          .to_hash('meta' => params.only(:limit, :offset).merge(count: dataset.total))
+          .new(results).to_hash('meta' => results.page_meta)
       end
     end
   end

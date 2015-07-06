@@ -1,11 +1,14 @@
 # encoding: utf-8
+require 'corefines'
 require 'integration/elasticsearch/spec_helper'
 require 'chewy/multi_search_index'
 require 'ostruct'
 require 'rspec-parameterized'
 
 describe MultiSearchIndex, :elasticsearch do
+
   using RSpec::Parameterized::TableSyntax
+  using Corefines::Hash::only
 
   before(:context) do
     DatabaseCleaner.cleaning do
@@ -33,6 +36,11 @@ describe MultiSearchIndex, :elasticsearch do
     MultiSearchIndex.delete
   end
 
+  shared_examples 'paged collection' do
+    it 'returns object with page_meta' do
+      expect( results.page_meta ).to eq page_meta
+    end
+  end
 
 
   describe '.search' do
@@ -88,9 +96,25 @@ describe MultiSearchIndex, :elasticsearch do
     end
 
     describe 'mixed types' do
-      it "finds course and person" do
+      it 'finds course and person' do
         expect( search('ruby').map(&:id) ).to match_array ['MI-RUB', 'rubyelis']
       end
+    end
+
+    it_behaves_like 'paged collection' do
+      subject(:results) { search('rub') }
+      let(:page_meta) { {offset: 0, limit: 10, count: 2} }
+    end
+
+    context 'with non-default offset and limit' do
+      subject(:results) { search('rub', **page_meta.only(:offset, :limit)) }
+      let(:page_meta) { {offset: 1, limit: 1, count: 2} }
+
+      it 'returns limited number of results' do
+        should have(1).item
+      end
+
+      it_behaves_like 'paged collection'
     end
   end
 
