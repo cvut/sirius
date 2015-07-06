@@ -1,7 +1,7 @@
 require 'api_helper'
 require 'corefines'
 require 'search_results_representer'
-require 'chewy/multi_search_index'
+require 'models/multi_search_index'
 
 module API
   class SearchEndpoints < Grape::API

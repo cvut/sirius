@@ -6,7 +6,7 @@ namespace :indexes do
 
   task :env => 'sirius:env' do
     require 'chewy/rake_helper'
-    require 'chewy/multi_search_index'
+    require 'models/multi_search_index'
 
     Chewy::RakeHelper.subscribe_task_stats!
   end

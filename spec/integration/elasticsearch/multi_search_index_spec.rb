@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'corefines'
 require 'integration/elasticsearch/spec_helper'
-require 'chewy/multi_search_index'
+require 'models/multi_search_index'
 require 'ostruct'
 require 'rspec-parameterized'
 
