@@ -37,7 +37,7 @@ gem 'ice_cube' # Date/Time helper
 gem 'icalendar', '~> 2.3.0'
 
 ## Background tasks & Scheduling
-gem 'rufus-scheduler', '~> 3.0.9', require: false
+gem 'rufus-scheduler', '~> 3.1.0', require: false
 
 ## Helper stuff
 gem 'activesupport'
