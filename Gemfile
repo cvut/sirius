@@ -34,7 +34,7 @@ gem 'puma'
 ## Time & Space
 gem 'ice_cube' # Date/Time helper
 
-gem 'icalendar', '~> 2.2.0'
+gem 'icalendar', '~> 2.3.0'
 
 ## Background tasks & Scheduling
 gem 'rufus-scheduler', '~> 3.0.9', require: false
