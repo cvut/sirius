@@ -14,7 +14,8 @@ gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
 gem 'chewy', github: 'toptal/chewy', branch: 'ec41aca'
 
 ## REST API
-gem 'pliny', '~> 0.2.1'
+gem 'pliny', '~> 0.10.0'
+gem 'dotenv'
 gem 'grape', '~> 0.9.0'
 gem 'warden', '~> 1.2.3' # authentication middleware
 gem 'faraday', '~> 0.8.9'
@@ -34,10 +35,10 @@ gem 'puma'
 ## Time & Space
 gem 'ice_cube' # Date/Time helper
 
-gem 'icalendar', '~> 2.2.0'
+gem 'icalendar', '~> 2.3.0'
 
 ## Background tasks & Scheduling
-gem 'rufus-scheduler', '~> 3.0.9', require: false
+gem 'rufus-scheduler', '~> 3.1.0', require: false
 
 ## Helper stuff
 gem 'activesupport'

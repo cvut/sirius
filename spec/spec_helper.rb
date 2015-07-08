@@ -3,14 +3,17 @@ ENV['RACK_ENV'] = 'test'
 require 'bundler'
 require 'pliny/utils'
 
-root = File.expand_path("../../", __FILE__)
-ENV.update(Pliny::Utils.parse_env("#{root}/.env")) if File.exists?("#{root}/.env") # Load default env…
-ENV.update(Pliny::Utils.parse_env("#{root}/.env.test")) # and overwrite it.
+if ENV['CI'] || ENV['COVERAGE']
+  require 'simplecov'
+end
 
-require 'simplecov'
 require 'rspec'
 require 'rspec/collection_matchers'
 require 'fabrication'
+
+require 'dotenv'
+Dotenv.load
+Dotenv.overload('.env.test')
 
 require_relative "../lib/initializer"
 
