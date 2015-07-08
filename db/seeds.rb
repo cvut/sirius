@@ -8,6 +8,9 @@
 
 require 'faculty_semester'
 
+std_hour_starts = Sequel.pg_array(%w(7:30 8:15 9:15 10:00 11:00 11:45 12:45 13:30 14:30 15:15 16:15 17:00 18:00 18:45 19:45),
+                  :time)
+
 FacultySemester.find_or_create(code: 'B141', faculty: 18000) do |s|
   s.update_parallels = true
   s.first_week_parity = :odd
@@ -16,7 +19,7 @@ FacultySemester.find_or_create(code: 'B141', faculty: 18000) do |s|
   s.exams_start_at = '2015-01-05'
   s.exams_end_at = '2015-02-14'
   s.ends_at = '2015-02-14'
-  s.hour_starts = %w(7:30 8:15 9:15 10:00 11:00 11:45 12:45 13:30 14:30 15:15 16:15 17:00 18:00 18:45 19:45)
+  s.hour_starts = std_hour_starts
   s.hour_duration = 45
 end
 
@@ -28,7 +31,7 @@ FacultySemester.find_or_create(code: 'B141', faculty: 13000) do |s|
   s.exams_start_at = '2015-01-05'
   s.exams_end_at = '2015-02-14'
   s.ends_at = '2015-02-14'
-  s.hour_starts = %w(7:30 8:15 9:15 10:00 11:00 11:45 12:45 13:30 14:30 15:15 16:15 17:00 18:00 18:45 19:45)
+  s.hour_starts = std_hour_starts
   s.hour_duration = 45
 end
 
@@ -41,7 +44,7 @@ FacultySemester.find_or_create(code: 'B142', faculty: 18000) do |s|
   s.exams_start_at = '2015-05-18'
   s.exams_end_at = '2015-06-27'
   s.ends_at = '2015-09-21'
-  s.hour_starts = %w(7:30 8:15 9:15 10:00 11:00 11:45 12:45 13:30 14:30 15:15 16:15 17:00 18:00 18:45 19:45)
+  s.hour_starts = std_hour_starts
   s.hour_duration = 45
 end
 
