@@ -14,7 +14,8 @@ services:
   - elasticsearch
 bundler_args: --without development doc
 before_script:
-  - bundle exec rake --trace db:setup db:schema:load
+  - while read line; do export $line; done < .env.test
+  - bundle exec rake --trace db:setup
 after_success: |
   if [[ "$TRAVIS_BRANCH" == master ]]; then
       npm install -g raml2html && bundle exec rake raml:publish
