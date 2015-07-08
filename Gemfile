@@ -64,7 +64,7 @@ end
 
 group :test do
   gem 'committee'
-  gem 'rspec', '~> 3.1.0'
+  gem 'rspec', '~> 3.3'
   gem 'rspec-collection_matchers'
   gem 'rspec-parameterized', github: 'jnv/rspec-parameterized', branch: 'badbf07'
   gem 'rack-test'
