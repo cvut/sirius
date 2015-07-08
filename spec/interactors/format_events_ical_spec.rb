@@ -137,7 +137,7 @@ describe FormatEventsIcal do
     describe '#url' do
       subject(:url) { icevent.url }
       it 'contains an aboslute URL' do
-        expect(url.to_s).to eql 'https://example.com/api/v1/events/42'
+        expect(url.to_s).to eql 'http://example.com/api/v1/events/42'
       end
     end
   end
