@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/cvut/sirius.svg?branch=master)](https://travis-ci.org/cvut/sirius)
 [![Code Climate](https://img.shields.io/codeclimate/github/cvut/sirius.svg)](https://codeclimate.com/github/cvut/sirius)
-[![Code Coverage](https://img.shields.io/codeclimate/coverage/github/cvut/sirius.svg)](https://codeclimate.com/github/cvut/sirius)
+[![Coverage Status](https://coveralls.io/repos/cvut/sirius/badge.svg?branch=master&service=github)](https://coveralls.io/github/cvut/sirius?branch=master)
 [![Inline docs](http://inch-ci.org/github/cvut/sirius.svg)](http://inch-ci.org/github/cvut/sirius)
 [![Dependency Status](https://gemnasium.com/cvut/sirius.svg)](https://gemnasium.com/cvut/sirius)
 
