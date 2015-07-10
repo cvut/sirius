@@ -362,6 +362,7 @@ DEPENDENCIES
   kosapi_client!
   kramdown
   logging
+  oauth2
   pg
   pliny (~> 0.10.0)
   pry
