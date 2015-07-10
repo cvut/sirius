@@ -32,6 +32,11 @@ module Config
   override :elastic_prefix,         'sirius',         string
   override :force_ssl,              true,             bool
   override :oauth_check_token_uri, 'https://auth.fit.cvut.cz/oauth/api/v1/tokeninfo', string
+  override :oauth_auth_uri, 'https://auth.fit.cvut.cz/oauth/oauth/authorize', string
+  override :oauth_token_uri, 'https://auth.fit.cvut.cz/oauth/oauth/token', string
+  override :umapi_base_uri, 'https://kosapi.fit.cvut.cz/usermap/v1', string
+  override :umapi_people_uri, 'https://kosapi.fit.cvut.cz/usermap/v1/people', string
+
   override :port,                   5000,             int
   override :pretty_json,            false,            bool
   override :rack_env,               'development',    string
