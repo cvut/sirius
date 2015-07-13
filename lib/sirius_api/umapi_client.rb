@@ -1,9 +1,18 @@
 require 'faraday'
 require 'faraday_middleware'
 require 'ostruct'
+require 'corefines'
 
 module SiriusApi
+
+  UmapiUserInfo = Struct.new(
+    :username, :personal_number, :kos_person_id, :first_name, :last_name, :full_name,
+    :emails, :preferred_email, :departments, :rooms, :phones, :roles, :technical_roles
+  )
+
   class UmapiClient
+
+    using Corefines::Hash::rekey
 
     UMAPI_PEOPLE_URI = Config.umapi_people_uri
 
@@ -19,7 +28,8 @@ module SiriusApi
     def request_user_info(user_id)
       user_uri = "#{UMAPI_PEOPLE_URI}/#{user_id}"
       resp = token.get(user_uri)
-      resp.parsed
+      response_hash = resp.parsed.rekey { |k| k.underscore.to_sym }
+      UmapiUserInfo.new(*response_hash.values_at(*UmapiUserInfo.members))
     end
 
     private
