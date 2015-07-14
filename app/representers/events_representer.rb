@@ -40,6 +40,13 @@ class EventsRepresenter < Roar::Decorator
       property :id
       property :full_name
     end
+
+    collection :schedule_exceptions, render_empty: false, getter: -> (args) { args[:schedule_exceptions] } do
+      property :id
+      property :exception_type
+      property :name
+      property :note
+    end
   end
 
   def parallel

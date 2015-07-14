@@ -14,7 +14,7 @@ module Interactors
 
       include Interpipe::Interactor
 
-      ALLOWED_JOINS = ['teachers', 'courses'].to_set.freeze
+      ALLOWED_JOINS = ['courses', 'schedule_exceptions', 'teachers'].to_set.freeze
 
       attr_reader :events, :params
 
@@ -40,6 +40,13 @@ module Interactors
         # WHERE id IN (SELECT course_id FROM events WHERE ...)
         course_ids = events.select(:course_id)
         Course.where(id: course_ids).select(:id, :name)
+      end
+
+      def schedule_exceptions
+        # SELECT * FROM schedule_exceptions
+        # WHERE id IN (SELECT unnest(applied_schedule_exception_ids) FROM events WHERE ... )
+        exception_ids = events.select(:applied_schedule_exception_ids.pg_array.unnest)
+        ScheduleException.where(id: exception_ids).select(:id, :exception_type, :name, :note)
       end
 
       def teachers

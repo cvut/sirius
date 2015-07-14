@@ -5,7 +5,7 @@ describe Interactors::Api::CompoundEvents do
   let(:db) { Sequel.mock(fetch: { count: 120, deleted: false }) }
   let(:dataset) { db.from(:test).columns(:count) }
 
-  let(:include_param) { 'lorem,ipsum,courses,,,pigeons,teachers' }
+  let(:include_param) { 'lorem,ipsum,courses,,,pigeons,teachers,schedule_exceptions' }
   let(:params) do
     {
       from: '2014-04-01',
@@ -21,7 +21,7 @@ describe Interactors::Api::CompoundEvents do
   describe '#joins' do
     subject { interactor.joins(include_param) }
     it { should be_a(Set) }
-    it { should contain_exactly('courses', 'teachers') }
+    it { should contain_exactly('courses', 'schedule_exceptions', 'teachers') }
 
     context 'with empty object' do
       let(:include_param) { nil }
@@ -42,6 +42,20 @@ describe Interactors::Api::CompoundEvents do
     end
   end
 
+  describe '#schedule_exceptions' do
+    subject(:schedule_exceptions) { interactor.schedule_exceptions }
+
+    it { should be_a(Sequel::Dataset) }
+
+    it 'selects id, exception_type, name and note' do
+      expect(schedule_exceptions.columns).to eq [:id, :exception_type, :name, :note]
+    end
+
+    it 'selects from schedule_exceptions' do
+      expect(schedule_exceptions.first_source_table).to eq(:schedule_exceptions)
+    end
+  end
+
   describe '#teachers' do
     subject(:teachers) { interactor.teachers }
     it { should be_a(Sequel::Dataset) }
@@ -58,7 +72,7 @@ describe Interactors::Api::CompoundEvents do
   describe '#compounds' do
     subject { interactor.compounds }
 
-    it { should have_only_keys(:courses, :teachers) }
+    it { should have_only_keys(:courses, :schedule_exceptions, :teachers) }
 
     context 'without any compound params' do
       let(:include_param) { nil }
