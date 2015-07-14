@@ -1,6 +1,7 @@
 require 'set'
 require 'interpipe/interactor'
 require 'corefines/object'
+require 'sequel/extensions/core_refinements'
 
 require 'models/course'
 require 'models/person'
@@ -9,6 +10,7 @@ module Interactors
   module Api
     class CompoundEvents
       using Corefines::Object::blank?
+      using Sequel::CoreRefinements
 
       include Interpipe::Interactor
 
@@ -43,9 +45,7 @@ module Interactors
       def teachers
         # SELECT id, full_name FROM people
         # WHERE id IN (SELECT unnest(teacher_ids) FROM events WHERE ...)
-        array_op = Sequel.pg_array(:teacher_ids)
-        teacher_ids = events.select(array_op.unnest)
-
+        teacher_ids = events.select(:teacher_ids.pg_array.unnest)
         Person.where(id: teacher_ids).select(:id, :full_name)
       end
 

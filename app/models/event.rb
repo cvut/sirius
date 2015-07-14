@@ -1,7 +1,9 @@
 require 'period'
 require 'parallel'
+require 'sequel/extensions/core_refinements'
 
 class Event < Sequel::Model
+  using Sequel::CoreRefinements
 
   many_to_one :room
   many_to_one :course
@@ -11,9 +13,8 @@ class Event < Sequel::Model
   alias :sequence_number :relative_sequence_number
 
   def self.with_person(username)
-    teacher_op = Sequel.pg_array(:teacher_ids)
-    student_op = Sequel.pg_array(:student_ids)
-    filter(teacher_op.contains([username])).or(student_op.contains([username]))
+    filter(:teacher_ids.pg_array.contains([username]))
+      .or(:student_ids.pg_array.contains([username]))
   end
 
   def period
