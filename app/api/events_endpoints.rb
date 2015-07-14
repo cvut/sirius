@@ -48,7 +48,7 @@ module API
       end
       # FIXME: This should be coerced to Set with predefined allowed tokens
       params :compound do
-        optional :include, type: String, regexp: /\A[a-z,]+\z/
+        optional :include, type: String, regexp: /\A[a-z,_]+\z/
       end
     end
 
