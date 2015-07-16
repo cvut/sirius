@@ -12,15 +12,12 @@ module API
   class Base < Grape::API
     extend ErrorsHelper
 
-    CONTENT_TYPE = "application/vnd.api+json"
-    RACK_CONTENT_TYPE_HEADER = {"content-type" => CONTENT_TYPE}
     HTTP_STATUS_CODES = Rack::Utils::HTTP_STATUS_CODES.invert
 
     prefix 'api'
     version 'v1', using: :path
 
-    # content_type :jsonapi, CONTENT_TYPE
-    content_type :jsonapi, 'application/json'
+    content_type :jsonapi, 'application/json; charset=utf-8'
     format :jsonapi
     default_format :jsonapi
 
