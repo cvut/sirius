@@ -40,10 +40,8 @@ module SiriusApi
       current_user_id = opts[:current_user]
       target_user_id = opts[:target_user]
 
-      current_user = umapi_client.request_user_info(current_user_id)
-      return true if current_user['roles'].include?(TEACHER_ROLE)
-      target_user = umapi_client.request_user_info(target_user_id)
-      return target_user['roles'].include?(TEACHER_ROLE)
+      return true if umapi_client.user_has_roles?(current_user_id, [TEACHER_ROLE])
+      umapi_client.user_has_roles?(target_user_id, [TEACHER_ROLE])
     end
 
     def allow_students_output?
