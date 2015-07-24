@@ -2,6 +2,7 @@ require 'corefines'
 require 'interactors/api/paginate'
 require 'models/person'
 require 'sirius_api'
+require 'sirius_api/events_authorizer'
 
 using Corefines::Hash[:only, :rekey, :symbolize_keys]
 
@@ -61,6 +62,13 @@ module ApiHelper
     unless user_allowed?(user_scope)
       raise SiriusApi::Errors::Authorization, "You don't have access to the scope for #{user_scope}."
     end
+  end
+
+  def authorize!
+    route_params = env['rack.routing_args']
+    scopes = env['user.scopes'] || []
+    SiriusApi::EventsAuthorizer.new(env['warden'].user)
+      .authorize_request!(scopes, route.route_method.downcase.to_sym, route_params[:route_info].route_namespace, route_params.except(:route_info))
   end
 
   def represent_paginated(dataset, representer)
