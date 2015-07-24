@@ -3,13 +3,18 @@ require 'sirius_api/base_authorizer'
 
 describe SiriusApi::BaseAuthorizer do
 
-    let(:authorizer_class) {
+    let(:authorizer_class) do
       Class.new(SiriusApi::BaseAuthorizer) do
-        scope 'foo' do
+        scope 'foo', 'bar' do
           permit :get, '/bar'
         end
+        
+        scope 'foo' do
+          permit :post, '/baz'
+        end
       end
-    }
+    end
+
     subject(:authorizer) { authorizer_class.new('vomackar') }
 
   describe '.scope' do
@@ -33,6 +38,14 @@ describe SiriusApi::BaseAuthorizer do
 
     it 'rejects non-matching request by method' do
       expect { authorizer.authorize_request!(['foo'], :post, '/bar') }.to raise_error(SiriusApi::Errors::Authorization)
+    end
+
+    it 'works with multiple scopes for single rule' do
+      expect { authorizer.authorize_request!(['bar'], :get, '/bar') }.not_to raise_error
+    end
+
+    it 'allows multiple definition blocks for single scope' do
+      expect { authorizer.authorize_request!(['foo'], :post, '/baz') }.not_to raise_error
     end
   end
 end
