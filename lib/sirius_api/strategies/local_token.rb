@@ -19,7 +19,9 @@ module SiriusApi
           return
         end
         username = Token.authenticate(access_token)
-        username.nil? ? fail('Invalid access token') : success!(username.freeze)
+        fail('Invalid access token') if username.nil?
+        env['user.scopes'] = ['read_personal_events']
+        success!(username.freeze)
         # token = env['HTTP_AUTH_TOKEN'] || env['rack.request.query_hash']['AUTH_TOKEN']
       end
     end

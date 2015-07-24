@@ -54,6 +54,7 @@ module API
 
     before do
       authenticate!
+      authorize!
     end
 
     resource :events do
