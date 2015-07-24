@@ -28,6 +28,10 @@ module SiriusApi
       permit :get, '/people/:username/events'
     end
 
+    def initialize(current_user)
+      super
+    end
+
     def authorized_by_role(opts)
       current_user_id = opts[:current_user]
       target_user_id = opts[:target_user]
