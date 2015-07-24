@@ -22,7 +22,14 @@ module SiriusApi
       base_uri = Config.umapi_base_uri
       auth_uri = Config.oauth_auth_uri
       token_uri = Config.oauth_token_uri
-      @client = OAuth2::Client.new(client_id, client_secret, site: base_uri, authorize_url: auth_uri, token_url: token_uri)
+      @client = OAuth2::Client.new(
+        client_id,
+        client_secret,
+        site: base_uri,
+        authorize_url: auth_uri,
+        token_url: token_uri,
+        raise_errors: false
+      )
     end
 
     def request_user_info(user_id)
@@ -30,6 +37,15 @@ module SiriusApi
       resp = token.get(user_uri)
       response_hash = resp.parsed.rekey { |k| k.underscore.to_sym }
       UmapiUserInfo.new(*response_hash.values_at(*UmapiUserInfo.members))
+    end
+
+    def user_has_roles?(username, roles, operator: 'all')
+      roles_param = roles.join(',')
+      user_uri = "#{UMAPI_PEOPLE_URI}/#{username}/roles?#{operator}=#{roles_param}"
+      resp = token.request(:head, user_uri)
+      return true if resp.status == 200
+      return false if resp.status == 404
+      raise "Invalid response for #{user_uri} with status #{resp.status}."
     end
 
     private
