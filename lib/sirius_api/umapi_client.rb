@@ -7,7 +7,7 @@ module SiriusApi
 
   UmapiUserInfo = Struct.new(
     :username, :personal_number, :kos_person_id, :first_name, :last_name, :full_name,
-    :emails, :preferred_email, :departments, :rooms, :phones, :roles, :technical_roles
+    :emails, :preferred_email, :departments, :rooms, :phones, :roles
   )
 
   class UmapiClient
