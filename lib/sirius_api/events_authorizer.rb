@@ -20,6 +20,10 @@ module SiriusApi
       permit :get, '/courses/:course_id/events'
     end
 
+    scope 'read_personal_events' do
+      permit :get, '/people/:username/events', only: ->(opts) { opts[:current_user] == opts[:target_user] }
+    end
+
     scope 'read_events_by_role' do
       permit :get, '/people/:username/events', only: ->(opts) { authorized_by_role(opts) }
     end
