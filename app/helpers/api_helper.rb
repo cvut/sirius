@@ -67,8 +67,10 @@ module ApiHelper
   def authorize!
     route_params = env['rack.routing_args']
     scopes = env['user.scopes'] || []
-    SiriusApi::EventsAuthorizer.new(env['warden'].user)
-      .authorize_request!(scopes, route.route_method.downcase.to_sym, route_params[:route_info].route_namespace, route_params.except(:route_info))
+    route_method = route.route_method.downcase.to_sym
+    uri = route_params[:route_info].route_namespace
+    params = route_params.except(:route_info)
+    SiriusApi::EventsAuthorizer.new(env['warden'].user).authorize_request!(scopes, route_method, uri, params)
   end
 
   def represent_paginated(dataset, representer)
