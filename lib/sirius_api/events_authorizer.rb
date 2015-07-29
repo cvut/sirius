@@ -3,12 +3,6 @@ require 'sirius_api/umapi_client'
 
 module SiriusApi
   class EventsAuthorizer < BaseAuthorizer
-    SCOPE_PRIOTIES = [
-      'read_all_events',
-      'read_events_by_role',
-      'read_personal_events',
-      'read'
-    ].map { |it| "urn:ctu:oauth:sirius.#{it}" }
 
     TEACHER_ROLE = 'B-00000-ZAMESTNANEC'.freeze
 
@@ -25,7 +19,7 @@ module SiriusApi
     end
 
     scope 'read_events_by_role' do
-      permit :get, '/people/:username/events', only: ->(opts) { authorized_by_role(opts) }
+      permit :get, '/people/:username/events', only: ->(opts) { authorize_by_role(opts) }
     end
 
     scope 'read_all_events', 'read' do
@@ -36,7 +30,7 @@ module SiriusApi
       super
     end
 
-    def authorized_by_role(opts)
+    def authorize_by_role(opts)
       current_user_id = opts[:current_user]
       target_user_id = opts[:target_user]
 
