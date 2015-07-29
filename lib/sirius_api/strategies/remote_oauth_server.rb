@@ -35,6 +35,9 @@ module SiriusApi
         if error_msg = validate_token_info(token)
           return error_msg
         else
+          env['user.scopes'] = token.scope
+          success! token.user_id.freeze if token.user_id
+          success! '' # Warden user object has to be not nil
         end
       end
 
@@ -58,7 +61,6 @@ module SiriusApi
         return "Invalid access token." if token.status == 404
         return "Unable to verify access token (#{token.status})." if token.status != 200
         return "Invalid response from the authorization server." if token.client_id.blank?
-        return "Token is not authorized by any user." if token.user_id.blank?
         return "Insufficient scope: #{token.scope.join(' ')}." unless scope_valid?(token.scope)
         return nil
       end
