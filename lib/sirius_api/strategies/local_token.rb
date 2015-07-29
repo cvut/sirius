@@ -15,11 +15,12 @@ module SiriusApi
 
       def authenticate!
         if access_token.blank?
-          fail 'Missing access token'
-          return
+          return 'Missing access token'
         end
         username = Token.authenticate(access_token)
-        fail('Invalid access token') if username.nil?
+        if username.nil?
+          return 'Invalid access token'
+        end
         env['user.scopes'] = ['read_personal_events']
         success!(username.freeze)
         # token = env['HTTP_AUTH_TOKEN'] || env['rack.request.query_hash']['AUTH_TOKEN']
