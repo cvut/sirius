@@ -27,16 +27,14 @@ module SiriusApi
 
       def authenticate!
         if access_token.blank?
-          fail 'Missing access token.'
-          return
+          return 'Missing access token.'
         end
 
         token = request_token_info(access_token)
 
         if error_msg = validate_token_info(token)
-          fail error_msg
+          return error_msg
         else
-          success! token.user_id.freeze
         end
       end
 
