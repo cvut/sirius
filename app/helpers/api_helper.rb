@@ -41,10 +41,13 @@ module ApiHelper
   end
 
   def authorize!
+    # Hash with route parameter values plus :route_info from Grape.
     route_params = env['rack.routing_args']
     scopes = env['user.scopes'] || []
     route_method = route.route_method.downcase.to_sym
+    # Matching URL template from Grape for current request, e.g. '/rooms/:kos_id/events'.
     uri = route_params[:route_info].route_namespace
+    # Hash with route parameter values for matching route, e.g. { kos_id: 'T9:105' }.
     params = route_params.except(:route_info)
     SiriusApi::EventsAuthorizer.new(env['warden'].user).authorize_request!(scopes, route_method, uri, params)
   end
