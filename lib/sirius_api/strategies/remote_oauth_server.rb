@@ -19,7 +19,7 @@ module SiriusApi
 
       AUTHORIZATION_HEADERS = Rack::Auth::AbstractRequest::AUTHORIZATION_KEYS
       CHECK_TOKEN_URI = Config.oauth_check_token_uri
-      REQUIRED_SCOPE = 'urn:ctu:oauth:sirius.read'
+      REQUIRED_SCOPE_PREFIX = 'urn:ctu:oauth:sirius.'
 
       def store?
         false
@@ -58,9 +58,13 @@ module SiriusApi
         return "Invalid access token." if token.status == 404
         return "Unable to verify access token (#{token.status})." if token.status != 200
         return "Invalid response from the authorization server." if token.client_id.blank?
-        return "Insufficient scope: #{token.scope.join(' ')}." unless token.scope.include? REQUIRED_SCOPE
         return "Token is not authorized by any user." if token.user_id.blank?
+        return "Insufficient scope: #{token.scope.join(' ')}." unless scope_valid?(token.scope)
         return nil
+      end
+
+      def scope_valid?(scopes)
+        scopes.any? { |scope| scope.start_with?(REQUIRED_SCOPE_PREFIX) }
       end
 
       def http_client
