@@ -21,7 +21,7 @@ module SiriusApi
         if username.nil?
           return 'Invalid access token'
         end
-        env['user.scopes'] = ( username == '*' ? ['read_all_events'] : ['read_personal_events'] )
+        env['user.scopes'] = ( username == '*' ? ['read'] : ['personal:read'] )
         success!(username.freeze)
         # token = env['HTTP_AUTH_TOKEN'] || env['rack.request.query_hash']['AUTH_TOKEN']
       end

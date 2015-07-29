@@ -12,6 +12,10 @@ describe SiriusApi::BaseAuthorizer do
         scope 'foo' do
           permit :post, '/baz'
         end
+
+        scope 'urn:baz' do
+          permit :delete, '/42'
+        end
       end
     end
 
@@ -19,7 +23,11 @@ describe SiriusApi::BaseAuthorizer do
 
   describe '.scope' do
     it 'supports defining rules on class level' do
-      expect(authorizer_class.scope_registry).to include 'urn:ctu:oauth:sirius.foo'
+      expect(authorizer_class.scope_registry).to include 'urn:ctu:oauth:sirius:foo'
+    end
+
+    it 'does not prepend scope prefix to prefixed scopes' do
+      expect(authorizer_class.scope_registry).to include 'urn:baz'
     end
   end
 

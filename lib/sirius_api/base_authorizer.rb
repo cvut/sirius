@@ -11,7 +11,7 @@ module SiriusApi
 
     attr_reader :current_user
 
-    SCOPE_BASE = 'urn:ctu:oauth:sirius.'.freeze
+    SCOPE_BASE = 'urn:ctu:oauth:sirius:'.freeze
 
     class << self
       # Sets scope(s) for access rule definitions (defined by `.permit`).
@@ -22,7 +22,7 @@ module SiriusApi
       # @param scopes [*String] One or more scopes for access rule definition.
       #
       def scope(*scopes, &block)
-        @current_scopes = scopes.map { |it| SCOPE_BASE + it }
+        @current_scopes = scopes.map { |it| prepend_prefix_if_missing(it, SCOPE_BASE) }
         yield
       end
 
@@ -45,6 +45,14 @@ module SiriusApi
       # Retrieves all rules defined by permission DSL.
       def scope_registry
         @scope_registry ||= {}
+      end
+
+      def prepend_prefix_if_missing(str, prefix)
+        if str.start_with?('urn:')
+          str
+        else
+          prefix + str
+        end
       end
     end
 
@@ -70,7 +78,7 @@ module SiriusApi
     # @param route_params [Hash] Map of route parameters and their values.
     #
     def authorize_request!(scopes, http_method, url, route_params = {})
-      prefixed_scopes = scopes.map { |scope| prepend_prefix_if_missing(scope, SCOPE_BASE) }
+      prefixed_scopes = scopes.map { |scope| self.class.prepend_prefix_if_missing(scope, SCOPE_BASE) }
       unless check_access(prefixed_scopes, http_method, url, route_params)
         raise SiriusApi::Errors::Authorization, "Access not permitted for #{http_method} #{url} with scopes=#{prefixed_scopes}"
       end
@@ -103,14 +111,6 @@ module SiriusApi
       return false unless matching_permission
       only_block = matching_permission.options[:only]
       only_block.nil? || only_block.call(request_options)
-    end
-
-    def prepend_prefix_if_missing(str, prefix)
-      if str.start_with?(prefix)
-        str
-      else
-        prefix + str
-      end
     end
   end
 end
