@@ -12,7 +12,7 @@ module SiriusApi
 
     TEACHER_ROLE = 'B-00000-ZAMESTNANEC'.freeze
 
-    scope 'read_personal_events', 'read_events_by_role', 'read_all_events' do
+    scope 'read_personal_events', 'read_events_by_role', 'read_all_events', 'read' do
       permit :get, '/events'
       permit :get, '/events/personal'
       permit :get, '/events/:id'
@@ -28,7 +28,7 @@ module SiriusApi
       permit :get, '/people/:username/events', only: ->(opts) { authorized_by_role(opts) }
     end
 
-    scope 'read_all_events' do
+    scope 'read_all_events', 'read' do
       permit :get, '/people/:username/events'
     end
 
