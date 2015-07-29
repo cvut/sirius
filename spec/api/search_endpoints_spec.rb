@@ -11,7 +11,7 @@ describe API::SearchEndpoints do
 
   describe 'GET /search' do
 
-    let(:path) { '/search' }
+    let(:path) { '/search?q=foo' }
     let(:json_type) { 'results' }
 
     it_behaves_like 'secured resource'
@@ -19,6 +19,9 @@ describe API::SearchEndpoints do
     context 'for authenticated user', authenticated: true do
 
       context "without 'q' parameter" do
+
+        let(:path) { '/search' }
+
         before { auth_get path_for(path) }
 
         it 'returns 400' do

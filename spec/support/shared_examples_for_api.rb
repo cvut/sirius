@@ -29,9 +29,22 @@ shared_examples 'forbidden resource' do
 end
 
 shared_examples 'secured resource' do
-  before { get path_for(path) }
+
   it 'is not accessible without access token' do
+    get path_for(path)
     expect(status).to eql 401
+  end
+
+  it 'is accessible with local token', authenticated: true do
+    auth_get path_for(path)
+    expect(status).to eql 200
+  end
+
+  it 'is accessible with oauth token', authenticated: :oauth do
+    VCR.use_cassette(infer_cassette_name, :record => :new_episodes) do
+      auth_get path_for(path)
+      expect(status).to eql 200
+    end
   end
 end
 
