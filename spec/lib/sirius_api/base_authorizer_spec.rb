@@ -8,7 +8,7 @@ describe SiriusApi::BaseAuthorizer do
         scope 'foo', 'bar' do
           permit :get, '/bar'
         end
-        
+
         scope 'foo' do
           permit :post, '/baz'
         end
@@ -19,7 +19,7 @@ describe SiriusApi::BaseAuthorizer do
 
   describe '.scope' do
     it 'supports defining rules on class level' do
-      expect(authorizer_class.scope_registry).to include 'foo'
+      expect(authorizer_class.scope_registry).to include 'urn:ctu:oauth:sirius.foo'
     end
   end
 
