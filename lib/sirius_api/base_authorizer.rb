@@ -110,7 +110,7 @@ module SiriusApi
       matching_permission = scope_permissions.find { |it| it == checked_permission }
       return false unless matching_permission
       only_block = matching_permission.options[:only]
-      only_block.nil? || only_block.call(request_options)
+      only_block.nil? || instance_exec(request_options, &only_block)
     end
   end
 end
