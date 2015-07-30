@@ -36,7 +36,10 @@ module SiriusApi
           return error_msg
         else
           env['user.scopes'] = token.scope
-          success! token.user_id.freeze if token.user_id
+          if token.user_id
+            success! token.user_id.freeze
+            return
+          end
           success! '' # Warden user object has to be not nil
         end
       end
