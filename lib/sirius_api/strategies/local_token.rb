@@ -15,11 +15,13 @@ module SiriusApi
 
       def authenticate!
         if access_token.blank?
-          return 'Missing access token'
+          errors.add(:general, 'Missing local access token.')
+          return
         end
         username = Token.authenticate(access_token)
         if username.nil?
-          return 'Invalid access token'
+          errors.add(:general, 'Invalid local access token.')
+          return
         end
         env['user.scopes'] = ( username == '*' ? ['read'] : ['personal:read'] )
         success!(username.freeze)
