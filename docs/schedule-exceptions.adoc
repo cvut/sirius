@@ -1,0 +1,84 @@
+= Schedule exceptions
+
+Schedule exceptions describe differences to the “regular schedule” generated from KOS data, e.g. state holiday, dean’s holiday, temporary change of room, etc.
+In some cases exceptions are a corrective mechanism for administrative irregularities, such as when a room uses a different timetable than the rest of the faculty.
+
+Schedule exceptions override or modify attributes of events.
+They are _applied_ to events during the import process, when individual events are generated from KOS data.
+When an event is affected by an exception, then you will know about it from the event’s attribute `links.applied_exceptions`.
+One event may be affected by multiple exceptions.
+
+.Attributes:
+* `id` – unique numeric ID
+* `type` – see <<Types>>
+* `name` – name for users
+* `note` – any additional information for users
+* `is_regular` –  TODO
+* `scope` – see <<Scope>>
+* `options` – see <<Types>>
+
+
+== Types
+
+We have multiple types of exceptions for various situations.
+This list is not final, we will add more types in the future.
+
+=== CANCEL
+
+Event is cancelled without a substitute.
+
+Attribute `deleted` is set to `true`, i.e. the event is not included in events resources, unless URI parameter `deleted=true` is used.
+
+=== RELATIVE_MOVE
+
+Event is shifted by a time offset (positive, or negative).
+
+The specified offset is added to `starts_at` and `ends_at`, original values are stored in `original_data.starts_at` and `original_data.ends_at`.
+
+.Attributes:
+* `options.offset` – offset in minutes
+
+=== ROOM_CHANGE
+
+Event is moved to another room.
+
+The event’s `room_id` is changed to the specified ID and original value is stored in `original_data.room_id`.
+
+.Attributes:
+* `options.room_id` – KOS code (https://rozvoj.fit.cvut.cz/Main/znaceni-mistnosti[anatomy of KOS code])
+
+
+== Scope
+
+Scope defines attributes to select a set of events affected by the given schedule exception.
+Scopes may be combined.
+
+=== Time
+
+Selects events in the specified time range.
+
+.Attributes:
+* `scope.starts_at` – date and time in ISO 8601 (e.g. 2015-08-02, 2015-08-02T09:15:00Z)
+* `scope.ends_at` – date and time in ISO 8601
+* `scope.semester` – semester code (e.g. B151)
+
+=== Faculty
+
+Selects events owned by the specified faculty.
+
+.Attributes:
+* `scope.faculty` – organizational code of faculty (e.g. 18000, 13000, …)
+
+=== Courses
+
+Selects events of the specified courses (i.e. lectures, exams, course events, …).
+
+.Attributes:
+* `scope.courses` – an array of course codes (e.g. MI-RUB, BI-DBS, …)
+
+=== Timetable slots
+
+Selects events generated from the specified KOS timetable slots.
+
+.Attributes:
+* `scope.timetable_slots` – an array of timetable slot IDs from KOS
