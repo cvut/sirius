@@ -21,7 +21,11 @@ module API
         filtered = Interactors::Api::FilterEvents.perform(events: dataset, params: params, format: api_format)
         case api_format #XXX this is not great, it should be handled by Grape formatters
         when :jsonapi
-          Interactors::Api::RepresentEventsJson.perform(events: filtered.events, params: params).to_hash
+          Interactors::Api::RepresentEventsJson.perform(
+            events: filtered.events,
+            params: params,
+            student_output_permitted: current_user.student_access_allowed?
+          ).to_hash
         when :ical
           FormatEventsIcal.perform(events: filtered.events)
         else
