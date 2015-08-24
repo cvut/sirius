@@ -39,12 +39,7 @@ module SiriusApi
           errors.add(:general, error_msg)
           return
         else
-          env['user.scopes'] = token.scope
-          if token.user_id
-            success! token.user_id.freeze
-            return
-          end
-          success! '' # Warden user object has to be not nil
+          success! User.new(token.user_id, token.scope)
         end
       end
 

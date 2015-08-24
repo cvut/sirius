@@ -1,4 +1,5 @@
 require 'sirius_api/errors'
+require 'sirius_api/scopes'
 
 module SiriusApi
   Permission = Struct.new(:http_method, :url, :options) do
@@ -22,7 +23,7 @@ module SiriusApi
       # @param scopes [*String] One or more scopes for access rule definition.
       #
       def scope(*scopes, &block)
-        @current_scopes = scopes.map { |it| prepend_prefix_if_missing(it, SCOPE_BASE) }
+        @current_scopes = Scopes.new(scopes)
         yield
       end
 
@@ -46,19 +47,11 @@ module SiriusApi
       def scope_registry
         @scope_registry ||= {}
       end
-
-      def prepend_prefix_if_missing(str, prefix)
-        if str.start_with?('urn:')
-          str
-        else
-          prefix + str
-        end
-      end
     end
 
     # Creates a new authorizer.
     #
-    # @param current_user [String] Username of user currently accessing the application.
+    # @param current_user [SiriusApi::User] User object representing user currently accessing the application.
     #
     def initialize(current_user)
       @current_user = current_user
@@ -77,10 +70,9 @@ module SiriusApi
     # @param url [String] URL template for current request, e.g. '/events/:id'
     # @param route_params [Hash] Map of route parameters and their values.
     #
-    def authorize_request!(scopes, http_method, url, route_params = {})
-      prefixed_scopes = scopes.map { |scope| self.class.prepend_prefix_if_missing(scope, SCOPE_BASE) }
-      unless check_access(prefixed_scopes, http_method, url, route_params)
-        raise SiriusApi::Errors::Authorization, "Access not permitted for #{http_method} #{url} with scopes=#{prefixed_scopes}"
+    def authorize_request!(http_method, url, route_params = {})
+      unless check_access(current_user.scopes, http_method, url, route_params)
+        raise SiriusApi::Errors::Authorization, "Access not permitted for #{current_user} on #{http_method} #{url}."
       end
     end
 
@@ -101,7 +93,7 @@ module SiriusApi
         http_method: http_method,
         url: url,
         route_params: route_params,
-        current_user: @current_user,
+        current_user: current_user.username,
         target_user: route_params[:username]
       }
     end
@@ -111,6 +103,10 @@ module SiriusApi
       return false unless matching_permission
       only_block = matching_permission.options[:only]
       only_block.nil? || instance_exec(request_options, &only_block)
+    end
+
+    def scopes
+      @current_user.scopes
     end
   end
 end
