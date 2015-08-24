@@ -4,7 +4,7 @@ require 'sirius_api/umapi_client'
 module SiriusApi
   class EventsAuthorizer < BaseAuthorizer
 
-    TEACHER_ROLE = 'B-00000-ZAMESTNANEC'.freeze
+    TEACHER_ROLE = Config.umapi_teacher_role
 
     scope 'personal:read', 'limited-by-idm:read', 'read', 'urn:ctu:oauth:sirius.read' do
       permit :get, '/events'

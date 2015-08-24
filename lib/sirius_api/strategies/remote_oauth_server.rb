@@ -21,7 +21,7 @@ module SiriusApi
 
       AUTHORIZATION_HEADERS = Rack::Auth::AbstractRequest::AUTHORIZATION_KEYS
       CHECK_TOKEN_URI = Config.oauth_check_token_uri
-      REQUIRED_SCOPE_PREFIX = 'urn:ctu:oauth:sirius'
+      REQUIRED_SCOPE_PREFIX = Config.oauth_scope_base
 
       def store?
         false
