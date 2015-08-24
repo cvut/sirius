@@ -3,6 +3,8 @@ require 'faraday_middleware'
 require 'ostruct'
 require 'warden'
 
+require 'sirius_api/scopes'
+
 module SiriusApi
   module Strategies
     ##
@@ -67,11 +69,20 @@ module SiriusApi
         return "Unable to verify OAuth access token (#{token.status})." if token.status != 200
         return "Invalid response from the OAuth authorization server." if token.client_id.blank?
         return "Insufficient OAuth scope: #{token.scope.join(' ')}." unless scope_valid?(token.scope)
+        return "Invalid OAuth Client Credentials Grant Flow for scope: '#{token.scope.join(' ')}'. (Username is required for limited scope.)" unless flow_valid?(token)
         return nil
       end
 
       def scope_valid?(scopes)
         scopes.any? { |scope| scope.start_with?(REQUIRED_SCOPE_PREFIX) }
+      end
+
+      def flow_valid?(token)
+        scopes = Scopes.new(token.scope)
+        if scopes.include_any? Scopes::READ_LIMITED
+          return scopes.include_any? Scopes::READ_ALL || token.user_id
+        end
+        true
       end
 
       def http_client
