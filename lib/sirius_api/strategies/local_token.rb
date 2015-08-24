@@ -1,5 +1,6 @@
 require 'warden'
 require 'models/token'
+require 'sirius_api/user'
 
 module SiriusApi
   module Strategies
@@ -23,9 +24,8 @@ module SiriusApi
           errors.add(:general, 'Invalid local access token.')
           return
         end
-        env['user.scopes'] = ( username == '*' ? ['read'] : ['personal:read'] )
-        success!(username.freeze)
-        # token = env['HTTP_AUTH_TOKEN'] || env['rack.request.query_hash']['AUTH_TOKEN']
+        scopes = ( username == '*' ? Scopes::READ_ALL : Scopes::READ_PERSONAL )
+        success! User.new(username.freeze, scopes)
       end
     end
   end

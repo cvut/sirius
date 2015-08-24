@@ -1,12 +1,11 @@
 require 'sirius_api/base_authorizer'
-require 'sirius_api/umapi_client'
 
 module SiriusApi
   class EventsAuthorizer < BaseAuthorizer
 
     TEACHER_ROLE = Config.umapi_teacher_role
 
-    scope 'personal:read', 'limited-by-idm:read', 'read', 'urn:ctu:oauth:sirius.read' do
+    scope Scopes::READ_PERSONAL, Scopes::READ_LIMITED, Scopes::READ_ALL do
       permit :get, '/events'
       permit :get, '/events/personal'
       permit :get, '/events/:id'
@@ -14,15 +13,15 @@ module SiriusApi
       permit :get, '/courses/:course_id/events'
     end
 
-    scope 'personal:read' do
+    scope Scopes::READ_PERSONAL do
       permit :get, '/people/:username/events', only: ->(opts) { opts[:current_user] == opts[:target_user] }
     end
 
-    scope 'limited-by-idm:read', 'urn:ctu:oauth:sirius.read' do
+    scope Scopes::READ_LIMITED do
       permit :get, '/people/:username/events', only: ->(opts) { authorize_by_role(opts) }
     end
 
-    scope 'read' do
+    scope Scopes::READ_ALL do
       permit :get, '/people/:username/events'
     end
 
@@ -33,19 +32,14 @@ module SiriusApi
     def authorize_by_role(opts)
       current_user_id = opts[:current_user]
       target_user_id = opts[:target_user]
+      unless current_user_id
+        raise SiriusApi::Errors::Authorization, "Access not permitted for Client Credentials Grant Flow on #{opts[:http_method]} #{opts[:url]} with #{current_user}. (Username is required.)"
+      end
 
-      return true if umapi_client.user_has_roles?(current_user_id, [TEACHER_ROLE])
-      umapi_client.user_has_roles?(target_user_id, [TEACHER_ROLE])
+      return true if current_user.has_role?(TEACHER_ROLE)
+      return true if User.new(target_user_id).has_role?(TEACHER_ROLE)
+      raise SiriusApi::Errors::Authorization, "Access not permitted on #{opts[:http_method]} #{opts[:url]} with #{current_user}. (#{TEACHER_ROLE} role is required for current user, URL and scope.)"
     end
 
-    def allow_students_output?
-      true
-    end
-
-    private
-
-    def umapi_client
-      @umapi_client ||= UmapiClient.new
-    end
   end
 end
