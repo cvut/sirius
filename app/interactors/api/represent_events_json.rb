@@ -10,12 +10,13 @@ module Interactors
 
       attr_reader :meta, :events, :compounds, :representer
 
-      def perform(events:, params:)
+      def perform(events:, params:, student_output_permitted: true)
         paginated = Paginate.perform(dataset: events, params: params)
         @meta = paginated.meta
         @events = paginated.dataset
+
         @compounds = CompoundEvents.perform(events: @events, params: params).compounds
-        @representer = EventsRepresenter.for_collection.prepare(@events)
+        @representer = EventsRepresenter.for_collection.prepare(convert_events(@events, student_output_permitted))
       end
 
       def to_hash(options = {})
@@ -26,6 +27,15 @@ module Interactors
           'meta' => meta)
       end
 
+      def convert_events(dataset, student_output_permitted)
+        if student_output_permitted
+          dataset
+        else
+          dataset.map do |evt|
+            evt.tap {|e| e.student_ids = [] }
+          end
+        end
+      end
     end
   end
 end
