@@ -36,6 +36,8 @@ module Config
   override :oauth_token_uri, 'https://auth.fit.cvut.cz/oauth/oauth/token', string
   override :umapi_base_uri, 'https://kosapi.fit.cvut.cz/usermap/v1', string
   override :umapi_people_uri, 'https://kosapi.fit.cvut.cz/usermap/v1/people', string
+  override :oauth_scope_base, 'urn:ctu:oauth:sirius', string
+  override :umapi_teacher_role, 'B-00000-ZAMESTNANEC', string
 
   override :port,                   5000,             int
   override :pretty_json,            false,            bool
