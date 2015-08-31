@@ -20,4 +20,11 @@ class SemestersRepresenter < Roar::Decorator
     hour_starts.map { |v| v.strftime('%H:%M') }
   end
 
+  collection :semester_periods, as: :periods do
+    property :type
+    property :starts_at
+    property :ends_at
+    property :first_week_parity
+  end
+
 end

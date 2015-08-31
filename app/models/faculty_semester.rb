@@ -1,6 +1,9 @@
 require 'parity'
+require 'models/semester_period'
 
 class FacultySemester < Sequel::Model
+
+  one_to_many :semester_periods
 
   def self.active_for(source_type)
     if source_type == :parallels

@@ -28,7 +28,24 @@ describe API::SemestersEndpoints do
   describe 'GET /semesters/:faculty_semester' do
 
     let(:path) { "/semesters/#{entity.faculty}-#{entity.code}" }
-    let(:entity) { Fabricate(:faculty_semester) }
+    let!(:entity) { Fabricate(:faculty_semester) }
+    let!(:semester_periods) { [
+      Fabricate(:teaching_semester_period, faculty_semester: entity),
+      Fabricate(:holiday_semester_period, faculty_semester: entity),
+      Fabricate(:exams_semester_period, faculty_semester: entity),
+    ]}
+
+    def period_for_json(period)
+      ret = {
+        type: period.type,
+        starts_at: period.starts_at,
+        ends_at: period.ends_at,
+      }
+      if period.first_week_parity
+        ret[:first_week_parity] = period.first_week_parity
+      end
+      ret.freeze
+    end
 
     let(:json) do
       {
@@ -42,7 +59,8 @@ describe API::SemestersEndpoints do
         teaching_ends_at: entity.teaching_ends_at,
         first_week_parity: entity.first_week_parity,
         hour_duration: entity.hour_duration,
-        hour_starts: entity.hour_starts.map { |v| v.strftime('%H:%M') }
+        hour_starts: entity.hour_starts.map { |v| v.strftime('%H:%M') },
+        periods: semester_periods.map { |period| period_for_json(period) },
       }.to_json
     end
 
