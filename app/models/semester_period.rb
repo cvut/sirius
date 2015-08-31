@@ -29,4 +29,14 @@ class SemesterPeriod < Sequel::Model
     end
   end
 
+  def validate
+    super
+    if starts_at > ends_at
+      errors.add(:starts_at, 'cannot be after ending')
+    end
+    if (type == :teaching) && first_week_parity.nil?
+      errors.add(:first_week_parity, 'cannot be null for teaching period')
+    end
+  end
+
 end
