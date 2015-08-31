@@ -6,7 +6,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-require 'faculty_semester'
+require 'models/faculty_semester'
+require 'models/semester_period'
 
 std_hour_starts = Sequel.pg_array(%w(7:30 8:15 9:15 10:00 11:00 11:45 12:45 13:30 14:30 15:15 16:15 17:00 18:00 18:45 19:45),
                   :time)
@@ -35,7 +36,7 @@ FacultySemester.find_or_create(code: 'B141', faculty: 13000) do |s|
   s.hour_duration = 45
 end
 
-FacultySemester.find_or_create(code: 'B142', faculty: 18000) do |s|
+fitb142 = FacultySemester.find_or_create(code: 'B142', faculty: 18000) do |s|
   s.update_parallels = true
   s.update_other = true
   s.first_week_parity = :even
@@ -47,6 +48,38 @@ FacultySemester.find_or_create(code: 'B142', faculty: 18000) do |s|
   s.hour_starts = std_hour_starts
   s.hour_duration = 45
 end
+
+periods = [
+  {
+    type: :teaching,
+    starts_at: '2015-02-16',
+    ends_at: '2015-05-15',
+    first_week_parity: :even,
+    faculty_semester: fitb142,
+  },
+  {
+    type: :exams,
+    starts_at: '2015-05-18',
+    ends_at: '2015-06-26',
+    faculty_semester: fitb142,
+  },
+  {
+    type: :holiday,
+    starts_at: '2015-06-29',
+    ends_at: '2015-08-28',
+    faculty_semester: fitb142,
+  }
+]
+
+periods.each do |period|
+  fsid = period[:faculty_semester].id
+  SemesterPeriod.find_or_create(faculty_semester_id: fsid, starts_at: period[:starts_at]) do |sp|
+    sp.type = period[:type]
+    sp.ends_at = period[:ends_at]
+    sp.first_week_parity = period[:first_week_parity]
+  end
+end
+
 
 if ENV['RACK_ENV'] == 'development'
   require 'token'
