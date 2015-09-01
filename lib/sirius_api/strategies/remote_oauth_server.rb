@@ -80,7 +80,8 @@ module SiriusApi
       def flow_valid?(token)
         scopes = Scopes.new(token.scope)
         if scopes.include_any? Scopes::READ_LIMITED
-          return scopes.include_any? Scopes::READ_ALL || token.user_id
+          # FIXME: test regression for missing parens
+          return scopes.include_any?(Scopes::READ_ALL) || token.user_id
         end
         true
       end
