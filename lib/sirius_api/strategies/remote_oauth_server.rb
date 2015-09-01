@@ -34,10 +34,8 @@ module SiriusApi
         end
 
         token = request_token_info(access_token)
-
         if error_msg = validate_token_info(token)
           errors.add(:general, error_msg)
-          return
         else
           success! User.new(token.user_id, token.scope)
         end
@@ -60,12 +58,19 @@ module SiriusApi
       end
 
       def validate_token_info(token)
-        return "Invalid OAuth access token." if token.status == 404
-        return "Unable to verify OAuth access token (#{token.status})." if token.status != 200
-        return "Invalid response from the OAuth authorization server." if token.client_id.blank?
-        return "Insufficient OAuth scope: #{token.scope.join(' ')}." unless scope_valid?(token.scope)
-        return "Invalid OAuth Client Credentials Grant Flow for scope: '#{token.scope.join(' ')}'. (Username is required for limited scope.)" unless flow_valid?(token)
-        return nil
+        if token.status == 404
+          "Invalid OAuth access token."
+        elsif token.status != 200
+          "Unable to verify OAuth access token (#{token.status})."
+        elsif token.client_id.blank?
+          "Invalid response from the OAuth authorization server."
+        elsif !scope_valid?(token.scope)
+          "Insufficient OAuth scope: #{token.scope.join(' ')}."
+        elsif !flow_valid?(token)
+          "Invalid OAuth Client Credentials Grant Flow for scope: '#{token.scope.join(' ')}'. (Username is required for limited scope.)"
+        else
+          nil
+        end
       end
 
       def scope_valid?(scopes)
