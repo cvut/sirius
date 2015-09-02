@@ -4,6 +4,7 @@ require 'ostruct'
 require 'warden'
 
 require 'sirius_api/scopes'
+require 'sirius_api/user'
 
 module SiriusApi
   module Strategies
@@ -15,7 +16,7 @@ module SiriusApi
     # already deprecated. It should be modified after deploying a newer version
     # of Zuul OAAS on CTU.
     #
-    # TODO: Implement caching and write tests!
+    # TODO: Implement caching!
     #
     class RemoteOAuthServer < Warden::Strategies::Base
 
@@ -80,7 +81,6 @@ module SiriusApi
       def flow_valid?(token)
         scopes = Scopes.new(token.scope)
         if scopes.include_any? Scopes::READ_LIMITED
-          # FIXME: test regression for missing parens
           return scopes.include_any?(Scopes::READ_ALL) || token.user_id
         end
         true
