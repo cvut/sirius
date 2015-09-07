@@ -7,9 +7,10 @@ module SiriusApi
     extend Forwardable
     def_delegators :@scopes, :each
 
-    READ_ALL = 'urn:ctu:oauth:sirius:read'.freeze
-    READ_PERSONAL = 'urn:ctu:oauth:sirius:personal:read'.freeze
-    READ_LIMITED = ['urn:ctu:oauth:sirius:limited-by-idm:read', 'urn:ctu:oauth:sirius.read'].freeze
+    READ_ALL = ['cvut:sirius:all:read', 'urn:ctu:oauth:sirius:read'].freeze
+    READ_PERSONAL = ['cvut:sirius:personal:read', 'urn:ctu:oauth:sirius:personal:read'].freeze
+    READ_LIMITED = ['cvut:sirius:limited-by-idm:read', 'urn:ctu:oauth:sirius:limited-by-idm:read',
+                    'urn:ctu:oauth:sirius.read'].freeze
 
     attr_reader :scopes
 
