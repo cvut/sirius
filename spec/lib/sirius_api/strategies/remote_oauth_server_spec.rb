@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'ostruct'
+require 'sirius_api/scopes'
 require 'sirius_api/strategies/remote_oauth_server'
 
 describe SiriusApi::Strategies::RemoteOAuthServer do
@@ -20,7 +21,7 @@ describe SiriusApi::Strategies::RemoteOAuthServer do
     let(:token_info) { OpenStruct.new(status: status, client_id: client_id, scope: scope, user_id: user_id) }
     let(:status) { 200 }
     let(:client_id) { 'foo' }
-    let(:scope) { [ 'urn:some:other:scope', 'urn:ctu:oauth:sirius:read'] }
+    let(:scope) { ['urn:some:other:scope', SiriusApi::Scopes::READ_ALL].flatten }
     let(:user_id) { nil }
 
     shared_examples 'successful authentication' do
@@ -69,7 +70,7 @@ describe SiriusApi::Strategies::RemoteOAuthServer do
     end
 
     context 'with limited scope' do
-      let(:scope) { ['urn:ctu:oauth:sirius:limited-by-idm:read'] }
+      let(:scope) { SiriusApi::Scopes::READ_LIMITED }
 
       context 'and valid flow' do
         let(:user_id) { 'skocdopet' }
