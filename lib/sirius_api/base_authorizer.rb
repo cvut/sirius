@@ -12,8 +12,6 @@ module SiriusApi
 
     attr_reader :current_user
 
-    SCOPE_BASE = Config.oauth_scope_base + ':'
-
     class << self
       # Sets scope(s) for access rule definitions (defined by `.permit`).
       #

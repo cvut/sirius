@@ -22,7 +22,6 @@ module SiriusApi
 
       AUTHORIZATION_HEADERS = Rack::Auth::AbstractRequest::AUTHORIZATION_KEYS
       CHECK_TOKEN_URI = Config.oauth_check_token_uri
-      REQUIRED_SCOPE_PREFIX = Config.oauth_scope_base
 
       def store?
         false
@@ -65,17 +64,13 @@ module SiriusApi
           "Unable to verify OAuth access token (#{token.status})."
         elsif token.client_id.blank?
           "Invalid response from the OAuth authorization server."
-        elsif !scope_valid?(token.scope)
-          "Insufficient OAuth scope: #{token.scope.join(' ')}."
+        elsif token.scope.empty?
+          "OAuth access token has no scopes granted."
         elsif !flow_valid?(token)
           "Invalid OAuth Client Credentials Grant Flow for scope: '#{token.scope.join(' ')}'. (Username is required for limited scope.)"
         else
           nil
         end
-      end
-
-      def scope_valid?(scopes)
-        scopes.any? { |scope| scope.start_with?(REQUIRED_SCOPE_PREFIX) }
       end
 
       def flow_valid?(token)

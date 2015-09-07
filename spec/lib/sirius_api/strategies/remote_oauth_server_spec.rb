@@ -63,8 +63,8 @@ describe SiriusApi::Strategies::RemoteOAuthServer do
       it_behaves_like 'failed authentication'
     end
 
-    context 'invalid scope' do
-      let(:scope) { ['urn:some:other:scope'] }
+    context 'empty scope' do
+      let(:scope) { [] }
       it_behaves_like 'failed authentication'
     end
 
