@@ -26,11 +26,7 @@ describe SiriusApi::BaseAuthorizer do
 
   describe '.scope' do
     it 'supports defining rules on class level' do
-      expect(authorizer_class.scope_registry).to include 'urn:ctu:oauth:sirius:foo'
-    end
-
-    it 'does not prepend scope prefix to prefixed scopes' do
-      expect(authorizer_class.scope_registry).to include 'urn:baz'
+      expect(authorizer_class.scope_registry).to include('foo', 'bar', 'urn:baz')
     end
   end
 
@@ -44,7 +40,7 @@ describe SiriusApi::BaseAuthorizer do
     end
 
     it 'rejects non-matching request by scope' do
-      user.scopes = ['baz']
+      user.scopes = ['urn:baz']
       expect { authorizer.authorize_request!(:get, '/bar') }.to raise_error(SiriusApi::Errors::Authorization)
     end
 
