@@ -12,10 +12,6 @@ module SiriusApi
     # Simple Warden strategy that authorizes requests with a Bearer access
     # token using a remote OAuth 2.0 authorization server.
     #
-    # Note: It's implemented for proprietary Zuul OAAS Provider API that is
-    # already deprecated. It should be modified after deploying a newer version
-    # of Zuul OAAS on CTU.
-    #
     # TODO: Implement caching!
     #
     class RemoteOAuthServer < Warden::Strategies::Base
@@ -34,10 +30,10 @@ module SiriusApi
         end
 
         token = request_token_info(access_token)
-        if error_msg = validate_token_info(token)
-          errors.add(:general, error_msg)
+        if error_msg = validate_token(token)
+          errors.add(:general, "[OAuth] #{error_msg}")
         else
-          success! User.new(token.user_id, token.scope)
+          success! User.new(token.user_name, token.scope)
         end
       end
 
@@ -51,38 +47,42 @@ module SiriusApi
       end
 
       def request_token_info(token_value)
-        resp = http_client.get(CHECK_TOKEN_URI, token: token_value)
+        resp = http_client.post(CHECK_TOKEN_URI, token: token_value)
         OpenStruct.new(resp.body).tap do |s|
           s.status = resp.status
         end
       end
 
-      def validate_token_info(token)
-        if token.status == 404
-          "Invalid OAuth access token."
+      def validate_token(token)
+        if token.status == 400
+          "Invalid access token."
         elsif token.status != 200
-          "Unable to verify OAuth access token (#{token.status})."
-        elsif token.client_id.blank?
-          "Invalid response from the OAuth authorization server."
+          "Unable to verify access token (status: #{token.status})."
+        elsif token.client_id.blank? || token.exp.blank?
+          "Invalid response from the authorization server."
+        elsif Time.at(token.exp) < Time.now
+          "Access token has expired."
         elsif token.scope.empty?
-          "OAuth access token has no scopes granted."
+          "Access token has no scopes granted."
         elsif !flow_valid?(token)
-          "Invalid OAuth Client Credentials Grant Flow for scope: '#{token.scope.join(' ')}'. (Username is required for limited scope.)"
+          "Invalid Client Credentials Grant Flow for scope: '#{token.scope.join(' ')}'. (Username is required for limited scope.)"
         else
           nil
         end
       end
 
+      # FIXME: all scopes except READ_ALL requires user_name
       def flow_valid?(token)
         scopes = Scopes.new(token.scope)
         if scopes.include_any? Scopes::READ_LIMITED
-          return scopes.include_any?(Scopes::READ_ALL) || token.user_id
+          return scopes.include_any?(Scopes::READ_ALL) || token.user_name
         end
         true
       end
 
       def http_client
         Faraday.new do |c|
+          c.request :url_encoded
           c.response :json, content_type: /\bjson$/
           c.adapter Faraday.default_adapter
         end

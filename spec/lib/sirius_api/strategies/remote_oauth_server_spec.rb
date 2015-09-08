@@ -17,12 +17,17 @@ describe SiriusApi::Strategies::RemoteOAuthServer do
   describe '#authenticate!' do
     before { strategy.authenticate! }
 
-    let(:access_token) { '123456'}
-    let(:token_info) { OpenStruct.new(status: status, client_id: client_id, scope: scope, user_id: user_id) }
+    let(:access_token) { '123456' }
+
+    let(:token_info) do
+      OpenStruct.new(status: status, client_id: client_id, exp: exp,
+                     scope: scope, user_name: user_name)
+    end
     let(:status) { 200 }
     let(:client_id) { 'foo' }
+    let(:exp) { Time.now + 1.hour }
     let(:scope) { ['urn:some:other:scope', SiriusApi::Scopes::READ_ALL].flatten }
-    let(:user_id) { nil }
+    let(:user_name) { nil }
 
     shared_examples 'successful authentication' do
       it 'succeeds the authentication' do
@@ -44,13 +49,18 @@ describe SiriusApi::Strategies::RemoteOAuthServer do
       end
     end
 
-    context 'missing access token' do
-      let(:status) { 404 }
+    context 'non-existing access token' do
+      let(:access_token) { nil }
       it_behaves_like 'failed authentication'
     end
 
-    context 'non-existing access token' do
-      let(:access_token) { nil }
+    context 'invalid access token' do
+      let(:status) { 400 }
+      it_behaves_like 'failed authentication'
+    end
+
+    context 'expired access token' do
+      let(:exp) { Time.now - 1.hour }
       it_behaves_like 'failed authentication'
     end
 
@@ -59,21 +69,29 @@ describe SiriusApi::Strategies::RemoteOAuthServer do
       it_behaves_like 'failed authentication'
     end
 
-    context 'invalid OAAS response' do
-      let(:client_id) { nil }
-      it_behaves_like 'failed authentication'
-    end
+    context 'invalid response from check_token' do
 
-    context 'empty scope' do
-      let(:scope) { [] }
-      it_behaves_like 'failed authentication'
+      context 'missing client_id' do
+        let(:client_id) { nil }
+        it_behaves_like 'failed authentication'
+      end
+
+      context 'missing exp' do
+        let(:exp) { nil }
+        it_behaves_like 'failed authentication'
+      end
+
+      context 'empty scope' do
+        let(:scope) { [] }
+        it_behaves_like 'failed authentication'
+      end
     end
 
     context 'with limited scope' do
       let(:scope) { SiriusApi::Scopes::READ_LIMITED }
 
       context 'and valid flow' do
-        let(:user_id) { 'skocdopet' }
+        let(:user_name) { 'skocdopet' }
         it_behaves_like 'successful authentication'
       end
 
