@@ -4,7 +4,7 @@ namespace :sirius do
   task :events => %w[
     events:import events:import_students events:plan events:assign_people events:import_exams
     events:import_exam_students events:import_course_events events:import_course_event_students
-    events:renumber indexes:reset
+    events:renumber events:reindex
   ]
 
   task :env do
@@ -68,6 +68,15 @@ namespace :sirius do
     task :renumber => :env do
       @logger.info 'Renumbering events.'
       build_manager.renumber_events
+    end
+
+    desc 'Reset and reimport search indexes'
+    task :reindex => :env do
+      begin
+        Rake::Task['indexes:reset'].invoke
+      rescue StandardError => err
+        @logger.error "Failed to reindex events: #{err}"
+      end
     end
   end
 
