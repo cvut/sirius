@@ -14,6 +14,7 @@ group :doc do
 end
 
 guard :shotgun do
+  notification :off
   watch %r{^(app|lib|config)/.*\.rb}
   watch 'config.ru'
   watch 'init.rb'
@@ -30,4 +31,3 @@ guard :rspec, cmd: 'bundle exec rspec' do
   watch(%r{^spec/support/(.+)\.rb$}) { "spec" }
   watch(%r{^spec/fabricators/(.+)\.rb$}) { "spec" }
 end
-
