@@ -35,6 +35,19 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 
 
 
+--
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -214,7 +227,8 @@ CREATE TABLE people (
     id text NOT NULL,
     full_name text,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    access_token uuid DEFAULT gen_random_uuid()
 );
 
 
@@ -281,6 +295,41 @@ ALTER SEQUENCE schedule_exceptions_id_seq OWNED BY schedule_exceptions.id;
 CREATE TABLE schema_migrations (
     filename text NOT NULL
 );
+
+
+--
+-- Name: semester_periods; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE semester_periods (
+    id bigint NOT NULL,
+    faculty_semester_id integer,
+    starts_at date NOT NULL,
+    ends_at date NOT NULL,
+    type integer NOT NULL,
+    first_week_parity integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: semester_periods_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE semester_periods_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: semester_periods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE semester_periods_id_seq OWNED BY semester_periods.id;
 
 
 --
@@ -402,6 +451,13 @@ ALTER TABLE ONLY schedule_exceptions ALTER COLUMN id SET DEFAULT nextval('schedu
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY semester_periods ALTER COLUMN id SET DEFAULT nextval('semester_periods_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY timetable_slots ALTER COLUMN id SET DEFAULT nextval('timetable_slots_id_seq'::regclass);
 
 
@@ -453,6 +509,14 @@ ALTER TABLE ONLY parallels
 
 
 --
+-- Name: people_access_token_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY people
+    ADD CONSTRAINT people_access_token_key UNIQUE (access_token);
+
+
+--
 -- Name: people_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -482,6 +546,14 @@ ALTER TABLE ONLY schedule_exceptions
 
 ALTER TABLE ONLY schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (filename);
+
+
+--
+-- Name: semester_periods_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY semester_periods
+    ADD CONSTRAINT semester_periods_pkey PRIMARY KEY (id);
 
 
 --
@@ -593,6 +665,20 @@ CREATE INDEX parallels_teacher_ids_index ON parallels USING gin (teacher_ids);
 
 
 --
+-- Name: semester_periods_faculty_semester_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX semester_periods_faculty_semester_id_index ON semester_periods USING btree (faculty_semester_id);
+
+
+--
+-- Name: semester_periods_type_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX semester_periods_type_index ON semester_periods USING btree (type);
+
+
+--
 -- Name: events_course_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -630,6 +716,14 @@ ALTER TABLE ONLY events
 
 ALTER TABLE ONLY parallels
     ADD CONSTRAINT parallels_course_id_fkey FOREIGN KEY (course_id) REFERENCES courses(id);
+
+
+--
+-- Name: semester_periods_faculty_semester_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY semester_periods
+    ADD CONSTRAINT semester_periods_faculty_semester_id_fkey FOREIGN KEY (faculty_semester_id) REFERENCES faculty_semesters(id);
 
 
 --
@@ -675,3 +769,5 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1422545075_change_rooms_pr
 INSERT INTO "schema_migrations" ("filename") VALUES ('1424431659_change_events_name_note_to_hstore.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1433519124_add_applied_schedule_exception_ids_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1434994575_add_original_fields_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1441021231_create_semester_periods.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1442325052_add_access_token_to_people.rb');
