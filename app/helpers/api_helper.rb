@@ -2,7 +2,6 @@ require 'corefines'
 require 'interactors/api/paginate'
 require 'models/person'
 require 'sirius_api'
-require 'sirius_api/events_authorizer'
 
 using Corefines::Hash[:only, :rekey, :symbolize_keys]
 
@@ -40,7 +39,7 @@ module ApiHelper
     env['warden'].user
   end
 
-  def authorize!
+  def authorize!(auth_class)
     # Hash with route parameter values plus :route_info from Grape.
     route_params = env['rack.routing_args']
     route_method = route.route_method.downcase.to_sym
@@ -48,7 +47,7 @@ module ApiHelper
     uri = route_params[:route_info].route_namespace
     # Hash with route parameter values for matching route, e.g. { kos_id: 'T9:105' }.
     params = route_params.except(:route_info)
-    SiriusApi::EventsAuthorizer.new(current_user).authorize_request!(route_method, uri, params)
+    auth_class.new(current_user).authorize_request!(route_method, uri, params)
   end
 
   def represent_paginated(dataset, representer)

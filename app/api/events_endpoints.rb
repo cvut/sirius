@@ -8,6 +8,7 @@ require 'format_events_ical'
 require 'interactors/api/filter_events'
 require 'interactors/api/represent_events_json'
 require 'events_representer'
+require 'sirius_api/events_authorizer'
 
 module API
   class EventsEndpoints < Grape::API
@@ -58,7 +59,7 @@ module API
 
     before do
       authenticate!
-      authorize!
+      authorize!(SiriusApi::EventsAuthorizer)
     end
 
     resource :events do
