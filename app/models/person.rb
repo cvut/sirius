@@ -11,4 +11,8 @@ class Person < Sequel::Model
       .where(Parallel.where(:teacher_ids.pg_array.contains([username])).exists)
       .any?
   end
+
+  def self.id_from_token(token)
+    self.where(access_token: token).get(:id)
+  end
 end

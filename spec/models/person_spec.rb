@@ -9,4 +9,19 @@ describe Person do
       expect(person.access_token.length).to eq 36
     end
   end
+
+  describe '.id_from_token' do
+    it 'returns a username associated with token' do
+      actual = Person.id_from_token(person.access_token)
+      expect(actual).to eq person.id
+    end
+
+    it 'returns nil for invalid token' do
+      # XXX: There is an unprobable chance fabricator actually
+      #      generates the same token.
+      #      If that happens to you, buy a lottery ticket.
+      token = '11111111-1111-1111-8888-888888888888'
+      expect(Person.id_from_token(token)).to be_nil
+    end
+  end
 end
