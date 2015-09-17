@@ -45,12 +45,10 @@ describe API::PeopleEndpoints do
       end
     end
 
-    pending 'no idea how to mock this' do
-      context 'with read all scope' do
-        context 'non-existing person' do
-          let(:path) { '/people/Fantomas' }
-          it_behaves_like 'non-existent resource'
-        end
+    context 'with read all scope' do
+      context 'non-existing person', pending: 'cannot test limited OAuth scopes properly' do
+        let(:path) { '/people/Fantomas' }
+        it_behaves_like 'non-existent resource'
       end
     end
   end

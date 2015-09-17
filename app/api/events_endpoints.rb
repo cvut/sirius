@@ -103,12 +103,12 @@ module API
 
     desc 'Filter events by person'
     segment :people do
-      params do
-        requires :username, type: String, regexp: /\A[a-z0-9]+\z/i, desc: '8-char unique username'
-        use :filter_events
-        use :compound
-      end
+      # XXX: username validation is in PeopleEndpoints
       route_param :username do
+        params do
+          use :filter_events
+          use :compound
+        end
         resource :events do
           get do
             #XXX check if user exists; ugly!

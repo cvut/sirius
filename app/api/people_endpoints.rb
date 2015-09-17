@@ -15,9 +15,9 @@ module API
     resource :people do
       params { use :pagination }
 
-      get do
-        # TODO: Implement people list with proper authorisation
-      end
+      # TODO: Implement people list with proper authorisation
+      # get do
+      # end
 
       params do
         requires :username, type: String, regexp: /\A[a-z0-9]+\z/i, desc: '8-char unique username'

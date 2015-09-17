@@ -253,12 +253,6 @@ describe API::EventsEndpoints do
       end
     end
 
-    describe 'GET /people/:username' do
-      it_behaves_like 'invalid endpoint' do
-        let(:path) { "/people/#{username}" }
-      end
-    end
-
     describe 'GET /people/:username/events' do
       let(:path) { "/people/#{username}/events" }
 
