@@ -1,5 +1,5 @@
 require 'warden'
-require 'models/token'
+require 'models/person'
 require 'sirius_api/user'
 
 module SiriusApi
@@ -19,7 +19,7 @@ module SiriusApi
           errors.add(:general, 'Missing local access token.')
           return
         end
-        username = Token.authenticate(access_token)
+        username = Person.id_from_token(access_token)
         if username.nil?
           errors.add(:general, 'Invalid local access token.')
           return

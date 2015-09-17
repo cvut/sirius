@@ -7,8 +7,8 @@ end
 
 shared_context 'authenticated user via local token', authenticated: true do
 
-  let(:token) { Fabricate(:token, username: 'user') }
-  let(:access_token) { token.uuid }
+  let(:person) { Fabricate(:person) }
+  let(:access_token) { person.access_token }
 
   def auth_get(path, **params)
     get path, params.merge(access_token: access_token)

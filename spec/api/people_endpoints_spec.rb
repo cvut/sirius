@@ -9,23 +9,25 @@ describe API::PeopleEndpoints do
   subject { body }
 
   describe 'GET /people/:username' do
-    let(:username) { 'user' }
-    let!(:entity) { Fabricate(:person, id: username) }
-    let(:path) { "/people/#{username}" }
 
-    let(:json) do
-      {
-        id: entity.id,
-        full_name: entity.full_name,
-        access_token: entity.access_token,
-      }.to_json
-    end
+    let!(:person) { Fabricate(:person) }
+    let(:path) { "/people/#{person.id}" }
 
     it_behaves_like 'secured resource' do
-      let(:username) { 'user' }
+      let(:username) { person.id }
     end
 
     context 'for authenticated user', authenticated: true do
+      let(:access_token) { person.access_token }
+
+      let(:json) do
+        {
+          id: person.id,
+          full_name: person.full_name,
+          access_token: person.access_token,
+        }.to_json
+      end
+
       context 'with personal personal read scope' do
         context 'for authorized person accessing personal data' do
 
