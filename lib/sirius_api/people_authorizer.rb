@@ -5,7 +5,7 @@ require 'sirius_api/errors'
 module SiriusApi
   class PeopleAuthorizer < BaseAuthorizer
 
-    scope Scopes::READ_PERSONAL do
+    scope Scopes::READ_PERSONAL, Scopes::READ_LIMITED do
       permit :get, '/people/:username', only: ->(opts) { opts[:current_user] == opts[:target_user] }
     end
 

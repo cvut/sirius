@@ -11,23 +11,29 @@ describe SiriusApi::PeopleAuthorizer do
 
   describe '#authorize_request!' do
 
-    context 'for READ_PERSONAL scope' do
-      it 'allows request to personal endpoint' do
-        expect {
-          authorizer.authorize_request!(:get, '/people/:username', {username: 'ALICE'})
-        }.not_to raise_error
-      end
+    {
+      'READ_PERSONAL' => SiriusApi::Scopes::READ_PERSONAL,
+      'READ_LIMITED' => SiriusApi::Scopes::READ_LIMITED
+    }.each do |scope_name, scope_arr|
+      context "for #{scope_name} scope" do
+        let(:scope) {scope_arr}
+        it 'allows request to personal endpoint' do
+          expect {
+            authorizer.authorize_request!(:get, '/people/:username', {username: 'ALICE'})
+          }.not_to raise_error
+        end
 
-      it 'denies request to endpoint for other user' do
-        expect {
-          authorizer.authorize_request!(:get, '/people/:username', {username: 'BOB'})
-        }.to raise_error(SiriusApi::Errors::Authorization)
-      end
+        it 'denies request to endpoint for other user' do
+          expect {
+            authorizer.authorize_request!(:get, '/people/:username', {username: 'BOB'})
+          }.to raise_error(SiriusApi::Errors::Authorization)
+        end
 
-      it 'denies request to the index endpoint' do
-        expect {
-          authorizer.authorize_request!(:get, '/people')
-        }.to raise_error(SiriusApi::Errors::Authorization)
+        it 'denies request to the index endpoint' do
+          expect {
+            authorizer.authorize_request!(:get, '/people')
+          }.to raise_error(SiriusApi::Errors::Authorization)
+        end
       end
     end
 
