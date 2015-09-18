@@ -36,6 +36,9 @@ module SiriusApi
         raise SiriusApi::Errors::Authorization, "Access not permitted for Client Credentials Grant Flow on #{opts[:http_method]} #{opts[:url]} with #{current_user}. (Username is required.)"
       end
 
+      # User has always acces to personal calendar
+      return true if current_user_id == target_user_id
+
       return true if current_user.has_role?(TEACHER_ROLE)
       return true if User.new(target_user_id).has_role?(TEACHER_ROLE)
       raise SiriusApi::Errors::Authorization, "Access not permitted on #{opts[:http_method]} #{opts[:url]} with #{current_user}. (#{TEACHER_ROLE} role is required for current user, URL and scope.)"
