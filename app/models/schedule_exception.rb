@@ -23,7 +23,12 @@ class ScheduleException < Sequel::Model
   end
 
   def affects?(event)
-    time_matches?(event) && faculty_matches?(event) && semester_matches?(event) && course_matches?(event) && timetable_slot_matches?(event)
+    !event.deleted &&
+    time_matches?(event) &&
+    faculty_matches?(event) &&
+    semester_matches?(event) &&
+    course_matches?(event) &&
+    timetable_slot_matches?(event)
   end
 
   # This method is called by inherited #apply implementations before their own code.

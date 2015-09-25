@@ -28,6 +28,7 @@ module Sirius
       event.faculty = @faculty_semester.faculty
       event.semester = @faculty_semester.code
       event.capacity = @slot.parallel.capacity
+      event.applied_schedule_exception_ids = nil
       event
     end
   end
