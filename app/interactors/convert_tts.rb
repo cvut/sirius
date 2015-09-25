@@ -35,6 +35,7 @@ class ConvertTTS
       s.id = slot.id
       s.parallel_id = parallel_id
       s.room = @rooms[room_code]
+      s.deleted_at = nil
     end
   end
 

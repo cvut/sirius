@@ -31,6 +31,7 @@ class ConvertParallels
     parallel.teacher_ids = teachers
     parallel.course = course
     parallel.faculty = @faculty_semester.faculty
+    parallel.deleted_at = nil
     parallel
   end
 
