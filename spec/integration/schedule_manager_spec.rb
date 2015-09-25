@@ -10,7 +10,7 @@ describe Sirius::ScheduleManager, :vcr do
 
   it 'fetches parallels from KOSapi' do
     expect {
-      manager.import_parallels(fetch_all: false)
+      manager.import_parallels(fetch_all: false, page_size: 10)
     }.to change(Parallel, :count).from(0)
   end
 

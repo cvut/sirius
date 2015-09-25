@@ -20,10 +20,10 @@ module Sirius
       end
     end
 
-    def import_parallels(fetch_all: true)
+    def import_parallels(fetch_all: true, page_size: 100)
       active_semesters(:parallels).each do |sem|
         DB.transaction do
-          ImportUpdatedParallels.perform(faculty_semester: sem, fetch_all: fetch_all)
+          ImportUpdatedParallels.perform(faculty_semester: sem, fetch_all: fetch_all, page_size: page_size)
         end
       end
     end
