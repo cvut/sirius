@@ -23,7 +23,7 @@ module Sirius
     def import_parallels(fetch_all: true)
       active_semesters(:parallels).each do |sem|
         DB.transaction do
-          ImportUpdatedParallels.perform(faculty: sem.faculty, semester: sem.code, fetch_all: fetch_all)
+          ImportUpdatedParallels.perform(faculty_semester: sem, fetch_all: fetch_all)
         end
       end
     end

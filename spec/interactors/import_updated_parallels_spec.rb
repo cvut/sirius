@@ -9,10 +9,11 @@ describe ImportUpdatedParallels, :vcr do
 
     let(:since) { Time.parse('1.7.2014') }
     let(:till) { Time.parse('10.7.2014') }
+    let(:faculty_semester) { Fabricate.build(:faculty_semester) }
 
     it 'imports parallels' do
       expect do
-        subject.perform(last_updated_since: since, last_updated_till: till, faculty: 18000)
+        subject.perform(last_updated_since: since, last_updated_till: till, faculty_semester: faculty_semester)
       end.to change(Parallel, :count).from(0)
     end
 

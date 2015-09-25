@@ -13,8 +13,8 @@ class ConvertParallels
     @rooms = {}
   end
 
-  def perform(kosapi_parallels:, faculty: nil)
-    @faculty = faculty
+  def perform(kosapi_parallels:, faculty_semester: nil)
+    @faculty_semester = faculty_semester
     @parallels = kosapi_parallels.map do |kosapi_parallel|
       teachers = extract_teachers(kosapi_parallel)
       course = extract_course(kosapi_parallel)
@@ -30,7 +30,7 @@ class ConvertParallels
     parallel = Parallel.new(parallel_hash) { |p| p.id = kosapi_parallel.link.link_id }
     parallel.teacher_ids = teachers
     parallel.course = course
-    parallel.faculty = @faculty
+    parallel.faculty = @faculty_semester.faculty
     parallel
   end
 
@@ -64,7 +64,8 @@ class ConvertParallels
         timetable_slots: @timetable_slots,
         people: @people.values,
         courses: @courses.values,
-        kosapi_rooms: @rooms.values
+        kosapi_rooms: @rooms.values,
+        faculty_semester: @faculty_semester
     }
   end
 

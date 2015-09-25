@@ -10,7 +10,7 @@ describe ConvertParallels do
     context 'when parallels empty' do
       it 'returns empty result' do
         results = convert.perform(kosapi_parallels: []).results
-        expect(results).to eq({parallels: [], timetable_slots: {}, people: [], courses: [], kosapi_rooms: []})
+        expect(results).to include({parallels: [], timetable_slots: {}, people: [], courses: [], kosapi_rooms: []})
       end
     end
 
@@ -22,10 +22,11 @@ describe ConvertParallels do
       let(:parallel_attrs) { {id: 239018, parallel_type: :lecture, code: 1234, capacity: 50, occupied: 10} }
       let(:course) { double(:course, link_id: 'BI-ZUM', link_title: 'Course title') }
       let(:semester) { double(:semester, link_id: 'B102') }
+      let(:faculty_semester) { Fabricate.build(:faculty_semester) }
       let(:parallel) { double(:kosapi_parallel, to_hash: parallel_attrs, link: double(link_id: '239018'), semester: semester, course: course, timetable_slots: [slot], teachers: [teacher]) }
 
       it 'converts parallels' do
-        results = convert.perform(kosapi_parallels: [parallel], faculty: 18_000).results
+        results = convert.perform(kosapi_parallels: [parallel], faculty_semester: faculty_semester).results
         parallel = results[:parallels].first
         expect(parallel.parallel_type).to eq 'lecture'
         expect(parallel.code).to eq 1234
@@ -36,7 +37,7 @@ describe ConvertParallels do
       end
 
       it 'extracts courses' do
-        results = convert.perform(kosapi_parallels: [parallel]).results
+        results = convert.perform(kosapi_parallels: [parallel], faculty_semester: faculty_semester).results
         parallel = results[:parallels].first
         course = results[:courses].first
         expect(parallel.course_id).to eq course.id
@@ -45,7 +46,7 @@ describe ConvertParallels do
       end
 
       it 'extracts people' do
-        results = convert.perform(kosapi_parallels: [parallel]).results
+        results = convert.perform(kosapi_parallels: [parallel], faculty_semester: faculty_semester).results
         parallel = results[:parallels].first
         person = results[:people].first
         expect(parallel.teacher_ids).to eq ['vomackar']
@@ -54,13 +55,13 @@ describe ConvertParallels do
       end
 
       it 'collect slots' do
-        results = convert.perform(kosapi_parallels: [parallel]).results
+        results = convert.perform(kosapi_parallels: [parallel], faculty_semester: faculty_semester).results
         parallel = results[:parallels].first
         expect(results[:timetable_slots]).to eq({'239018' => [slot]})
       end
 
       it 'extracts rooms' do
-        results = convert.perform(kosapi_parallels: [parallel]).results
+        results = convert.perform(kosapi_parallels: [parallel], faculty_semester: faculty_semester).results
         extracted_room = results[:kosapi_rooms].first
         expect(extracted_room).to eq room
       end
