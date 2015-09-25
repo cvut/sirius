@@ -196,7 +196,8 @@ CREATE TABLE parallels (
     updated_at timestamp without time zone,
     teacher_ids text[],
     student_ids text[],
-    faculty integer
+    faculty integer,
+    deleted_at timestamp without time zone
 );
 
 
@@ -345,7 +346,8 @@ CREATE TABLE timetable_slots (
     parallel_id bigint,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    room_id text
+    room_id text,
+    deleted_at timestamp without time zone
 );
 
 
@@ -644,6 +646,13 @@ CREATE INDEX faculty_semesters_faculty_index ON faculty_semesters USING btree (f
 
 
 --
+-- Name: parallels_deleted_at_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX parallels_deleted_at_index ON parallels USING btree (deleted_at);
+
+
+--
 -- Name: parallels_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -676,6 +685,13 @@ CREATE INDEX semester_periods_faculty_semester_id_index ON semester_periods USIN
 --
 
 CREATE INDEX semester_periods_type_index ON semester_periods USING btree (type);
+
+
+--
+-- Name: timetable_slots_deleted_at_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX timetable_slots_deleted_at_index ON timetable_slots USING btree (deleted_at);
 
 
 --
@@ -771,3 +787,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1433519124_add_applied_sch
 INSERT INTO "schema_migrations" ("filename") VALUES ('1434994575_add_original_fields_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1441021231_create_semester_periods.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1442325052_add_access_token_to_people.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1443194817_add_deleted_at_to_parallels_and_timetable_slots.rb');
