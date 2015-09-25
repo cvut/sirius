@@ -18,13 +18,6 @@ describe FetchUpdatedParallels do
       fetch.perform(faculty_semester: faculty_semester)
     end
 
-    it 'accepts optional range parameters' do
-      since = double(:since)
-      till = double(:till)
-      expect(finder).to receive(:find_updated).with(since, till, faculty: faculty_semester.faculty, semester: faculty_semester.code)
-      fetch.perform(last_updated_since: since, last_updated_till: till, faculty_semester: faculty_semester)
-    end
-
     it 'stores result in @results' do
       expect(finder).to receive(:find_updated).and_return(result)
       fetch.perform(faculty_semester: faculty_semester)

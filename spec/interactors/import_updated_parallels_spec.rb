@@ -13,7 +13,7 @@ describe ImportUpdatedParallels, :vcr do
 
     it 'imports parallels' do
       expect do
-        subject.perform(last_updated_since: since, last_updated_till: till, faculty_semester: faculty_semester)
+        subject.perform(faculty_semester: faculty_semester, page_size: 10, fetch_all: false)
       end.to change(Parallel, :count).from(0)
     end
 
