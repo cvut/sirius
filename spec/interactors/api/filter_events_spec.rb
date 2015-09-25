@@ -53,7 +53,8 @@ describe Interactors::Api::FilterEvents do
     context 'with deleted param set to true' do
       before { params[:deleted] = true }
       it 'filters out deleted events' do
-        expect(events.sql).not_to include 'deleted'
+        expect(events.sql).to \
+        include 'deleted = FALSE OR (deleted = TRUE AND applied_schedule_exception_ids IS NOT NULL)'
       end
     end
   end

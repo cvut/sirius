@@ -25,6 +25,10 @@ module Interactors
           dataset
             .filter_by_date(**params.only(:from, :to, :with_original_date).to_h.rekey!)
             .then_if(hide_deleted?) { |q| q.where(deleted: false) }
+            .then_if(!hide_deleted?) do |q|
+              # XXX: Temporary hack until deleted param is reworked
+              q.where("deleted = FALSE OR (deleted = TRUE AND applied_schedule_exception_ids IS NOT NULL)")
+            end
             .then_if(@type) { |q| q.where(event_type: @type) }
         end
       end
