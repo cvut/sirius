@@ -5,6 +5,7 @@ require 'interactors/convert_parallels'
 require 'interactors/sync'
 require 'interactors/convert_rooms'
 require 'interactors/convert_tts'
+require 'interactors/cleanup_removed_parallels'
 require 'models/person'
 require 'models/course'
 require 'models/parallel'
@@ -17,6 +18,7 @@ class ImportUpdatedParallels < Interpipe::Pipe
       ConvertParallels,
       split[
         Sync[Person], Sync[Course], Sync[Parallel, skip_updating: [:student_ids]],
+        CleanupRemovedParallels,
         pipe[
             ConvertRooms,
             Sync[Room],
