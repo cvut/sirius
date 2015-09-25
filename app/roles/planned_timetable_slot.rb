@@ -13,7 +13,9 @@ class PlannedTimetableSlot < RolePlaying::Role
   def generate_events(faculty_semester)
     teaching_time = generate_teaching_time
     event_periods = plan_calendar(teaching_time)
-    create_events(event_periods, faculty_semester)
+    create_events(event_periods, faculty_semester).tap do |events|
+      events.map { |e| e.deleted = !!deleted_at }
+    end
   end
 
   def clear_extra_events(planned_events)

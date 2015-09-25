@@ -21,6 +21,12 @@ describe PlannedTimetableSlot do
       expect(events.first).to be_an_instance_of(Event)
     end
 
+    it 'sets deleted flag for deleted timetable slots' do
+      slot.deleted_at = Time.now
+      events = planned_slot.generate_events(faculty_semester)
+      expect(events.first.deleted).to be_truthy
+    end
+
   end
 
 end
