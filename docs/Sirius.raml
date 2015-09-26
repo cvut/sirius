@@ -239,15 +239,33 @@ resourceTypes:
     description: "Get all events without any scope"
   /{eventId}:
     type: event
-/people/{username}/events:
-  type: events-collection
-  description: Get a calendar for a person
+/people/{username}:
+  is: [ secured ]
   uriParameters:
     username:
       description: person's unique username
       required: true
       pattern: "[a-z0-9]{3,8}"
-      example: vomackar
+      example: flynnkev
+  get:
+    description: |
+      Get person's full name and _local_ access token. This token allows access to her personal
+      calendar only and it's intended for iCalendar.
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "people": {
+                  "id": "elisruby",
+                  "full_name": "Ing. Elisia Ruby",
+                  "access_token": "72816e82-f5b2-4909-b7c7-770ad017e645"
+                }
+              }
+  /events:
+    type: events-collection
+    description: Get a calendar for a person
 /rooms/{kosId}/events:
   type: events-collection
   description: Get a calendar for a room
