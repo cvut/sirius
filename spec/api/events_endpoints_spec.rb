@@ -53,11 +53,11 @@ shared_examples 'events endpoint' do
     end
 
     context 'with date filtering' do
-      before { auth_get "#{path}?from=2014-04-02T13:50&to=2014-04-03T00:00", access_token }
+      before { auth_get "#{path}?from=2014-04-02T13:50&to=2014-04-03T00:00" }
       it { should have_json_size(1).at_path('events') }
 
       context 'with invalid date' do
-        before { auth_get "#{path}?from=asdasd", access_token }
+        before { auth_get "#{path}?from=asdasd" }
         it 'returns an error' do
           expect(response.status).to eql 400
         end
@@ -66,7 +66,7 @@ shared_examples 'events endpoint' do
 
     context 'with event type filtering' do
       context 'for event type lecture' do # lecture is a shared implicit type here; FIXME?
-        before { auth_get "#{path}?event_type=lecture", access_token }
+        before { auth_get "#{path}?event_type=lecture" }
         it 'returns all lectures' do
           expect(body).to have_json_size(events_cnt).at_path('events')
         end
@@ -76,7 +76,7 @@ shared_examples 'events endpoint' do
         context "for alternate type of event #{event_type}" do
           before do
             event.update(event_type: event_type)
-            auth_get "#{path}?event_type=#{event_type}", access_token
+            auth_get "#{path}?event_type=#{event_type}"
           end
 
           it 'returns at least one event' do
@@ -86,7 +86,7 @@ shared_examples 'events endpoint' do
       end
 
       context 'with invalid value' do
-        before { auth_get "#{path}?event_type=party", access_token }
+        before { auth_get "#{path}?event_type=party" }
         it 'returns an error' do
           expect(response.status).to eql 400
         end
@@ -97,7 +97,7 @@ shared_examples 'events endpoint' do
       let(:events_cnt) { 1 }
       let!(:full_event) { Fabricate(:full_event, teachers: 1, **events_params) }
       let(:included) { 'courses,teachers' }
-      before { auth_get "#{path}?include=#{included}", access_token }
+      before { auth_get "#{path}?include=#{included}" }
 
       it { should have_json_path('linked') }
       it { should have_json_size(1).at_path('linked/courses') }
@@ -107,7 +107,7 @@ shared_examples 'events endpoint' do
     end
 
     context 'as an icalendar' do
-      before { auth_get "#{path}.ical", access_token }
+      before { auth_get "#{path}.ical" }
 
       it 'returns a content-type with charset' do
         expect(headers['Content-Type']).to eql('text/calendar; charset=utf-8')
