@@ -3,7 +3,7 @@ sudo: false
 cache:
   bundler: true
 rvm:
-  - 2.2.2
+  - 2.2.3
   - ruby-head
 addons:
   postgresql: '9.4'
