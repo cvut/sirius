@@ -1,5 +1,5 @@
 require 'models/room'
 
 Fabricator(:room) do
-  kos_code 'T9:350'
+  id { sequence(:room, 101) { |i| "T9:#{i}" } }
 end
