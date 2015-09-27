@@ -6,6 +6,7 @@ require 'interactors/sync'
 require 'interactors/convert_rooms'
 require 'interactors/convert_tts'
 require 'interactors/cleanup_removed_parallels'
+require 'interactors/cleanup_removed_timetable_slots'
 require 'models/person'
 require 'models/course'
 require 'models/parallel'
@@ -23,6 +24,7 @@ class ImportUpdatedParallels < Interpipe::Pipe
             ConvertRooms,
             Sync[Room],
             ConvertTTS,
+            CleanupRemovedTimetableSlots,
             Sync[TimetableSlot]
         ]
       ]
