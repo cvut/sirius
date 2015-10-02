@@ -1,5 +1,6 @@
 require 'sirius/enums/semester_period_type'
 require 'parity'
+require 'day'
 
 class SemesterPeriod < Sequel::Model
 
@@ -14,16 +15,24 @@ class SemesterPeriod < Sequel::Model
   end
 
   def first_week_parity
-    if super
-      Parity.from_numeric(super)
-    else
-      nil
-    end
+    Parity.from_numeric(super) if super
   end
 
   def first_week_parity=(new_parity)
     if new_parity
       super Parity.to_numeric(new_parity)
+    else
+      super
+    end
+  end
+
+  def first_day_override
+    Day.from_numeric(super) if super
+  end
+
+  def first_day_override=(new_override)
+    if new_override
+      super Day.to_numeric(new_override)
     else
       super
     end

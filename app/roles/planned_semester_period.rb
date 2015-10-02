@@ -2,6 +2,7 @@ require 'role_playing'
 require 'ice_cube'
 
 require 'period'
+require 'day'
 
 class PlannedSemesterPeriod < RolePlaying::Role
 
@@ -15,12 +16,17 @@ class PlannedSemesterPeriod < RolePlaying::Role
     event_schedule.all_occurrences.map { |event_start| Period.new(event_start.to_time, event_start + event_duration) }
   end
 
+  def day_offset
+    @day_offset ||= (first_day_override ? (starts_at.wday - Day.to_numeric(first_day_override)) : 0)
+  end
+
   private
 
   def to_recurrence_rule(teaching_time)
     week_frequency = 1 # every week by default
     week_frequency = 2 if teaching_time.parity != :both
-    IceCube::Rule.weekly(week_frequency, :monday).day(teaching_time.day).until(ends_at)
+    teaching_day = (teaching_time.numeric_day + day_offset) % 7
+    IceCube::Rule.weekly(week_frequency, :monday).day(teaching_day).until(ends_at)
   end
 
   def combine_date_with_time(date, time)

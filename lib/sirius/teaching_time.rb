@@ -30,5 +30,9 @@ module Sirius
       @teaching_period == other.teaching_period && @day == other.day && @parity == other.parity
     end
 
+    def numeric_day
+      Date::DAYS_INTO_WEEK[day] + 1
+    end
+
   end
 end
