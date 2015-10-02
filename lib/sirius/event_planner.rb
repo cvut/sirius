@@ -2,7 +2,7 @@ require 'models/schedule_exception'
 require 'roles/planned_timetable_slot'
 require 'models/parallel'
 require 'sirius/time_converter'
-require 'sirius/semester_calendar'
+require 'roles/planned_semester_period'
 
 module Sirius
   class EventPlanner
@@ -31,7 +31,7 @@ module Sirius
     private
     def create_converters(semester)
       time_converter = TimeConverter.new(hour_starts: semester.hour_starts, hour_length: semester.hour_duration)
-      semester_calendar = SemesterCalendar.new(teaching_period: Period.new(semester.starts_at, semester.teaching_ends_at), first_week_parity: semester.first_week_parity)
+      semester_calendar = PlannedSemesterPeriod.new(SemesterPeriod.new(starts_at: semester.starts_at, ends_at: semester.teaching_ends_at, first_week_parity: semester.first_week_parity))
       [time_converter, semester_calendar]
     end
 

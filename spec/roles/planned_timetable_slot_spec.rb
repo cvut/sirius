@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'roles/planned_timetable_slot'
 require 'models/person'
 require 'sirius/time_converter'
-require 'sirius/semester_calendar'
+require 'roles/planned_semester_period'
 
 describe PlannedTimetableSlot do
 
@@ -11,7 +11,7 @@ describe PlannedTimetableSlot do
     let(:slot) { Fabricate(:timetable_slot, first_hour: 1, duration: 2, parity: :both, day: :monday) }
     let(:period) { Period.parse('7:30', '9:00') }
     let(:converter) { instance_double(Sirius::TimeConverter, convert_time: period) }
-    let(:semester_calendar) { instance_double(Sirius::SemesterCalendar, plan: [period]) }
+    let(:semester_calendar) { instance_double(PlannedSemesterPeriod, plan: [period]) }
     let(:faculty_semester) { Fabricate.build(:faculty_semester) }
     subject(:planned_slot) { described_class.new(slot, converter, semester_calendar) }
 

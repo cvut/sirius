@@ -1,6 +1,5 @@
 require 'role_playing'
 require 'sirius/time_converter'
-require 'sirius/semester_calendar'
 
 class PlannedTimetableSlot < RolePlaying::Role
 
