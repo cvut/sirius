@@ -5,6 +5,7 @@ describe Sirius::EventPlanner do
 
   subject(:planner) { described_class.new }
   let(:semester) { Fabricate(:faculty_semester, code: 'B141', faculty: 18_000) }
+  let!(:semester_periods) { Fabricate(:teaching_semester_period, faculty_semester: semester) }
 
   describe '#plan_semester' do
 
