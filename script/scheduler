@@ -18,7 +18,10 @@ class SyncHandler
   def call(job, time)
     @logger.info "Scheduled import started."
     start = Time.now
+
+    Rake::Task.tasks.each(&:reenable)
     Rake::Task['sirius:events'].invoke
+
     finish = Time.now
     @logger.info "Scheduled import finished. Time taken: #{finish - start} s."
   end
