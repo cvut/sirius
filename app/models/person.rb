@@ -1,4 +1,5 @@
 require 'models/parallel'
+require 'pg'
 require 'sequel/extensions/core_refinements'
 
 class Person < Sequel::Model
@@ -13,6 +14,11 @@ class Person < Sequel::Model
   end
 
   def self.id_from_token(token)
-    self.where(access_token: token).get(:id)
+    begin
+      self.where(access_token: token).get(:id)
+    rescue Sequel::DatabaseError => err
+      # return nil if token is malformed UUID
+      raise err unless err.wrapped_exception.is_a? PG::InvalidTextRepresentation
+    end
   end
 end

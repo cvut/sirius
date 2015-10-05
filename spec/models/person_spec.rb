@@ -23,5 +23,9 @@ describe Person do
       token = '11111111-1111-1111-8888-888888888888'
       expect(Person.id_from_token(token)).to be_nil
     end
+
+    it 'returns nil for malformed UUID' do
+      expect(Person.id_from_token('123-456-666')).to be_nil
+    end
   end
 end
