@@ -1,4 +1,6 @@
 require 'sirius_api/base_authorizer'
+require 'sirius_api/errors'
+require 'sirius_api/scopes'
 
 module SiriusApi
   class EventsAuthorizer < BaseAuthorizer
@@ -14,11 +16,15 @@ module SiriusApi
     end
 
     scope Scopes::READ_PERSONAL do
-      permit :get, '/people/:username/events', only: ->(opts) { opts[:current_user] == opts[:target_user] }
+      permit :get, '/people/:username/events', only: ->(opts) do
+        opts[:current_user] == opts[:target_user]
+      end
     end
 
     scope Scopes::READ_LIMITED do
-      permit :get, '/people/:username/events', only: ->(opts) { authorize_by_role(opts) }
+      permit :get, '/people/:username/events', only: ->(opts) do
+        authorize_by_role(opts)
+      end
     end
 
     scope Scopes::READ_ALL do
@@ -32,17 +38,26 @@ module SiriusApi
     def authorize_by_role(opts)
       current_user_id = opts[:current_user]
       target_user_id = opts[:target_user]
+
       unless current_user_id
-        raise SiriusApi::Errors::Authorization, "Access not permitted for Client Credentials Grant Flow on #{opts[:http_method]} #{opts[:url]} with #{current_user}. (Username is required.)"
+        raise SiriusApi::Errors::Authorization,
+          "Access not permitted for OAuth grant Client Credentials on #{opts[:http_method].upcase} \
+          #{opts[:url]}; username is required.".squeeze(' ')
       end
 
-      # User has always acces to personal calendar
+      # User has always acces to her personal calendar.
       return true if current_user_id == target_user_id
 
+      # Privileged user (e.g. employee) can view all calendars.
       return true if current_user.has_any_role? PRIVILEGED_ROLES
-      return true if User.new(target_user_id).has_any_role? PRIVILEGED_ROLES
-      raise SiriusApi::Errors::Authorization, "Access not permitted on #{opts[:http_method]} #{opts[:url]} with #{current_user}. (One of #{PRIVILEGED_ROLES.join(', ')} roles is required for current user, URL and scope.)"
-    end
 
+      # Any user can view calendar of a privileged user.
+      return true if User.new(target_user_id).has_any_role? PRIVILEGED_ROLES
+
+      raise SiriusApi::Errors::Authorization,
+        "Access not permitted for #{current_user} on #{opts[:http_method].upcase} #{opts[:url]}. \
+        This resource requires one of IDM roles: #{PRIVILEGED_ROLES.join(', ')}, \
+        or more privileged scope.".squeeze(' ')
+    end
   end
 end
