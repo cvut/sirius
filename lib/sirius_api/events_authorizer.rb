@@ -3,7 +3,7 @@ require 'sirius_api/base_authorizer'
 module SiriusApi
   class EventsAuthorizer < BaseAuthorizer
 
-    TEACHER_ROLE = Config.umapi_teacher_role
+    PRIVILEGED_ROLES = Config.umapi_privileged_roles
 
     scope Scopes::READ_PERSONAL, Scopes::READ_LIMITED, Scopes::READ_ALL do
       permit :get, '/events'
@@ -39,9 +39,9 @@ module SiriusApi
       # User has always acces to personal calendar
       return true if current_user_id == target_user_id
 
-      return true if current_user.has_role?(TEACHER_ROLE)
-      return true if User.new(target_user_id).has_role?(TEACHER_ROLE)
-      raise SiriusApi::Errors::Authorization, "Access not permitted on #{opts[:http_method]} #{opts[:url]} with #{current_user}. (#{TEACHER_ROLE} role is required for current user, URL and scope.)"
+      return true if current_user.has_any_role? PRIVILEGED_ROLES
+      return true if User.new(target_user_id).has_any_role? PRIVILEGED_ROLES
+      raise SiriusApi::Errors::Authorization, "Access not permitted on #{opts[:http_method]} #{opts[:url]} with #{current_user}. (One of #{PRIVILEGED_ROLES.join(', ')} roles is required for current user, URL and scope.)"
     end
 
   end

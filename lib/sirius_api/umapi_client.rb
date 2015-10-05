@@ -27,7 +27,7 @@ module SiriusApi
         fail ArgumentError, "Operator must be 'all', 'any', or 'none'."
       end
 
-      user_uri = "#{@client.site}/#{username}/roles?#{operator}=#{roles.join(',')}"
+      user_uri = "#{@client.site}/#{username}/roles?#{operator}=#{roles.to_a.join(',')}"
       resp = token.request(:head, user_uri)
 
       case resp.status

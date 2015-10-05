@@ -5,7 +5,7 @@ module SiriusApi
   class User
     attr_reader :username, :scopes
 
-    TEACHER_ROLE = Config.umapi_teacher_role
+    PRIVILEGED_ROLES = Config.umapi_privileged_roles
 
     def initialize(username = nil, scopes = [])
       @username = username
@@ -23,7 +23,7 @@ module SiriusApi
     def student_access_allowed?
       return true if scopes.include? Scopes::READ_ALL
       if scopes.include_any? Scopes::READ_LIMITED
-        return has_role? TEACHER_ROLE
+        return has_any_role? PRIVILEGED_ROLES
       end
       false
     end
@@ -36,15 +36,17 @@ module SiriusApi
       @present_roles.to_a
     end
 
-    def has_role?(role)
-      return true if @present_roles.include? role
-      return false if @absent_roles.include? role
+    def has_any_role?(*roles)
+      roles = Set.new(roles)
 
-      if umapi_client.user_has_roles?(username, [role])
-        @present_roles << role
+      return true if @present_roles.intersect? roles
+      return false if @absent_roles.intersect? roles
+
+      if umapi_client.user_has_roles?(username, roles, operator: :any)
+        @present_roles.merge(roles)
         true
       else
-        @absent_roles << role
+        @absent_roles.merge(roles)
         false
       end
     end
