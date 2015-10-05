@@ -40,7 +40,7 @@ shared_context 'authenticated via oauth', authenticated: :oauth do
       c.request  :url_encoded
       c.adapter Faraday.default_adapter
     end
-    client.basic_auth(Config.kosapi_oauth_client_id, Config.kosapi_oauth_client_secret)
+    client.basic_auth(Config.oauth_client_id, Config.oauth_client_secret)
     resp = client.post(Config.oauth_token_uri, { 'grant_type' => 'client_credentials' })
     resp.body['access_token']
   end

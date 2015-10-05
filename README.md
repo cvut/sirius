@@ -51,14 +51,14 @@ with reasonable defaults that you can change after that.
 
 Variables put into `.env` file will be automatically loaded by Foreman.
 
-You will need a KOSapi OAuth credentials from the [Apps Manager](https://auth.fit.cvut.cz/manager/) and local PostgreSQL database and ElasticSearch.
+You will need an OAuth 2.0 credentials (for KOSapi and Usermap API) from the [Apps Manager](https://auth.fit.cvut.cz/manager/) and local PostgreSQL database and ElasticSearch.
 If you don’t need the `/search` resource, then you can omit ElasticSearch (just put any URI into `ELASTIC_URL` to pass check).
 
 ```
 DATABASE_URL=postgres://localhost:5432/sirius-development
 ELASTIC_URL=http://localhost:9200
-KOSAPI_OAUTH_CLIENT_ID=xxx-xxxx-xxxx
-KOSAPI_OAUTH_CLIENT_SECRET=yyyyyyyyy
+OAUTH_CLIENT_ID=xxx-xxxx-xxxx
+OAUTH_CLIENT_SECRET=yyyyyyyyy
 ```
 
 ## Running server and rake tasks

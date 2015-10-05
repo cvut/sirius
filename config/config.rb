@@ -13,8 +13,8 @@ module Config
   mandatory :database_url,                string
   mandatory :domain,                      string
   mandatory :elastic_url,                 string
-  mandatory :kosapi_oauth_client_id,      string
-  mandatory :kosapi_oauth_client_secret,  string
+  mandatory :oauth_client_id,             string
+  mandatory :oauth_client_secret,         string
 
 
   # Optional -- value is returned or `nil` if it wasn't present.

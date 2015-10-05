@@ -11,8 +11,8 @@ module SiriusApi
     UMAPI_PEOPLE_URI = Config.umapi_people_uri
 
     def initialize
-      client_id = Config.kosapi_oauth_client_id
-      client_secret = Config.kosapi_oauth_client_secret
+      client_id = Config.oauth_client_id
+      client_secret = Config.oauth_client_secret
       auth_uri = Config.oauth_auth_uri
       token_uri = Config.oauth_token_uri
       @client = OAuth2::Client.new(
