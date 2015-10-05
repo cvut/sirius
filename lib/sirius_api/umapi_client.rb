@@ -13,13 +13,12 @@ module SiriusApi
     def initialize
       client_id = Config.kosapi_oauth_client_id
       client_secret = Config.kosapi_oauth_client_secret
-      base_uri = Config.umapi_base_uri
       auth_uri = Config.oauth_auth_uri
       token_uri = Config.oauth_token_uri
       @client = OAuth2::Client.new(
         client_id,
         client_secret,
-        site: base_uri,
+        site: UMAPI_PEOPLE_URI,
         authorize_url: auth_uri,
         token_url: token_uri,
         raise_errors: false

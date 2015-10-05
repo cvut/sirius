@@ -34,7 +34,6 @@ module Config
   override :oauth_check_token_uri, 'https://auth.fit.cvut.cz/oauth/oauth/check_token', string
   override :oauth_auth_uri, 'https://auth.fit.cvut.cz/oauth/oauth/authorize', string
   override :oauth_token_uri, 'https://auth.fit.cvut.cz/oauth/oauth/token', string
-  override :umapi_base_uri, 'https://kosapi.fit.cvut.cz/usermap/v1', string
   override :umapi_people_uri, 'https://kosapi.fit.cvut.cz/usermap/v1/people', string
   override :umapi_teacher_role, 'B-00000-ZAMESTNANEC', string
 
