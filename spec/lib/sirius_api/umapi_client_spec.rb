@@ -5,13 +5,6 @@ describe SiriusApi::UmapiClient, :vcr do
 
   let(:username) { 'szolatib' }
 
-  describe '#request_user_info' do
-    it 'retrieves user info from umapi' do
-      res = subject.request_user_info(username)
-      expect(res.username).to eq username
-    end
-  end
-
   describe '#user_has_roles?' do
     it 'checks whether user has a role assigned' do
       expect(subject.user_has_roles?(username, ['B-00000-ZAMESTNANEC'])).to be_truthy
