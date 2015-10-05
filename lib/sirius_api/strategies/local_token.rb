@@ -24,8 +24,7 @@ module SiriusApi
           errors.add(:general, 'Invalid local access token.')
           return
         end
-        scopes = ( username == '*' ? Scopes::READ_ALL : Scopes::READ_PERSONAL )
-        success! User.new(username.freeze, scopes)
+        success! User.new(username.freeze, Scopes::READ_PERSONAL)
       end
     end
   end
