@@ -13,7 +13,7 @@ describe SiriusApi::PeopleAuthorizer do
 
     {
       'READ_PERSONAL' => SiriusApi::Scopes::READ_PERSONAL,
-      'READ_LIMITED' => SiriusApi::Scopes::READ_LIMITED
+      'READ_ROLE_BASED' => SiriusApi::Scopes::READ_ROLE_BASED
     }.each do |scope_name, scope_arr|
       context "for #{scope_name} scope" do
         let(:scope) {scope_arr}

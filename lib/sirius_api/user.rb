@@ -25,7 +25,7 @@ module SiriusApi
     #
     def student_access_allowed?
       return true if scopes.include? Scopes::READ_ALL
-      if username && scopes.include_any?(Scopes::READ_LIMITED)
+      if username && scopes.include_any?(Scopes::READ_ROLE_BASED)
         return has_any_role? PRIVILEGED_ROLES
       end
       false

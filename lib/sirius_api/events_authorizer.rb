@@ -7,7 +7,7 @@ module SiriusApi
 
     PRIVILEGED_ROLES = Config.umapi_privileged_roles
 
-    scope Scopes::READ_PERSONAL, Scopes::READ_LIMITED, Scopes::READ_ALL do
+    scope Scopes::READ_PERSONAL, Scopes::READ_ROLE_BASED, Scopes::READ_ALL do
       permit :get, '/events'
       permit :get, '/events/personal'
       permit :get, '/events/:id'
@@ -21,7 +21,7 @@ module SiriusApi
       end
     end
 
-    scope Scopes::READ_LIMITED do
+    scope Scopes::READ_ROLE_BASED do
       permit :get, '/people/:username/events', only: ->(opts) do
         authorize_by_role(opts)
       end

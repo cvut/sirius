@@ -41,7 +41,7 @@ module SiriusApi
       with_them ->{ "#{method.upcase} #{url}" } do
         let(:user) { User.new('rubyeli', scope) }
 
-        [ 'READ_PERSONAL', 'READ_LIMITED', 'READ_ALL' ].each do |scope_name|
+        [ 'READ_PERSONAL', 'READ_ROLE_BASED', 'READ_ALL' ].each do |scope_name|
           let(:scope) { Scopes.const_get(scope_name) }
 
           context "for scope #{scope_name}" do
@@ -52,14 +52,14 @@ module SiriusApi
 
       context 'GET /people/:username/events' do
 
-        where :scope_name , :current_user , :personal, :other_unprivileged, :other_privileged do
-          'READ_PERSONAL' | :any          | :allow   | :deny              | :deny
-          'READ_PERSONAL' | :none         | :deny    | :deny              | :deny
-          'READ_ALL'      | :any          | :allow   | :allow             | :allow
-          'READ_ALL'      | :none         | :allow   | :allow             | :allow
-          'READ_LIMITED'  | :unprivileged | :allow   | :deny              | :allow
-          'READ_LIMITED'  | :privileged   | :allow   | :allow             | :allow
-          'READ_LIMITED'  | :none         | :deny    | :deny              | :deny
+        where :scope_name   , :current_user , :personal, :other_unprivileged, :other_privileged do
+          'READ_PERSONAL'   | :any          | :allow   | :deny              | :deny
+          'READ_PERSONAL'   | :none         | :deny    | :deny              | :deny
+          'READ_ALL'        | :any          | :allow   | :allow             | :allow
+          'READ_ALL'        | :none         | :allow   | :allow             | :allow
+          'READ_ROLE_BASED' | :unprivileged | :allow   | :deny              | :allow
+          'READ_ROLE_BASED' | :privileged   | :allow   | :allow             | :allow
+          'READ_ROLE_BASED' | :none         | :deny    | :deny              | :deny
         end
         with_them -> { "for scope #{scope_name} and #{current_user} user" } do
 

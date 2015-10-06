@@ -9,8 +9,8 @@ module SiriusApi
 
     READ_ALL = ['cvut:sirius:all:read', 'urn:ctu:oauth:sirius:read'].freeze
     READ_PERSONAL = ['cvut:sirius:personal:read', 'urn:ctu:oauth:sirius:personal:read'].freeze
-    READ_LIMITED = ['cvut:sirius:limited-by-idm:read', 'urn:ctu:oauth:sirius:limited-by-idm:read',
-                    'urn:ctu:oauth:sirius.read'].freeze
+    READ_ROLE_BASED = ['cvut:sirius:limited-by-idm:read', 'urn:ctu:oauth:sirius.read',
+                       'urn:ctu:oauth:sirius:limited-by-idm:read'].freeze
 
     attr_reader :scopes
 
