@@ -32,7 +32,7 @@ module SiriusApi
     end
 
     def to_s
-      "User [username=#{username}, scopes=#{scopes.to_a}, roles=#{roles}]"
+      "User [username=#{username}, scopes=#{scopes.to_a.join(' ')}, roles=#{roles.join(' ')}]"
     end
 
     def roles
