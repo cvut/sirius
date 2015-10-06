@@ -15,7 +15,8 @@ module SiriusApi
         site: Config.umapi_people_uri,
         authorize_url: Config.oauth_auth_uri,
         token_url: Config.oauth_token_uri,
-        raise_errors: false
+        raise_errors: false,
+        max_redirects: 0
       )
     end
 
