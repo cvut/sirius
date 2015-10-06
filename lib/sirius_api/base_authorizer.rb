@@ -79,7 +79,7 @@ module SiriusApi
     def authorize_request!(http_method, url, route_params = {})
       unless check_access(current_user.scopes, http_method, url, route_params)
         fail SiriusApi::Errors::Authorization,
-          "Access not permitted for #{current_user} on #{http_method} #{url}."
+          "Access not permitted for #{current_user} on #{http_method.upcase} #{url}."
       end
     end
 
