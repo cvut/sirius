@@ -64,20 +64,9 @@ module SiriusApi
           "Access token has expired."
         elsif token.scope.empty?
           "Access token has no scopes granted."
-        elsif !flow_valid?(token)
-          "Invalid Client Credentials Grant Flow for scope: '#{token.scope.join(' ')}'. (Username is required for limited scope.)"
         else
           nil
         end
-      end
-
-      # FIXME: all scopes except READ_ALL requires user_name
-      def flow_valid?(token)
-        scopes = Scopes.new(token.scope)
-        if scopes.include_any? Scopes::READ_LIMITED
-          return scopes.include_any?(Scopes::READ_ALL) || token.user_name
-        end
-        true
       end
 
       def http_client

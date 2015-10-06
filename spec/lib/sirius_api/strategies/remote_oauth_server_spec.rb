@@ -87,19 +87,6 @@ describe SiriusApi::Strategies::RemoteOAuthServer do
       end
     end
 
-    context 'with limited scope' do
-      let(:scope) { SiriusApi::Scopes::READ_LIMITED }
-
-      context 'and valid flow' do
-        let(:user_name) { 'skocdopet' }
-        it_behaves_like 'successful authentication'
-      end
-
-      context 'and invalid flow' do
-        it_behaves_like 'failed authentication'
-      end
-    end
-
     context 'with valid token' do
       it_behaves_like 'successful authentication'
     end
