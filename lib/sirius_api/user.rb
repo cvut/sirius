@@ -2,14 +2,17 @@ require 'sirius_api/umapi_client'
 require 'sirius_api/scopes'
 
 module SiriusApi
+  # TODO: This class should be renamed! This name doesn't make sense, because "user" may be
+  #       a client application itself with no associated user (OAuth grant client credentials).
   class User
     attr_reader :username, :scopes
 
     PRIVILEGED_ROLES = Config.umapi_privileged_roles
 
-    def initialize(username = nil, scopes = [])
+    def initialize(username = nil, scopes = [], umapi_client: UmapiClient.new)
       @username = username
       @scopes = Scopes.new(*scopes)
+      @umapi_client = umapi_client
       @present_roles = Set.new
       @absent_roles = Set.new
     end
@@ -42,7 +45,7 @@ module SiriusApi
       return true if @present_roles.intersect? roles
       return false if @absent_roles.intersect? roles
 
-      if umapi_client.user_has_roles?(username, roles, operator: :any)
+      if @umapi_client.user_has_roles?(username, roles, operator: :any)
         @present_roles.merge(roles)
         true
       else
@@ -53,12 +56,6 @@ module SiriusApi
 
     def scopes=(new_scopes)
       @scopes = Scopes.new(*new_scopes)
-    end
-
-    private
-
-    def umapi_client
-      @umapi_client ||= UmapiClient.new
     end
   end
 end
