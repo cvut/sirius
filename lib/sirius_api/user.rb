@@ -25,7 +25,7 @@ module SiriusApi
     #
     def student_access_allowed?
       return true if scopes.include? Scopes::READ_ALL
-      if scopes.include_any? Scopes::READ_LIMITED
+      if username && scopes.include_any?(Scopes::READ_LIMITED)
         return has_any_role? PRIVILEGED_ROLES
       end
       false
@@ -40,6 +40,8 @@ module SiriusApi
     end
 
     def has_any_role?(*roles)
+      fail 'Cannot check roles without username.' unless username
+
       roles = Set.new(roles)
 
       return true if @present_roles.intersect? roles
