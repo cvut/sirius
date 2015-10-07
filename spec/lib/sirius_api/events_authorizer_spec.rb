@@ -92,6 +92,36 @@ module SiriusApi
           end
         end
       end
+
+      context 'GET /teachers/:username/events' do
+
+        where :scope_name   , :current_user, :personal, :other do
+          'READ_PERSONAL'   | :any         | :allow   | :deny
+          'READ_PERSONAL'   | :none        | :deny    | :deny
+          'READ_ALL'        | :any         | :allow   | :allow
+          'READ_ALL'        | :none        | :allow   | :allow
+          'READ_ROLE_BASED' | :any         | :allow   | :allow
+          'READ_ROLE_BASED' | :none        | :allow   | :allow
+        end
+        with_them -> { "for scope #{scope_name} and #{current_user} user" } do
+
+          let(:scope) { Scopes.const_get(scope_name) }
+          let(:user) { User.new(current_user == :none ? nil : current_user, scope) }
+          let(:url) { '/teachers/:username/events' }
+
+          cxt = row  # XXX: workaround to make row accessible in nested contexts
+
+          context 'read personal events' do
+            let(:params) { {username: current_user} }
+            include_examples :authorize_request!, cxt.personal
+          end
+
+          context 'read events of other teachers' do
+            let(:params) { {username: 'bigboss'} }
+            include_examples :authorize_request!, cxt.other
+          end
+        end
+      end
     end
   end
 end

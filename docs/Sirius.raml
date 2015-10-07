@@ -266,6 +266,18 @@ resourceTypes:
   /events:
     type: events-collection
     description: Get a calendar for a person
+/teachers/{username}/events:
+  type: events-collection
+  description: >
+    Get a teacher's calendar for the specified person. This is a subset of the person's calendar
+    with only events which the person teaches (classes), examines (exams) or organizes
+    (one-off events).
+  uriParameters:
+    username:
+      description: Person's unique username.
+      required: true
+      pattern: "[a-z0-9]{3,8}"
+      example: flynnkev
 /rooms/{kosId}/events:
   type: events-collection
   description: Get a calendar for a room

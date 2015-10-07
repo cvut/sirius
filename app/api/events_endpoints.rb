@@ -119,6 +119,24 @@ module API
       end
     end
 
+    desc 'Filter events by teacher'
+    segment :teachers do
+      route_param :username do
+        params do
+          requires :username, type: String, regexp: /\A[a-z0-9]+\z/i, desc: "person's username"
+          use :filter_events
+          use :compound
+        end
+        resource :events do
+          get do
+            #XXX check if user exists; ugly!
+            ::Person.with_pk!(params[:username])
+            represent Event.with_teacher(params[:username])
+          end
+        end
+      end
+    end
+
     desc 'Filter events by course'
     segment :courses do
       params do

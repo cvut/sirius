@@ -275,4 +275,31 @@ describe API::EventsEndpoints do
       end
     end
   end
+
+  describe 'filter by teacher', authenticated: true do
+    let(:username) { 'user' }
+    let(:person) { Fabricate(:person, id: username) }
+
+    describe 'GET /teachers' do
+      it_behaves_like 'invalid endpoint' do
+        let(:path) { '/teachers' }
+      end
+    end
+
+    describe 'GET /teachers/:username/events' do
+      let(:path) { "/teachers/#{username}/events" }
+
+      context 'non-existent person' do
+        it_behaves_like 'forbidden resource' do
+          let(:path) { '/teachers/mranonym/events' }
+        end
+      end
+
+      context 'existing person' do
+        it_behaves_like 'events endpoint' do
+          let(:events_params) { { teacher_ids: [person.id] } }
+        end
+      end
+    end
+  end
 end

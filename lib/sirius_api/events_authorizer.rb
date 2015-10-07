@@ -19,16 +19,21 @@ module SiriusApi
       permit :get, '/people/:username/events', only: ->(opts) do
         opts[:current_user] == opts[:target_user]
       end
+      permit :get, '/teachers/:username/events', only: ->(opts) do
+        opts[:current_user] == opts[:target_user]
+      end
     end
 
     scope Scopes::READ_ROLE_BASED do
       permit :get, '/people/:username/events', only: ->(opts) do
         authorize_by_role(opts)
       end
+      permit :get, '/teachers/:username/events'
     end
 
     scope Scopes::READ_ALL do
       permit :get, '/people/:username/events'
+      permit :get, '/teachers/:username/events'
     end
 
     def initialize(current_user)

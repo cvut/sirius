@@ -37,6 +37,23 @@ describe Event do
     end
   end
 
+  describe '.with_teacher' do
+    let!(:event) { Fabricate(:event, teacher_ids: %w[marnytom], student_ids: %w[skocdpet vomackar]) }
+
+    def with_teacher(person_id)
+      described_class.with_teacher(person_id).all
+    end
+
+    it 'looks up teachers only' do
+      expect(with_teacher 'marnytom').to contain_exactly event
+      expect(with_teacher 'skocdpet').to be_empty
+    end
+
+    it 'returns an empty set for unknown username' do
+      expect(with_teacher 'novakj42').to be_empty
+    end
+  end
+
   describe '#sequence_number' do
     before { event.relative_sequence_number = 42 }
     it 'aliases relative_sequence_number' do

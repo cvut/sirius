@@ -17,6 +17,10 @@ class Event < Sequel::Model
       .or(:student_ids.pg_array.contains([username]))
   end
 
+  def self.with_teacher(username)
+    filter(:teacher_ids.pg_array.contains([username]))
+  end
+
   def period
     Period.new(starts_at, ends_at)
   end
