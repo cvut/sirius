@@ -7,6 +7,8 @@ module SiriusApi
 
     PRIVILEGED_ROLES = Config.umapi_privileged_roles
 
+    same_user = ->(opts) { opts[:current_user] == opts[:target_user] }
+
     scope Scopes::READ_PERSONAL, Scopes::READ_ROLE_BASED, Scopes::READ_ALL do
       permit :get, '/events'
       permit :get, '/events/personal'
@@ -16,12 +18,8 @@ module SiriusApi
     end
 
     scope Scopes::READ_PERSONAL do
-      permit :get, '/people/:username/events', only: ->(opts) do
-        opts[:current_user] == opts[:target_user]
-      end
-      permit :get, '/teachers/:username/events', only: ->(opts) do
-        opts[:current_user] == opts[:target_user]
-      end
+      permit :get, '/people/:username/events', only: same_user
+      permit :get, '/teachers/:username/events', only: same_user
     end
 
     scope Scopes::READ_ROLE_BASED do
