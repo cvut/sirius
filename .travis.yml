@@ -28,7 +28,7 @@ notifications:
     on_failure: always  # options: [always|never|change] default: always
 env:
   global:
-  - secure: We8Glu+3KWdnBa3JnahtotsjYSUjyYPaXrMR6bOR90xln20/VYifecmj37PWIO8hdUj4xZ4uKqNNPx6OQaZtxDT+eofOY0/pLxD/3yHS3WBRV5n8w79jh8xQt6Zg2H1/Ic4KIVqoHyQj9fg//Qde8poFSg6GnMezQLAj+vLH460=  # GH_TOKEN
+  - secure: RyyZpzIhIJVX+1CKn5BKx3siHeDwUux+q4/dMrmc0P06aCHvSapdrUjPOWK1bL5CpqNrybvPOYTpxc0JHIIkgzIAGJJEBaBHvlwqj0ZiH8P3hj0TpCZcfWROnRSpzazLwN0isdRxVHGYRIDGJBDZoN0PX97anjmclBt+UveLXz4=  # GH_TOKEN
   - secure: Xj2KE+N9NOwwMa8MwAqpCKB7ujhEwR69YrxlskRDcjcoCqDWtRQPfDbPr1X0Nb3bb5MmS1ouoQt6ACccRuJWNQGg/8jI9yaLu4UIroNyv86q0uduhFW4fG0IEjk4W7+wk6o89Q03XbXpp7tvs6t56Ned1ClZOBhZOGl4jtPgJyY=  # OAUTH_CLIENT_ID
   - secure: dhn9CHHyKIRPYSL0t3qPIcQ2GEI9IhSFAPG/JKy4rL1RIOzlxiFYVz9juaDIjGw8Ab7+Pb+tL0zurE76eN3vqx4d6Gw+rDrTl46mbtyqs6MZYSwFMLqqRb3k2m1Y6WKNoB01GVMB2H7AmB0YMUzhaM4WF3h0XWNPRczw3U2X/eI=  # OAUTH_CLIENT_SECRET
 matrix:
