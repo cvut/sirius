@@ -25,6 +25,7 @@ class SemestersRepresenter < Roar::Decorator
     property :starts_at
     property :ends_at
     property :first_week_parity
+    property :first_day_override
   end
 
 end
