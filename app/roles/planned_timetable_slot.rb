@@ -18,9 +18,9 @@ class PlannedTimetableSlot < RolePlaying::Role
   end
 
   def clear_extra_events(planned_events)
-    all_events = Event.where(timetable_slot_id: id)
+    all_events = Event.where(timetable_slot_id: id, deleted: false)
     extra_events = filter_extra_events(all_events, planned_events)
-    extra_events.each(&:delete)
+    Event.where(id: extra_events.map(&:id), deleted: false).update(deleted: true, applied_schedule_exception_ids: nil)
   end
 
   private

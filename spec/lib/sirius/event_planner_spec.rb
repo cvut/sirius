@@ -24,6 +24,18 @@ describe Sirius::EventPlanner do
         planner.plan_semester(semester)
       }.not_to change(Event, :count)
     end
+
+    it 'marks extra event as deleted' do
+      extra_event = Fabricate(:event,
+                              absolute_sequence_number: 20,
+                              timetable_slot_id: timetable_slot.id,
+                              parallel_id: timetable_slot.parallel.id)
+      expect {
+        events = planner.plan_semester(semester)
+        extra_event.refresh
+        events.each(&:refresh)
+      }.to change(extra_event, :deleted).from(false).to(true)
+    end
   end
 
 end

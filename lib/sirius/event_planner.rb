@@ -14,7 +14,7 @@ module Sirius
 
     def plan_semester(semester)
       time_converter, semester_periods = create_converters(semester)
-      slots_dataset(semester).each do |sl|
+      slots_dataset(semester).flat_map do |sl|
         events = semester_periods.flat_map do |semester_period|
           slot = PlannedTimetableSlot.new(sl, time_converter, semester_period)
           slot.generate_events(semester)
@@ -23,6 +23,7 @@ module Sirius
         apply_exceptions(events)
         @sync.perform(events: events)
         PlannedTimetableSlot.new(sl, time_converter, semester_periods.first).clear_extra_events(events)
+        events
       end
     end
 
