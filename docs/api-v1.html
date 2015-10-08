@@ -364,6 +364,92 @@ LOCATION:T9:130
 SUMMARY:MI-PSL 2. cvičení
 END:VEVENT
 END:VCALENDAR
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>There are no events within the current scope</p></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="teachers__username__events" class="panel-title">/teachers/{username}/events</h3></div><div class="panel-body"><div class="top-resource-description"><p>Get a teacher&#39;s calendar for the specified person. This is a subset of the person&#39;s calendar with only events which the person teaches (classes), examines (exams) or organizes (one-off events).</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_teachers__username__events"><span class="parent"></span>/teachers/{username}/events</a> <span class="methods"><a href="#teachers__username__events_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_teachers__username__events" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#teachers__username__events_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Includes the specified linked resources into the response (similar to compound documents in the JSON API format).</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="teachers__username__events_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/teachers/{username}/events</h4></div><div class="modal-body"><div class="alert alert-info"><p>Includes the specified linked resources into the response (similar to compound documents in the JSON API format).</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by access_token<p>All Sirius read-only resources are secured by an access token. The token is either associated with an username (personal) or is set as global. This authorization scheme uses the same query parameter as OAuth 2.0, and will be later replaced by OAuth 2.0.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#teachers__username__events_get_request" data-toggle="tab">Request</a></li><li><a href="#teachers__username__events_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="teachers__username__events_get_request"><h3>URI Parameters</h3><ul><li><strong>username</strong>: <em>required (string - pattern: [a-z0-9]{3,8})</em><p>Person&#39;s unique username.</p><p><strong>Example</strong>:</p><pre>flynnkev</pre></li></ul><h3>Query Parameters</h3><ul><li><strong>access_token</strong>: <em>required (string)</em><p>Authentication and authorization is required. You need to set your <code>access_token</code> in URL.</p><p><strong>Example</strong>:</p><pre>07a855e0-6920-11e4-a40a-0002a5d5c51b</pre></li><li><strong>limit</strong>: <em>(number - default: 10 - maximum: 100)</em><p>The number of entries in collection to return</p></li><li><strong>offset</strong>: <em>(number)</em><p>Offset of the first entry in collection</p></li><li><strong>include</strong>: <em>(string)</em><p>A comma-separated list of the link names to include.</p><p><strong>Example</strong>:</p><pre>courses,teachers,schedule_exceptions</pre></li><li><strong>event_type</strong>: <em>(one of assessment, course_event, exam, laboratory, lecture, tutorial)</em><p>Filter by event&#39;s type</p></li><li><strong>deleted</strong>: <em>(boolean)</em><p>Return even events that have been deleted.</p></li><li><strong>from</strong>: <em>(date)</em><p>Return events from this date</p></li><li><strong>to</strong>: <em>(date)</em><p>Return events up to this date</p></li><li><strong>with_original_date</strong>: <em>(boolean)</em><p>When the date of event has been changed by a schedule exception, original date is not considered for date filtering (by from/to parameters). With this parameter Sirius will include events’ original date in a date filter.</p></li></ul></div><div class="tab-pane" id="teachers__username__events_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "meta": {
+    "count": 2,
+    "offset": 0,
+    "limit": 20
+  },
+  "events": [
+    {
+      "id": 42,
+      "name": null,
+      "sequence_number": 12,
+      "starts_at": "2014-04-23T09:15:00.000+02:00",
+      "ends_at": "2014-04-23T10:45:00.000+02:00",
+      "deleted" : false,
+      "capacity": 24,
+      "event_type": "tutorial",
+      "parallel": "106",
+      "original_data": {
+        "starts_at": "2014-04-23T09:00:00.000+02:00",
+        "ends_at": "2014-04-23T10:30:00.000+02:00",
+        "room_id": "T9:111"
+      },
+      "links": {
+        "room": "T9:350",
+        "course": "MI-RUB",
+        "teachers": [
+          "skocdopet"
+        ],
+        "students": [
+          "szolatib",
+          "vomackar"
+        ],
+        "applied_exceptions": [ 10, 15 ]
+      }
+    },
+    {
+      "id": 43,
+      "name": null,
+      "sequence_number": 12,
+      "starts_at": "2014-04-24T09:15:00.000+02:00",
+      "ends_at": "2014-04-24T10:45:00.000+02:00",
+      "deleted" : false,
+      "capacity": 196,
+      "event_type": "lecture",
+      "parallel": "1",
+      "original_data": {},
+      "links": {
+        "room": "T9:155",
+        "course": "MI-W20",
+        "teachers": [
+          "kuchajar",
+          "vitvatom"
+        ],
+        "students": [
+          "jirutjak"
+        ]
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Type: text/calendar</strong></p><p><strong>Example</strong>:</p><pre><code>BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+DTSTAMP:20140702T140133Z
+UID:https://sirius.fit.cvut.cz/events/123
+DTSTART:20140312T101500
+DTEND:20140312T114500
+CLASS:PUBLIC
+CREATED:20140410T182546
+LAST-MODIFIED:20140410T182546
+LOCATION:T9:130
+SUMMARY:MI-PSL 2. cvičení
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20140702T140133Z
+UID:https://sirius.fit.cvut.cz/events/125
+DTSTART:20140312T101500
+DTEND:20140312T114500
+CLASS:PUBLIC
+CREATED:20140410T182546
+LAST-MODIFIED:20140410T182546
+LOCATION:T9:130
+SUMMARY:MI-PSL 2. cvičení
+END:VEVENT
+END:VCALENDAR
 </code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>There are no events within the current scope</p></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="rooms__kosId__events" class="panel-title">/rooms/{kosId}/events</h3></div><div class="panel-body"><div class="top-resource-description"><p>Get a calendar for a room</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_rooms__kosId__events"><span class="parent"></span>/rooms/{kosId}/events</a> <span class="methods"><a href="#rooms__kosId__events_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_rooms__kosId__events" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#rooms__kosId__events_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Includes the specified linked resources into the response (similar to compound documents in the JSON API format).</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="rooms__kosId__events_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/rooms/{kosId}/events</h4></div><div class="modal-body"><div class="alert alert-info"><p>Includes the specified linked resources into the response (similar to compound documents in the JSON API format).</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by access_token<p>All Sirius read-only resources are secured by an access token. The token is either associated with an username (personal) or is set as global. This authorization scheme uses the same query parameter as OAuth 2.0, and will be later replaced by OAuth 2.0.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#rooms__kosId__events_get_request" data-toggle="tab">Request</a></li><li><a href="#rooms__kosId__events_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="rooms__kosId__events_get_request"><h3>URI Parameters</h3><ul><li><strong>kosId</strong>: <em>required (string - pattern: [A-Z0-9]{2}:([A-Z0-9]+-)?[a-z0-9]+)</em><p>Common room identification used by KOS, for details see <a href="https://rozvoj.fit.cvut.cz/Main/znaceni-mistnosti#HKOSEDzna10DenED-102">the documentation</a>.</p><p><strong>Example</strong>:</p><pre>TH:A-1333</pre></li></ul><h3>Query Parameters</h3><ul><li><strong>access_token</strong>: <em>required (string)</em><p>Authentication and authorization is required. You need to set your <code>access_token</code> in URL.</p><p><strong>Example</strong>:</p><pre>07a855e0-6920-11e4-a40a-0002a5d5c51b</pre></li><li><strong>limit</strong>: <em>(number - default: 10 - maximum: 100)</em><p>The number of entries in collection to return</p></li><li><strong>offset</strong>: <em>(number)</em><p>Offset of the first entry in collection</p></li><li><strong>include</strong>: <em>(string)</em><p>A comma-separated list of the link names to include.</p><p><strong>Example</strong>:</p><pre>courses,teachers,schedule_exceptions</pre></li><li><strong>event_type</strong>: <em>(one of assessment, course_event, exam, laboratory, lecture, tutorial)</em><p>Filter by event&#39;s type</p></li><li><strong>deleted</strong>: <em>(boolean)</em><p>Return even events that have been deleted.</p></li><li><strong>from</strong>: <em>(date)</em><p>Return events from this date</p></li><li><strong>to</strong>: <em>(date)</em><p>Return events up to this date</p></li><li><strong>with_original_date</strong>: <em>(boolean)</em><p>When the date of event has been changed by a schedule exception, original date is not considered for date filtering (by from/to parameters). With this parameter Sirius will include events’ original date in a date filter.</p></li></ul></div><div class="tab-pane" id="rooms__kosId__events_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
   "meta": {
     "count": 2,
@@ -671,4 +757,4 @@ END:VCALENDAR
     "limit": 2
   }
 }
-</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#events">/events</a></li><li><a href="#people__username_">/people/{username}</a></li><li><a href="#rooms__kosId__events">/rooms/{kosId}/events</a></li><li><a href="#courses__courseCode__events">/courses/{courseCode}/events</a></li><li><a href="#schedule_exceptions">/schedule_exceptions</a></li><li><a href="#semesters">/semesters</a></li><li><a href="#search">/search</a></li></ul></div></div></div></div></body></html>
+</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#events">/events</a></li><li><a href="#people__username_">/people/{username}</a></li><li><a href="#teachers__username__events">/teachers/{username}/events</a></li><li><a href="#rooms__kosId__events">/rooms/{kosId}/events</a></li><li><a href="#courses__courseCode__events">/courses/{courseCode}/events</a></li><li><a href="#schedule_exceptions">/schedule_exceptions</a></li><li><a href="#semesters">/semesters</a></li><li><a href="#search">/search</a></li></ul></div></div></div></div></body></html>
