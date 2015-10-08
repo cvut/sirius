@@ -34,7 +34,7 @@ module SiriusApi
       case resp.status
       when 200 then true
       when 404 then false
-      else raise "Invalid response for #{@client.site}/#{user_uri} with status #{resp.status}."
+      else raise "Invalid response for #{user_uri} with status #{resp.status}."
       end
     end
 
