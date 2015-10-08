@@ -3,15 +3,14 @@ require 'sirius/time_converter'
 
 class PlannedTimetableSlot < RolePlaying::Role
 
-  def initialize(obj, time_converter, semester_calendar)
+  def initialize(obj, time_converter)
     super obj
     @time_converter = time_converter
-    @semester_calendar = semester_calendar
   end
 
-  def generate_events(faculty_semester)
+  def generate_events(faculty_semester, semester_period)
     teaching_time = generate_teaching_time
-    event_periods = plan_calendar(teaching_time)
+    event_periods = semester_period.plan(teaching_time)
     create_events(event_periods, faculty_semester).tap do |events|
       events.map { |e| e.deleted = !!deleted_at }
     end
@@ -24,7 +23,7 @@ class PlannedTimetableSlot < RolePlaying::Role
   end
 
   private
-  attr_reader :time_converter, :semester_calendar
+  attr_reader :time_converter
 
   def filter_extra_events(all_events, planned_events)
     planned_event_ids = planned_events.map(&:id)
@@ -34,10 +33,6 @@ class PlannedTimetableSlot < RolePlaying::Role
   def generate_teaching_time
     teaching_period = time_converter.convert_time(first_hour, duration)
     Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, parity: parity)
-  end
-
-  def plan_calendar(teaching_time)
-    semester_calendar.plan(teaching_time)
   end
 
   def create_events(event_periods, faculty_semester)
