@@ -100,8 +100,24 @@ periods = [
   {
     type: :teaching,
     starts_at: '2015-10-05',
+    ends_at: '2015-12-20',
+    first_week_parity: :odd,
+    faculty_semester: fitb151,
+  },
+  {
+    type: :teaching,
+    starts_at: '2015-12-21',
+    ends_at: '2015-12-21',
+    first_week_parity: :even,
+    first_day_override: :wednesday,
+    faculty_semester: fitb151,
+  },
+  {
+    type: :teaching,
+    starts_at: '2015-12-22',
     ends_at: '2015-12-22',
     first_week_parity: :odd,
+    first_day_override: :tuesday,
     faculty_semester: fitb151,
   },
   {
@@ -140,8 +156,23 @@ periods = [
   {
     type: :teaching,
     starts_at: '2016-01-04',
-    ends_at: '2016-01-17',
+    ends_at: '2016-01-10',
     first_week_parity: :even,
+    faculty_semester: felb151,
+  },
+  {
+    type: :teaching,
+    starts_at: '2016-01-11',
+    ends_at: '2016-01-11',
+    first_week_parity: :odd,
+    first_day_override: :wednesday,
+    faculty_semester: felb151,
+  },
+  {
+    type: :teaching,
+    starts_at: '2016-01-12',
+    ends_at: '2016-01-17',
+    first_week_parity: :odd,
     faculty_semester: felb151,
   },
   {
@@ -158,6 +189,7 @@ periods.each do |period|
     sp.type = period[:type]
     sp.ends_at = period[:ends_at]
     sp.first_week_parity = period[:first_week_parity]
+    sp.first_day_override = period[:first_day_override]
   end
 end
 
