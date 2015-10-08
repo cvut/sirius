@@ -19,10 +19,8 @@ module API
       # get do
       # end
 
-      params do
-        requires :username, type: String, regexp: /\A[a-z0-9]+\z/i, desc: '8-char unique username'
-      end
       route_param :username do
+        params { use :username }
         get do
           PeopleRepresenter.new ::Person.with_pk!(params[:username])
         end

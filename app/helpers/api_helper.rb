@@ -18,6 +18,10 @@ module ApiHelper
     optional :offset, type: Integer, min: 0, default: DEFAULT_OFFSET
   end
 
+  params :username do
+    requires :username, type: String, regexp: /\A[a-z0-9]+\z/i, desc: "person's username"
+  end
+
   def params_h
     params.to_h.symbolize_keys
   end

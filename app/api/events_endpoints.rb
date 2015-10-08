@@ -123,7 +123,7 @@ module API
     segment :teachers do
       route_param :username do
         params do
-          requires :username, type: String, regexp: /\A[a-z0-9]+\z/i, desc: "person's username"
+          use :username
           use :filter_events
           use :compound
         end
