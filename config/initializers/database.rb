@@ -1,3 +1,4 @@
+require 'logging'
 require 'sequel'
 # Must be required before Sequel extensions are loaded.
 require 'sequel/extensions/core_refinements'
@@ -7,6 +8,10 @@ require 'sequel/extensions/core_refinements'
 db_url = Config.database_url.sub(/\Apostgresql:/, 'postgres:')
 
 DB = Sequel.connect(db_url, max_connections: Config.db_pool)
+
+# Log level at which to log SQL queries.
+DB.sql_log_level = :debug
+DB.logger = Logging.logger[:sql]
 
 Sequel::Model.plugin :timestamps, update_on_create: true
 DB.extension :pg_hstore
