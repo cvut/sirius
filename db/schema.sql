@@ -590,10 +590,24 @@ CREATE INDEX events_absolute_sequence_number_index ON events USING btree (absolu
 
 
 --
+-- Name: events_course_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX events_course_id_index ON events USING btree (course_id);
+
+
+--
 -- Name: events_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX events_faculty_index ON events USING btree (faculty);
+
+
+--
+-- Name: events_room_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX events_room_id_index ON events USING btree (room_id);
 
 
 --
@@ -788,3 +802,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1434994575_add_original_fi
 INSERT INTO "schema_migrations" ("filename") VALUES ('1441021231_create_semester_periods.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1442325052_add_access_token_to_people.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1443194817_add_deleted_at_to_parallels_and_timetable_slots.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1444408228_add_indexes_to_events.rb');
