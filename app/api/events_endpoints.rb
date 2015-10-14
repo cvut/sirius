@@ -9,6 +9,7 @@ require 'interactors/api/filter_events'
 require 'interactors/api/represent_events_json'
 require 'events_representer'
 require 'sirius_api/events_authorizer'
+require 'sirius_api/date_or_date_time'
 
 module API
   class EventsEndpoints < Grape::API
@@ -35,8 +36,8 @@ module API
       end
 
       params :date_filter do
-        optional :from, type: DateTime
-        optional :to, type: DateTime
+        optional :from, coerce_with: SiriusApi::DateOrDateTime
+        optional :to, coerce_with: SiriusApi::DateOrDateTime
         optional :with_original_date, type: Boolean, default: false
       end
       params :deleted do
