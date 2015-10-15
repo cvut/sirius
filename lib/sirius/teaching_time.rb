@@ -1,3 +1,5 @@
+require 'ice_cube'
+
 module Sirius
   class TeachingTime
 
@@ -26,12 +28,29 @@ module Sirius
       @teaching_period.ends_at
     end
 
+    def duration
+      ends_at - starts_at
+    end
+
     def ==(other)
       @teaching_period == other.teaching_period && @day == other.day && @parity == other.parity
     end
 
     def numeric_day
       Date::DAYS_INTO_WEEK[day] + 1
+    end
+
+    def to_recurrence_rule(day_offset, schedule_ends_at)
+      teaching_day = (numeric_day + day_offset) % 7
+      IceCube::Rule.weekly(week_frequency, :monday).day(teaching_day).until(schedule_ends_at)
+    end
+
+    def week_frequency
+      if parity == :both
+        1
+      else
+        2
+      end
     end
 
   end
