@@ -73,4 +73,29 @@ describe Event do
 
   end
 
+  describe '.batch_delete' do
+    let!(:event) { Fabricate(:event, applied_schedule_exception_ids: [42]) }
+
+    it 'sets deleted flag for given events' do
+      expect {
+        described_class.batch_delete([event.id])
+        event.refresh
+      }.to change(event, :deleted).from(false).to(true)
+    end
+
+    it 'does not mark other events' do
+      expect {
+        described_class.batch_delete([])
+        event.refresh
+      }.not_to change(event, :deleted).from(false)
+    end
+
+    it 'cleans applied_schedule_exception_ids for given events' do
+      expect {
+        described_class.batch_delete([event.id])
+        event.refresh
+      }.to change(event, :applied_schedule_exception_ids).from([42]).to(nil)
+    end
+  end
+
 end

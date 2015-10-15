@@ -21,6 +21,10 @@ class Event < Sequel::Model
     filter(:teacher_ids.pg_array.contains([username]))
   end
 
+  def self.batch_delete(ids)
+    where(id: ids, deleted: false).update(deleted: true, applied_schedule_exception_ids: nil)
+  end
+
   def period
     Period.new(starts_at, ends_at)
   end
