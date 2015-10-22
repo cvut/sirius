@@ -22,7 +22,7 @@ class Event < Sequel::Model
   end
 
   def self.batch_delete(ids)
-    where(id: ids, deleted: false).update(deleted: true, applied_schedule_exception_ids: nil)
+    where(id: ids).update(deleted: true, applied_schedule_exception_ids: nil)
   end
 
   def period
