@@ -29,7 +29,7 @@ module SiriusApi
       end
 
       user_uri = "#{@client.site}/#{username}/roles?#{operator}=#{roles.to_a.join(',')}"
-      resp = token.request(:head, user_uri)
+      resp = send_request(:head, user_uri)
 
       case resp.status
       when 200 then true
@@ -46,5 +46,20 @@ module SiriusApi
       end
       @token
     end
+
+    def send_request(http_method, uri)
+      resp = token.request(http_method, uri)
+      if resp.status == 401
+        renew_token!
+        token.request(http_method, uri)
+      else
+        resp
+      end
+    end
+
+    def renew_token!
+      @token = @token.refresh!
+    end
+
   end
 end

@@ -38,6 +38,15 @@ describe SiriusApi::UmapiClient, :vcr do
       end
     end
 
+    context 'with 401 status' do
+      let(:status) { 401 }
+
+      it 'refreshes access token' do
+        allow(token).to receive(:status).and_return(401, 200)
+        expect(client).to receive(:renew_token!)
+        client.user_has_roles?(username, ['FOO'])
+      end
+    end
 
 
     context 'with 200 status' do
