@@ -45,7 +45,7 @@ gem 'activesupport'
 gem 'corefines', '~> 1.8'
 gem 'role_playing', github: 'jnv/role_playing'
 gem 'logging'
-gem 'oauth2'
+gem 'oauth2', github: 'cvut/oauth2', ref: '13753d6'
 
 ## For console
 gem 'pry', require: false
