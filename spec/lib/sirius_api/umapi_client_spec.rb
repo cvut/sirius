@@ -6,12 +6,13 @@ describe SiriusApi::UmapiClient, :vcr do
   subject(:client) { described_class.new }
   let(:username) { 'szolatib' }
   let(:status) { 200 }
-  let(:token) { double(status: status).as_null_object }
+  let(:token) { double(status: status, expired?: false).as_null_object }
 
   describe '#user_has_roles?' do
 
     before do
-      allow(client).to receive(:token) { token }
+      Thread.current[:umapi_token] = nil
+      allow(client).to receive(:client) { token }
     end
 
     context 'with blank username' do
@@ -43,7 +44,7 @@ describe SiriusApi::UmapiClient, :vcr do
 
       it 'refreshes access token' do
         allow(token).to receive(:status).and_return(401, 200)
-        expect(client).to receive(:renew_token!)
+        expect(token).to receive(:refresh!) { token }
         client.user_has_roles?(username, ['FOO'])
       end
     end
