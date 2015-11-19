@@ -30,6 +30,9 @@ end
 
 shared_examples 'secured resource' do
 
+  let(:dummy_access_token) { 'eecea925-7ce1-4297-8ac4-d82446a9caa7' }
+  let(:token_info) { double(:token_info, user_name: '', scope: ['cvut:sirius:all:read'], status: 200, client_id: 'dummy', exp: Time.now + 1.hour) }
+
   it 'is not accessible without access token' do
     get path_for(path)
     expect(status).to eql 401
@@ -40,11 +43,11 @@ shared_examples 'secured resource' do
     expect(status).to eql 200
   end
 
-  it 'is accessible with oauth token', authenticated: :oauth do
-    VCR.use_cassette(infer_cassette_name, :record => :new_episodes) do
-      auth_get path_for(path)
-      expect(status).to eql 200
-    end
+  it 'is accessible with oauth token' do
+    # XXX: Using `allow_any_instance_of` stub is dirty. Could it be handled some other way?
+    allow_any_instance_of(SiriusApi::Strategies::RemoteOAuthServer).to receive(:request_token_info).and_return(token_info)
+    get path_for(path), access_token: dummy_access_token
+    expect(status).to eql 200
   end
 end
 

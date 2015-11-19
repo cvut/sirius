@@ -11,6 +11,18 @@ GIT
       uri_template
 
 GIT
+  remote: git://github.com/cvut/oauth2.git
+  revision: 13753d67056623c1fe03106a41f400354f904e9d
+  ref: 13753d6
+  specs:
+    oauth2 (1.0.0)
+      faraday (>= 0.8, < 0.10)
+      jwt (~> 1.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (~> 1.2)
+
+GIT
   remote: git://github.com/jnv/role_playing.git
   revision: 8bfab60b5308993926c0f5acfd5d7d404ca0c44d
   specs:
@@ -171,7 +183,7 @@ GEM
     json_spec (1.1.4)
       multi_json (~> 1.0)
       rspec (>= 2.0, < 4.0)
-    jwt (1.5.1)
+    jwt (1.5.2)
     kramdown (1.8.0)
     listen (3.0.1)
       rb-fsevent (>= 0.9.3)
@@ -197,12 +209,6 @@ GEM
     notiffany (0.0.6)
       nenv (~> 0.1)
       shellany (~> 0.0)
-    oauth2 (1.0.0)
-      faraday (>= 0.8, < 0.10)
-      jwt (~> 1.0)
-      multi_json (~> 1.3)
-      multi_xml (~> 0.5)
-      rack (~> 1.2)
     ox (2.2.0)
     parser (2.2.2.6)
       ast (>= 1.1, < 3.0)
@@ -362,7 +368,7 @@ DEPENDENCIES
   kosapi_client!
   kramdown
   logging
-  oauth2
+  oauth2!
   pg
   pliny (~> 0.11.0)
   pry

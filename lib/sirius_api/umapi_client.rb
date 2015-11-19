@@ -8,17 +8,7 @@ module SiriusApi
 
     using Corefines::Object::in?
 
-    def initialize
-      @client = OAuth2::Client.new(
-        Config.oauth_client_id,
-        Config.oauth_client_secret,
-        site: Config.umapi_people_uri,
-        authorize_url: Config.oauth_auth_uri,
-        token_url: Config.oauth_token_uri,
-        raise_errors: false,
-        max_redirects: 0
-      )
-    end
+    SITE = Config.umapi_people_uri
 
     def user_has_roles?(username, roles, operator: :all)
       fail ArgumentError, "Parameter 'username' must not be blank." if username.blank?
@@ -28,8 +18,8 @@ module SiriusApi
         fail ArgumentError, "Operator must be 'all', 'any', or 'none'."
       end
 
-      user_uri = "#{@client.site}/#{username}/roles?#{operator}=#{roles.to_a.join(',')}"
-      resp = token.request(:head, user_uri)
+      user_uri = "#{SITE}/#{username}/roles?#{operator}=#{roles.to_a.join(',')}"
+      resp = send_request(:head, user_uri)
 
       case resp.status
       when 200 then true
@@ -41,10 +31,36 @@ module SiriusApi
     private
 
     def token
-      if @token.nil? || @token.expired?
-        @token = @client.client_credentials.get_token
-      end
+      @token ||= (Thread.current[:umapi_token] ||= client.client_credentials.get_token)
+      renew_token! if @token.expired?
       @token
     end
+
+    def send_request(http_method, uri)
+      resp = token.request(http_method, uri)
+      if resp.status == 401
+        renew_token!
+        token.request(http_method, uri)
+      else
+        resp
+      end
+    end
+
+    def client
+      OAuth2::Client.new(
+        Config.oauth_client_id,
+        Config.oauth_client_secret,
+        site: SITE,
+        authorize_url: Config.oauth_auth_uri,
+        token_url: Config.oauth_token_uri,
+        raise_errors: false,
+        max_redirects: 0
+      )
+    end
+
+    def renew_token!
+      @token = Thread.current[:umapi_token] = @token.refresh!
+    end
+
   end
 end
