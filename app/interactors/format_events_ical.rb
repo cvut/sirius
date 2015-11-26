@@ -21,7 +21,7 @@ class FormatEventsIcal
   # Adds events to an ICalendar and convert it to a text representation.
   # @return [String] ICalendar as a string.
   def perform(events: [])
-    @events = Array(events)
+    @events = events.eager(:parallel, :course, :room).all
 
     @events.each do |e|
       @calendar.add_event IcalEvent(e).to_ical

@@ -6,7 +6,8 @@ describe FormatEventsIcal do
   include IcalendarHelper
 
   let(:event) { Fabricate.build(:event, id: 42, starts_at: '2014-04-05 14:30', ends_at: '2014-04-05 16:00', course_id: 'MI-RUB', event_type: 'tutorial') }
-  let(:interactor) { described_class.perform(events: event) }
+  let(:event_dataset) { double(:dataset, all: [event]).as_null_object }
+  let(:interactor) { described_class.perform(events: event_dataset) }
   let(:result) { interactor.ical }
   let(:calendar) { parse_icalendar(result).first } # Parser returns array of calendars
   let(:tzid) { 'Europe/Prague' }
