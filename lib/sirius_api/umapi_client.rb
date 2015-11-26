@@ -59,7 +59,12 @@ module SiriusApi
     end
 
     def renew_token!
-      @token = Thread.current[:umapi_token] = @token.refresh!
+      new_token = if @token.refresh_token
+        @token.refresh!
+      else
+        client.client_credentials.get_token
+      end
+      @token = Thread.current[:umapi_token] = new_token
     end
 
   end
