@@ -16,7 +16,8 @@ module Interactors
         @events = paginated.dataset
 
         @compounds = CompoundEvents.perform(events: @events, params: params).compounds
-        @representer = EventsRepresenter.for_collection.prepare(convert_events(@events, student_output_permitted))
+        converted_events = convert_events(@events.eager(:parallel).all, student_output_permitted)
+        @representer = EventsRepresenter.for_collection.prepare(converted_events)
       end
 
       def to_hash(options = {})
