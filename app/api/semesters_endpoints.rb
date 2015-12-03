@@ -21,7 +21,8 @@ module API
       params { use :pagination, :faculty_filter }
 
       get do
-        filtered_dataset = SiriusApi::SemesterFilter.new.filter(FacultySemester.dataset, params)
+        semester_dataset = FacultySemester.dataset.eager(:semester_periods)
+        filtered_dataset = SiriusApi::SemesterFilter.new.filter(semester_dataset, params)
         represent_paginated(filtered_dataset, SemestersRepresenter)
       end
 
