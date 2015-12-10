@@ -375,6 +375,11 @@ resourceTypes:
   is: [ paged, secured ]
   get:
     description: Get all semesters per faculties.
+    queryParameters:
+      faculty:
+        description: Filter semesters by faculty id
+        type: integer
+        required: false
     responses:
       200:
         body:

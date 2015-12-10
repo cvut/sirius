@@ -58,7 +58,7 @@ module ApiHelper
     paginated = Interactors::Api::Paginate.perform(dataset: dataset, params: params)
     representer
       .for_collection
-      .new(paginated.dataset)
+      .new(paginated.dataset.all)
       .to_hash('meta' => paginated.meta)
   end
 end

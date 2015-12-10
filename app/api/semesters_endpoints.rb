@@ -1,20 +1,29 @@
 require 'models/faculty_semester'
 require 'semesters_representer'
+require 'sirius_api/semester_filter'
 require 'api_helper'
 
 module API
   class SemestersEndpoints < Grape::API
     helpers ApiHelper
 
+    helpers do
+      params :faculty_filter do
+        optional :faculty, type: Integer
+      end
+    end
+
     before do
       authenticate!
     end
 
     resource :semesters do
-      params { use :pagination }
+      params { use :pagination, :faculty_filter }
 
       get do
-        represent_paginated(FacultySemester.dataset, SemestersRepresenter)
+        semester_dataset = FacultySemester.dataset.eager(:semester_periods)
+        filtered_dataset = SiriusApi::SemesterFilter.new.filter(semester_dataset, params)
+        represent_paginated(filtered_dataset, SemestersRepresenter)
       end
 
       params do
