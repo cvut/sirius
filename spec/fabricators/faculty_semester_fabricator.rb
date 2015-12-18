@@ -1,6 +1,7 @@
 require 'faculty_semester'
 
 Fabricator(:faculty_semester) do
+  id { sequence(:faculty_semester) }
   code 'B141'
   faculty 18000
   update_parallels true

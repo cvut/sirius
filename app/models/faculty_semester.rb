@@ -13,6 +13,11 @@ class FacultySemester < Sequel::Model
     end
   end
 
+  def self.find_by_date(date, faculty_id)
+    where(':date >= starts_at AND :date <= ends_at AND faculty = :faculty',
+          date: date, faculty: faculty_id).first
+  end
+
   def first_week_parity
     Parity.from_numeric(super)
   end
