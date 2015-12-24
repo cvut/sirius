@@ -15,7 +15,10 @@ class FacultySemester < Sequel::Model
 
   def self.find_by_date(date, faculty_id)
     where(':date >= starts_at AND :date <= ends_at AND faculty = :faculty',
-          date: date, faculty: faculty_id).first
+          date: date, faculty: faculty_id)
+      .eager(:semester_periods)
+      .limit(1)
+      .all.first  # eager loading doesn't work with Dataset.first
   end
 
   def first_week_parity
