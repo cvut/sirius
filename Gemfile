@@ -45,6 +45,7 @@ gem 'corefines', '~> 1.9'
 gem 'role_playing', github: 'jnv/role_playing'
 gem 'logging'
 gem 'oauth2', github: 'cvut/oauth2', ref: 'd9f6fc3'
+gem 'celluloid'
 
 ## For console
 gem 'pry', require: false

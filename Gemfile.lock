@@ -67,6 +67,23 @@ GEM
       dependor (>= 0.0.4)
     builder (3.2.2)
     byebug (9.0.4)
+    celluloid (0.17.2)
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      timers (>= 4.1.1)
+    celluloid-essentials (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-extras (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-fsm (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-pool (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-supervision (0.20.5)
+      timers (>= 4.1.1)
     chewy (0.8.3)
       activesupport (>= 3.2)
       elasticsearch (>= 1.0.0)
@@ -160,6 +177,7 @@ GEM
       guard (>= 1.1.0)
       yard (>= 0.7.0)
     hashie (3.4.4)
+    hitimes (1.2.3)
     http_accept (0.1.6)
     http_parser.rb (0.6.0)
     i18n (0.7.0)
@@ -292,6 +310,8 @@ GEM
     thread_safe (0.3.5)
     tilt (2.0.4)
     timecop (0.8.1)
+    timers (4.1.1)
+      hitimes
     tins (1.6.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
@@ -322,6 +342,7 @@ DEPENDENCIES
   activesupport
   awesome_print
   bogus
+  celluloid
   chewy (~> 0.8.2, < 0.8.4)
   codeclimate-test-reporter
   committee
@@ -374,4 +395,4 @@ RUBY VERSION
    ruby 2.2.5p319
 
 BUNDLED WITH
-   1.12.4
+   1.12.5

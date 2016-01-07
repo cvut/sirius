@@ -17,18 +17,20 @@ module Sirius
 
     def build_event(event_period, absolute_seq)
       event = Event.new
-      event.timetable_slot = @slot
-      event.parallel = @slot.parallel
-      event.room = @slot.room
-      event.course = @slot.parallel.course
       event.period = event_period
       event.absolute_sequence_number = absolute_seq
-      event.event_type = @slot.parallel.parallel_type
       event.deleted = false
       event.faculty = @faculty_semester.faculty
       event.semester = @faculty_semester.code
-      event.capacity = @slot.parallel.capacity
       event.applied_schedule_exception_ids = nil
+      if @slot.respond_to? :parallel
+        event.parallel = @slot.parallel
+        event.course = @slot.parallel.course
+        event.event_type = @slot.parallel.parallel_type
+        event.capacity = @slot.parallel.capacity
+        event.timetable_slot_id = @slot.id
+      end
+      event.room = @slot.room if @slot.respond_to? :room
       event
     end
   end

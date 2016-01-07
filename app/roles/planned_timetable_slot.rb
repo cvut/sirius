@@ -22,6 +22,15 @@ class PlannedTimetableSlot < RolePlaying::Role
     Event.batch_delete(extra_events.map(&:id))
   end
 
+  def day
+    original_day = __getobj__.day
+    if original_day.is_a? Numeric
+      Day.values[original_day]
+    else
+      original_day
+    end
+  end
+
   private
   attr_reader :time_converter
 
@@ -37,6 +46,14 @@ class PlannedTimetableSlot < RolePlaying::Role
 
   def create_events(event_periods, faculty_semester)
     Sirius::EventFactory.new(self, faculty_semester).build_events(event_periods)
+  end
+
+  def deleted_at
+    if role_player.respond_to? :deleted_at
+      role_player.deleted_at
+    else
+      false
+    end
   end
 
 end
