@@ -8,6 +8,7 @@ require 'interactors/import_course_events'
 require 'interactors/import_course_event_students'
 require 'interactors/renumber_events'
 require 'sirius/event_planner'
+require 'actors/teacher_timetable_import'
 
 module Sirius
   class ScheduleManager
@@ -50,6 +51,12 @@ module Sirius
 
     def import_exam_students
       perform_with_active_semesters(ImportExamStudents, :exams)
+    end
+
+    def import_teacher_timetables
+      active_semesters(:teacher_timetables).each do |sem|
+        TeacherTimetableImport.new(sem).run!
+      end
     end
 
     def renumber_events
