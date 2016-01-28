@@ -8,9 +8,9 @@ module SiriusApi
 
     using RSpec::Parameterized::TableSyntax
 
-    subject(:user) { described_class.new('rubyeli', umapi_client: umapi_client) }
+    subject(:user) { described_class.new('rubyeli', scope, umapi_client: umapi_client) }
     let(:umapi_client) { double('UmapiClient') }
-
+    let(:scope) { [] }
 
     describe '#has_any_role?' do
 
@@ -47,6 +47,24 @@ module SiriusApi
 
         # Should not call umapi_client at all.
         it { expect { user.has_any_role?(*roles) }.to raise_error(StandardError) }
+      end
+    end
+
+    describe '#student_access_allowed?' do
+      context 'with READ_ALL scope' do
+        let(:scope) { ['cvut:sirius:all:read'] }
+
+        it 'allows student listing' do
+          expect(user.student_access_allowed?).to be_truthy
+        end
+      end
+
+      context 'with limited scope' do
+        let(:scope) { ['cvut:sirius:personal:read'] }
+
+        it 'disallows student listing' do
+          expect(user.student_access_allowed?).to be_falsey
+        end
       end
     end
   end

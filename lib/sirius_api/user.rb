@@ -23,8 +23,9 @@ module SiriusApi
     # Scope 'limited-by-idm' depends on current user role.
     # Any other scopes (e.g. 'personal:read') are disallowed to view students.
     #
+    # TODO: Add integration specs for student listing in JSON output.
     def student_access_allowed?
-      return true if scopes.include? Scopes::READ_ALL
+      return true if scopes.include_any?(Scopes::READ_ALL)
       if username && scopes.include_any?(Scopes::READ_ROLE_BASED)
         return has_any_role? PRIVILEGED_ROLES
       end
