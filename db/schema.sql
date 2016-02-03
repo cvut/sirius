@@ -311,7 +311,8 @@ CREATE TABLE semester_periods (
     first_week_parity integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    first_day_override integer
+    first_day_override integer,
+    irregular boolean DEFAULT false NOT NULL
 );
 
 
@@ -805,3 +806,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1442325052_add_access_toke
 INSERT INTO "schema_migrations" ("filename") VALUES ('1443194817_add_deleted_at_to_parallels_and_timetable_slots.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1443807443_add_first_day_override_to_semester_periods.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1444408228_add_indexes_to_events.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1454511860_add_irregular_to_semester_periods.rb');

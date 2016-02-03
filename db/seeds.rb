@@ -190,6 +190,7 @@ periods.each do |period|
     sp.ends_at = period[:ends_at]
     sp.first_week_parity = period[:first_week_parity]
     sp.first_day_override = period[:first_day_override]
+    sp.irregular = !!period[:first_day_override]
   end
 end
 
