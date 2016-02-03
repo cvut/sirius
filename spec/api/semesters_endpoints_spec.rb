@@ -31,18 +31,23 @@ describe API::SemestersEndpoints do
     let!(:entity) { Fabricate(:faculty_semester) }
     let!(:semester_periods) { [
       Fabricate(:teaching_semester_period, faculty_semester: entity),
+      Fabricate(:irregular_semester_period, faculty_semester: entity),
       Fabricate(:holiday_semester_period, faculty_semester: entity),
-      Fabricate(:exams_semester_period, faculty_semester: entity),
-    ]}
+      Fabricate(:exams_semester_period, faculty_semester: entity)
+    ] }
 
     def period_for_json(period)
       ret = {
         type: period.type,
         starts_at: period.starts_at,
         ends_at: period.ends_at,
+        irregular: period.irregular
       }
       if period.first_week_parity
         ret[:first_week_parity] = period.first_week_parity
+      end
+      if period.first_day_override
+        ret[:first_day_override] = period.first_day_override
       end
       ret.freeze
     end

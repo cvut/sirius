@@ -22,6 +22,7 @@ class SemestersRepresenter < Roar::Decorator
 
   collection :semester_periods, as: :periods do
     property :type
+    property :irregular
     property :starts_at
     property :ends_at
     property :first_week_parity
