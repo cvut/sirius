@@ -14,6 +14,10 @@ class SemesterPeriod < Sequel::Model
     super Sirius::SemesterPeriodType.to_numeric(new_type)
   end
 
+  def teaching?
+    type == :teaching
+  end
+
   def first_week_parity
     Parity.from_numeric(super) if super
   end
@@ -48,4 +52,9 @@ class SemesterPeriod < Sequel::Model
     end
   end
 
+  def regular?
+    !irregular
+  end
+
+  alias_method :irregular?, :irregular
 end

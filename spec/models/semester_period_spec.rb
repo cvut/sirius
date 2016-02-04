@@ -7,9 +7,23 @@ describe SemesterPeriod do
   let(:ends_at) { Date.new(2015, 12, 20) }
   let(:type) { :teaching }
   let(:parity) { :odd }
-  subject(:period) {
+
+  subject(:period) do
     described_class.new(starts_at: starts_at, ends_at: ends_at, type: type, first_week_parity: parity)
-  }
+  end
+
+  describe '#teaching?' do
+    subject { period.teaching? }
+
+    context 'teaching period' do
+      it { should be true }
+    end
+
+    context 'non-teaching period' do
+      let(:type) { :exams }
+      it { should be false }
+    end
+  end
 
   describe '#validate' do
     context 'ends_at before starts_at' do
