@@ -90,7 +90,7 @@ GEM
     concord (0.1.5)
       adamantium (~> 0.2.0)
       equalizer (~> 0.0.9)
-    corefines (1.8.0)
+    corefines (1.9.0)
     coveralls (0.8.2)
       json (~> 1.8)
       rest-client (>= 1.6.8, < 2)
@@ -347,7 +347,7 @@ DEPENDENCIES
   chewy!
   codeclimate-test-reporter
   committee
-  corefines (~> 1.8)
+  corefines (~> 1.9)
   coveralls
   database_cleaner
   dotenv

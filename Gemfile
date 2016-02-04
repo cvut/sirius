@@ -42,7 +42,7 @@ gem 'rufus-scheduler', '~> 3.1.0', require: false
 
 ## Helper stuff
 gem 'activesupport'
-gem 'corefines', '~> 1.8'
+gem 'corefines', '~> 1.9'
 gem 'role_playing', github: 'jnv/role_playing'
 gem 'logging'
 gem 'oauth2', github: 'cvut/oauth2', ref: '13753d6'
