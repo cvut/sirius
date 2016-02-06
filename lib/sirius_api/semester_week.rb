@@ -1,6 +1,7 @@
 require 'corefines'
 require 'forwardable'
 require 'date_refinements'
+require 'sirius_api/semester_day'
 
 module SiriusApi
   class SemesterWeek
@@ -98,6 +99,21 @@ module SiriusApi
     end
 
     ##
+    # @return [Array<SemesterDay>] an array of semester days inside this week,
+    #   sorted by date from Monday to Sunday. The array may contain `nil` values.
+    def days
+      @days ||= @start_date.upto(end_date).map { |date|
+        @periods.find { |p| p.include? date }.then do |p|
+          SemesterDay.new(p, date, teaching_week)
+        end
+      }.freeze
+    end
+
+    # @return [Date] the last day (sunday) of this week.
+    def end_date
+      @start_date + 6
+    end
+
     # @return [Array<Symbol>] a set of regular period types within this week.
     def period_types
       @period_types ||= @periods.reject(&:irregular?).map(&:type).uniq.freeze
@@ -124,13 +140,7 @@ module SiriusApi
 
       @week_parity = @periods
         .find { |p| p.regular? && p.teaching? }
-        .then do |period|
-          weeks_since_start = ((@start_date - period.starts_at.start_of_week) / 7).floor.abs
-          first_parity = period.first_week_parity == :even ? 0 : 1
-          parity = (weeks_since_start + first_parity) % 2
-
-          parity == 0 ? :even : :odd
-        end
+        .then { |p| p.week_parity(@start_date) }
     end
 
     def eql?(other)

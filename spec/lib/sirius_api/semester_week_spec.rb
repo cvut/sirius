@@ -75,6 +75,35 @@ describe SiriusApi::SemesterWeek do
     it { should be_frozen }
   end
 
+  describe '#days' do
+    subject(:days) { semester_week.days }
+    let(:semester_week) { semester_weeks[5] }
+
+    it { should be_frozen }
+
+    it 'returns days with correct period' do
+      expected = ([4] * 3 + [5] * 4).map { |idx| semester_periods[idx] }
+      expect( days.map(&:period) ).to eq expected
+    end
+
+    it 'returns days with correct date' do
+      expected = (4..10).map { |d| Date.parse("2016-01-#{d}") }
+      expect( days.map(&:date) ).to eq expected.to_a
+    end
+
+    it 'returns days with the same teaching_week as this week' do
+      expect( days.map(&:teaching_week).uniq ).to eq [4]
+    end
+  end
+
+  describe '#end_date' do
+    let(:semester_week) { semester_weeks[0] }
+
+    it 'returns date of the last day of the week' do
+      expect( semester_week.end_date ).to eq Date.parse('2015-12-06')
+    end
+  end
+
   describe '#period_types' do
     subject { semester_week.period_types }
 
@@ -137,20 +166,6 @@ describe SiriusApi::SemesterWeek do
 
       it 'returns correct parity' do
         should eq expected
-      end
-    end
-
-    context 'week of a teaching period that intersects a year' do
-      let(:week_period) do
-        Fabricate.build :semester_period,
-          type: :teaching,
-          starts_at: '2015-12-23', ends_at: '2016-01-10',
-          first_week_parity: :even
-      end
-      let(:semester_week) { described_class.new(semester, [week_period], Date.parse('2016-01-05')) }
-
-      it 'returns correct parity' do
-        should eq :even
       end
     end
   end

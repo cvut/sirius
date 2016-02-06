@@ -1,36 +1,45 @@
-require 'corefines'
+require 'forwardable'
 require 'day'
-require 'models/faculty_semester'
 
 module SiriusApi
   class SemesterDay
-    using Corefines::Object::then
+    extend Forwardable
 
-    attr_reader :date, :semester
+    # @return [Date]
+    attr_reader :date
 
-    def initialize(semester, date)
-      @semester = semester.freeze
+    # @return [SemesterPeriod]
+    attr_reader :period
+
+    # @return [Fixnum, nil] an ordinal number of the teaching week within the
+    #   semester, or `nil` if this day isn't inside a regular teaching period.
+    attr_reader :teaching_week
+
+    # @!attribute [r] semester
+    #   @return [FacultySemester] a semester that contains this day.
+    def_delegator :@period, :faculty_semester, :semester
+
+    # @!attribute [r] irregular
+    #   @return [Boolean] whether this day is irregular.
+    def_delegator :@period, :irregular
+
+
+    ##
+    # @param period [SemesterPeriod] (see #period)
+    # @param date [Date] (see #date)
+    # @param teaching_week [Fixnum, nil] (see #teaching_week)
+    def initialize(period, date, teaching_week)
+      @period = period
       @date = date.freeze
+      @teaching_week = teaching_week
     end
 
-    # Finds FacultySemester that includes the specified date and returns
-    # an instance of SemesterDay that represents this date in context
-    # of the semester. If no semester for the date is found, then it returns nil.
-    def self.resolve(date, faculty_id)
-      FacultySemester
-        .find_by_date(date, faculty_id)
-        .then { |sem| new(sem, date) }
-    end
-
-    # Returns a Period that includes this date.
-    def period
-      @period ||= @semester.semester_periods.find do |p|
-        @date >= p.starts_at && @date <= p.ends_at
-      end
-    end
-
-    # Returns the day of calendar week (1-7, Monday is 1).
-    # It may not be the same as a real calendar day!
+    ##
+    # Returns the day of calendar week. It may not be the same as a real calendar
+    # day, due to a semester period with day_override.
+    #
+    # @return [Fixnum] the day of calendar week per ISO 8601 (1-7, Monday is 1).
+    #
     def cwday
       return @date.cwday unless period.first_day_override
 
@@ -41,42 +50,34 @@ module SiriusApi
       end
     end
 
-    # Returns name of this day.
+    ##
+    # @return [Symbol] name of this day.
     # @see #cwday
     def wday_name
       Day.from_numeric(cwday)
     end
 
-    # Returns parity of this day (+:even+, or +:odd+), if it's inside a teaching
-    # period; otherwise returns nil.
+    ##
+    # Returns a parity of this day within a teaching semester period.
+    # If this day is not within a teaching period, the method returns `nil`.
+    #
+    # Unlike the same named method in {SemesterWeek}, this one considers even
+    # irregular periods!
+    #
+    # @return [Symbol, nil] `:even`, `:odd`, or `nil`
+    # @see SemesterPeriod#week_parity
+    #
     def week_parity
-      return if period.type != :teaching
+      return @week_parity if defined? @week_parity
+      @week_parity = @period.week_parity(@date)
+    end
 
-      @week_parity ||= begin
-        first_parity = period.first_week_parity == :even ? 0 : 1
-        parity = (period.starts_at.cweek + @date.cweek + first_parity) % 2
-        parity == 0 ? :even : :odd
+    def eql?(other)
+      %w[class date period teaching_week].all? do |att|
+        other.send(att) == self.send(att)
       end
     end
 
-    # Returns ordinal number of this week among weeks of the same type in
-    # the semester.
-    def week_num
-      @week_num ||= begin
-        periods = @semester.semester_periods
-          .find_all { |p| p.type == period.type && p.starts_at <= @date }
-          .sort_by(&:starts_at)
-
-        # Weeks is an array of calendar week numbers for each period,
-        # e.g. [10, 11, 13, 14]
-        weeks = periods.reduce([]) do |weeks, p|
-          weeks | (p.starts_at.cweek..p.ends_at.cweek).to_a
-        end
-
-        # Index in array corresponds to the semester week number, but starting
-        # from zero.
-        weeks.index(@date.cweek) + 1
-      end
-    end
+    alias_method :==, :eql?
   end
 end

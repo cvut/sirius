@@ -20,4 +20,19 @@ describe DateRefinements do
       end
     end
   end
+
+  describe '#end_of_week' do
+
+    where :date    , :expected do
+      '2016-01-01' | '2016-01-03'
+      '2016-01-10' | '2016-01-10'
+      '2016-03-07' | '2016-03-13'
+    end
+
+    with_them ->{ date } do
+      it "returns #{row.expected}" do
+        expect( Date.parse(date).end_of_week ).to eq Date.parse(expected)
+      end
+    end
+  end
 end
