@@ -48,8 +48,14 @@ module SiriusApi
 
       def request_token_info(token_value)
         resp = http_client.post(CHECK_TOKEN_URI, token: token_value)
-        OpenStruct.new(resp.body).tap do |s|
+        if resp.body.is_a?(Hash)
+          body = resp.body
+        else
+          error_body = resp.body
+        end
+        OpenStruct.new(body || {}).tap do |s|
           s.status = resp.status
+          s.error_body = error_body
         end
       end
 
@@ -57,9 +63,13 @@ module SiriusApi
         if token.status == 400
           "Invalid access token."
         elsif token.status != 200
-          "Unable to verify access token (status: #{token.status})."
+          "Unable to verify access token (status: #{token.status}).".tap do |msg|
+            Raven.capture_message(msg, token: token)
+          end
         elsif token.client_id.blank? || token.exp.blank?
-          "Invalid response from the authorization server."
+          "Invalid response from the authorization server.".tap do |msg|
+            Raven.capture_message(msg, token: token)
+          end
         elsif Time.at(token.exp) < Time.now
           "Access token has expired."
         elsif token.scope.empty?

@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'ostruct'
+require 'raven'
 require 'sirius_api/scopes'
 require 'sirius_api/strategies/remote_oauth_server'
 
@@ -11,7 +12,9 @@ describe SiriusApi::Strategies::RemoteOAuthServer do
 
   before do
     allow(strategy).to receive(:params) { { 'access_token' => access_token }}
-    allow(strategy).to receive(:request_token_info) { token_info }
+    allow(strategy).to receive(:http_client) do
+      double(:http_client, status: status, body: token_info).as_null_object
+    end
   end
 
   describe '#authenticate!' do
@@ -20,8 +23,7 @@ describe SiriusApi::Strategies::RemoteOAuthServer do
     let(:access_token) { '123456' }
 
     let(:token_info) do
-      OpenStruct.new(status: status, client_id: client_id, exp: exp,
-                     scope: scope, user_name: user_name)
+      { status: status, client_id: client_id, exp: exp, scope: scope, user_name: user_name }
     end
     let(:status) { 200 }
     let(:client_id) { 'foo' }
@@ -66,6 +68,7 @@ describe SiriusApi::Strategies::RemoteOAuthServer do
 
     context 'OAAS error' do
       let(:status) { 500 }
+      let(:token_info) { 'this is an error' }
       it_behaves_like 'failed authentication'
     end
 
