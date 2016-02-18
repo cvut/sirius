@@ -4,7 +4,7 @@ module Sirius
   class ScheduleExceptionType
     extend Enum
 
-    TYPES = [:cancel, :relative_move, :room_change]
+    TYPES = [:cancel, :relative_move, :room_change, :teacher_change]
 
     # define all types as public uppercase constants of this class
     TYPES.each do |type|

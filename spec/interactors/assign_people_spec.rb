@@ -6,8 +6,22 @@ describe AssignPeople do
   describe '#perform' do
 
     let(:faculty_semester) { Fabricate(:faculty_semester) }
-    let(:parallel) { Fabricate(:parallel, student_ids: %w(vomackar dude2), teacher_ids: %w(skocdop)) }
-    let(:event) { Fabricate(:event, parallel: parallel, semester: faculty_semester.code, faculty: faculty_semester.faculty, teacher_ids: []) }
+
+    let(:parallel) do
+      Fabricate(:parallel,
+        student_ids: ['vomackar', 'dude2'],
+        teacher_ids: ['skocdop']
+      )
+    end
+
+    let(:event) do
+      Fabricate(:event,
+        parallel: parallel,
+        semester: faculty_semester.code,
+        faculty: faculty_semester.faculty,
+        teacher_ids: []
+      )
+    end
 
     it 'assigns students from parallel to event' do
       expect {
@@ -47,7 +61,25 @@ describe AssignPeople do
     end
 
     context 'with not changed event' do
-      let(:event) { Fabricate(:event, parallel: parallel, semester: faculty_semester.code, faculty: faculty_semester.faculty, teacher_ids: %w(skocdop), student_ids: %w(vomackar dude2)) }
+
+      let(:event) do
+        Fabricate(:event,
+          parallel: parallel,
+          semester: faculty_semester.code,
+          faculty: faculty_semester.faculty,
+          teacher_ids: ['skocdop'],
+          student_ids: ['vomackar', 'dude2'],
+          applied_schedule_exception_ids: [exception.id]
+        )
+      end
+
+      let(:exception) do
+        Fabricate(:teacher_change_schedule_exception,
+          semester: faculty_semester.code,
+          faculty: faculty_semester.faculty,
+          options: { teacher_ids: "{skocdop}" }
+        )
+      end
 
       it 'does not update records with unchanged data' do
         expect {
@@ -57,18 +89,34 @@ describe AssignPeople do
       end
     end
 
-     context 'with null values' do
-       let!(:event) { Fabricate(:event, parallel: parallel, semester: faculty_semester.code, faculty: faculty_semester.faculty, teacher_ids: nil, student_ids: nil)}
-       subject(:assign_people) { -> { described_class.perform(faculty_semester: faculty_semester); event.refresh } }
+    context 'with teacher change schedule exception' do
 
-       it 'updates events with null student_ids' do
-          expect { assign_people.call }.to change(event, :student_ids).from(nil).to(%w(vomackar dude2))
-       end
+      let(:exception) do
+        Fabricate(:teacher_change_schedule_exception,
+          semester: faculty_semester.code,
+          faculty: faculty_semester.faculty,
+          options: { teacher_ids: '{skocdop,vomackar}' }
+        )
+      end
 
-       it 'updates events with null teacher_ids' do
-          expect { assign_people.call }.to change(event, :teacher_ids).from(nil).to(%w(skocdop))
-       end
-     end
+      before do
+        event.update(applied_schedule_exception_ids: [exception.id])
+      end
+
+      it 'changes teacher_ids for marked events' do
+        expect {
+          described_class.perform(faculty_semester: faculty_semester)
+          event.refresh
+        }.to change(event, :teacher_ids).from([]).to(%w(skocdop vomackar))
+      end
+
+      it 'changes updated_at for changed event' do
+        expect {
+          described_class.perform(faculty_semester: faculty_semester)
+          event.refresh
+        }.to change(event, :updated_at)
+      end
+    end
 
   end
 
