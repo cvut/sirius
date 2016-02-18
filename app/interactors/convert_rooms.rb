@@ -17,7 +17,7 @@ class ConvertRooms
   private
   def convert_room(room)
     return if room.link_title == 'no-title'
-    room_code = room.link_title
+    room_code = room.link_id
     Room.new(kos_code: room_code)
   end
 
