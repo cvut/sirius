@@ -12,14 +12,6 @@ module Sirius
       @parity = parity
     end
 
-    def week_offset(starting_week_parity)
-      if @parity == :both || @parity == starting_week_parity
-        0.weeks
-      else
-        1.week
-      end
-    end
-
     def starts_at
       @teaching_period.starts_at
     end

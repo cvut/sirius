@@ -55,6 +55,20 @@ describe PlannedSemesterPeriod do
     end
   end
 
+  context 'with period beginning in the middle of a week' do
+    # even period starting on Wednesday
+    subject(:period) { create_period('9.12.2015', '20.12.2015') }
+
+    context 'with events having different parity than starting week' do
+      it 'plans occurrences on second week correctly' do
+        teaching_time.parity = :odd
+        events = period.plan(teaching_time)
+        # odd event should be planned once on following Tuesday (2015-12-15)
+        expect(events).to contain_exactly(Period.parse('15.12.2015 14:30', '15.12.2015 16:00'))
+      end
+    end
+  end
+
   it 'returns two Time instances in Period' do
     event = period.plan(teaching_time).first
     expect(event.starts_at).to be_an_instance_of(Time)

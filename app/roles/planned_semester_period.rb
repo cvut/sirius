@@ -1,5 +1,6 @@
 require 'role_playing'
 require 'ice_cube'
+require 'active_support/core_ext/date/calculations'  # next_week
 
 require 'period'
 require 'day'
@@ -7,8 +8,10 @@ require 'day'
 class PlannedSemesterPeriod < RolePlaying::Role
 
   def plan(teaching_time)
-    week_offset = teaching_time.week_offset(first_week_parity)
-    scheduling_start = combine_date_with_time(starts_at, teaching_time.starts_at) + week_offset
+    scheduling_start = combine_date_with_time(
+      schedule_start_day(teaching_time.parity),
+      teaching_time.starts_at
+    )
 
     schedule = IceCube::Schedule.new(scheduling_start, duration: teaching_time.duration)
     schedule.add_recurrence_rule teaching_time.to_recurrence_rule(day_offset, ends_at)
@@ -28,5 +31,13 @@ class PlannedSemesterPeriod < RolePlaying::Role
 
   def combine_date_with_time(date, time)
     Time.new(date.year, date.month, date.day, time.hour, time.min, time.sec)
+  end
+
+  def schedule_start_day(teaching_time_parity)
+    if teaching_time_parity == :both || teaching_time_parity == first_week_parity
+      starts_at
+    else
+      starts_at.next_week(:monday)
+    end
   end
 end
