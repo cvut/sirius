@@ -34,6 +34,10 @@ class Event < Sequel::Model
     self.ends_at = new_period.ends_at
   end
 
+  def occupied
+    (student_ids || []).size
+  end
+
   def move(offset)
     offset_int = offset.to_i
     self.original_starts_at ||= self.starts_at

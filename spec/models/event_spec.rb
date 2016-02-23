@@ -110,4 +110,20 @@ describe Event do
     end
   end
 
+  describe '#occupied' do
+    subject { event.occupied }
+
+    context 'event without students' do
+      it { should eq 0 }
+    end
+
+    context 'event with students' do
+      before { event.student_ids = ['flynn', 'rubyeli'] }
+
+      it 'returns number of students' do
+        expect( event.occupied ).to eq event.student_ids.size
+      end
+    end
+  end
+
 end

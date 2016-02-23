@@ -150,6 +150,7 @@ describe API::EventsEndpoints do
         deleted: false,
         parallel: '101',
         capacity: 20,
+        occupied: event.student_ids.size,
         event_type: 'lecture',
         links: {
           room: event.room.to_s,
