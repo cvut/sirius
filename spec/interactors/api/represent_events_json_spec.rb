@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'api/represent_events_json'
 
 describe Interactors::Api::RepresentEventsJson do
+
   let(:include_param) { 'teachers,courses' }
   let(:params) do
     {
@@ -11,7 +12,11 @@ describe Interactors::Api::RepresentEventsJson do
     }
   end
 
-  subject(:interactor) { described_class.perform(events: dataset, params: params) }
+  let(:include_student_ids) { true }
+
+  subject(:interactor) do
+    described_class.perform(events: dataset, params: params, include_student_ids: include_student_ids)
+  end
 
   describe '#to_hash' do
     let(:events_cnt) { 5 }
@@ -62,6 +67,23 @@ describe Interactors::Api::RepresentEventsJson do
       end
     end
 
+    describe 'event' do
+      subject(:event) { result['events'].first }
+
+      describe 'links.students' do
+        subject { event['links']['students'] }
+
+        context 'when include_student_ids: false' do
+          let(:include_student_ids) { false }
+          it { should be_nil }
+        end
+
+        context 'when include_student_ids: true' do
+          let(:include_student_ids) { true }
+          it { should_not be_empty }
+        end
+      end
+    end
   end
 
 end

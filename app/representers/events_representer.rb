@@ -25,7 +25,7 @@ class EventsRepresenter < Roar::Decorator
     property :course_id, as: :course
     property :room_id, as: :room
     collection :teacher_ids, as: :teachers
-    collection :student_ids, as: :students
+    collection :student_ids, as: :students, if: -> (args) { args[:include_student_ids] }
     property :applied_schedule_exception_ids, as: :applied_exceptions
   end
 

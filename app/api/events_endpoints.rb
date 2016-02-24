@@ -25,7 +25,7 @@ module API
           Interactors::Api::RepresentEventsJson.perform(
             events: filtered.events,
             params: params,
-            student_output_permitted: current_user.student_access_allowed?
+            include_student_ids: current_user.student_access_allowed?
           ).to_hash
         when :ical
           FormatEventsIcal.perform(events: filtered.events)

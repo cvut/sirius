@@ -155,7 +155,7 @@ describe API::EventsEndpoints do
         links: {
           room: event.room.to_s,
           course: event.course_id,
-          students: event.student_ids,
+          #students: event.student_ids,  excluded for the current_user in the test context
           teachers: event.teacher_ids
         }
       }.to_json
