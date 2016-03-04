@@ -47,6 +47,15 @@ The event’s `room_id` is changed to the specified ID and original value is sto
 .Attributes:
 * `options.room_id` – KOS code (https://rozvoj.fit.cvut.cz/Main/znaceni-mistnosti[anatomy of KOS code])
 
+== TEACHER_CHANGE
+
+Event is taught by different teacher(s).
+
+The event’s `teacher_ids` is changed to the value specified by schedule exception.
+
+.Attributes:
+* `options.teacher_ids` – list of teacher usernames
+
 
 == Scope
 
