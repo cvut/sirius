@@ -592,7 +592,14 @@ CREATE INDEX events_absolute_sequence_number_index ON events USING btree (absolu
 
 
 --
--- Name: events_course_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: events_applied_schedule_exception_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX events_applied_schedule_exception_ids_index ON events USING gin (applied_schedule_exception_ids);
+
+
+--
+-- Name: events_course_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX events_course_id_index ON events USING btree (course_id);
@@ -807,3 +814,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1443194817_add_deleted_at_
 INSERT INTO "schema_migrations" ("filename") VALUES ('1443807443_add_first_day_override_to_semester_periods.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1444408228_add_indexes_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1454511860_add_irregular_to_semester_periods.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1457024495_add_gin_index_to_applied_schedule_exception_ids.rb');
