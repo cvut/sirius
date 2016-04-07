@@ -3,6 +3,7 @@ require 'actors/timetable_transformer'
 require 'roles/planned_semester_period'
 
 describe TimetableTransformer do
+  include ActorHelper
 
   let!(:semester) { Fabricate(:faculty_semester) }
 
@@ -52,9 +53,26 @@ describe TimetableTransformer do
       expect(events.count).to be 3
     end
 
+    it 'generates teacher_timetable events' do
+      events = transformer.plan_events(slot, teacher)
+      expect(events).to all(have_attributes(
+        event_type: 'teacher_timetable',
+        teacher_ids: ['vomackar'],
+        student_ids: []
+      ))
+    end
+
     it 'numbers events sequentially starting from one' do
       events = transformer.plan_events(slot, teacher)
       expect(events.map(&:absolute_sequence_number)).to eq (1..events.count).to_a
+    end
+  end
+
+  describe '#process_row' do
+
+    it 'emits planned events to output' do
+      expect(transformer).to receive(:emit_row)
+      transformer.process_row(slot, teacher)
     end
   end
 end
