@@ -1,5 +1,8 @@
 require 'actors/etl_base'
 
+# Consumer module for implementing ETL consumer - producer Actor protocol.
+#
+# For details about the protocol see comments on ETLProducer.
 module ETLConsumer
   include ETLBase
 

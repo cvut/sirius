@@ -1,5 +1,26 @@
 require 'actors/etl_base'
 
+# Producer module for implementing ETL consumer - producer Actor protocol.
+#
+# ETL consumer - producer protocol with back-pressure is rather simple at it's core:
+# There are two parties: producer and consumer that are both actor instances.
+#
+# - Producer produces (by loading, computing, generating, etc.) data (called rows)
+# and sends them asynchronously to the consumer.
+#
+# - Consumer accepts rows from the producer and does something with them (saves them, sends
+# them somewhere else, etc.).
+#
+# Because rows are exchanged asynchronously and consuming could be slower than producing,
+# a way how to limit data flow between the actors is needed.
+#
+# This is solved by utilising back-pressure: Producer must only produce and send rows when consumer
+# can accept them. The ability to receive rows is signalled by a message from the consumer to the producer.
+# In response to that message a single row can be sent to the consumer. If the producer has no rows
+# available for sending at the moment, it should internally store the state of it's consumer and send a row
+# when it becomes available. After the consumer is finished with processing the received row, it requests
+# another row from the producer and the cycle repeats.
+#
 module ETLProducer
   include ETLBase
 
