@@ -9,7 +9,7 @@ module ETLProducer
 
   # Sends a single row to actor's output asynchronously.
   def emit_row(row)
-    logger.debug "Emiting row: #{self.class.name} -> #{@_output} (#{row.inspect})"
+    logger.debug "Emiting row: #{self.class.name} -> #{@_output}"
     Celluloid::Actor[@_output].async.consume_row(row)
   end
 
@@ -23,12 +23,10 @@ module ETLProducer
   # or to the output directly.
   def output_row(row)
     if @_output_state == :hungry
-      logger.debug "#{@_output} is hungry, emitting."
       @_output_state = :stuffed
       emit_row(row)
       buffer_empty()
     else
-      logger.debug "#{@_output} is stuffed, buffering."
       (@_buffer ||= []) << row
     end
   end
@@ -40,7 +38,6 @@ module ETLProducer
   # Receive work request from it's output.
   def receive_hungry
     return if output_hungry?
-    logger.debug "#{@_output} told me that he feels hungry."
     if buffer_empty?
       @_output_state = :hungry
     else

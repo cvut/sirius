@@ -18,12 +18,11 @@ class TimetableSource
 
   # Teacher username is expected as a row
   def process_row(username)
-    puts "Processing #{username}"
+    logger.debug "Processing #{username}"
     timetables = fetch_timetable(username)
     @timetables = timetables.each
     @username = username
-    p @timetables, @username
-    puts "Finished processing #{username}"
+    logger.debug "Finished processing #{username}"
     produce_row if buffer_empty?
   end
 
@@ -34,7 +33,7 @@ class TimetableSource
   private
 
   def fetch_timetable(username)
-    puts "Fetching #{username}"
+    logger.debug "Fetching #{username}"
     client = Sirius::KOSapiClientRegistry.instance.client_for_faculty(@faculty)
     client.teachers.find(username).timetable
   end
