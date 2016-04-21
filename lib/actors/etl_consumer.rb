@@ -13,13 +13,20 @@ module ETLConsumer
     process_row(row)
   end
 
-  def become_hungry
+  # Send asynchronous "hungry" notification to it's input (if it has one).
+  #
+  # Hungry notification means that more work should be sent to this actor.
+  def notify_hungry
     set_empty
-    logger.debug "#{self.class.name} feels hungry."
-    Celluloid::Actor[@_input].async.receive_hungry if @_input
+    if @_input
+      logger.debug "Sending hungry notification to #{@_input}."
+      Celluloid::Actor[@_input].async.receive_hungry
+    else
+      logger.debug "Nowhere to send hungry notification. No input specified."
+    end
   end
 
   def start!
-    become_hungry
+    notify_hungry
   end
 end

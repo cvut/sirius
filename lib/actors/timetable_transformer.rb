@@ -29,7 +29,7 @@ class TimetableTransformer
       output_row(@events)
       @events = nil
     else
-      become_hungry
+      notify_hungry
       emit_eof if eof_received?
     end
   end

@@ -78,7 +78,7 @@ module ETLProducer
     rescue StopIteration
       logger.debug "All pending rows processed."
       set_empty
-      become_hungry if respond_to? :become_hungry
+      notify_hungry if respond_to? :notify_hungry
       emit_eof if eof_received?
     end
   end
