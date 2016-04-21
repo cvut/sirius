@@ -27,12 +27,13 @@ module ETLProducer
       emit_row(row)
       buffer_empty()
     else
-      (@_buffer ||= []) << row
+      raise "Buffer not empty." unless @_buffer.nil?
+      @_buffer = row
     end
   end
 
   def buffer_empty?
-    (@_buffer ||= []).empty?
+    @_buffer.nil?
   end
 
   # Receive work request from it's output.
@@ -41,7 +42,9 @@ module ETLProducer
     if buffer_empty?
       @_output_state = :hungry
     else
-      emit_row(@_buffer.delete_at(0))
+      row = @_buffer
+      @_buffer = nil
+      emit_row(row)
       buffer_empty()
     end
   end
