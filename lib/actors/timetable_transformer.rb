@@ -1,21 +1,37 @@
 require 'celluloid'
-require 'actors/etl_actor'
+require 'actors/etl_producer'
+require 'actors/etl_consumer'
 require 'sirius/time_converter'
 require 'roles/planned_timetable_slot'
 require 'day'
 
 class TimetableTransformer
   include Celluloid
-  include ETLActor
+  include ETLProducer
+  include ETLConsumer
 
-  def initialize(output, semester)
+  def initialize(input, output, semester)
+    set_input(input)
     set_output(output)
     @semester = semester
+    @events = nil
   end
 
-  def process_row(slot, teacher)
-    events = plan_events(slot, teacher)
-    emit_row(events)
+  def process_row(row)
+    slot, teacher = *row
+    @events = plan_events(slot, teacher)
+    unset_empty
+    produce_row if buffer_empty?
+  end
+
+  def produce_row
+    if @events
+      output_row(@events)
+      @events = nil
+    else
+      become_hungry
+      emit_eof if eof_received?
+    end
   end
 
   def plan_events(slot, teacher)

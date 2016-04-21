@@ -42,7 +42,7 @@ describe TimetableTransformer do
 
   let(:teacher) { 'vomackar' }
 
-  let(:transformer_actor) { described_class.new(nil, semester) }
+  let(:transformer_actor) { described_class.new(nil, nil, semester) }
 
   # Using #bare_object to bypass Celluloid actor proxy
   subject(:transformer) { transformer_actor.bare_object }
@@ -71,8 +71,8 @@ describe TimetableTransformer do
   describe '#process_row' do
 
     it 'emits planned events to output' do
-      expect(transformer).to receive(:emit_row)
-      transformer.process_row(slot, teacher)
+      expect(transformer).to receive(:output_row)
+      transformer.process_row([slot, teacher])
     end
   end
 end

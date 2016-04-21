@@ -55,7 +55,9 @@ module Sirius
 
     def import_teacher_timetables
       active_semesters(:teacher_timetables).each do |sem|
-        TeacherTimetableImport.new(sem).run!
+        import = TeacherTimetableImport.new(sem)
+        import.run!
+        import.shutdown!
       end
     end
 

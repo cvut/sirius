@@ -3,28 +3,48 @@ require 'actors/teacher_source'
 require 'actors/timetable_source'
 require 'actors/timetable_transformer'
 require 'actors/event_destination'
-require 'actors/etl_actor'
 
+# An actor pipeline system for importing teacher timetables from KOSapi.
+#
+# The inputs are: faculty semester, teacher usernames for that semester,
+# semester periods (all from the DB) and teacher timetables (fetched from KOSapi).
+#
+# The output is events of type 'teacher_timetable' that are written to the DB.
+#
 class TeacherTimetableImport
   include Celluloid
-  include ETLActor
 
   def initialize(semester)
-    Actor[:teacher_source] = TeacherSource.new(:timetable_source, semester)
-    Actor[:timetable_source] = TimetableSource.new(:timetable_transformer, semester)
-    Actor[:timetable_transformer] = TimetableTransformer.new(:event_destination, semester)
-    Actor[:event_destination] = EventDestination.new(:teacher_timetable_import)
+    @actors = []
+    @semester = semester
+    @actors << Actor[:teacher_source] = TeacherSource.new(:timetable_source, semester)
+    @actors << Actor[:timetable_source] = TimetableSource.new(:teacher_source, :timetable_transformer, semester)
+    @actors << Actor[:timetable_transformer] = TimetableTransformer.new(:timetable_source, :event_destination, semester)
+    @actors << Actor[:event_destination] = EventDestination.new(:timetable_transformer, :teacher_timetable_import)
     Actor[:teacher_timetable_import] = self.async
     @condition = Celluloid::Condition.new
+    @logger = Logging.logger[self]
   end
 
+  # Runs the import process for the specified semester
+  # and blocks until the import is finished.
   def run!
-    Actor[:teacher_source].async.run!
+    @logger.info "Starting TeacherTimetableImport actors for #{@semester.code} (#{@semester.faculty})."
+    @actors.each do |actor|
+      actor.async.start!
+    end
     Actor[:teacher_source].async.receive_eof
-    @condition.wait
+    @condition.wait # block current thread until condition variable is signalled
+  end
+
+  # Terminate all child actors and itself.
+  def shutdown!
+    @logger.info "Terminating TeacherTimetableImport actors."
+    @actors.each(&:terminate)
     terminate
   end
 
+  # Unblock #run! method by signalling condition variable.
   def receive_eof
     @condition.signal
   end
