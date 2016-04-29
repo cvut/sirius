@@ -12,7 +12,7 @@ class TimetableSource
   def initialize(input, output, faculty_semester)
     set_input(input)
     set_output(output)
-    @faculty = faculty_semester.faculty
+    @faculty_semester = faculty_semester
     @timetables = [].each
   end
 
@@ -34,7 +34,7 @@ class TimetableSource
 
   def fetch_timetable(username)
     logger.debug "Fetching #{username}"
-    client = Sirius::KOSapiClientRegistry.instance.client_for_faculty(@faculty)
-    client.teachers.find(username).timetable
+    client = Sirius::KOSapiClientRegistry.instance.client_for_faculty(@faculty_semester.faculty)
+    client.teachers.find(username).timetable(semester: @faculty_semester.code)
   end
 end
