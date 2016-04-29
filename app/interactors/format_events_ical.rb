@@ -56,6 +56,8 @@ class FormatEventsIcal
         "#{course_id} #{localized_event_type}"
       when 'tutorial', 'lecture', 'laboratory'
         "#{course_id} #{sequence_number}. #{localized_event_type} (#{parallel})"
+      when 'teacher_timetable'
+        "Nepojmenované #{localized_event_type}"
       else
         raise "Don't know how to format iCalendar summary for event with type: '#{event_type}'"
       end
@@ -94,11 +96,12 @@ class FormatEventsIcal
 
     # TODO: extract hardcoded strings to config file
     EVENT_TYPE_TRANSLATIONS = {
-        tutorial: 'cvičení'.freeze,
-        lecture: 'přednáška'.freeze,
-        laboratory: 'laboratoř'.freeze,
-        assessment: 'zápočet'.freeze,
-        exam: 'zkouška'.freeze
+      tutorial: 'cvičení'.freeze,
+      lecture: 'přednáška'.freeze,
+      laboratory: 'laboratoř'.freeze,
+      assessment: 'zápočet'.freeze,
+      teacher_timetable: 'omezení učitele'.freeze,
+      exam: 'zkouška'.freeze
     }
 
     def localized_event_type
