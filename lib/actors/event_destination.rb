@@ -1,25 +1,35 @@
 require 'celluloid'
 require 'actors/etl_consumer'
+require 'actors/etl_producer'
 require 'event'
 require 'interactors/sync'
 
 class EventDestination
   include Celluloid
   include ETLConsumer
+  include ETLProducer
 
-  def initialize(input, parent_actor)
+  def initialize(input, output)
     set_input(input)
-    @parent_actor = parent_actor
+    set_output(output)
     @sync = Sync[Event, matching_attributes: [:absolute_sequence_number, source: :teacher_timetable_slot_id]].new
   end
 
   def process_row(events)
     @sync.perform(events: events)
-    notify_hungry
+    @saved_events = @sync.results[:events]
+    unset_empty
+    produce_row if buffer_empty?
   end
 
-  def receive_eof
-    Celluloid::Actor[@parent_actor].async.receive_eof
+  def produce_row
+    if @saved_events
+      output_row(@saved_events)
+      @saved_events = nil
+    else
+      notify_hungry
+      emit_eof if eof_received?
+    end
   end
 
 end

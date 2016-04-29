@@ -3,6 +3,7 @@ require 'actors/teacher_source'
 require 'actors/timetable_source'
 require 'actors/timetable_transformer'
 require 'actors/event_destination'
+require 'actors/teacher_timetables_cleaner'
 
 # An actor pipeline system for importing teacher timetables from KOSapi.
 #
@@ -20,7 +21,8 @@ class TeacherTimetableImport
     @actors << Actor[:teacher_source] = TeacherSource.new(:timetable_source, semester)
     @actors << Actor[:timetable_source] = TimetableSource.new(:teacher_source, :timetable_transformer, semester)
     @actors << Actor[:timetable_transformer] = TimetableTransformer.new(:timetable_source, :event_destination, semester)
-    @actors << Actor[:event_destination] = EventDestination.new(:timetable_transformer, :teacher_timetable_import)
+    @actors << Actor[:event_destination] = EventDestination.new(:timetable_transformer, :teacher_timetables_cleaner)
+    @actors << Actor[:teacher_timetables_cleaner] = TeacherTimetablesCleaner.new(:event_destination, :teacher_timetable_import, semester)
     Actor[:teacher_timetable_import] = self.async
     @condition = Celluloid::Condition.new
     @logger = Logging.logger[self]
