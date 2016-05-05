@@ -43,6 +43,10 @@ class TimetableTransformer
       hour_starts: @semester.hour_starts,
       hour_length: @semester.hour_duration
     )
+    # in case the duration is not set, use default duration of 2 hours
+    unless slot.duration
+      slot.duration = 2
+    end
     events = periods.flat_map do |period|
       PlannedTimetableSlot.new(slot, time_converter).generate_events(@semester, period)
     end
