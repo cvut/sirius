@@ -18,7 +18,7 @@ class TeacherTimetablesCleaner
     notify_hungry
   end
 
-  def receive_eof
+  def process_eof
     mark_unseen_events(@faculty_semester, @seen_event_ids)
     Celluloid::Actor[@parent_actor].async.receive_eof
   end
