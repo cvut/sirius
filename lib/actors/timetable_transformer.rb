@@ -11,8 +11,8 @@ class TimetableTransformer
   include ETLConsumer
 
   def initialize(input, output, semester)
-    set_input(input)
-    set_output(output)
+    self.input = input
+    self.output = output
     @semester = semester
     @events = nil
   end

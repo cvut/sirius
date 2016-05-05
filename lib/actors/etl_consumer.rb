@@ -6,7 +6,7 @@ require 'actors/etl_base'
 module ETLConsumer
   include ETLBase
 
-  def set_input(input)
+  def input=(input)
     @_input = input
   end
 

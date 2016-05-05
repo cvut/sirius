@@ -7,7 +7,7 @@ class TeacherTimetablesCleaner
   include ETLConsumer
 
   def initialize(input, parent_actor, faculty_semester)
-    set_input(input)
+    self.input = input
     @parent_actor = parent_actor
     @seen_event_ids = Set.new
     @faculty_semester = faculty_semester

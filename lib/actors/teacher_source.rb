@@ -12,7 +12,7 @@ class TeacherSource
   include ETLProducer
 
   def initialize(output, semester)
-    set_output(output)
+    self.output = output
     @semester = semester
   end
 

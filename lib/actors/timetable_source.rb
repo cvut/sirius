@@ -10,8 +10,8 @@ class TimetableSource
   include ETLConsumer
 
   def initialize(input, output, faculty_semester)
-    set_input(input)
-    set_output(output)
+    self.input = input
+    self.output = output
     @faculty_semester = faculty_semester
     @timetables = [].each
   end

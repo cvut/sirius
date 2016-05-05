@@ -10,8 +10,8 @@ class EventDestination
   include ETLProducer
 
   def initialize(input, output)
-    set_input(input)
-    set_output(output)
+    self.input = input
+    self.output = output
     @sync = Sync[Event, matching_attributes: [:absolute_sequence_number, source: :teacher_timetable_slot_id]].new
   end
 

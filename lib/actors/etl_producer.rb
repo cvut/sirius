@@ -24,7 +24,7 @@ require 'actors/etl_base'
 module ETLProducer
   include ETLBase
 
-  def set_output(output)
+  def output=(output)
     @_output = output
   end
 
