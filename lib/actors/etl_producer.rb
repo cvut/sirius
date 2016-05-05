@@ -47,7 +47,7 @@ module ETLProducer
     if @_output_state == :hungry
       @_output_state = :stuffed
       emit_row(row)
-      buffer_empty()
+      produce_row() unless empty?
     else
       raise "Buffer not empty." unless @_buffer.nil?
       @_buffer = row
@@ -67,7 +67,7 @@ module ETLProducer
       row = @_buffer
       @_buffer = nil
       emit_row(row)
-      buffer_empty()
+      produce_row() unless empty?
     end
   end
 
@@ -78,11 +78,6 @@ module ETLProducer
 
   def output_hungry?
     @_output_state == :hungry
-  end
-
-  # Notification that output buffer was cleared and can receive more input.
-  def buffer_empty
-    produce_row() unless empty?
   end
 
   # Tries to generate a single row and then send it to the output or output buffer if the row was
