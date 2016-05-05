@@ -30,7 +30,7 @@ class TeacherSource
 
   def start!
     @teachers = load_teachers
-    unset_empty
+    unmark_empty!
     buffer_empty
   end
 end

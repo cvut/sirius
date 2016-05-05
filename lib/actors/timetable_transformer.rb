@@ -20,7 +20,7 @@ class TimetableTransformer
   def process_row(row)
     slot, teacher = *row
     @events = plan_events(slot, teacher)
-    unset_empty
+    unmark_empty!
     produce_row() if buffer_empty?
   end
 

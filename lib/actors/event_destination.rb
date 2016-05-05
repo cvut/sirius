@@ -18,7 +18,7 @@ class EventDestination
   def process_row(events)
     @sync.perform(events: events)
     @saved_events = @sync.results[:events]
-    unset_empty
+    unmark_empty!
     produce_row() if buffer_empty?
   end
 

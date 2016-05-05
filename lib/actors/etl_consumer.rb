@@ -12,7 +12,7 @@ module ETLConsumer
 
   # Receive a single row from actor's source(s).
   def consume_row(row)
-    raise "#{self.class.name}: Received row when not empty!" unless is_empty?
+    raise "#{self.class.name}: Received row when not empty!" unless empty?
     process_row(row)
   end
 
@@ -20,7 +20,6 @@ module ETLConsumer
   #
   # Hungry notification means that more work should be sent to this actor.
   def notify_hungry
-    set_empty
     if @_input
       logger.debug "Sending hungry notification to #{@_input}."
       Celluloid::Actor[@_input].async.receive_hungry
@@ -30,6 +29,7 @@ module ETLConsumer
   end
 
   def start!
+    mark_empty!
     notify_hungry
   end
 end

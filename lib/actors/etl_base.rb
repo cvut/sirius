@@ -17,18 +17,18 @@ module ETLBase
 
   # Sets the "empty" state for an actor. Actor should be empty
   # when it can't produce any more rows from the input it has already received.
-  def set_empty
+  def mark_empty!
     @_empty = true
   end
 
   # Resets the "empty" state for an actor. Actor is not empty, when it can
   # produce more rows from the input it has already received.
-  def unset_empty
+  def unmark_empty!
     @_empty = false
   end
 
   # Checks whether an actor is currently "empty", meaning it can not produce any more output.
-  def is_empty?
+  def empty?
     @_empty
   end
 

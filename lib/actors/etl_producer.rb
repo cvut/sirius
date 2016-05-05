@@ -73,7 +73,7 @@ module ETLProducer
 
   def process_eof
     @_eof_received = true
-    emit_eof if is_empty?
+    emit_eof if empty?
   end
 
   def output_hungry?
@@ -82,7 +82,7 @@ module ETLProducer
 
   # Notification that output buffer was cleared and can receive more input.
   def buffer_empty
-    produce_row() unless is_empty?
+    produce_row() unless empty?
   end
 
   # Tries to generate a single row and then send it to the output or output buffer if the row was
@@ -94,13 +94,13 @@ module ETLProducer
   # is no more rows to generate. (hint: Ruby's Enumerator#next behaves exactly like that)
   #
   def produce_row
-    unset_empty
+    unmark_empty!
     begin
       output_row(generate_row())
       logger.debug "Generating a row."
     rescue StopIteration, EndOfData
       logger.debug "All pending rows processed."
-      set_empty
+      mark_empty!
       notify_hungry if respond_to? :notify_hungry
       emit_eof if eof_received?
     end
