@@ -14,6 +14,7 @@ module ETLConsumer
   def consume_row(row)
     raise "#{self.class.name}: Received row when not empty!" unless empty?
     process_row(row)
+    produce_row() if respond_to?(:produce_row)
   end
 
   # Send asynchronous "hungry" notification to it's input (if it has one).

@@ -23,7 +23,6 @@ class TimetableSource
     @timetables = timetables.each
     @username = username
     logger.debug "Finished processing #{username}"
-    produce_row()
   end
 
   def generate_row

@@ -34,10 +34,9 @@ module ActorHelper
 
   def sample_producer_actor
     sample_actor_class(ETLProducer).tap do |cls|
-      cls.send(:define_method, :produce_row_iterable) { raise StopIteration }
+      cls.send(:define_method, :generate_row) { raise StopIteration }
       cls.send(:define_method, :start!) do
-        unmark_empty!
-        buffer_empty
+        produce_row()
       end
     end
   end

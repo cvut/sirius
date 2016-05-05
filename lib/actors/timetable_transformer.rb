@@ -20,7 +20,6 @@ class TimetableTransformer
   def process_row(row)
     slot, teacher = *row
     @events = plan_events(slot, teacher)
-    produce_row()
   end
 
   def generate_row

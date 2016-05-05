@@ -18,7 +18,6 @@ class EventDestination
   def process_row(events)
     @sync.perform(events: events)
     @saved_events = @sync.results[:events]
-    produce_row()
   end
 
   def generate_row
