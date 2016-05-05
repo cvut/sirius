@@ -2,10 +2,13 @@ require 'actors/etl_base'
 
 # Consumer module for implementing ETL consumer - producer Actor protocol.
 #
-# For details about the protocol see comments on ETLProducer.
+# For details about the protocol see comments on {ETLProducer}.
 module ETLConsumer
   include ETLBase
 
+  # Sets actor input for sending hungry notifications.
+  #
+  # @param input [Symbol] actor name in Celluloid actor registry
   def input=(input)
     @_input = input
   end

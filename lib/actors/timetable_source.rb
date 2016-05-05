@@ -16,7 +16,10 @@ class TimetableSource
     @timetables = [].each
   end
 
-  # Teacher username is expected as a row
+  # Fetches all TeacherTimeSlots for a teacher from KOSapi and buffers them
+  # for processing by a next pipeline step.
+  #
+  # @param username [String] teacher username for which teacher timetable slots should be fetched
   def process_row(username)
     logger.debug "Processing #{username}"
     timetables = fetch_timetable(username)
@@ -25,6 +28,7 @@ class TimetableSource
     logger.debug "Finished processing #{username}"
   end
 
+  # @return [Array(KOSapiClient::Entity::TeacherTimetableSlot, String)] a single timetable slot together with its teacher
   def generate_row
     [@timetables.next, @username]
   end

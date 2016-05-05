@@ -16,6 +16,7 @@ class TeacherSource
     @semester = semester
   end
 
+  # @return [String] teacher username loaded from database
   def generate_row
     @teachers.next
   end

@@ -35,6 +35,8 @@ class TeacherTimetableImport
     @actors.each do |actor|
       actor.async.start!
     end
+    # Send EOF message to teacher source. It will be then passed to TeacherSources
+    # output after all rows are read from the database.
     Actor[:teacher_source].async.receive_eof
     @condition.wait # block current thread until condition variable is signalled
   end

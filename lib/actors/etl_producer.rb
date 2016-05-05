@@ -18,13 +18,16 @@ require 'end_of_data'
 # This is solved by utilising back-pressure: Producer must only produce and send rows when consumer
 # can accept them. The ability to receive rows is signalled by a message from the consumer to the producer.
 # In response to that message a single row can be sent to the consumer. If the producer has no rows
-# available for sending at the moment, it should internally store the state of it's consumer and send a row
+# available for sending at the moment, it should internally store the state of its consumer and send a row
 # when it becomes available. After the consumer is finished with processing the received row, it requests
 # another row from the producer and the cycle repeats.
 #
 module ETLProducer
   include ETLBase
 
+  # Sets actor output for sending produced rows and EOS.
+  #
+  # @param output [Symbol] actor name in Celluloid actor registry
   def output=(output)
     @_output = output
   end
@@ -41,8 +44,8 @@ module ETLProducer
     Celluloid::Actor[@_output].async.receive_eof if @_output
   end
 
-  # Output a single row either to a local output buffer (in case output is stuffed)
-  # or to the output directly.
+  # Stores a single row in a local output buffer (in case output is stuffed)
+  # or sends it to the output directly.
   def output_row(row)
     if output_hungry?
       @_output_state = :stuffed
@@ -98,7 +101,7 @@ module ETLProducer
   # input (if it has one).
   #
   # You should define #generate_row method on your producer actor, which returns either a single
-  # row (pretty much anything) or throws EndOfData or StopIteration error in case there there
+  # row (pretty much anything) or throws {EndOfData} or `StopIteration` error in case there there
   # is no more rows to generate. (hint: Ruby's Enumerator#next behaves exactly like that)
   #
   def produce_row

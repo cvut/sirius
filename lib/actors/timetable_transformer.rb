@@ -5,6 +5,8 @@ require 'sirius/time_converter'
 require 'roles/planned_timetable_slot'
 require 'day'
 
+# A convertor which receives TeacherTimetableSlots loaded from KOSapi and plans them into
+# Events according to semester parameters and semester periods.
 class TimetableTransformer
   include Celluloid
   include ETLProducer
@@ -17,11 +19,14 @@ class TimetableTransformer
     @events = nil
   end
 
+  # @param row [Array(KOSapiClient::Entity::TeacherTimetableSlot, String)] teacher timetable slot
+  #   together with related teacher username
   def process_row(row)
     slot, teacher = *row
     @events = plan_events(slot, teacher)
   end
 
+  # @return [Array<Event>] generated events that were not yet synced with the database
   def generate_row
     if @events
       row = @events
@@ -32,6 +37,9 @@ class TimetableTransformer
     end
   end
 
+  # @param slot [KOSapiClient::Entity::TeacherTimetableSlot] teacher timetable slot loaded from KOSapi
+  # @param teacher [String] teacher username for the timetable slot
+  # @return [Array<Event>] planned events
   def plan_events(slot, teacher)
     periods_query = @semester.semester_periods_dataset
       .where(type: [:teaching, :exams].map { |it| Sirius::SemesterPeriodType.to_numeric(it) })
