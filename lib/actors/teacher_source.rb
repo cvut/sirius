@@ -16,8 +16,8 @@ class TeacherSource
     @semester = semester
   end
 
-  def produce_row_iterable
-    output_row(@teachers.next)
+  def generate_row_iterable
+    @teachers.next
   end
 
   def load_teachers

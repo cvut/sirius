@@ -81,24 +81,24 @@ module ETLProducer
 
   # Notification that output buffer was cleared and can receive more input.
   def buffer_empty
-    produce_row() unless is_empty?
+    generate_row() unless is_empty?
   end
 
-  # A default implementation of produce row.
+  # A default implementation of row generation.
   #
   # In case you require a custom producing logic, you can override this method in
   # your actor. In your implementation you must handle setting of empty/non_empty state, hungry notifications
   # and EOF emitting.
   #
-  # If you are not overriding this, you should define #produce_row_iterable method on your
+  # If you are not overriding this, you should define #generate_row_iterable method on your
   # producer actor, which returns either a single row (pretty much anything) or throws StopIteration error
   # in case there there is no more output (hint: Ruby's Enumerator#next behaves exactly like that).
   #
-  def produce_row
+  def generate_row
     unset_empty
     begin
-      produce_row_iterable()
-      logger.debug "Producing a row."
+      logger.debug "Generating a row."
+      output_row(generate_row_iterable())
     rescue StopIteration
       logger.debug "All pending rows processed."
       set_empty
