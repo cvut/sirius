@@ -34,11 +34,11 @@ describe TimetableTransformer do
     )
   }
 
-  let(:slot) {
-    double(:slot, id: 42, day: 1, duration: 2,
-      first_hour: 1, parity: :both, title: 'Meditation'
-    )
-  }
+  let(:duration) { 2 }
+  let(:slot) do
+    Struct.new(:id, :day, :duration, :first_hour, :parity, :title)
+      .new(42, 1, duration, 1, :both, 'meditation')
+  end
 
   let(:teacher) { 'vomackar' }
 
@@ -66,13 +66,34 @@ describe TimetableTransformer do
       events = transformer.plan_events(slot, teacher)
       expect(events.map(&:absolute_sequence_number)).to eq (1..events.count).to_a
     end
+
+    context 'when slot duration not set' do
+      let(:duration) { nil }
+
+      it 'sets default slot duration to two hours' do
+        events = transformer.plan_events(slot, teacher)
+        expect(events.first.starts_at).to be_the_same_time_as Time.parse('7:30')
+        expect(events.first.ends_at).to be_the_same_time_as Time.parse('9:00')
+      end
+    end
   end
 
   describe '#process_row' do
 
     it 'emits planned events to output' do
-      expect(transformer).to receive(:output_row)
+      expect(transformer).to receive(:plan_events)
       transformer.process_row([slot, teacher])
+    end
+  end
+
+  describe '#generate_row' do
+    it 'returns processed row when not empty' do
+      transformer.processed_row = :foo
+      expect(transformer.generate_row).to be :foo
+    end
+
+    it 'throws EndOfData when empty' do
+      expect { transformer.generate_row }.to raise_error(EndOfData)
     end
   end
 end

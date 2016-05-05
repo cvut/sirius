@@ -44,7 +44,7 @@ module ETLProducer
   # Output a single row either to a local output buffer (in case output is stuffed)
   # or to the output directly.
   def output_row(row)
-    if @_output_state == :hungry
+    if output_hungry?
       @_output_state = :stuffed
       emit_row(row)
       produce_row() unless empty?

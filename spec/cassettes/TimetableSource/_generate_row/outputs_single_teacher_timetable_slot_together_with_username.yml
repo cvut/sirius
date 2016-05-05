@@ -1,0 +1,141 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://auth.fit.cvut.cz/oauth/oauth/token
+    body:
+      encoding: UTF-8
+      string: grant_type=client_credentials
+    headers:
+      User-Agent:
+      - Faraday v0.8.11
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Authorization:
+      - "<AUTHORIZATION>"
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      server:
+      - nginx/1.4.1
+      date:
+      - Thu, 12 May 2016 15:52:40 GMT
+      content-type:
+      - application/json;charset=UTF-8
+      transfer-encoding:
+      - chunked
+      connection:
+      - close
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate, no-store
+      pragma:
+      - no-cache, no-cache
+      expires:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '{"access_token":"<OAUTH_TOKEN>","token_type":"bearer","expires_in":2905,"scope":"urn:ctu:oauth:kosapi:public.readonly
+        urn:ctu:oauth:umapi.read cvut:kosapi:read cvut:umapi:read"}'
+    http_version: 
+  recorded_at: Thu, 12 May 2016 15:52:40 GMT
+- request:
+    method: get
+    uri: https://kosapi.fit.cvut.cz/api/3/teachers/szolatib/timetable?sem=B151
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.8.11
+      Authorization:
+      - "<AUTHORIZATION>"
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      server:
+      - nginx/1.2.2
+      date:
+      - Thu, 12 May 2016 15:52:40 GMT
+      content-type:
+      - application/atom+xml
+      transfer-encoding:
+      - chunked
+      connection:
+      - close
+      set-cookie:
+      - JSESSIONID=umh2bg1sa49h9ir10wqey897;Path=/api/3
+      expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      cache-control:
+      - max-age=3600
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPGF0b206
+        ZmVlZCB4bWxucz0iaHR0cDovL2tvc2FwaS5mZWxkLmN2dXQuY3ovc2NoZW1h
+        LzMiIHhtbG5zOm9zZWFyY2g9Imh0dHA6Ly9hOS5jb20vLS9zcGVjL29wZW5z
+        ZWFyY2gvMS4xLyIgeG1sbnM6YXRvbT0iaHR0cDovL3d3dy53My5vcmcvMjAw
+        NS9BdG9tIiB4bWxuczp4c2k9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1M
+        U2NoZW1hLWluc3RhbmNlIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5v
+        cmcvMTk5OS94bGluayIgeG1sOmJhc2U9Imh0dHBzOi8va29zYXBpLmZpdC5j
+        dnV0LmN6L2FwaS8zIiB4bWw6bGFuZz0iY3MiPjxhdG9tOmlkPmh0dHBzOi8v
+        a29zYXBpLmZpdC5jdnV0LmN6L2FwaS90ZWFjaGVycy9zem9sYXRpYi90aW1l
+        dGFibGU8L2F0b206aWQ+PGF0b206dXBkYXRlZD4yMDE2LTA1LTEyVDE3OjUy
+        OjQwLjU0NTwvYXRvbTp1cGRhdGVkPjxhdG9tOmVudHJ5PjxhdG9tOnRpdGxl
+        PlNww6FuZWsuPC9hdG9tOnRpdGxlPjxhdG9tOmlkPnVybjpjdnV0Omtvczp0
+        ZWFjaGVydGltZXRhYmxlc2xvdDo2OTE0NzgyNDA5MDU8L2F0b206aWQ+PGF0
+        b206dXBkYXRlZD4yMDE1LTA5LTI4VDAzOjM1OjMyLjA8L2F0b206dXBkYXRl
+        ZD48YXRvbTphdXRob3I+PGF0b206bmFtZT5rb3NpdWM8L2F0b206bmFtZT48
+        L2F0b206YXV0aG9yPjxhdG9tOmNvbnRlbnQgYXRvbTp0eXBlPSJ4bWwiIGlk
+        PSI2OTE0NzgyNDA5MDUiIHhzaTp0eXBlPSJ0ZWFjaGVyVGltZXRhYmxlU2xv
+        dCI+PGRheT4xPC9kYXk+PGR1cmF0aW9uPjI8L2R1cmF0aW9uPjxmaXJzdEhv
+        dXI+MTwvZmlyc3RIb3VyPjxwYXJpdHk+Qk9USDwvcGFyaXR5Pjx0aXRsZT5T
+        cMOhbmVrLjwvdGl0bGU+PC9hdG9tOmNvbnRlbnQ+PC9hdG9tOmVudHJ5Pjxh
+        dG9tOmVudHJ5PjxhdG9tOnRpdGxlPlNww6FuZWsuPC9hdG9tOnRpdGxlPjxh
+        dG9tOmlkPnVybjpjdnV0Omtvczp0ZWFjaGVydGltZXRhYmxlc2xvdDo2OTE0
+        NzgyNDEwMDU8L2F0b206aWQ+PGF0b206dXBkYXRlZD4yMDE1LTA5LTI4VDAz
+        OjM1OjU1LjA8L2F0b206dXBkYXRlZD48YXRvbTphdXRob3I+PGF0b206bmFt
+        ZT5rb3NpdWM8L2F0b206bmFtZT48L2F0b206YXV0aG9yPjxhdG9tOmNvbnRl
+        bnQgYXRvbTp0eXBlPSJ4bWwiIGlkPSI2OTE0NzgyNDEwMDUiIHhzaTp0eXBl
+        PSJ0ZWFjaGVyVGltZXRhYmxlU2xvdCI+PGRheT4yPC9kYXk+PGR1cmF0aW9u
+        PjI8L2R1cmF0aW9uPjxmaXJzdEhvdXI+MTwvZmlyc3RIb3VyPjxwYXJpdHk+
+        Qk9USDwvcGFyaXR5Pjx0aXRsZT5TcMOhbmVrLjwvdGl0bGU+PC9hdG9tOmNv
+        bnRlbnQ+PC9hdG9tOmVudHJ5PjxhdG9tOmVudHJ5PjxhdG9tOnRpdGxlPlNw
+        w6FuZWsuPC9hdG9tOnRpdGxlPjxhdG9tOmlkPnVybjpjdnV0Omtvczp0ZWFj
+        aGVydGltZXRhYmxlc2xvdDo2OTE0NzgyNDExMDU8L2F0b206aWQ+PGF0b206
+        dXBkYXRlZD4yMDE1LTA5LTI4VDAzOjM2OjA2LjA8L2F0b206dXBkYXRlZD48
+        YXRvbTphdXRob3I+PGF0b206bmFtZT5rb3NpdWM8L2F0b206bmFtZT48L2F0
+        b206YXV0aG9yPjxhdG9tOmNvbnRlbnQgYXRvbTp0eXBlPSJ4bWwiIGlkPSI2
+        OTE0NzgyNDExMDUiIHhzaTp0eXBlPSJ0ZWFjaGVyVGltZXRhYmxlU2xvdCI+
+        PGRheT4zPC9kYXk+PGR1cmF0aW9uPjI8L2R1cmF0aW9uPjxmaXJzdEhvdXI+
+        MTwvZmlyc3RIb3VyPjxwYXJpdHk+Qk9USDwvcGFyaXR5Pjx0aXRsZT5TcMOh
+        bmVrLjwvdGl0bGU+PC9hdG9tOmNvbnRlbnQ+PC9hdG9tOmVudHJ5PjxhdG9t
+        OmVudHJ5PjxhdG9tOnRpdGxlPlNww6FuZWsuPC9hdG9tOnRpdGxlPjxhdG9t
+        OmlkPnVybjpjdnV0Omtvczp0ZWFjaGVydGltZXRhYmxlc2xvdDo2OTE0Nzgy
+        NDEyMDU8L2F0b206aWQ+PGF0b206dXBkYXRlZD4yMDE1LTA5LTI4VDAzOjM2
+        OjE2LjA8L2F0b206dXBkYXRlZD48YXRvbTphdXRob3I+PGF0b206bmFtZT5r
+        b3NpdWM8L2F0b206bmFtZT48L2F0b206YXV0aG9yPjxhdG9tOmNvbnRlbnQg
+        YXRvbTp0eXBlPSJ4bWwiIGlkPSI2OTE0NzgyNDEyMDUiIHhzaTp0eXBlPSJ0
+        ZWFjaGVyVGltZXRhYmxlU2xvdCI+PGRheT40PC9kYXk+PGR1cmF0aW9uPjI8
+        L2R1cmF0aW9uPjxmaXJzdEhvdXI+MTwvZmlyc3RIb3VyPjxwYXJpdHk+Qk9U
+        SDwvcGFyaXR5Pjx0aXRsZT5TcMOhbmVrLjwvdGl0bGU+PC9hdG9tOmNvbnRl
+        bnQ+PC9hdG9tOmVudHJ5PjxhdG9tOmVudHJ5PjxhdG9tOnRpdGxlPlNww6Fu
+        ZWsuPC9hdG9tOnRpdGxlPjxhdG9tOmlkPnVybjpjdnV0Omtvczp0ZWFjaGVy
+        dGltZXRhYmxlc2xvdDo2OTE0NzgyNDEzMDU8L2F0b206aWQ+PGF0b206dXBk
+        YXRlZD4yMDE1LTA5LTI4VDAzOjM2OjI2LjA8L2F0b206dXBkYXRlZD48YXRv
+        bTphdXRob3I+PGF0b206bmFtZT5rb3NpdWM8L2F0b206bmFtZT48L2F0b206
+        YXV0aG9yPjxhdG9tOmNvbnRlbnQgYXRvbTp0eXBlPSJ4bWwiIGlkPSI2OTE0
+        NzgyNDEzMDUiIHhzaTp0eXBlPSJ0ZWFjaGVyVGltZXRhYmxlU2xvdCI+PGRh
+        eT41PC9kYXk+PGR1cmF0aW9uPjI8L2R1cmF0aW9uPjxmaXJzdEhvdXI+MTwv
+        Zmlyc3RIb3VyPjxwYXJpdHk+Qk9USDwvcGFyaXR5Pjx0aXRsZT5TcMOhbmVr
+        LjwvdGl0bGU+PC9hdG9tOmNvbnRlbnQ+PC9hdG9tOmVudHJ5Pjxvc2VhcmNo
+        OnN0YXJ0SW5kZXg+MDwvb3NlYXJjaDpzdGFydEluZGV4Pjxvc2VhcmNoOnRv
+        dGFsUmVzdWx0cz41PC9vc2VhcmNoOnRvdGFsUmVzdWx0cz48L2F0b206ZmVl
+        ZD4=
+    http_version: 
+  recorded_at: Thu, 12 May 2016 15:52:40 GMT
+recorded_with: VCR 2.9.3

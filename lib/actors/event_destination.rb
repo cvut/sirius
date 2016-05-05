@@ -9,10 +9,10 @@ class EventDestination
   include ETLConsumer
   include ETLProducer
 
-  def initialize(input, output)
+  def initialize(input, output, sync = nil)
     self.input = input
     self.output = output
-    @sync = Sync[Event, matching_attributes: [:absolute_sequence_number, source: :teacher_timetable_slot_id]].new
+    @sync = sync || Sync[Event, matching_attributes: [:absolute_sequence_number, source: :teacher_timetable_slot_id]].new
   end
 
   def process_row(events)
