@@ -30,7 +30,6 @@ class TeacherSource
 
   def start!
     @teachers = load_teachers
-    unmark_empty!
-    buffer_empty
+    produce_row()
   end
 end
