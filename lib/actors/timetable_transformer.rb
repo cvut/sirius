@@ -21,16 +21,16 @@ class TimetableTransformer
     slot, teacher = *row
     @events = plan_events(slot, teacher)
     unset_empty
-    generate_row if buffer_empty?
+    produce_row() if buffer_empty?
   end
 
   def generate_row
     if @events
-      output_row(@events)
+      row = @events
       @events = nil
+      row
     else
-      notify_hungry
-      emit_eof if eof_received?
+      raise EndOfData
     end
   end
 

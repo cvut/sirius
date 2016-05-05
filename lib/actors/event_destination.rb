@@ -19,16 +19,16 @@ class EventDestination
     @sync.perform(events: events)
     @saved_events = @sync.results[:events]
     unset_empty
-    generate_row if buffer_empty?
+    produce_row() if buffer_empty?
   end
 
   def generate_row
     if @saved_events
-      output_row(@saved_events)
+      row = @saved_events
       @saved_events = nil
+      row
     else
-      notify_hungry
-      emit_eof if eof_received?
+      raise EndOfData
     end
   end
 

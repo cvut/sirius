@@ -23,10 +23,10 @@ class TimetableSource
     @timetables = timetables.each
     @username = username
     logger.debug "Finished processing #{username}"
-    generate_row if buffer_empty?
+    produce_row() if buffer_empty?
   end
 
-  def generate_row_iterable
+  def generate_row
     [@timetables.next, @username]
   end
 

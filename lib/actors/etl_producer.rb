@@ -1,4 +1,5 @@
 require 'actors/etl_base'
+require 'end_of_data'
 
 # Producer module for implementing ETL consumer - producer Actor protocol.
 #
@@ -81,25 +82,23 @@ module ETLProducer
 
   # Notification that output buffer was cleared and can receive more input.
   def buffer_empty
-    generate_row() unless is_empty?
+    produce_row() unless is_empty?
   end
 
-  # A default implementation of row generation.
+  # Tries to generate a single row and then send it to the output or output buffer if the row was
+  # successfully generated. If no row was generated, it sets empty flag and notifies its
+  # input (if it has one).
   #
-  # In case you require a custom producing logic, you can override this method in
-  # your actor. In your implementation you must handle setting of empty/non_empty state, hungry notifications
-  # and EOF emitting.
+  # You should define #generate_row method on your producer actor, which returns either a single
+  # row (pretty much anything) or throws EndOfData or StopIteration error in case there there
+  # is no more rows to generate. (hint: Ruby's Enumerator#next behaves exactly like that)
   #
-  # If you are not overriding this, you should define #generate_row_iterable method on your
-  # producer actor, which returns either a single row (pretty much anything) or throws StopIteration error
-  # in case there there is no more output (hint: Ruby's Enumerator#next behaves exactly like that).
-  #
-  def generate_row
+  def produce_row
     unset_empty
     begin
+      output_row(generate_row())
       logger.debug "Generating a row."
-      output_row(generate_row_iterable())
-    rescue StopIteration
+    rescue StopIteration, EndOfData
       logger.debug "All pending rows processed."
       set_empty
       notify_hungry if respond_to? :notify_hungry
