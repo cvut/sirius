@@ -49,13 +49,28 @@ module ETLProducer
       emit_row(row)
       produce_row() unless empty?
     else
-      raise "Buffer not empty." unless @_buffer.nil?
-      @_buffer = row
+      buffer_put(row)
     end
   end
 
   def buffer_empty?
     @_buffer.nil?
+  end
+
+  def buffer_full?
+    !@_buffer.nil?
+  end
+
+  def buffer_pop
+    raise "Output buffer empty." if buffer_empty?
+    row = @_buffer
+    @_buffer = nil
+    row
+  end
+
+  def buffer_put(row)
+    raise "Output buffer full." if buffer_full?
+    @_buffer = row
   end
 
   # Receive work request from it's output.
@@ -64,9 +79,7 @@ module ETLProducer
     if buffer_empty?
       @_output_state = :hungry
     else
-      row = @_buffer
-      @_buffer = nil
-      emit_row(row)
+      emit_row(buffer_pop())
       produce_row() unless empty?
     end
   end
