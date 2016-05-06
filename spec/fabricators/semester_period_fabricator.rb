@@ -1,6 +1,7 @@
 require 'models/semester_period'
 
 Fabricator(:semester_period) do
+  id { sequence(:semester_period) }
   faculty_semester
   type :teaching
   irregular false

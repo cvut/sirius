@@ -1,7 +1,9 @@
+require 'date_refinements'
 require 'parity'
 require 'models/semester_period'
 
 class FacultySemester < Sequel::Model
+  using ::DateRefinements
 
   one_to_many :semester_periods
 
@@ -19,6 +21,26 @@ class FacultySemester < Sequel::Model
       .eager(:semester_periods)
       .limit(1)
       .all.first  # eager loading doesn't work with Dataset.first
+  end
+
+  ##
+  # Finds faculty semesters with periods that overlap the specified date range.
+  # Note that the returned semester objects may *not* contain the full set of
+  # associated periods, but only a subset that overlaps the date range.
+  #
+  # @param start_date [Date] date of the first week to return (will be
+  #   rounded to the beginning of the week).
+  # @param end_date [Date] date of the last week to retun (will be rounded to
+  #   the beginning of the week).
+  # @param faculty_id [Fixnum] organizational number of the faculty.
+  # @return [Array<FacultySemester>] faculty semesters sorted by `start_date`.
+  #
+  def self.find_by_date_range_with_periods(start_date, end_date, faculty_id)
+    where('faculty = ? AND (starts_at, ends_at) OVERLAPS (?, ?)',
+          faculty_id, start_date.start_of_week, end_date)
+      .order_by(:starts_at)
+      .eager(semester_periods: ->(ds) { ds.where('starts_at < ?', end_date.end_of_week) })
+      .all  # <- this is necessary for eager to work correctly!
   end
 
   def first_week_parity
