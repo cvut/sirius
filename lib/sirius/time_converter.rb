@@ -14,19 +14,18 @@ module Sirius
       @hour_length = hour_length
     end
 
-    # Converts hour data from KOSapi
-    # to real start and end time
+    # Converts hour data from KOSapi to real start and end time.
     #
-    # Example calculation with parameters:
-    # start_hour = 5
-    # duration = 2
-    # @first_hour = 7:30
-    # @hour_length = 45m
-    # @break_length = 15m
-    # @break_after = 2
+    # @example Calculation with parameters:
+    #   start_hour = 5
+    #   duration = 2
+    #   @first_hour = 7:30
+    #   @hour_length = 45m
+    #   @break_length = 15m
+    #   @break_after = 2
     #
-    # start_time = 7:30 + (5-1)*45m + ((5-1)/2)*15m = 7:30 + 180m + 30m = 11:00
-    # end_time = 11:00 + 90m = 12:45
+    #   start_time = 7:30 + (5-1)*45m + ((5-1)/2)*15m = 7:30 + 180m + 30m = 11:00
+    #   end_time = 11:00 + 90m = 12:45
     #
     # @param start_hour [Integer] Hour number when the event starts
     # @param duration [Integer] Event duration in whole teaching hours

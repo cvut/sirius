@@ -2,8 +2,8 @@ require 'schedule_exception'
 
 class TeacherChangeScheduleException < ScheduleException
 
-  # Checks for "{username,12345,foo}" with optional spaces around braces and comas.
-  # Empty list "{}" is also allowed.
+  # Checks for `{username,12345,foo}` with optional spaces around braces and commas.
+  # An empty list `{}` is also allowed.
   USERNAME_LIST_FORMAT = /^ *{ *(\w+(?: *, *\w+)*)? *} *$/.freeze
   USERNAME_DELIMITER = / *, */.freeze # username list delimiters - comas with optional spaces
 
