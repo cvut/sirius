@@ -63,6 +63,40 @@ describe SiriusApi::SemesterWeek do
       expect( actual.map(&:start_date) ).to eq semester_weeks.map(&:start_date)
       expect( actual ).to eq semester_weeks
     end
+
+    context 'with from/to' do
+
+      where :start_date, :end_date, :expected_weeks_idx, :desc do
+        '2015-12-07' | '2015-12-20' | (1..2) | 'is from Monday to Sunday of next week'
+        '2015-12-09' | '2016-01-02' | (1..4) | 'starts/ends in middle of weeks'
+        '2015-12-21' | '2015-12-22' | 3      | 'does not cover all periods of the week'
+      end
+
+      with_them ->{ "when range #{desc}" } do
+        subject(:actual) do
+          described_class.resolve_weeks(semester,
+            from: Date.parse(start_date),
+            to: Date.parse(end_date))
+        end
+
+        let(:expected) do
+          Array(expected_weeks_idx).map { |idx| semester_weeks[idx] }
+        end
+
+        it 'returns weeks in the range' do
+          actual_weeks_idx = actual.map { |o| semester_weeks.index(o) }
+          expect( actual_weeks_idx ).to eq Array(expected_weeks_idx)
+        end
+
+        it 'returns weeks with all periods that intersect them' do
+          expect( actual.map(&:periods) ).to eq expected.map(&:periods)
+        end
+
+        it 'returns weeks with correct teaching_week number' do
+          expect( actual.map(&:teaching_week) ).to eq expected.map(&:teaching_week)
+        end
+      end
+    end
   end
 
   describe '#periods' do

@@ -7,7 +7,7 @@ module SiriusApi
   class SemesterWeek
     extend Forwardable
 
-    using Corefines::Object::then
+    using Corefines::Object[:then, :then_if]
     using Corefines::Enumerable::map_by
     using ::DateRefinements
 
@@ -16,16 +16,27 @@ module SiriusApi
       # Generates {SemesterWeek}s for the given {FacultySemester}.
       #
       # @param semester [FacultySemester]
+      # @param from [Date, nil] date of the first week to return (will be
+      #   rounded to the beginning of the week).
+      # @param to [Date, nil] date of the last week to retun (will be rounded to
+      #   the beginning of the week).
       # @return [Array<SemesterWeek>] an array of semester weeks sorted by date.
       #
-      def resolve_weeks(semester)
-        semester.semester_periods
+      def resolve_weeks(semester, from: nil, to: nil)
+        from_date = from.start_of_week if from
+        to_date = to.end_of_week if to
+
+        periods_by_week = semester.semester_periods
           .sort_by(&:starts_at)
           .flat_map { |per| index_period_by_weeks per }
+          .then_if(to_date) { |ary| ary.take_while { |date, _| date <= to_date } }
           .map_by { |date, per| [date, per] }
+
+        periods_by_week
           .map { |date, pers| SemesterWeek.new(semester, pers, date) }
           .sort_by(&:start_date)
           .tap { |weeks| add_teaching_week_nums! weeks }
+          .drop_while { |week| week.start_date < from_date if from_date }
       end
 
       private
