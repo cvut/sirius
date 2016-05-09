@@ -43,13 +43,6 @@ traits:
         to:
           description: Return events up to this date
           type: date
-        with_original_date:
-          description: >
-            When the date of event has been changed by a schedule exception, original date is not
-            considered for date filtering (by from/to parameters). With this parameter Sirius will
-            include events’ original date in a date filter.
-          type: boolean
-          default: false
   - deletable:
       queryParameters:
         deleted:
@@ -83,6 +76,14 @@ resourceTypes:
   - events-collection:
       get:
         is: [ dateScoped, deletable, filterable, includable, paged, secured ]
+        queryParameters:
+          with_original_date:
+            description: >
+              When the date of event has been changed by a schedule exception, original date is not
+              considered for date filtering (by from/to parameters). With this parameter Sirius will
+              include events’ original date in a date filter.
+            type: boolean
+            default: false
         responses:
           200:
             body:
@@ -300,6 +301,85 @@ resourceTypes:
         Course code, faculty specific.
       required: true
       example: BI-PA1
+
+/faculties/{facultyId}:
+  uriParameters:
+    facultyId:
+      description: Faculty code (5 digits).
+      required: true
+      example: 18000
+  /schedule:
+    /days:
+      is: [ dateScoped ]
+      description: Get semester-related parameters for the specified days.
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+      /{date}:
+        description: Get semester-related parameters for the specified day.
+        uriParameters:
+          date:
+            description: The date to resolve, or string `current` for the current day.
+            required: true
+            example: 2016-01-06
+        get:
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                      "semester_days": {
+                        "date": "2016-01-06",
+                        "cwday": 3,
+                        "period_type": "teaching",
+                        "teaching_week": 13,
+                        "week_parity": "even",
+                        "links": {
+                          "semester": "18000-B151",
+                          "period": 8
+                        }
+                      }
+                    }
+    /weeks:
+      is: [ dateScoped ]
+      description: Get semester-related attributes of the specified weeks.
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+      /{year_cweek}:
+        uriParameters:
+          year_cweek:
+            description: >
+              An ISO 8601 week-based year and week number of the week to resolve, or string
+              `current` for the current week.
+            required: true
+            example: 2015-52
+        get:
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                      "semester_weeks": {
+                        "starts_at": "2015-12-21",
+                        "ends_at": "2015-12-27",
+                        "cweek": 52,
+                        "period_types": [ "teaching", "holiday" ],
+                        "teaching_week": 12,
+                        "week_parity": "even",
+                        "links": {
+                          "semester": "18000-B151",
+                          "periods": [ 5, 6, 7 ]
+                        }
+                      }
+                    }
+
 /schedule_exceptions:
   description: Manage schedule exceptions
   is: [ paged ]

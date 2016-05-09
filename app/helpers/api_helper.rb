@@ -18,6 +18,11 @@ module ApiHelper
     optional :offset, type: Integer, min: 0, default: DEFAULT_OFFSET
   end
 
+  params :date_range do
+    optional :from, type: Date, default: Date.today
+    optional :to, type: Date, default: Date.today + 7
+  end
+
   params :username do
     requires :username, type: String, regexp: /\A[a-z0-9]+\z/i, desc: "person's username"
   end
@@ -60,5 +65,9 @@ module ApiHelper
       .for_collection
       .new(paginated.dataset.all)
       .to_hash('meta' => paginated.meta)
+  end
+
+  def not_found!
+    error!({message: 'Resource not found'}, 404)
   end
 end

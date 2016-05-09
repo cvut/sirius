@@ -278,6 +278,9 @@ GEM
     rspec-expectations (3.3.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
+    rspec-http (0.11.0)
+      rack (~> 1.0)
+      rspec (~> 3.0)
     rspec-mocks (3.3.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
@@ -382,6 +385,7 @@ DEPENDENCIES
   role_playing!
   rspec (~> 3.3)
   rspec-collection_matchers
+  rspec-http (~> 0.11)
   rspec-parameterized!
   rufus-scheduler (~> 3.1.0)
   sentry-raven

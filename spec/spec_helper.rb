@@ -9,6 +9,7 @@ end
 
 require 'rspec'
 require 'rspec/collection_matchers'
+require 'rspec/http'
 require 'fabrication'
 
 require 'dotenv'

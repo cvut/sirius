@@ -67,6 +67,7 @@ group :test do
   gem 'committee'
   gem 'rspec', '~> 3.3'
   gem 'rspec-collection_matchers'
+  gem 'rspec-http', '~> 0.11'
   gem 'rspec-parameterized', github: 'jnv/rspec-parameterized', branch: 'badbf07'
   gem 'rack-test'
   gem 'bogus'

@@ -4,6 +4,7 @@ require 'json'
 require 'errors_helper'
 require 'sirius_api'
 require 'api/events_endpoints'
+require 'api/faculties_endpoints'
 require 'api/schedule_exceptions_endpoints'
 require 'api/search_endpoints'
 require 'api/semesters_endpoints'
@@ -40,6 +41,7 @@ module API
 
     # Mount your api classes here
     mount API::EventsEndpoints
+    mount API::FacultiesEndpoints
     mount API::ScheduleExceptionsEndpoints
     mount API::SearchEndpoints
     mount API::SemestersEndpoints
