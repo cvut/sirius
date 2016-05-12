@@ -65,7 +65,7 @@ shared_examples 'paginated resource' do
       }
     end
 
-    before { auth_get path_for(path) }
+    before { xget path_for(path) }
 
     it 'returns OK' do
       expect(status).to eql 200
@@ -84,7 +84,7 @@ shared_examples 'paginated resource' do
       }
     end
 
-    before { auth_get path_for(path, limit: 1, offset: 1) }
+    before { xget path_for(path, limit: 1, offset: 1) }
 
     it { should have_json_size(1).at_path(json_type) }
     it { should be_json_eql(meta.to_json).at_path('meta') }
@@ -92,7 +92,7 @@ shared_examples 'paginated resource' do
 
   context 'with invalid value' do
 
-    before { auth_get path_for(path, offset: 'asdasd') }
+    before { xget path_for(path, offset: 'asdasd') }
 
     it 'returns an error' do
       expect(response.status).to eql 400
@@ -101,12 +101,12 @@ shared_examples 'paginated resource' do
     context 'for invalid integer' do
 
       it 'returns an error for zero limit' do
-        auth_get path_for(path, limit: 0)
+        xget path_for(path, limit: 0)
         expect(response.status).to eql 400
       end
 
       it 'returns an error for invalid (negative) offset' do
-        auth_get path_for(path, offset: -1)
+        xget path_for(path, offset: -1)
         expect(response.status).to eql 400
       end
     end

@@ -13,7 +13,7 @@ module RackHelper
   end
 
   alias_method :response, :last_response
-
+  alias_method :xget, :get
 end
 
 RSpec.configure do |config|

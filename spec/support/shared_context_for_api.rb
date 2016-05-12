@@ -13,4 +13,6 @@ shared_context 'authenticated user via local token', authenticated: true do
   def auth_get(path, **params)
     get path, params.merge(access_token: access_token)
   end
+
+  alias_method :xget, :auth_get
 end
