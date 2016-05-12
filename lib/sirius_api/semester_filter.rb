@@ -1,5 +1,6 @@
 require 'core_ext/then'
 
+# @deprecated
 module SiriusApi
   class SemesterFilter
 

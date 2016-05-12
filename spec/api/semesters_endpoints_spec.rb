@@ -1,5 +1,6 @@
 require 'api_spec_helper'
 
+# @deprecated The tested class is deprecated in favour of {FacultiesEndpoints}.
 describe API::SemestersEndpoints do
   include_context 'API response'
 

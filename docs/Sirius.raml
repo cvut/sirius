@@ -568,7 +568,7 @@ resourceTypes:
 /semesters:
   is: [ paged, secured ]
   get:
-    description: Get all semesters per faculties.
+    description: This resource is **DEPRECATED,** use `/faculties/{facultyId}/semesters` instead.
     queryParameters:
       faculty:
         description: Filter semesters by faculty id
@@ -578,33 +578,6 @@ resourceTypes:
       200:
         body:
           application/json:
-            example: |
-              {
-                "semesters": [
-                  {
-                    "id": "18000-B142",
-                    "semester": "B142",
-                    "faculty": 18000,
-                    "starts_at": "2015-02-16",
-                    "ends_at": "2015-09-21",
-                    "exams_start_at": "2015-05-18",
-                    "exams_end_at": "2015-06-27",
-                    "teaching_ends_at": "2015-05-16",
-                    "first_week_parity": "even",
-                    "hour_duration": 45,
-                    "hour_starts": [
-                      "07:30", "08:15", "09:15", "10:00", "11:00", "11:45",
-                      "12:45", "13:30", "14:30", "15:15", "16:15", "17:00",
-                      "18:00", "18:45", "19:45"
-                    ]
-                  }
-                ],
-                "meta": {
-                  "count": 4,
-                  "offset": 0,
-                  "limit": 1
-                }
-              }
   /{faculty_semester}:
     is: [ secured ]
     uriParameters:
@@ -614,75 +587,12 @@ resourceTypes:
         example: 18000-B142
         required: true
     get:
-      description: Get a semester on a faculty.
+      description: >
+        This resource is **DEPRECATED,** use `/faculties/{facultyId}/semesters/{code}` instead.
       responses:
         200:
           body:
             application/json:
-              example: |
-                {
-                  "semesters": {
-                    "id": "18000-B151",
-                    "semester": "B151",
-                    "faculty": 18000,
-                    "starts_at": "2015-10-05",
-                    "ends_at": "2016-02-22",
-                    "exams_start_at": "2016-01-11",
-                    "exams_end_at": "2016-02-21",
-                    "teaching_ends_at": "2016-01-10",
-                    "first_week_parity": "odd",
-                    "hour_duration": 45,
-                    "hour_starts": [
-                      "07:30", "08:15", "09:15", "10:00", "11:00", "11:45",
-                      "12:45", "13:30", "14:30", "15:15", "16:15", "17:00",
-                      "18:00", "18:45", "19:45"
-                    ],
-                    "periods": [
-                      {
-                        "type": "teaching",
-                        "irregular": false,
-                        "starts_at": "2015-10-05",
-                        "ends_at": "2015-12-20",
-                        "first_week_parity": "odd"
-                      },
-                      {
-                        "type": "teaching",
-                        "irregular": true,
-                        "starts_at": "2015-12-21",
-                        "ends_at": "2015-12-21",
-                        "first_week_parity": "even",
-                        "first_day_override": "wednesday"
-                      },
-                      {
-                        "type": "teaching",
-                        "irregular": true,
-                        "starts_at": "2015-12-22",
-                        "ends_at": "2015-12-22",
-                        "first_week_parity": "odd",
-                        "first_day_override": "tuesday"
-                      },
-                      {
-                        "type": "holiday",
-                        "irregular": false,
-                        "starts_at": "2015-12-23",
-                        "ends_at": "2016-01-03"
-                      },
-                      {
-                        "type": "teaching",
-                        "irregular": false,
-                        "starts_at": "2016-01-04",
-                        "ends_at": "2016-01-10",
-                        "first_week_parity": "even"
-                      },
-                      {
-                        "type": "exams",
-                        "irregular": false,
-                        "starts_at": "2016-01-11",
-                        "ends_at": "2016-02-20"
-                      }
-                    ]
-                  }
-                }
 /search:
   is: [ paged, secured ]
   get:

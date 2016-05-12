@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# @deprecated
 describe SiriusApi::SemesterFilter do
   subject(:filter) { described_class.new }
   let(:dataset) { FacultySemester.dataset }

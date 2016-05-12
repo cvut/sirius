@@ -3,6 +3,7 @@ require 'semesters_representer'
 require 'sirius_api/semester_filter'
 require 'api_helper'
 
+# @deprecated This is deprecated in favour of {FacultiesEndpoints}.
 module API
   class SemestersEndpoints < Grape::API
     helpers ApiHelper
