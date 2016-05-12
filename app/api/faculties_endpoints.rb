@@ -1,8 +1,10 @@
 require 'api_helper'
 require 'corefines'
 require 'date_refinements'
+require 'models/faculty_semester'
 require 'representers/semester_days_representer'
 require 'representers/semester_weeks_representer'
+require 'representers/semesters_representer'
 require 'sirius_api/semester_schedule'
 
 module API
@@ -78,6 +80,31 @@ module API
             end
             route_param :year_cweek do
               get { get_week Date.strptime(params[:year_cweek], '%G-%V') }
+            end
+          end
+        end
+
+        resource :semesters do
+          params { use :pagination }
+
+          get do
+            check_faculty! params[:faculty_id]
+
+            dataset = FacultySemester
+              .where(faculty: params[:faculty_id])
+              .eager(:semester_periods)
+            represent_paginated(dataset, SemestersRepresenter)
+          end
+
+          params do
+            requires :code, type: String, regexp: /[AB]\d{2}[12]/,
+              desc: 'Semester code (e.g. B151)'
+          end
+          route_param :code do
+            get do
+              SemestersRepresenter.new ::FacultySemester.first!(
+                faculty: params[:faculty_id], code: params[:code]
+              )
             end
           end
         end

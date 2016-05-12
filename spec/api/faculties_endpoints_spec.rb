@@ -6,7 +6,8 @@ require 'sirius_api/semester_schedule'
 describe API::FacultiesEndpoints do
   include_context 'API response'
 
-  let!(:faculty) { Fabricate(:faculty_semester).faculty }
+  let!(:faculty_semester) { Fabricate(:faculty_semester) }
+  let!(:faculty) { faculty_semester.faculty }
 
 
   describe 'GET /faculties/:code/schedule/days' do
@@ -234,6 +235,89 @@ describe API::FacultiesEndpoints do
         before { get path_for(path) }
         it { should be_http_bad_request }
       end
+    end
+  end
+
+
+  describe 'GET /faculties/:code/semesters' do
+
+    let(:path) { "/faculties/#{faculty}/semesters" }
+    let(:json_type) { 'semesters' }
+    let(:total_count) { 3 }
+
+    before do
+      i = 0                       # one FacultySemester is created at the top
+      Fabricate.times(total_count - 1, :faculty_semester) do
+        code { "B1#{ i+=1 }1" }
+      end
+    end
+
+    it_behaves_like 'paginated resource'
+
+    context 'non-existent faculty' do
+      let(:faculty) { 66006 }
+
+      before { get path_for(path) }
+      it { should be_http_not_found }
+    end
+  end
+
+
+  describe 'GET /faculties/:code/semesters/:code' do
+
+    let(:entity) { faculty_semester }
+    let(:path) { "/faculties/#{entity.faculty}/semesters/#{entity.code}" }
+
+    let!(:semester_periods) { [
+      Fabricate(:teaching_semester_period, faculty_semester: entity),
+      Fabricate(:irregular_semester_period, faculty_semester: entity),
+      Fabricate(:holiday_semester_period, faculty_semester: entity),
+      Fabricate(:exams_semester_period, faculty_semester: entity)
+    ] }
+
+    def period_for_json(period)
+      ret = {
+        type: period.type,
+        starts_at: period.starts_at,
+        ends_at: period.ends_at,
+        irregular: period.irregular
+      }
+      if period.first_week_parity
+        ret[:first_week_parity] = period.first_week_parity
+      end
+      if period.first_day_override
+        ret[:first_day_override] = period.first_day_override
+      end
+      ret.freeze
+    end
+
+    let(:json) do
+      {
+        id: "#{entity.faculty}-#{entity.code}",
+        semester: entity.code,
+        faculty: entity.faculty,
+        starts_at: entity.starts_at,
+        ends_at: entity.ends_at,
+        exams_start_at: entity.exams_start_at,
+        exams_end_at: entity.exams_end_at,
+        teaching_ends_at: entity.teaching_ends_at,
+        first_week_parity: entity.first_week_parity,
+        hour_duration: entity.hour_duration,
+        hour_starts: entity.hour_starts.map { |v| v.strftime('%H:%M') },
+        periods: semester_periods.map { |period| period_for_json(period) },
+      }.to_json
+    end
+
+    context 'existing faculty-semester' do
+      before { get path_for(path) }
+
+      it { should be_http_ok }
+      it { expect( body ).to be_json_eql(json).at_path('semesters') }
+    end
+
+    context 'non-existent faculty-semester' do
+      let(:path) { '/faculties/12345/semesters/B141' }
+      it_behaves_like 'non-existent resource'
     end
   end
 end
