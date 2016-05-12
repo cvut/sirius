@@ -2,11 +2,10 @@
 title: CTU Sirius API
 version: v1
 baseUri: https://sirius.fit.cvut.cz/api/{version}
-securedBy: [access_token]
 securitySchemes:
   - access_token:
       description: |
-        All Sirius read-only resources are secured by an access token. The token is either
+        Most of the Sirius resources are secured by an access token. The token is either
         associated with an username (personal) or is set as global. This authorization
         scheme uses the same query parameter as OAuth 2.0, and will be later
         replaced by OAuth 2.0.
@@ -66,6 +65,7 @@ traits:
           example: courses,teachers,schedule_exceptions
   - secured:
       description: Marks resource as secured. You need to be authenticated and authorized to access it.
+      securedBy: [ access_token ]
       queryParameters:
         access_token:
           description: Authentication and authorization is required. You need to set your `access_token` in URL.
