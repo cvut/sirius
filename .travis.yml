@@ -16,8 +16,10 @@ before_script:
   - while read line; do export $line; done < .env.test
   - bundle exec rake --trace db:setup
 after_success: |
-  if [[ "$TRAVIS_BRANCH" == master ]]; then
-      npm install -g raml2html && bundle exec rake raml:publish
+  if [ "$TRAVIS_BRANCH" = master ]; then
+      nvm install 4.2 && nvm use 4.2 \
+          && npm install -g raml2html \
+          && bundle exec rake raml:publish
   fi
 notifications:
   email:
