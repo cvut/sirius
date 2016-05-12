@@ -21,17 +21,16 @@ class TimetableTransformer
 
   # @param row [Array(KOSapiClient::Entity::TeacherTimetableSlot, String)] teacher timetable slot
   #   together with related teacher username
+  # @return [Array<Event>] planned events
   def process_row(row)
     slot, teacher = *row
-    @events = plan_events(slot, teacher)
+    plan_events(slot, teacher)
   end
 
   # @return [Array<Event>] generated events that were not yet synced with the database
   def generate_row
-    if @events
-      row = @events
-      @events = nil
-      row
+    if processed_row
+      pop_processed_row
     else
       raise EndOfData
     end

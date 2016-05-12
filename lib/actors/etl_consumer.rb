@@ -14,9 +14,12 @@ module ETLConsumer
   end
 
   # Receive a single row from actor's source(s).
+  #
+  # Actor specific #process_row implementation is called with received row
+  # and the return value is stored in processed_row.
   def consume_row(row)
     raise "#{self.class.name}: Received row when not empty!" unless empty?
-    process_row(row)
+    self.processed_row = process_row(row)
     produce_row() if respond_to?(:produce_row)
   end
 
@@ -35,5 +38,19 @@ module ETLConsumer
   def start!
     mark_empty!
     notify_hungry
+  end
+
+  def processed_row=(row)
+    @_processed_row = row
+  end
+
+  def pop_processed_row
+    row = @_processed_row
+    @_processed_row = nil
+    row
+  end
+
+  def processed_row
+    @_processed_row
   end
 end

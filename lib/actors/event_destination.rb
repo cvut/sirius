@@ -17,17 +17,16 @@ class EventDestination
   end
 
   # @param events [Array<Event>] events that should be synced to the database
+  # @return [Array<Event>] events synced to the database
   def process_row(events)
     @sync.perform(events: events)
-    @saved_events = @sync.results[:events]
+    @sync.results[:events]
   end
 
   # @return [Array<Event>] events synced to the database
   def generate_row
-    if @saved_events
-      row = @saved_events
-      @saved_events = nil
-      row
+    if processed_row
+      pop_processed_row
     else
       raise EndOfData
     end
