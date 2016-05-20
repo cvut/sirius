@@ -10,16 +10,15 @@ gem 'pg'
 gem 'sequel', '~> 4.17'
 gem 'sequel_pg', require: 'sequel'
 gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
-# TODO: replace with version after 0.9.0 is released.
-gem 'chewy', github: 'toptal/chewy', branch: 'ec41aca'
+gem 'chewy', '~> 0.8.2', '< 0.8.4'  # 0.8.4 is broken
 
 ## REST API
 gem 'pliny', '~> 0.11.0'
 gem 'dotenv'
 gem 'grape', '~> 0.9.0'
 gem 'warden', '~> 1.2.3' # authentication middleware
-gem 'faraday', '~> 0.8.9'
-gem 'faraday_middleware', '~> 0.8.8'
+gem 'faraday', '~> 0.9.0'
+gem 'faraday_middleware', '~> 0.10.0'
 
 # JSON-API support: https://github.com/apotonick/roar/pull/98
 gem 'roar', '~> 1.0.0'
@@ -38,14 +37,14 @@ gem 'ice_cube' # Date/Time helper
 gem 'icalendar', '~> 2.3.0'
 
 ## Background tasks & Scheduling
-gem 'rufus-scheduler', '~> 3.1.0', require: false
+gem 'rufus-scheduler', '~> 3.1', require: false
 
 ## Helper stuff
 gem 'activesupport'
 gem 'corefines', '~> 1.9'
 gem 'role_playing', github: 'jnv/role_playing'
 gem 'logging'
-gem 'oauth2', github: 'cvut/oauth2', ref: '13753d6'
+gem 'oauth2', github: 'cvut/oauth2', ref: 'd9f6fc3'
 
 ## For console
 gem 'pry', require: false
