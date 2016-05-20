@@ -76,7 +76,7 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'coveralls', require: false
   gem 'fabrication'
-  gem 'json_spec', '~> 1.1.2'
+  gem 'json_spec', '~> 1.1'
   gem 'vcr'
   gem 'rake-jekyll', require: false
   gem 'elasticsearch-extensions'
