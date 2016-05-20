@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'interactors/import_students'
+require 'sirius/kosapi_client_registry'
 
 describe ImportStudents, :vcr do
 
@@ -8,7 +9,10 @@ describe ImportStudents, :vcr do
     subject(:import) { described_class }
     let(:faculty_semester) { Fabricate.build(:faculty_semester) }
 
-    before { allow(KOSapiClient).to receive(:client) { create_kosapi_client } }
+    before do
+      allow(Sirius::KOSapiClientRegistry.instance).to receive(:client_for_faculty)
+        .and_return(create_kosapi_client)
+    end
 
     it 'updates parallel students' do
       parallel = Fabricate(:parallel, id: 339540000, semester: faculty_semester.code, faculty: faculty_semester.faculty)

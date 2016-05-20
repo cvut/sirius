@@ -1,9 +1,13 @@
 require 'spec_helper'
 require 'interactors/import_updated_parallels'
+require 'sirius/kosapi_client_registry'
 
 describe ImportUpdatedParallels, :vcr do
 
-  before { allow(KOSapiClient).to receive(:client).and_return(create_kosapi_client) }
+  before do
+    allow(Sirius::KOSapiClientRegistry.instance).to receive(:client_for_faculty)
+      .and_return(create_kosapi_client)
+  end
 
   describe '#perform' do
 
