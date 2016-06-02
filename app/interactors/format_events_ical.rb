@@ -56,7 +56,7 @@ class FormatEventsIcal
         "#{course_id} #{localized_event_type}"
       when 'tutorial', 'lecture', 'laboratory'
         "#{course_id} #{sequence_number}. #{localized_event_type} (#{parallel})"
-      when 'teacher_timetable'
+      when 'teacher_timetable_slot'
         "Nepojmenované #{localized_event_type}"
       else
         raise "Don't know how to format iCalendar summary for event with type: '#{event_type}'"
@@ -100,7 +100,7 @@ class FormatEventsIcal
       lecture: 'přednáška'.freeze,
       laboratory: 'laboratoř'.freeze,
       assessment: 'zápočet'.freeze,
-      teacher_timetable: 'omezení učitele'.freeze,
+      teacher_timetable_slot: 'omezení učitele'.freeze,
       exam: 'zkouška'.freeze
     }
 

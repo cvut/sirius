@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'actors/timetable_source'
+require 'actors/teacher_timetable_slot_source'
 
-describe TimetableSource, :vcr do
+describe TeacherTimetableSlotSource, :vcr do
   include ActorHelper
 
   let(:semester) { Fabricate(:faculty_semester, code: 'B151') }

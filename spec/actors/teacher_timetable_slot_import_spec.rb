@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'actors/teacher_timetable_import'
+require 'actors/teacher_timetable_slot_import'
 
-describe TeacherTimetableImport do
+describe TeacherTimetableSlotImport do
   include ActorHelper
 
   let(:faculty_semester) { Fabricate(:faculty_semester) }

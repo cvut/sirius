@@ -4,7 +4,7 @@ namespace :sirius do
   task :events => %w[
     events:import events:import_students events:plan events:assign_people events:import_exams
     events:import_exam_students events:import_course_events events:import_course_event_students
-    events:import_teacher_timetables events:renumber events:reindex
+    events:import_teacher_timetable_slots events:renumber events:reindex
   ]
 
   task :env do
@@ -64,10 +64,10 @@ namespace :sirius do
       build_manager.import_course_event_students
     end
 
-    desc 'Import teacher timetables for active semesters.'
-    task :import_teacher_timetables => :env do
-      @logger.info 'Importing teacher timetables.'
-      build_manager.import_teacher_timetables
+    desc 'Import teacher timetable slots for active semesters.'
+    task :import_teacher_timetable_slots => :env do
+      @logger.info 'Importing teacher timetable slots.'
+      build_manager.import_teacher_timetable_slots
     end
 
     desc 'Recalculates relative sequence number for all existing non-deleted events in active semesters.'

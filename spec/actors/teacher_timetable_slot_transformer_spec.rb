@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'actors/timetable_transformer'
+require 'actors/teacher_timetable_slot_transformer'
 require 'roles/planned_semester_period'
 
-describe TimetableTransformer do
+describe TeacherTimetableSlotTransformer do
   include ActorHelper
 
   let!(:semester) { Fabricate(:faculty_semester) }
@@ -53,10 +53,10 @@ describe TimetableTransformer do
       expect(events.count).to be 3
     end
 
-    it 'generates teacher_timetable events' do
+    it 'generates teacher_timetable_slot events' do
       events = transformer.plan_events(slot, teacher)
       expect(events).to all(have_attributes(
-        event_type: 'teacher_timetable',
+        event_type: 'teacher_timetable_slot',
         teacher_ids: ['vomackar'],
         student_ids: []
       ))

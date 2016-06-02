@@ -7,7 +7,7 @@ require 'day'
 
 # A convertor which receives TeacherTimetableSlots loaded from KOSapi and plans them into
 # Events according to semester parameters and semester periods.
-class TimetableTransformer
+class TeacherTimetableSlotTransformer
   include Celluloid
   include ETLProducer
   include ETLConsumer
@@ -57,7 +57,7 @@ class TimetableTransformer
     end
 
     events.each_with_index do |e, i|
-      e.event_type = 'teacher_timetable'
+      e.event_type = 'teacher_timetable_slot'
       e.source = Sequel.hstore({teacher_timetable_slot_id: slot.id})
       e.teacher_ids = [teacher]
       e.student_ids = []
