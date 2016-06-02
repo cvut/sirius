@@ -26,6 +26,17 @@ describe RenumberEvents do
       expect(events.map(&:sequence_number)).to eq [3, nil, 2, 1]
     end
 
+    it 'resets sequence number of deleted events' do
+      deleted_event = events[1]
+      deleted_event.deleted = true
+      deleted_event.relative_sequence_number = 3
+      deleted_event.save
+      expect {
+        planner.perform(faculty_semester: semester)
+        deleted_event.refresh
+      }.to change(deleted_event, :sequence_number).from(3).to(nil)
+    end
+
     it 'calculates order of events from two parallels independently' do
       parallel2 = Fabricate(:parallel)
       events[2].parallel = events[0].parallel = parallel2
