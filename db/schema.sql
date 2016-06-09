@@ -50,6 +50,19 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 
 SET search_path = public, pg_catalog;
 
+--
+-- Name: event_source_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE event_source_type AS ENUM (
+    'manual_entry',
+    'timetable_slot',
+    'course_event',
+    'exam',
+    'teacher_timetable_slot'
+);
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -149,7 +162,9 @@ CREATE TABLE events (
     applied_schedule_exception_ids bigint[],
     original_starts_at timestamp without time zone,
     original_ends_at timestamp without time zone,
-    original_room_id text
+    original_room_id text,
+    source_type event_source_type,
+    source_id text
 );
 
 
@@ -530,7 +545,15 @@ ALTER TABLE ONLY courses
 
 
 --
--- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: events_faculty_source_type_source_id_absolute_sequence_numb_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY events
+    ADD CONSTRAINT events_faculty_source_type_source_id_absolute_sequence_numb_key UNIQUE (faculty, source_type, source_id, absolute_sequence_number);
+
+
+--
+-- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; TableSpace:
 --
 
 ALTER TABLE ONLY events
@@ -676,14 +699,28 @@ CREATE INDEX events_semester_index ON events USING btree (semester);
 
 
 --
--- Name: events_source_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: events_source_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX events_source_id_index ON events USING btree (source_id);
+
+
+--
+-- Name: events_source_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX events_source_index ON events USING gin (source);
 
 
 --
--- Name: events_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: events_source_type_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX events_source_type_index ON events USING btree (source_type);
+
+
+--
+-- Name: events_student_ids_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX events_student_ids_index ON events USING gin (student_ids);
@@ -865,3 +902,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1444408228_add_indexes_to_
 INSERT INTO "schema_migrations" ("filename") VALUES ('1454511860_add_irregular_to_semester_periods.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1457024495_add_gin_index_to_applied_schedule_exception_ids.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1465481874_create_audits_if_not_exists.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1465486180_split_source_in_events.rb');
