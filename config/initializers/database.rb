@@ -18,3 +18,4 @@ DB.extension :pg_hstore
 DB.extension :pg_array
 Sequel.extension :pg_array_ops
 Sequel.extension :pg_hstore_ops
+DB.extension :pg_enum
