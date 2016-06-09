@@ -55,7 +55,41 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: courses; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: audits; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE audits (
+    id bigint NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    user_id text DEFAULT "session_user"() NOT NULL,
+    action text NOT NULL,
+    table_name text NOT NULL,
+    primary_key text NOT NULL,
+    changed_values jsonb
+);
+
+
+--
+-- Name: audits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE audits_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: audits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE audits_id_seq OWNED BY audits.id;
+
+
+--
+-- Name: courses; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE courses (
@@ -420,6 +454,13 @@ ALTER SEQUENCE update_logs_id_seq OWNED BY update_logs.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY audits ALTER COLUMN id SET DEFAULT nextval('audits_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY courses ALTER COLUMN id SET DEFAULT nextval('courses_id_seq'::regclass);
 
 
@@ -473,7 +514,15 @@ ALTER TABLE ONLY update_logs ALTER COLUMN id SET DEFAULT nextval('update_logs_id
 
 
 --
--- Name: courses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: audits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY audits
+    ADD CONSTRAINT audits_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: courses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY courses
@@ -815,3 +864,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1443807443_add_first_day_o
 INSERT INTO "schema_migrations" ("filename") VALUES ('1444408228_add_indexes_to_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1454511860_add_irregular_to_semester_periods.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1457024495_add_gin_index_to_applied_schedule_exception_ids.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1465481874_create_audits_if_not_exists.rb');
