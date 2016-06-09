@@ -15,6 +15,7 @@ require 'fabrication'
 require 'dotenv'
 Dotenv.load
 Dotenv.overload('.env.test')
+Dotenv.overload('.env.ci') if ENV['CI']
 
 require_relative "../lib/initializer"
 
