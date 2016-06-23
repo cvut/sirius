@@ -1,0 +1,219 @@
+= Data import and processing
+Tibor Szolár <szolatib@fit.cvut.cz>
+
+This document describes how Sirius imports the source data, converts them and synchronizes them into the database.
+
+== Import overview
+
+=== Import process
+
+The main goal of the import process is to consume, convert and process external timetable data and produce calendar events.
+Events in Sirius should provide an accurate representation of the teaching and related events happening during the semester.
+
+A complete import process performs the following actions (in this order):
+
+  . <<Import of parallels>> – fetch parallels from KOSapi and store them locally into `parallels` and `timetable_slots` tables.
+  . <<Import of students for a parallel>> – fetch student list for each parallel in the `parallels` table and store it in the database.
+  . <<Event planning>> – plan stored timetable slots into events according to semester parameters.
+  . <<People assignment>> – batch copy of teacher and student lists from `parallels` to `events`.
+  . <<Import of exams>> – fetch exams from KOSapi and convert them into events.
+  . <<Import of exam attendees>> – fetch attendee list for stored exam events.
+  . <<Import of course events>> – fetch course events from KOSapi and convert them into events.
+  . <<Import of course event attendees>> – fetch course event attendees for stored course events.
+  . <<Import of teacher timetable slots>> – fetch teacher timetable slots from KOSapi and converts them into events.
+  . <<Events renumbering>> – calculate sequence numbers for related events.
+  . <<ElasticSearch indexes update>> – update search indexes in ElasticSearch with the latest data.
+
+Each of these actions corresponds to a Rake task under the namespace `sirius:events` and can be run separately.
+
+NOTE: If the tasks are not run in this order or some are skipped, the import may be incomplete.
+
+=== External sources
+
+All external data is currently imported from https://kosapi.fit.cvut.cz[KOSapi] v3.
+This includes:
+
+  * https://kosapi.fit.cvut.cz/projects/kosapi/wiki/Parallels#GET-parallels[parallels and timetable slots] and
+  https://kosapi.fit.cvut.cz/projects/kosapi/wiki/Parallels#GET-parallelsidstudents[students for a parallel],
+
+  * https://kosapi.fit.cvut.cz/projects/kosapi/wiki/Exams#GET-exams[exams] and
+  https://kosapi.fit.cvut.cz/projects/kosapi/wiki/Exams#GET-examsidattendees[exam attendees],
+
+  * https://kosapi.fit.cvut.cz/projects/kosapi/wiki/CourseEvents#GET-courseEvents[course events] and
+  https://kosapi.fit.cvut.cz/projects/kosapi/wiki/CourseEvents#GET-courseEventsidattendees[course event attendees],
+
+  * https://kosapi.fit.cvut.cz/projects/kosapi/wiki/Teachers#GET-teachersusernameOrIdtimetable[teacher timetables].
+
+NOTE: Semester related data are not automatically imported.
+This is because semester data in KOS are incomplete and unreliable.
+All semester parameters have to be entered into Sirius manually.
+
+
+== Semester configuration
+
+To perform event import and planning, you need to configure semester parameters.
+This is currently done manually in `faculty_semesters` and `semester_periods` database tables.
+Semester configuration in Sirius is always scoped to a single faculty, because semester parameters can differ a lot between faculties.
+This is also the reason why they are called _faculty semesters_ and not just semesters.
+
+During the import process, each <<Import process, import action>> described above is performed for each faculty semesters in `faculty_semesters` table with import enabled.
+This is controlled by `update_parallels` and `update_other` attributes in `faculty_semesters` table.
+If they are set to `false` will be ignored during import and planning.
+It is still visible in the semesters API.
+
+`update_parallels` enables <<Import of parallels>>, <<Import of students for a parallel>>, <<Event planning>> and <<People assignment>> actions.
+`update_other` enables the rest.
+This means that you can have `update_other` turned on and `update_parallels` disabled, but not the other way around.
+
+== Synchronization
+
+The external data can be changed or deleted any time, so the synchronization process has to account for that.
+KOS(api) does not provide any diffs or changesets, so we need to perform a full synchronization every time an update is required.
+Synchronization happens multiple times a day to provide up-to-date data.
+
+The synchronization consists of two main phases.
+In the first phase, Sirius fetches source data from KOSapi and generates _events_.
+Then it tries to match the generated events with the existing ones in the database.
+If a match is found and the data is the same, there is no need to update anything.
+If there is a match and the event data differs, existing event in the database is updated.
+In case there is no match at all, a new event is created.
+
+Event matching strives to be stable, i.e. it aims to update existing events instead of erasing and generating new events.
+For data sources which have one-to-one mapping with resulting events (e.g. exams, course events) this is easy: The source entity ID (for example an exam ID) is saved in the generated event and in the consecutive runs a match is performed against it.
+
+On the other hand for source entities which can generate multiple events or none at all (e.g. timetable slots), things are a bit complicated.
+To achieve a stable matching, the source entity IDs is combined with sequence ID.
+First we number all events generated from a single source entity sequentially starting from 1 (sorted by their starting time).
+Then a matching event is looked up in the database using a tuple `(source_entity_id, sequence_id)`.
+Finally a check is performed for additional events with `sequence_id` higher than highest generated `sequence_id` in a group.
+These events are marked as deleted as they were not generated in the current dataset.
+
+=== Deleted events
+
+The case described above handles removal of extra events that are no longer generated, because some event or planning parameters changed.
+But what about entities that were completely removed in KOS?
+They do not appear in import, thus there is no matching performed at all.
+The described approach above doesn’t help.
+When events are synchronized, all event IDs that were processed (created, updated or unchanged) during the current import run are temporarily stored.
+After event synchronization is complete, the database is queried for events with IDs that were not included in the processed set.
+Returned events are no longer generated and are marked as deleted, because their source entity was removed.
+
+== Multi-faculty support
+
+Sirius can import and store timetable data for multiple faculties.
+Currently the import is performed for FIT and FEL, but other faculties can be easily added by configuring access to another instance of KOSapi.
+
+== Event sources and types
+
+Sirius currently provides events of the following types:
+
+  * lecture
+  * tutorial
+  * laboratory
+  * assessment
+  * exam
+  * course event
+  * teacher timetable slot
+
+Lectures, tutorials and laboratories are imported from parallels and timetable slots, assessments and exams from KOSapi exams, course events from KOSapi course events and teacher timetable slots from KOSapi teacher timetables.
+
+
+== Import actions details
+
+=== Import of parallels
+
+All parallels for currently processed semester are imported from KOSapi into `parallels` and `timetable_slots` tables.
+Teachers, rooms and courses that are loaded together with parallels from KOSapi in this action are saved to database tables `people`, `rooms` and `courses`.
+
+This action is performed by link:../app/interactors/import_updated_parallels.rb[`ImportUpdatedParallels`] class and can be called by the rake task `sirius:events:import`.
+
+
+=== Import of students for a parallel
+
+This is probably the slowest action in the import.
+It fetches student lists from KOSapi for all parallels in `parallels` table for the currently processed faculty semester.
+It takes a long time, because it has to perform at least one HTTP request for every parallel in a semester.
+Loaded students are then saved in `parallels` and `people` tables.
+
+This action is performed by link:../app/interactors/import_students.rb[`ImportStudents`] class and can be called by the rake task `sirius:events:import_students`.
+
+
+=== Event planning
+
+This action takes the data from `parallels` and `timetable_slots` for active semesters and converts them to events according to semester parameters from `faculty_semesters` and `semester_periods`, and schedule exceptions from `schedule_exceptions`.
+Lecture, tutorial and laboratory event types are produced by this action.
+
+Planning is always performed for a single timetable slot at a time and is composed of the following steps:
+
+  . Event generation – converts a single timetable slot to multiple events according to `semester_periods` and `faculty_semesters`.
+  . Event numbering – numbers generated events sequentially from 1 to the number of generated events sorted by starting time. These numbers are for internal use only, it makes no sense to expose them externally via API.
+  . Schedule exception application – modifies generated events according to rules from `schedule_exceptions`.
+  . Event synchronization – inserts new or update existing events in the database.
+  . Extra events cleanup – mark events assigned to the processed timetable slot that were not generated by the current run as deleted.
+
+For the details how the synchronization and clean-up is done, see <<Synchronization>>.
+
+This action is performed by link:../lib/sirius/event_planner.rb[`EventPlanner`] class and can be called by the rake task `sirius:events:plan`.
+
+
+=== People assignment
+
+A simple action that copies (in SQL) students and teachers from `parallels` to generated `events`.
+Additionally it applies schedule exceptions affecting teacher or student lists.
+
+This action is performed by link:../app/interactors/assign_people.rb[`AssignPeople`] class and can be called by the rake task `sirius:events:assign_people`.
+
+
+=== Import of exams
+
+This action fetches exams from KOSapi and converts them into `assessment` and `exam` event types.
+It does not download exam attendees (students).
+
+This action is performed by link:../app/interactors/import_exams.rb[`ImportExams`] class and can be called by the rake task `sirius:events:import_exams`.
+
+
+=== Import of exam attendees
+
+This is complementary action to <<Import of exams>>.
+It fetches attendee list from KOSapi for every exam or assessment event in a semester.
+Retrieved attendees are then stored to corresponding event.
+
+This action is performed by link:../app/interactors/import_exam_students.rb[`ImportExamStudents`] class and can be called by the rake task `sirius:events:import_exam_students`.
+
+
+=== Import of course events
+
+This action behaves very similarly to <<Import of exams>>, except it fetches course events instead of exams and produces events of type `course_event`.
+
+This action is performed by link:../app/interactors/import_course_events.rb[`ImportCourseEvents`] class and can be called by the rake task `sirius:events:import_course_events`.
+
+
+=== Import of course event attendees
+
+Similarly to <<Import of exam students>>, course events attendees are retrieved and saved in a separate action as well.
+
+This action is performed by link:../app/interactors/import_course_event_students.rb[`ImportCourseEventStudents`] class and can be called by the rake task `sirius:events:import_course_event_students`.
+
+
+=== Import of teacher timetable slots
+
+Fetches teacher timetable slots from KOSapi and plans them similarly to regular timetable slots.
+The only difference is that teacher timetable slots are not affected by any schedule exceptions.
+
+This action is performed by link:../lib/actors/teacher_timetable_slot_import.rb[`TeacherTimetableSlotImport`] class and can be called by the rake task `sirius:events:import_teacher_timetable_slots`.
+
+
+=== Events renumbering
+
+Events are grouped into logical groups relevant to their event type (all course exams, all lectures for a parallel, ...), ordered by a start date and sequentially numbered starting from 1.
+Unlike sequential numbering generated during <<Event planning>>, this numbering is designated for end users.
+This also updates events entered manually.
+
+This action is performed by link:../app/interactors/renumber_events.rb[`RenumberEvents`] class and can be called by the rake task `sirius:events:renumber`.
+
+
+=== ElasticSearch indexes update
+
+Resets ElasticSearch indexes used for search API.
+
+This action can be called by the rake task `sirius:events:reindex`.
