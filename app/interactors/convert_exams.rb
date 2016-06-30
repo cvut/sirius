@@ -26,6 +26,7 @@ class ConvertExams
         capacity: exam.capacity,
         event_type: exam.event_type,
         source: Sequel.hstore({exam_id: exam.link.link_id}),
+        absolute_sequence_number: 1,
         source_type: 'exam',
         source_id: exam.link.link_id,
         semester: @faculty_semester.code,
