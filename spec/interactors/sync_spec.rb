@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'interactors/sync'
+require 'person'
 
 describe Sync do
 
@@ -40,6 +41,15 @@ describe Sync do
       expect { sync.perform({people: [person]}) }.to change(person, :new?).from(true).to(false)
     end
 
+    %i(created_at updated_at).each do |attr|
+      it "sets #{attr} on insert" do
+        expect {
+          sync.perform({people: [person]})
+          person.refresh
+        }.to change(person, attr).from(nil)
+      end
+    end
+
     context 'with existing record' do
 
       let(:existing_person) { Fabricate(:person, full_name: 'Dude') }
@@ -57,6 +67,13 @@ describe Sync do
           sync.perform({people: [person]})
           existing_person.refresh
         end.to change(existing_person, :updated_at)
+      end
+
+      it 'does not update update_at when nothing is changed' do
+        expect do
+          sync.perform({people: [existing_person]})
+          existing_person.refresh
+        end.not_to change(existing_person, :updated_at)
       end
 
       it 'keeps created_at timestamp' do
@@ -88,38 +105,22 @@ describe Sync do
 
     context 'with custom matching_attributes' do
 
-      subject(:sync) { described_class[Person, matching_attributes: [:full_name]] }
-      let!(:existing_person) { Fabricate(:person, full_name: 'Pete') }
-      let(:person) { Fabricate.build(:person, id: existing_person.id, full_name: 'Pete') }
-
-      it 'looks up model according to it' do
-
-        expect(Person).to receive(:find).with(full_name: 'Pete').and_call_original
-        sync.perform({people: [person]})
+      subject(:sync) { described_class[Person, matching_attributes: [:access_token], skip_updating: [:id]] }
+      let!(:saved_person) do
+        Fabricate(:person, full_name: 'Pete', access_token: 'a41a01cc-2698-437b-9bfb-387f1863937c')
+      end
+      let(:new_person) do
+        Fabricate.build(:person,
+          full_name: 'Peter',
+          access_token: 'a41a01cc-2698-437b-9bfb-387f1863937c'
+        )
       end
 
-    end
-
-    context 'with key-value matching_attributes' do
-
-      subject(:sync) { described_class[ScheduleException, matching_attributes: [options: :stuff_id]] }
-
-      let!(:existing_exception) { Fabricate(:schedule_exception, name: 'Foo', options: {stuff_id: 42})}
-      let(:exception) { Fabricate.build(:schedule_exception, name: 'Bar', options: {stuff_id: 42})}
-      let(:other_exception) { Fabricate.build(:schedule_exception, name: 'Bar', options: {stuff_id: 99999})}
-
-      it 'updates correct record' do
-        expect {
-          sync.perform({schedule_exceptions: [exception]})
-          existing_exception.refresh
-        }.to change(existing_exception, :name).from('Foo').to('Bar')
-      end
-
-      it 'does not update different record' do
-        expect {
-          sync.perform({schedule_exceptions: [other_exception]})
-          existing_exception.refresh
-        }.not_to change(existing_exception, :name)
+      it 'updates model according to it' do
+        expect do
+          sync.perform({people: [new_person]})
+          saved_person.refresh
+        end.to change(saved_person, :full_name).from('Pete').to('Peter')
       end
 
     end

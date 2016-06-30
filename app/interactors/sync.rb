@@ -28,12 +28,35 @@ class Sync
     raise "Missing key #{key_name} in Sync#perform arguments." unless @models
     @rest = args.select { |k,v| k != key_name }
     @models.each do |model|
-      existing_model = find_existing_model(model)
-      if existing_model
-        update_existing(existing_model, model)
-      else
-        model.save
+      model_hash = model.to_hash
+      update_columns = model_hash.keys.reject do |k|
+        matching_attributes.include?(k) || skip_updating.include?(k)
       end
+      upsert_options = { target: matching_attributes }
+      unless update_columns.empty?
+        upsert_update = update_columns.map { |key| [ key.to_sym, "excluded__#{key}".to_sym ] }.to_h
+        if model_class.columns.include?(:updated_at)
+          upsert_update_where = update_columns.map { |key|
+            ["#{model_class.table_name}__#{key}".to_sym, "excluded__#{key}".to_sym]
+          }.to_h
+          update_if = Sequel.~(upsert_update_where) # only perform the update if at least one column differs
+          updated_at_case = Sequel.case(
+            [[update_if, Sequel.function(:NOW)]],
+            "#{model_class.table_name}__updated_at".to_sym # default value
+          )
+          upsert_options[:update] = upsert_update.merge(updated_at: updated_at_case)
+        else
+          upsert_options[:update] = upsert_update
+        end
+      end
+      if model_class.columns.include?(:created_at)
+        model_hash.merge!({ created_at: Sequel.function(:NOW) }) { |key, oldval, newval| oldval }
+      end
+      if model_class.columns.include?(:updated_at)
+        model_hash.merge!({ updated_at: Sequel.function(:NOW) }) { |key, oldval, newval| oldval }
+      end
+      model.id = model_class.dataset.insert_conflict(upsert_options).insert(model_hash)
+      model.instance_variable_set(:@new, false)
     end
   end
 
@@ -42,37 +65,6 @@ class Sync
   end
 
   private
-
-  def find_existing_model(model)
-    lookup_args = []
-    lookup_hash = {}
-    matching_attributes.each do |attr|
-      if attr.instance_of?(Symbol)
-        lookup_value = model.send(attr)
-        lookup_hash[attr] = lookup_value if lookup_value
-      else
-        args = attr.map do |column, key|
-          lookup_attribute = model.send(column)
-          lookup_value = lookup_attribute[key]
-          h = Sequel.hstore_op(column)
-          h.contains(Sequel.hstore({key => lookup_value}))
-        end
-        lookup_args.concat(args)
-      end
-    end
-
-    lookup_args << lookup_hash unless lookup_hash.empty?
-
-    model_class.find(*lookup_args) unless lookup_args.empty?
-  end
-
-  def update_existing(existing_model, new_model)
-    values = new_model.values
-    filtered_values = values.reject { |key| skip_updating.include?(key) }
-    existing_model.update_all(filtered_values)
-    new_model.id ||= existing_model.id
-    existing_model
-  end
 
   def key_name
     self.class.key_name
