@@ -20,6 +20,8 @@ class ConvertCourseEvents
       capacity: course_event.capacity,
       event_type: 'course_event',
       source: Sequel.hstore({course_event_id: course_event.link.link_id}),
+      source_type: 'course_event',
+      source_id: course_event.link.link_id,
       semester: @faculty_semester.code,
       faculty: @faculty_semester.faculty,
       room_id: course_event.room.try(:link_id),
