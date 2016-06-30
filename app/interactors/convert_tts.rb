@@ -35,7 +35,7 @@ class ConvertTTS
     TimetableSlot.new(slot_hash) do |s|
       s.id = slot.id
       s.parallel_id = parallel_id
-      s.room = @rooms[room_code]
+      s.room = @rooms[room_code] if room_code
       s.deleted_at = nil
     end
   end
