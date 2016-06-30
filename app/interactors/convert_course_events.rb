@@ -19,7 +19,6 @@ class ConvertCourseEvents
       ends_at: course_event.end_date,
       capacity: course_event.capacity,
       event_type: 'course_event',
-      source: Sequel.hstore({course_event_id: course_event.link.link_id}),
       absolute_sequence_number: 1,
       source_type: 'course_event',
       source_id: course_event.link.link_id,
