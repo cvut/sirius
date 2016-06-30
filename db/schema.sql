@@ -105,6 +105,7 @@ begin
     student_ids,
     event_type,
     parallel_id,
+    source_type,
     course_id,
     semester,
     faculty,
@@ -119,6 +120,7 @@ begin
     par.student_ids,
     par.parallel_type,
     _parallel_id,
+    'manual_entry',
     par.course_id,
     par.semester,
     par.faculty,
@@ -377,9 +379,7 @@ begin
     raise exception 'Event with id = % does not exist.', _event_id;
   end if;
 
-  -- XXX: Stupid heuristic, 'cause we do not distinguish between generated
-  -- manually inserted events yet.
-  if event.parallel_id is null or event.timetable_slot_id is not null then
+  if event.source_type <> 'manual_entry' then
     raise exception 'This does not look like a manually inserted event, you cannot modify it.';
   end if;
 
@@ -1249,3 +1249,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1457024495_add_gin_index_t
 INSERT INTO "schema_migrations" ("filename") VALUES ('1465481874_create_audits_if_not_exists.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1465486180_split_source_in_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467309659_import_event_functions.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1467309979_update_event_functions.rb');
