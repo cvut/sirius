@@ -55,7 +55,7 @@ class ScheduleException < Sequel::Model
 
   def timetable_slot_matches?(event)
     return true if timetable_slot_ids.nil? || timetable_slot_ids.empty?
-    timetable_slot_ids.include?(event.timetable_slot_id)
+    event.source_type == 'timetable_slot' && timetable_slot_ids.include?(event.source_id.to_i)
   end
 
   def course_matches?(event)

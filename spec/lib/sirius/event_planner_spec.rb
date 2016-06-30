@@ -28,7 +28,8 @@ describe Sirius::EventPlanner do
     it 'marks extra event as deleted' do
       extra_event = Fabricate(:event,
                               absolute_sequence_number: 20,
-                              timetable_slot_id: timetable_slot.id,
+                              source_type: 'timetable_slot',
+                              source_id: timetable_slot.id,
                               parallel_id: timetable_slot.parallel.id)
       expect {
         events = planner.plan_semester(semester)

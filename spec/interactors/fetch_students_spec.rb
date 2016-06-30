@@ -7,8 +7,9 @@ describe FetchStudents do
   let(:kosapi_client) { spy }
   let(:faculty_semester) { Fabricate.build(:faculty_semester) }
   let(:kosapi_students) { [double(:student, full_name: 'Dude', username: 'skocdopet' ) ] }
-  let(:exam) { Fabricate.build(:event, event_type: 'exam', source: {'exam_id' => 42}) }
-  let!(:future_exam) { Fabricate(:event, event_type: 'exam', starts_at: Time.new + 1.hour, ends_at: Time.new + 2.hours, source: {'exam_id' => 42}) }
+  let(:exam) { Fabricate.build(:event, event_type: 'exam', source_type: 'exam', source_id: 42) }
+  let!(:future_exam) { Fabricate(:event, event_type: 'exam', starts_at: Time.new + 1.hour,
+    ends_at: Time.new + 2.hours, source_type: 'exam', source_id: 42) }
 
   before(:example) do
     subject.setup(client: kosapi_client)

@@ -32,13 +32,13 @@ describe PlannedTimetableSlot do
   describe '#clear_extra_events' do
 
     let!(:extra_event) do
-      Fabricate(:event, absolute_sequence_number: 20, timetable_slot_id: slot.id,
+      Fabricate(:event, absolute_sequence_number: 20, source_type: 'timetable_slot', source_id: slot.id.to_s,
                 applied_schedule_exception_ids: [Fabricate(:schedule_exception).id],
                 parallel_id: slot.parallel.id)
     end
 
     let!(:planned_event) do
-      Fabricate(:event, timetable_slot_id: slot.id, parallel_id: slot.parallel.id)
+      Fabricate(:event, source_type: 'timetable_slot', source_id: slot.id.to_s, parallel_id: slot.parallel.id)
     end
 
     it 'marks extra events as deleted' do

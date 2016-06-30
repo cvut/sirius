@@ -16,7 +16,7 @@ class RenumberEvents
       %w[laboratory assessment course_event lecture exam tutorial],
       %i[event_type course_id parallel_id]
     )
-    renumber_events(faculty_semester, %w[teacher_timetable_slot], %i[event_type source])
+    renumber_events(faculty_semester, %w[teacher_timetable_slot], %i[event_type source_type source_id])
     cleanup_numbering(faculty_semester)
   end
 

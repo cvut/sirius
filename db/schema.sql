@@ -497,12 +497,10 @@ CREATE TABLE events (
     deleted boolean DEFAULT false NOT NULL,
     event_type text,
     parallel_id bigint,
-    timetable_slot_id bigint,
     course_id text,
     semester text,
     faculty integer,
     capacity integer,
-    source hstore,
     room_id text,
     applied_schedule_exception_ids bigint[],
     original_starts_at timestamp without time zone,
@@ -1051,13 +1049,6 @@ CREATE INDEX events_source_id_index ON events USING btree (source_id);
 
 
 --
--- Name: events_source_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX events_source_index ON events USING gin (source);
-
-
---
 -- Name: events_source_type_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1076,13 +1067,6 @@ CREATE INDEX events_student_ids_index ON events USING gin (student_ids);
 --
 
 CREATE INDEX events_teacher_ids_index ON events USING gin (teacher_ids);
-
-
---
--- Name: events_timetable_slot_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
---
-
-CREATE INDEX events_timetable_slot_id_index ON events USING btree (timetable_slot_id);
 
 
 --
@@ -1173,14 +1157,6 @@ ALTER TABLE ONLY events
 
 
 --
--- Name: events_timetable_slot_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY events
-    ADD CONSTRAINT events_timetable_slot_id_fkey FOREIGN KEY (timetable_slot_id) REFERENCES timetable_slots(id);
-
-
---
 -- Name: parallels_course_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1250,3 +1226,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1465481874_create_audits_i
 INSERT INTO "schema_migrations" ("filename") VALUES ('1465486180_split_source_in_events.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467309659_import_event_functions.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467309979_update_event_functions.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1467312179_remove_source_timetable_slot_id.rb');

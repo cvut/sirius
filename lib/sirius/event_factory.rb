@@ -29,7 +29,6 @@ module Sirius
         event.course = @slot.parallel.course
         event.event_type = @slot.parallel.parallel_type
         event.capacity = @slot.parallel.capacity
-        event.timetable_slot_id = @slot.id
         event.source_type = 'timetable_slot'
       else
         event.source_type = 'teacher_timetable_slot'
