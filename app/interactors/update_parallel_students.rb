@@ -10,8 +10,11 @@ class UpdateParallelStudents
 
   def perform(students:)
     students.each do |parallel, parallel_students|
-      parallel.student_ids = process_students(parallel_students)
-      parallel.save
+      student_ids = process_students(parallel_students)
+      if parallel.student_ids != student_ids
+        parallel.student_ids = student_ids
+        parallel.this.update(student_ids: Sequel.pg_array(student_ids, :text), updated_at: Sequel.function(:NOW))
+      end
     end
   end
 

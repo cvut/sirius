@@ -6,16 +6,11 @@ describe UpdateParallelStudents do
   describe '#perform' do
 
     subject(:update) { described_class }
-    let(:parallel) { double(:parallel, save: nil, :student_ids= => nil) }
+    let(:parallel) { double(:parallel, save: nil, :student_ids= => nil).as_null_object }
     let(:kosapi_student) { double(:kosapi_student, username: 'foo', full_name: 'Mr. Foo Bar') }
 
     it 'updates parallel students' do
       expect(parallel).to receive(:student_ids=).with(['foo'])
-      update.perform(students: {parallel => [kosapi_student]})
-    end
-
-    it 'saves parallels' do
-      expect(parallel).to receive(:save)
       update.perform(students: {parallel => [kosapi_student]})
     end
 
