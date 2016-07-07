@@ -1227,3 +1227,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1465486180_split_source_in
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467309659_import_event_functions.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467309979_update_event_functions.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467312179_remove_source_timetable_slot_id.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1467918523_add_absolute_sequence_numbers_to_course_events_exams.rb');
