@@ -185,7 +185,7 @@ GEM
     ice_cube (0.14.0)
     ice_nine (0.11.2)
     json (1.8.3)
-    json_schema (0.12.3)
+    json_schema (0.12.5)
     json_spec (1.1.4)
       multi_json (~> 1.0)
       rspec (>= 2.0, < 4.0)
@@ -215,16 +215,15 @@ GEM
     parser (2.3.1.0)
       ast (~> 2.2)
     pg (0.18.4)
-    pliny (0.11.2)
+    pliny (0.17.0)
       activesupport (~> 4.1, >= 4.1.0)
       http_accept (~> 0.1, >= 0.1.5)
       multi_json (~> 1.9, >= 1.9.3)
-      prmd (~> 0.7.0)
-      rack-timeout (~> 0.3, >= 0.3.1)
-      sinatra (~> 1.4, >= 1.4.5)
+      prmd (~> 0.11, >= 0.11.4)
+      sinatra (~> 1.4, >= 1.4.7)
       sinatra-router (~> 0.2, >= 0.2.3)
       thor (~> 0.19, >= 0.19.1)
-    prmd (0.7.4)
+    prmd (0.11.11)
       erubis (~> 2.7)
       json_schema (~> 0.3, >= 0.3.1)
     proc_to_ast (0.1.0)
@@ -262,6 +261,8 @@ GEM
       uber (~> 0.0.7)
     roar (1.0.4)
       representable (>= 2.0.1, < 2.4.0)
+    rollbar (2.11.5)
+      multi_json
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -308,7 +309,7 @@ GEM
       tins (~> 1.0)
     thor (0.19.1)
     thread_safe (0.3.5)
-    tilt (2.0.4)
+    tilt (2.0.5)
     timecop (0.8.1)
     timers (4.1.1)
       hitimes
@@ -369,16 +370,18 @@ DEPENDENCIES
   logging
   oauth2!
   pg
-  pliny (~> 0.11.0)
+  pliny
   pry
   pry-byebug
   pry-nav (~> 0.2.4)
   puma
   rack-test
+  rack-timeout
   rake
   rake-jekyll
   roar (~> 1.0.0)
   role_playing!
+  rollbar
   rspec (~> 3.3)
   rspec-collection_matchers
   rspec-http (~> 0.11)

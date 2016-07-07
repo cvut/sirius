@@ -13,7 +13,7 @@ gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
 gem 'chewy', '~> 0.8.2', '< 0.8.4'  # 0.8.4 is broken
 
 ## REST API
-gem 'pliny', '~> 0.11.0'
+gem 'pliny'
 gem 'dotenv'
 gem 'grape', '~> 0.9.0'
 gem 'warden', '~> 1.2.3' # authentication middleware
@@ -46,12 +46,14 @@ gem 'role_playing', github: 'jnv/role_playing'
 gem 'logging'
 gem 'oauth2', github: 'cvut/oauth2', ref: 'd9f6fc3'
 gem 'celluloid'
+gem 'rack-timeout' # required by pliny
 
 ## For console
 gem 'pry', require: false
 
 ## Error reporting
 gem 'sentry-raven'
+gem 'rollbar' # required by pliny
 
 group :development do
   gem 'guard-shotgun', '~> 0.4.0', require: false
