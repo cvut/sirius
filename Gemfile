@@ -14,7 +14,7 @@ gem 'chewy', '~> 0.8.2', '< 0.8.4'  # 0.8.4 is broken
 gem 'elasticsearch', '~> 1.0', require: false
 
 ## REST API
-gem 'pliny', '~> 0.11.0'
+gem 'pliny', '~> 0.17.0'
 gem 'dotenv'
 gem 'grape', '~> 0.9.0'
 gem 'warden', '~> 1.2.3' # authentication middleware
@@ -47,12 +47,14 @@ gem 'role_playing', github: 'jnv/role_playing'
 gem 'logging', '~> 2.1'
 gem 'oauth2', github: 'cvut/oauth2', ref: 'd9f6fc3'
 gem 'celluloid', '~> 0.17.2'
+gem 'rack-timeout', '~> 0.4'  # required by pliny
 
 ## For console
 gem 'pry', require: false
 
 ## Error reporting
 gem 'sentry-raven', '~> 1.0'
+gem 'rollbar', '~> 2.11' # required by pliny
 
 group :development do
   gem 'guard-shotgun', '~> 0.4.0', require: false
