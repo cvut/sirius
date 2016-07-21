@@ -28,35 +28,7 @@ class Sync
     raise "Missing key #{key_name} in Sync#perform arguments." unless @models
     @rest = args.select { |k,v| k != key_name }
     @models.each do |model|
-      model_hash = model.to_hash
-      update_columns = model_hash.keys.reject do |k|
-        matching_attributes.include?(k) || skip_updating.include?(k)
-      end
-      upsert_options = { target: matching_attributes }
-      unless update_columns.empty?
-        upsert_update = update_columns.map { |key| [ key.to_sym, "excluded__#{key}".to_sym ] }.to_h
-        if model_class.columns.include?(:updated_at)
-          upsert_update_where = update_columns.map { |key|
-            ["#{model_class.table_name}__#{key}".to_sym, "excluded__#{key}".to_sym]
-          }.to_h
-          update_if = Sequel.~(upsert_update_where) # only perform the update if at least one column differs
-          updated_at_case = Sequel.case(
-            [[update_if, Sequel.function(:NOW)]],
-            "#{model_class.table_name}__updated_at".to_sym # default value
-          )
-          upsert_options[:update] = upsert_update.merge(updated_at: updated_at_case)
-        else
-          upsert_options[:update] = upsert_update
-        end
-      end
-      if model_class.columns.include?(:created_at)
-        model_hash.merge!({ created_at: Sequel.function(:NOW) }) { |key, oldval, newval| oldval }
-      end
-      if model_class.columns.include?(:updated_at)
-        model_hash.merge!({ updated_at: Sequel.function(:NOW) }) { |key, oldval, newval| oldval }
-      end
-      model.id = model_class.dataset.insert_conflict(upsert_options).insert(model_hash)
-      model.instance_variable_set(:@new, false)
+      upsert_model(model)
     end
   end
 
@@ -66,20 +38,52 @@ class Sync
 
   private
 
-  def key_name
-    self.class.key_name
+  %i[model_class key_name matching_attributes skip_updating].each do |key|
+    define_method(key) { self.class.send(key) }
   end
 
-  def model_class
-    self.class.model_class
+  def upsert_model(model)
+    model_hash = model.to_hash
+    columns_to_update = model_hash.keys.reject do |k|
+      matching_attributes.include?(k) || skip_updating.include?(k)
+    end
+    upsert_options = { target: matching_attributes }
+    unless columns_to_update.empty?
+      update_clause = columns_to_update.map { |key| [ key.to_sym, "excluded__#{key}".to_sym ] }.to_h
+      timestamps = update_timestamps(columns_to_update)
+      upsert_options[:update] = update_clause.merge(timestamps) { |key, oldval, newval| oldval }
+    end
+    model_insert_clause = model_hash.merge(insert_timestamps) { |key, oldval, newval| oldval }
+
+    model.id = model_class.dataset.insert_conflict(upsert_options).insert(model_insert_clause)
+    model.instance_variable_set(:@new, false)
   end
 
-  def matching_attributes
-    self.class.matching_attributes
+  def insert_timestamps
+    timestamps = {}
+    if model_class.columns.include?(:created_at)
+      timestamps[:created_at] = Sequel.function(:NOW)
+    end
+    if model_class.columns.include?(:updated_at)
+      timestamps[:updated_at] = Sequel.function(:NOW)
+    end
+    timestamps
   end
 
-  def skip_updating
-    self.class.skip_updating
+  def update_timestamps(columns_to_update)
+    if model_class.columns.include?(:updated_at)
+      columns_comparison = columns_to_update.map { |key|
+        ["#{model_class.table_name}__#{key}".to_sym, "excluded__#{key}".to_sym]
+      }.to_h
+      update_condition = Sequel.~(columns_comparison) # only perform the update if at least one column differs
+      updated_at_case = Sequel.case(
+        [[update_condition, Sequel.function(:NOW)]],
+        "#{model_class.table_name}__updated_at".to_sym # default value
+      )
+      { updated_at: updated_at_case }
+    else
+      { }
+    end
   end
 
 end
