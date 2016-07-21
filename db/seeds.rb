@@ -193,13 +193,3 @@ periods.each do |period|
     sp.irregular = !!period[:first_day_override]
   end
 end
-
-
-if ENV['RACK_ENV'] == 'development'
-  require 'token'
-  faux_uuid = '11111111-1111-1111-8888-888888888888'
-  Token.unrestrict_primary_key
-  Token.find_or_create(uuid: faux_uuid) do |t|
-    t.username = '*'
-  end
-end
