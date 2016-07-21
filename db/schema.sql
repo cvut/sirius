@@ -769,50 +769,6 @@ ALTER SEQUENCE timetable_slots_id_seq OWNED BY timetable_slots.id;
 
 
 --
--- Name: tokens; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE tokens (
-    uuid uuid NOT NULL,
-    username text,
-    last_used_at timestamp without time zone,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: update_logs; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE update_logs (
-    id bigint NOT NULL,
-    type integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: update_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE update_logs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: update_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE update_logs_id_seq OWNED BY update_logs.id;
-
-
---
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -866,13 +822,6 @@ ALTER TABLE ONLY semester_periods ALTER COLUMN id SET DEFAULT nextval('semester_
 --
 
 ALTER TABLE ONLY timetable_slots ALTER COLUMN id SET DEFAULT nextval('timetable_slots_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY update_logs ALTER COLUMN id SET DEFAULT nextval('update_logs_id_seq'::regclass);
 
 
 --
@@ -985,22 +934,6 @@ ALTER TABLE ONLY semester_periods
 
 ALTER TABLE ONLY timetable_slots
     ADD CONSTRAINT timetable_slots_pkey PRIMARY KEY (id);
-
-
---
--- Name: tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY tokens
-    ADD CONSTRAINT tokens_pkey PRIMARY KEY (uuid);
-
-
---
--- Name: update_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY update_logs
-    ADD CONSTRAINT update_logs_pkey PRIMARY KEY (id);
 
 
 --
@@ -1234,3 +1167,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1467309659_import_event_fu
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467309979_update_event_functions.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467312179_remove_source_timetable_slot_id.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467918523_add_absolute_sequence_numbers_to_course_events_exams.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1469128840_remove_unused_tables.rb');

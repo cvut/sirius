@@ -1,4 +1,3 @@
-require 'update_log'
 require 'interpipe/interactor'
 require 'sirius/updated_parallels_finder'
 
