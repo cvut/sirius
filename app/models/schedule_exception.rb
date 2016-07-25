@@ -1,12 +1,11 @@
 require 'period'
-require 'sirius/enums/schedule_exception_type'
 
 class ScheduleException < Sequel::Model
   plugin :single_table_inheritance, :exception_type, model_map: {
-    0 => :CancelScheduleException,
-    1 => :RelativeMoveScheduleException,
-    2 => :RoomChangeScheduleException,
-    3 => :TeacherChangeScheduleException
+    'cancel' => :CancelScheduleException,
+    'relative_move' => :RelativeMoveScheduleException,
+    'room_change' => :RoomChangeScheduleException,
+    'teacher_change' => :TeacherChangeScheduleException
   }
 
   def period
@@ -16,14 +15,6 @@ class ScheduleException < Sequel::Model
   def period=(new_period)
     self.starts_at = new_period.starts_at
     self.ends_at = new_period.ends_at
-  end
-
-  def exception_type
-    Sirius::ScheduleExceptionType.from_numeric(super)
-  end
-
-  def exception_type=(new_type)
-    super Sirius::ScheduleExceptionType.to_numeric(new_type)
   end
 
   # Checks whether this exception affects an event during
