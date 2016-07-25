@@ -457,9 +457,9 @@ ALTER SEQUENCE audits_id_seq OWNED BY audits.id;
 CREATE TABLE courses (
     id text NOT NULL,
     department text,
-    name hstore,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    name hstore NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -490,19 +490,19 @@ CREATE TABLE events (
     id bigint NOT NULL,
     name hstore,
     note hstore,
-    starts_at timestamp without time zone,
-    ends_at timestamp without time zone,
+    starts_at timestamp without time zone NOT NULL,
+    ends_at timestamp without time zone NOT NULL,
     absolute_sequence_number integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     teacher_ids text[],
     student_ids text[],
     relative_sequence_number integer,
     deleted boolean DEFAULT false NOT NULL,
-    event_type text,
+    event_type text NOT NULL,
     parallel_id bigint,
     course_id text,
-    semester text,
+    semester text NOT NULL,
     faculty integer,
     capacity integer,
     room_id text,
@@ -510,7 +510,7 @@ CREATE TABLE events (
     original_starts_at timestamp without time zone,
     original_ends_at timestamp without time zone,
     original_room_id text,
-    source_type event_source_type,
+    source_type event_source_type NOT NULL,
     source_id text
 );
 
@@ -540,19 +540,19 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 CREATE TABLE faculty_semesters (
     id integer NOT NULL,
-    code text,
-    faculty integer,
-    update_parallels boolean DEFAULT true,
-    first_week_parity integer,
-    starts_at date,
-    teaching_ends_at date,
-    exams_start_at date,
+    code text NOT NULL,
+    faculty integer NOT NULL,
+    update_parallels boolean DEFAULT true NOT NULL,
+    first_week_parity integer NOT NULL,
+    starts_at date NOT NULL,
+    teaching_ends_at date NOT NULL,
+    exams_start_at date NOT NULL,
     exams_end_at date,
-    ends_at date,
-    hour_starts time without time zone[],
-    hour_duration integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    ends_at date NOT NULL,
+    hour_starts time without time zone[] NOT NULL,
+    hour_duration integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     update_other boolean DEFAULT false NOT NULL
 );
 
@@ -582,17 +582,17 @@ ALTER SEQUENCE faculty_semesters_id_seq OWNED BY faculty_semesters.id;
 
 CREATE TABLE parallels (
     id bigint NOT NULL,
-    parallel_type text,
-    course_id text,
-    code integer,
+    parallel_type text NOT NULL,
+    course_id text NOT NULL,
+    code integer NOT NULL,
     capacity integer,
     occupied integer,
-    semester text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    semester text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     teacher_ids text[],
     student_ids text[],
-    faculty integer,
+    faculty integer NOT NULL,
     deleted_at timestamp without time zone
 );
 
@@ -622,10 +622,10 @@ ALTER SEQUENCE parallels_id_seq OWNED BY parallels.id;
 
 CREATE TABLE people (
     id text NOT NULL,
-    full_name text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    access_token uuid DEFAULT gen_random_uuid()
+    full_name text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    access_token uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
@@ -640,8 +640,8 @@ CREATE TABLE rooms (
     division text,
     locality text,
     type text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -651,16 +651,16 @@ CREATE TABLE rooms (
 
 CREATE TABLE schedule_exceptions (
     id bigint NOT NULL,
-    exception_type integer,
-    name text,
+    exception_type integer NOT NULL,
+    name text NOT NULL,
     note text,
     starts_at timestamp without time zone,
     ends_at timestamp without time zone,
     faculty integer,
     semester text,
     timetable_slot_ids bigint[],
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     options hstore,
     course_ids text[]
 );
@@ -700,13 +700,13 @@ CREATE TABLE schema_migrations (
 
 CREATE TABLE semester_periods (
     id bigint NOT NULL,
-    faculty_semester_id integer,
+    faculty_semester_id integer NOT NULL,
     starts_at date NOT NULL,
     ends_at date NOT NULL,
     type integer NOT NULL,
     first_week_parity integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     first_day_override integer,
     irregular boolean DEFAULT false NOT NULL
 );
@@ -737,13 +737,13 @@ ALTER SEQUENCE semester_periods_id_seq OWNED BY semester_periods.id;
 
 CREATE TABLE timetable_slots (
     id bigint NOT NULL,
-    day integer,
-    parity integer,
-    first_hour integer,
-    duration integer,
-    parallel_id bigint,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    day integer NOT NULL,
+    parity integer NOT NULL,
+    first_hour integer NOT NULL,
+    duration integer NOT NULL,
+    parallel_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     room_id text,
     deleted_at timestamp without time zone
 );
@@ -1168,3 +1168,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1467309979_update_event_fu
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467312179_remove_source_timetable_slot_id.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467918523_add_absolute_sequence_numbers_to_course_events_exams.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469128840_remove_unused_tables.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1469130929_add_not_null_constraints.rb');
