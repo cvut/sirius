@@ -83,6 +83,18 @@ CREATE TYPE event_type AS ENUM (
 
 
 --
+-- Name: exception_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE exception_type AS ENUM (
+    'cancel',
+    'relative_move',
+    'room_change',
+    'teacher_change'
+);
+
+
+--
 -- Name: parallel_type; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -677,7 +689,7 @@ CREATE TABLE rooms (
 
 CREATE TABLE schedule_exceptions (
     id bigint NOT NULL,
-    exception_type integer NOT NULL,
+    exception_type exception_type NOT NULL,
     name text NOT NULL,
     note text,
     starts_at timestamp without time zone,
@@ -1196,3 +1208,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1467918523_add_absolute_se
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469128840_remove_unused_tables.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469130929_add_not_null_constraints.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469463514_convert_text_to_enum.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1469465920_convert_schedule_exception_type_to_enum.rb');
