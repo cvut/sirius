@@ -68,6 +68,32 @@ CREATE TYPE event_source_type AS ENUM (
 
 
 --
+-- Name: event_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE event_type AS ENUM (
+    'lecture',
+    'tutorial',
+    'laboratory',
+    'course_event',
+    'exam',
+    'assessment',
+    'teacher_timetable_slot'
+);
+
+
+--
+-- Name: parallel_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE parallel_type AS ENUM (
+    'lecture',
+    'tutorial',
+    'laboratory'
+);
+
+
+--
 -- Name: create_event(bigint, timestamp without time zone, timestamp without time zone, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -499,7 +525,7 @@ CREATE TABLE events (
     student_ids text[],
     relative_sequence_number integer,
     deleted boolean DEFAULT false NOT NULL,
-    event_type text NOT NULL,
+    event_type event_type NOT NULL,
     parallel_id bigint,
     course_id text,
     semester text NOT NULL,
@@ -582,7 +608,7 @@ ALTER SEQUENCE faculty_semesters_id_seq OWNED BY faculty_semesters.id;
 
 CREATE TABLE parallels (
     id bigint NOT NULL,
-    parallel_type text NOT NULL,
+    parallel_type parallel_type NOT NULL,
     course_id text NOT NULL,
     code integer NOT NULL,
     capacity integer,
@@ -1169,3 +1195,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1467312179_remove_source_t
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467918523_add_absolute_sequence_numbers_to_course_events_exams.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469128840_remove_unused_tables.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469130929_add_not_null_constraints.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1469463514_convert_text_to_enum.rb');
