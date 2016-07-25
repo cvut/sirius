@@ -7,4 +7,5 @@ Fabricator(:parallel) do
   semester 'B132'
   course
   faculty 18_000
+  parallel_type 'lecture'
 end

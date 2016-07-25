@@ -9,9 +9,10 @@ describe SemesterPeriod do
   let(:ends_at) { Date.new(2016, 1, 13) }
   let(:type) { :teaching }
   let(:parity) { :odd }
+  let(:semester) { Fabricate(:faculty_semester)}
 
   subject(:period) do
-    described_class.new(starts_at: starts_at, ends_at: ends_at, type: type, first_week_parity: parity)
+    described_class.new(starts_at: starts_at, ends_at: ends_at, type: type, first_week_parity: parity, faculty_semester: semester)
   end
 
   describe '#teaching?' do

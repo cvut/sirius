@@ -13,6 +13,7 @@ Fabricator(:event) do
   faculty 18_000
   semester 'B141'
   capacity 20
+  source_type 'timetable_slot'
 end
 
 Fabricator(:full_event, from: :event) do
