@@ -1,0 +1,48 @@
+= KOS and Sirius Terminology
+Jan Vlnas <vlnasjan@fit.cvut.cz>
+
+:kosapi: https://kosapi.fit.cvut.cz/projects/kosapi/wiki/
+:kCourse: link:{kosapi}Course[Course (Předmět)]
+:kCourseEvent: link:{kosapi}CourseEvent[Course Event (Jednorázová akce předmětu)]
+:kCoursein: link:{kosapi}Coursin[Coursin (Instance předmětu)]
+:kExam: link:{kosapi}Exam[Exam (Zkouškový termín)]
+:kParallel: link:{kosapi}Parallel[Parallel (Rozvrhová paralelka)]
+:kPerson: link:{:kosapi:}Person[Person (Osoba)]
+:kRoom: link:{:kosapi:}Room[Room (Místnost)]
+:kTeacher: link:{:kosapi:}Teacher[Teacher (Vyučující)]
+:kTimetableSlot: link:{:kosapi:}Parallel#TimetableSlot[TimetableSlot (Rozvrhový lístek)]
+:kTeacherTimetableSlot: link:{:kosapi:}Teachers#GET-teachersusernameOrIdtimetable[TeacherTimetableSlot (Omezení vyučujícího)]
+
+Explanation of terms used throughout Sirius code-base, along with Czech translation and equivalent concepts in KOSapi.
+
+Course (Předmět)::
+Corresponds to KOSapi's {kCourse}.
+Event (Událost)::
+Universal event type. Can be either imported directly from KOSapi's {kCourseEvent} and {kExam}, or generated, or generated from TimetableSlot.
+Faculty-Semester (Fakulto-Semestr)::
+A representation of Semester bound to a specific faculty. Composes of multiple Semester Periods.
+Parallel (Paralelka)::
+Corresponds to KOSapi's {kParallel}.
+Person (Osoba)::
+Corresponds to KOSapi's {kPerson}.
+Room (Místnost)::
+Corresponds to KOSapi's {kRoom}.
+Semester Period (Perioda semestru)::
+A part of Faculty-Semester; can be one of:
++
+* Teaching period,
+* exams period,
+* holiday period.
++
+Schedule Exception (Rozvrhová výjimka)::
+Exception of regular scheduling event; see <<schedule-exceptions.adoc, Schedule exceptions>>.
+Teacher (Vyučující)::
+A person which is registered as Teacher in event or who has TeacherTimetableSlot.
+Timetable Slot (Rozvrhový lístek)::
+Within Parallel, corresponds to KOSapi's {kTimetableSlot}.
+Teacher Timetable Slot (Omezení vyučujícího)::
+Information about teacher's regular availability. Corresponds to KOSapi's {kTeacherTimetableSlot}.
+
+.See Also
+* https://kosapi.fit.cvut.cz/projects/kosapi/wiki/Contents[KOSapi Documentation] (in Czech)
+* https://kosapi.fit.cvut.cz/projects/kosapi/wiki/Vocabulary[KOSapi Vocabulary] (in Czech)
