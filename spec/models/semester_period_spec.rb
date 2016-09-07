@@ -8,7 +8,7 @@ describe SemesterPeriod do
   let(:starts_at) { Date.new(2015, 11, 11) }
   let(:ends_at) { Date.new(2016, 1, 13) }
   let(:type) { :teaching }
-  let(:parity) { :odd }
+  let(:parity) { 'odd' }
   let(:semester) { Fabricate(:faculty_semester)}
 
   subject(:period) do
@@ -106,10 +106,10 @@ describe SemesterPeriod do
     end
 
     where :tdate   , :expected, :desc do
-      '2015-11-11' | :odd     | 'first day of the period'
-      '2015-11-09' | :odd     | 'date within the first week of the period, but before starts_at'
-      '2015-12-01' | :even    | 'date in the fourth week of the period'
-      '2016-01-07' | :odd     | 'date in the next year of the period'
+      '2015-11-11' | 'odd'    | 'first day of the period'
+      '2015-11-09' | 'odd'    | 'date within the first week of the period, but before starts_at'
+      '2015-12-01' | 'even'   | 'date in the fourth week of the period'
+      '2016-01-07' | 'odd'    | 'date in the next year of the period'
     end
 
     with_them ->{ desc } do

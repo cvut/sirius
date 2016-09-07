@@ -6,7 +6,7 @@ Fabricator(:faculty_semester) do
   faculty 18000
   update_parallels true
   update_other true
-  first_week_parity :odd
+  first_week_parity 'odd'
   starts_at '2014-09-22'
   teaching_ends_at '2014-12-20'
   exams_start_at '2015-01-05'

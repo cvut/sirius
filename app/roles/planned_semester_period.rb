@@ -34,7 +34,7 @@ class PlannedSemesterPeriod < RolePlaying::Role
   end
 
   def schedule_start_day(teaching_time_parity)
-    if teaching_time_parity == :both || teaching_time_parity == first_week_parity
+    if teaching_time_parity == 'both' || teaching_time_parity == first_week_parity
       starts_at
     else
       starts_at.next_week(:monday)
