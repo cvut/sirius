@@ -1,5 +1,4 @@
 require 'date_refinements'
-require 'parity'
 require 'models/semester_period'
 
 class FacultySemester < Sequel::Model
@@ -42,13 +41,4 @@ class FacultySemester < Sequel::Model
       .eager(semester_periods: ->(ds) { ds.where('starts_at < ?', end_date.end_of_week) })
       .all  # <- this is necessary for eager to work correctly!
   end
-
-  def first_week_parity
-    Parity.from_numeric(super)
-  end
-
-  def first_week_parity=(new_parity)
-    super Parity.to_numeric(new_parity)
-  end
-
 end

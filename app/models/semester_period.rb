@@ -1,5 +1,4 @@
 require 'sirius/enums/semester_period_type'
-require 'parity'
 require 'day'
 require 'date_refinements'
 
@@ -18,18 +17,6 @@ class SemesterPeriod < Sequel::Model
 
   def teaching?
     type == :teaching
-  end
-
-  def first_week_parity
-    Parity.from_numeric(super) if super
-  end
-
-  def first_week_parity=(new_parity)
-    if new_parity
-      super Parity.to_numeric(new_parity)
-    else
-      super
-    end
   end
 
   def first_day_override
@@ -71,7 +58,7 @@ class SemesterPeriod < Sequel::Model
   # and the given date, shifted by the period's `first_week_parity`.
   #
   # @param date [Date]
-  # @return [Symbol, nil] `:even`, `:odd`, or `nil`
+  # @return [String, nil] `'even'`, `'odd'`, or `nil`
   # @raise [ArgumentError] if the date's week is not within this period.
   #
   def week_parity(date)
@@ -82,10 +69,10 @@ class SemesterPeriod < Sequel::Model
     end
 
     weeks_since_start = ((date.start_of_week - starts_at.start_of_week) / 7).abs.floor
-    first_parity = first_week_parity == :even ? 0 : 1
+    first_parity = first_week_parity == 'even' ? 0 : 1
     parity = (weeks_since_start + first_parity) % 2
 
-    parity == 0 ? :even : :odd
+    parity == 0 ? 'even' : 'odd'
   end
 
   alias_method :irregular?, :irregular

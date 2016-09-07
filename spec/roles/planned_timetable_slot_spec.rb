@@ -6,7 +6,7 @@ require 'roles/planned_semester_period'
 
 describe PlannedTimetableSlot do
 
-  let(:slot) { Fabricate(:timetable_slot, first_hour: 1, duration: 2, parity: :both, day: :monday) }
+  let(:slot) { Fabricate(:timetable_slot, first_hour: 1, duration: 2, parity: 'both', day: :monday) }
   let(:period) { Period.parse('7:30', '9:00') }
   let(:converter) { instance_double(Sirius::TimeConverter, convert_time: period) }
   let(:semester_calendar) { instance_double(PlannedSemesterPeriod, plan: [period]) }

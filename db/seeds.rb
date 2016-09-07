@@ -14,7 +14,7 @@ std_hour_starts = Sequel.pg_array(%w(7:30 8:15 9:15 10:00 11:00 11:45 12:45 13:3
 
 FacultySemester.find_or_create(code: 'B141', faculty: 18000) do |s|
   s.update_parallels = false
-  s.first_week_parity = :odd
+  s.first_week_parity = 'odd'
   s.starts_at = '2014-09-22'
   s.teaching_ends_at = '2014-12-20'
   s.exams_start_at = '2015-01-05'
@@ -26,7 +26,7 @@ end
 
 FacultySemester.find_or_create(code: 'B141', faculty: 13000) do |s|
   s.update_parallels = false
-  s.first_week_parity = :odd
+  s.first_week_parity = 'odd'
   s.starts_at = '2014-09-22'
   s.teaching_ends_at = '2014-12-20'
   s.exams_start_at = '2015-01-05'
@@ -39,7 +39,7 @@ end
 fitb142 = FacultySemester.find_or_create(code: 'B142', faculty: 18000) do |s|
   s.update_parallels = false
   s.update_other = true
-  s.first_week_parity = :even
+  s.first_week_parity = 'even'
   s.starts_at = '2015-02-16'
   s.teaching_ends_at = '2015-05-16'
   s.exams_start_at = '2015-05-18'
@@ -52,7 +52,7 @@ end
 fitb151 = FacultySemester.find_or_create(code: 'B151', faculty: 18000) do |s|
   s.update_parallels = true
   s.update_other = true
-  s.first_week_parity = :odd
+  s.first_week_parity = 'odd'
   s.starts_at = '2015-10-05' # FIXME: actual start is on 01
   s.teaching_ends_at = '2016-01-10'
   s.exams_start_at = '2016-01-11'
@@ -65,7 +65,7 @@ end
 felb151 = FacultySemester.find_or_create(code: 'B151', faculty: 13000) do |s|
   s.update_parallels = true
   s.update_other = true
-  s.first_week_parity = :even
+  s.first_week_parity = 'even'
   s.starts_at = '2015-10-01'
   s.teaching_ends_at = '2016-01-17'
   s.exams_start_at = '2016-01-18'
@@ -80,7 +80,7 @@ periods = [
     type: :teaching,
     starts_at: '2015-02-16',
     ends_at: '2015-05-15',
-    first_week_parity: :even,
+    first_week_parity: 'even',
     faculty_semester: fitb142,
   },
   {
@@ -101,14 +101,14 @@ periods = [
     type: :teaching,
     starts_at: '2015-10-05',
     ends_at: '2015-12-20',
-    first_week_parity: :odd,
+    first_week_parity: 'odd',
     faculty_semester: fitb151,
   },
   {
     type: :teaching,
     starts_at: '2015-12-21',
     ends_at: '2015-12-21',
-    first_week_parity: :even,
+    first_week_parity: 'even',
     first_day_override: :wednesday,
     faculty_semester: fitb151,
   },
@@ -116,7 +116,7 @@ periods = [
     type: :teaching,
     starts_at: '2015-12-22',
     ends_at: '2015-12-22',
-    first_week_parity: :odd,
+    first_week_parity: 'odd',
     first_day_override: :tuesday,
     faculty_semester: fitb151,
   },
@@ -130,7 +130,7 @@ periods = [
     type: :teaching,
     starts_at: '2016-01-04',
     ends_at: '2016-01-10',
-    first_week_parity: :even,
+    first_week_parity: 'even',
     faculty_semester: fitb151,
   },
   {
@@ -144,7 +144,7 @@ periods = [
     type: :teaching,
     starts_at: '2015-10-01',
     ends_at: '2015-12-22',
-    first_week_parity: :odd,
+    first_week_parity: 'odd',
     faculty_semester: felb151,
   },
   {
@@ -157,14 +157,14 @@ periods = [
     type: :teaching,
     starts_at: '2016-01-04',
     ends_at: '2016-01-10',
-    first_week_parity: :even,
+    first_week_parity: 'even',
     faculty_semester: felb151,
   },
   {
     type: :teaching,
     starts_at: '2016-01-11',
     ends_at: '2016-01-11',
-    first_week_parity: :odd,
+    first_week_parity: 'odd',
     first_day_override: :wednesday,
     faculty_semester: felb151,
   },
@@ -172,7 +172,7 @@ periods = [
     type: :teaching,
     starts_at: '2016-01-12',
     ends_at: '2016-01-17',
-    first_week_parity: :odd,
+    first_week_parity: 'odd',
     faculty_semester: felb151,
   },
   {

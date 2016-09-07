@@ -10,14 +10,14 @@ describe Sirius::TeachingTime do
     described_class.new(teaching_period: Period.parse('14:30', '16:00'),
                         parity: parity, day: input_day)
   end
-  let(:parity) { :odd }
+  let(:parity) { 'odd' }
   let(:input_day) { :tuesday }
 
   describe '#week_frequency' do
     where :parity, :week_frequency do
-          :odd   | 2
-          :even  | 2
-          :both  | 1
+          'odd'   | 2
+          'even'  | 2
+          'both'  | 1
     end
     with_them ->{ "with #{parity} parity" } do
       it 'returns correct frequency' do

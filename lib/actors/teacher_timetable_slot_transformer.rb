@@ -52,6 +52,7 @@ class TeacherTimetableSlotTransformer
     unless slot.duration
       slot.duration = 2
     end
+    slot.parity = slot.parity.to_s
     events = periods.flat_map do |period|
       PlannedTimetableSlot.new(slot, time_converter).generate_events(@semester, period)
     end
