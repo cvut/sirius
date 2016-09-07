@@ -64,7 +64,7 @@ module SiriusApi
     # Unlike the same named method in {SemesterWeek}, this one considers even
     # irregular periods!
     #
-    # @return [Symbol, nil] `:even`, `:odd`, or `nil`
+    # @return [String, nil] `'even'`, `'odd'`, or `nil`
     # @see SemesterPeriod#week_parity
     #
     def week_parity

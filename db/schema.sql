@@ -106,6 +106,17 @@ CREATE TYPE parallel_type AS ENUM (
 
 
 --
+-- Name: parity; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE parity AS ENUM (
+    'both',
+    'odd',
+    'even'
+);
+
+
+--
 -- Name: create_event(bigint, timestamp without time zone, timestamp without time zone, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -581,7 +592,7 @@ CREATE TABLE faculty_semesters (
     code text NOT NULL,
     faculty integer NOT NULL,
     update_parallels boolean DEFAULT true NOT NULL,
-    first_week_parity integer NOT NULL,
+    first_week_parity parity NOT NULL,
     starts_at date NOT NULL,
     teaching_ends_at date NOT NULL,
     exams_start_at date NOT NULL,
@@ -742,7 +753,7 @@ CREATE TABLE semester_periods (
     starts_at date NOT NULL,
     ends_at date NOT NULL,
     type integer NOT NULL,
-    first_week_parity integer,
+    first_week_parity parity,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     first_day_override integer,
@@ -776,7 +787,7 @@ ALTER SEQUENCE semester_periods_id_seq OWNED BY semester_periods.id;
 CREATE TABLE timetable_slots (
     id bigint NOT NULL,
     day integer NOT NULL,
-    parity integer NOT NULL,
+    parity parity NOT NULL,
     first_hour integer NOT NULL,
     duration integer NOT NULL,
     parallel_id bigint NOT NULL,
@@ -1209,3 +1220,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1469128840_remove_unused_t
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469130929_add_not_null_constraints.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469463514_convert_text_to_enum.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469465920_convert_schedule_exception_type_to_enum.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1469470701_convert_parities_to_enum.rb');

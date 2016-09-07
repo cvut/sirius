@@ -20,11 +20,11 @@ describe SiriusApi::SemesterWeek do
   # This is input for the .resolve_weeks method.
   let(:semester_periods) do
     [# type     , starts_at   , ends_at     , parity, day_override, irregular # semester_week_idx
-      [:teaching, '2015-12-03', '2015-12-20', :odd  , nil         , false],   # 0-2
-      [:teaching, '2015-12-21', '2015-12-21', :even , :wednesday  , true ],   # 3
-      [:teaching, '2015-12-22', '2015-12-22', :odd  , :tuesday    , true ],   # 3
+      [:teaching, '2015-12-03', '2015-12-20', 'odd' , nil         , false],   # 0-2
+      [:teaching, '2015-12-21', '2015-12-21', 'even', :wednesday  , true ],   # 3
+      [:teaching, '2015-12-22', '2015-12-22', 'odd' , :tuesday    , true ],   # 3
       [:holiday , '2015-12-23', '2016-01-03', nil   , nil         , false],   # 3-4
-      [:teaching, '2016-01-04', '2016-01-06', :odd  , nil         , false],   # 5
+      [:teaching, '2016-01-04', '2016-01-06', 'odd' , nil         , false],   # 5
       [:exams   , '2016-01-07', '2016-01-15', nil   , nil         , false]    # 5-6
     ].map do |row|
       Fabricate.build :semester_period,
@@ -187,12 +187,12 @@ describe SiriusApi::SemesterWeek do
     subject { semester_week.week_parity }
 
     where :week_idx, :expected, :desc do
-      0 | :odd  | 'first week of a teaching period'
-      1 | :even | 'week after start of a teaching period'
-      5 | :odd  | 'first week of a second teaching period'
-      3 | nil   | 'week with only irregular teaching periods'
-      4 | nil   | 'week inside a holiday period'
-      6 | nil   | 'week inside an exams period'
+      0 | 'odd'  | 'first week of a teaching period'
+      1 | 'even' | 'week after start of a teaching period'
+      5 | 'odd'  | 'first week of a second teaching period'
+      3 | nil    | 'week with only irregular teaching periods'
+      4 | nil    | 'week inside a holiday period'
+      6 | nil    | 'week inside an exams period'
     end
 
     with_them ->{ desc } do
