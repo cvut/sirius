@@ -1,11 +1,11 @@
 GIT
   remote: git://github.com/cvut/kosapi_client.rb.git
-  revision: ba6a4ff74796b2ddbf3f4ce546f31971695620c2
+  revision: 540400070487600c8bdbfed5c8e6adbedf55e103
   specs:
-    kosapi_client (0.4.0)
+    kosapi_client (0.5.0)
       corefines (~> 1.6)
       escape_utils
-      faraday (~> 0.9.0)
+      faraday (~> 0.9)
       oauth2
       ox
       uri_template
@@ -395,6 +395,5 @@ DEPENDENCIES
 
 RUBY VERSION
    ruby 2.2.6p396
-
 BUNDLED WITH
    1.13.6
