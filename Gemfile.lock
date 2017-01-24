@@ -1,16 +1,4 @@
 GIT
-  remote: git://github.com/cvut/kosapi_client.rb.git
-  revision: ba6a4ff74796b2ddbf3f4ce546f31971695620c2
-  specs:
-    kosapi_client (0.4.0)
-      corefines (~> 1.6)
-      escape_utils
-      faraday (~> 0.9.0)
-      oauth2
-      ox
-      uri_template
-
-GIT
   remote: git://github.com/cvut/oauth2.git
   revision: d9f6fc37eae191b124680361a698d673adff31c0
   ref: d9f6fc3
@@ -190,6 +178,13 @@ GEM
       multi_json (~> 1.0)
       rspec (>= 2.0, < 4.0)
     jwt (1.5.6)
+    kosapi_client (0.5.0)
+      corefines (~> 1.6)
+      escape_utils
+      faraday (~> 0.9)
+      oauth2
+      ox
+      uri_template
     kramdown (1.13.2)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -366,7 +361,7 @@ DEPENDENCIES
   ice_cube (~> 0.14.0)
   json
   json_spec (~> 1.1)
-  kosapi_client!
+  kosapi_client (~> 0.5)
   kramdown
   logging (~> 2.1)
   oauth2!
@@ -397,4 +392,4 @@ RUBY VERSION
    ruby 2.2.6p396
 
 BUNDLED WITH
-   1.13.6
+   1.14.2
