@@ -10,6 +10,7 @@ containers:
     # The command-lines are from the postgres-common package except
     # added --uid 200 --gid 200
     - !Sh |
+        locale-gen cs_CZ.UTF-8
         addgroup --system --gid 200 postgres
         adduser --uid 200 --system --home /data --no-create-home \
             --shell /bin/bash --group --gecos "PostgreSQL administrator" \
