@@ -55,7 +55,7 @@ commands:
     run: |
       set -ex
       ls -la /data
-      $PG_BIN/pg_ctl initdb
+      $PG_BIN/pg_ctl initdb -o "-E=UTF8"
       $PG_BIN/pg_ctl -w -o '-F --port=$PG_PORT -k /tmp' start
       $PG_BIN/createuser -h 127.0.0.1 -p $PG_PORT -s -d sirius
       $PG_BIN/createdb -h 127.0.0.1 -p $PG_PORT $PG_DB -O sirius
