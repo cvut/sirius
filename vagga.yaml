@@ -88,7 +88,7 @@ commands:
     - -Des.path.logs=/tmp
     - -Des.path.work=/tmp
     - -Des.path.data=/var/elastic/data
-    - -Des.network.host=_local_
+    - -Des.network.host=127.0.0.1
 
   run: !Supervise
     description: Run both postgres and shell
