@@ -1,0 +1,99 @@
+containers:
+  postgres:
+    setup:
+    - !Ubuntu xenial
+    # Use fixed user id and group id for postgres, because in some cases
+    # we may need to upgrade (rebuild) a postgres container, but keep the data
+    # on a `!Persistent` volume still usable. User ids in ubuntu packages are
+    # not guaranteed to be same on every installation.
+    #
+    # The command-lines are from the postgres-common package except
+    # added --uid 200 --gid 200
+    - !Sh |
+        locale-gen cs_CZ.UTF-8
+        addgroup --system --gid 200 postgres
+        adduser --uid 200 --system --home /data --no-create-home \
+            --shell /bin/bash --group --gecos "PostgreSQL administrator" \
+            postgres
+    - !Install
+      - postgresql-9.5
+      - postgresql-contrib-9.5
+    - !EnsureDir /data
+    environ:
+      PG_PORT: 5433   # Port of host to use
+      PG_DB: sirius
+      PGDATA: /data
+      PG_BIN: /usr/lib/postgresql/9.5/bin
+    volumes:
+      /data: !Persistent
+        name: postgres
+        owner-uid: 200
+        owner-gid: 200
+        init-command: _pg-init
+      /run: !Tmpfs
+        subdirs:
+          postgresql: { mode: 0o777 }  # until we have user, group options
+
+  elastic:
+    setup:
+    - !Ubuntu xenial
+    - !UbuntuUniverse
+    - !Install
+      - ca-certificates
+      - ca-certificates-java
+      - openjdk-8-jre-headless
+      - elasticsearch
+    - !EnsureDir /var/elastic
+    volumes:
+      /var/elastic: !Persistent { name: elastic }
+commands:
+
+  _pg-init: !Command
+    description: Init postgres database
+    container: postgres
+    user-id: 200
+    group-id: 200
+    run: |
+      set -ex
+      ls -la /data
+      $PG_BIN/pg_ctl initdb -o "-E=UTF8"
+      $PG_BIN/pg_ctl -w -o '-F --port=$PG_PORT -k /tmp' start
+      $PG_BIN/createuser -h 127.0.0.1 -p $PG_PORT -s -d sirius
+      $PG_BIN/createdb -h 127.0.0.1 -p $PG_PORT $PG_DB -O sirius
+      $PG_BIN/pg_ctl stop
+
+  postgres: &postgres !Command
+    description: Run postgres database
+    container: postgres
+    user-id: 200
+    group-id: 200
+    run: |
+      trap "$PG_BIN/pg_ctl -w stop; trap - INT; kill -INT $$" INT
+      $PG_BIN/pg_ctl -w -o '-F --port=$PG_PORT -k /tmp' start
+      sleep infinity
+
+  psql: &psql !Command
+    description: Run postgres shell
+    container: postgres
+    run: |
+      psql -U sirius postgres://$PG_USER:$PG_PASSWORD@127.0.0.1:$PG_PORT/$PG_DB
+
+  elastic: &elastic !Command
+    description: Run elasticsearch
+    container: elastic
+    user-id: 1
+    external-user-id: 0
+    run:
+    - /usr/share/elasticsearch/bin/elasticsearch
+    - -Des.path.conf=/etc/elasticsearch
+    - -Des.path.logs=/tmp
+    - -Des.path.work=/tmp
+    - -Des.path.data=/var/elastic/data
+    - -Des.network.host=127.0.0.1
+
+  run: !Supervise
+    description: Run both postgres and shell
+    children:
+      postgres: *postgres
+      elastic: *elastic
+
