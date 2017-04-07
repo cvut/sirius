@@ -1,19 +1,20 @@
 source 'https://rubygems.org'
 unless ENV['CI']
-  ruby '2.2.5'
+  ruby '2.2.6'
 end
 
 gem 'rake'
 
 ## Storage
-gem 'pg'
+gem 'pg', '~> 0.18'
 gem 'sequel', '~> 4.17'
 gem 'sequel_pg', require: 'sequel'
-gem 'kosapi_client', github: 'cvut/kosapi_client.rb'
+gem 'kosapi_client', '~> 0.5'
 gem 'chewy', '~> 0.8.2', '< 0.8.4'  # 0.8.4 is broken
+gem 'elasticsearch', '~> 1.0', require: false
 
 ## REST API
-gem 'pliny'
+gem 'pliny', '~> 0.11.0'
 gem 'dotenv'
 gem 'grape', '~> 0.9.0'
 gem 'warden', '~> 1.2.3' # authentication middleware
@@ -32,7 +33,7 @@ gem 'json'
 gem 'puma'
 
 ## Time & Space
-gem 'ice_cube' # Date/Time helper
+gem 'ice_cube', '~> 0.14.0' # Date/Time helper
 
 gem 'icalendar', '~> 2.3.0'
 
@@ -40,20 +41,20 @@ gem 'icalendar', '~> 2.3.0'
 gem 'rufus-scheduler', '~> 3.1', require: false
 
 ## Helper stuff
-gem 'activesupport'
+gem 'activesupport', '~> 4.2'
 gem 'corefines', '~> 1.9'
 gem 'role_playing', github: 'jnv/role_playing'
-gem 'logging'
+gem 'logging', '~> 2.1'
 gem 'oauth2', github: 'cvut/oauth2', ref: 'd9f6fc3'
-gem 'celluloid'
 gem 'rack-timeout' # required by pliny
+gem 'celluloid', '~> 0.17.2'
 
 ## For console
 gem 'pry', require: false
 
 ## Error reporting
-gem 'sentry-raven'
 gem 'rollbar' # required by pliny
+gem 'sentry-raven', '~> 1.0'
 
 group :development do
   gem 'guard-shotgun', '~> 0.4.0', require: false
@@ -89,3 +90,5 @@ group :development, :test do
   gem 'pry-byebug', require: false
   gem 'awesome_print'
 end
+
+
