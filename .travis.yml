@@ -1,5 +1,5 @@
 language: ruby
-sudo: required
+sudo: false
 cache:
   bundler: true
 rvm:
@@ -7,26 +7,16 @@ rvm:
   - 2.3.1
   - ruby-head
 addons:
+  postgresql: '9.4'
   code_climate:
     repo_token: a813ce884be14a158262d4e05906c0b6f4e7f4533c41cdf88bda7da84d88297f
-  apt:
-    sources:
-    - precise-pgdg-9.5
-    packages:
-    - postgresql-9.5
-    - postgresql-contrib-9.5
-  postgresql: '9.5'
 services:
   - elasticsearch
-  - postgresql
 bundler_args: --without development doc
 before_install:
   - gem update --system  # https://github.com/vcr/vcr/issues/582
 before_script:
-  - sudo cp /etc/postgresql/9.4/main/pg_hba.conf /etc/postgresql/9.5/main/pg_hba.conf
-  - sudo /etc/init.d/postgresql restart
   - while read line; do export $line; done < .env.test
-  - while read line; do export $line; done < .env.ci
   - bundle exec rake --trace db:setup
 after_success: |
   if [ "$TRAVIS_BRANCH" = master ]; then
@@ -46,7 +36,6 @@ env:
   - secure: RyyZpzIhIJVX+1CKn5BKx3siHeDwUux+q4/dMrmc0P06aCHvSapdrUjPOWK1bL5CpqNrybvPOYTpxc0JHIIkgzIAGJJEBaBHvlwqj0ZiH8P3hj0TpCZcfWROnRSpzazLwN0isdRxVHGYRIDGJBDZoN0PX97anjmclBt+UveLXz4=  # GH_TOKEN
   - secure: Xj2KE+N9NOwwMa8MwAqpCKB7ujhEwR69YrxlskRDcjcoCqDWtRQPfDbPr1X0Nb3bb5MmS1ouoQt6ACccRuJWNQGg/8jI9yaLu4UIroNyv86q0uduhFW4fG0IEjk4W7+wk6o89Q03XbXpp7tvs6t56Ned1ClZOBhZOGl4jtPgJyY=  # OAUTH_CLIENT_ID
   - secure: dhn9CHHyKIRPYSL0t3qPIcQ2GEI9IhSFAPG/JKy4rL1RIOzlxiFYVz9juaDIjGw8Ab7+Pb+tL0zurE76eN3vqx4d6Gw+rDrTl46mbtyqs6MZYSwFMLqqRb3k2m1Y6WKNoB01GVMB2H7AmB0YMUzhaM4WF3h0XWNPRczw3U2X/eI=  # OAUTH_CLIENT_SECRET
-
 matrix:
   fast_finish: true
   allow_failures:
