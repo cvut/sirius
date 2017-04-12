@@ -16,7 +16,7 @@ describe Token do
     end
     context 'for invalid token format' do
       it 'returns nil' do
-        expect(Token.authenticate('meh')).to be_nil
+        expect(Token.authenticate('11111111-1111-1111-9999-888888888888')).to be_nil
       end
     end
   end
