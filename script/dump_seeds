@@ -13,6 +13,10 @@ outfile="$current_dir/../db/seeds.sql"
 dump_params='-a -O -x --inserts -t faculty_semesters -t semester_periods -t schedule_exceptions'
 
 # shellcheck disable=SC2086
-pg_dump "$@" $dump_params > "$outfile"
+pg_dump "$@" $dump_params > "$outfile.tmp"
+
+# Remove "SET search_path = ..." from dump.
+sed '/^[sS][eE][tT] search_path\s*=/d' "$outfile.tmp" > "$outfile"
+rm "$outfile.tmp"
 
 echo "Seeds dumped to $outfile"
