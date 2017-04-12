@@ -43,9 +43,9 @@ with reasonable defaults that you can change after that.
 
 ## Prerequisites
 
-* Ruby/MRI 2.1+
-* PostgreSQL 9.3+
-* ElasticSearch 1.6+ (not mandatory, used only for `/search` resource)
+* Ruby/MRI 2.3+
+* PostgreSQL 9.5+
+* ElasticSearch 1.* (not mandatory, used only for `/search` resource)
 
 ## Environment variables
 
