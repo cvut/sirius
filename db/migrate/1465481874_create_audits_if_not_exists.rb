@@ -1,7 +1,7 @@
 Sequel.migration do
   up do
     create_table?(:audits) do
-      primary_key :id, type: Bignum
+      primary_key :id, type: :Bignum
       column :created_at, DateTime, default: Sequel.function(:now), null: false
       column :user_id, String, null: false, default: Sequel.function(:session_user).quoted
       column :action, String, null: false
