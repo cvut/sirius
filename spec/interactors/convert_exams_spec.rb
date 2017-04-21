@@ -29,7 +29,8 @@ describe ConvertExams do
       expect(event.event_type).to eq 'exam'
       expect(event.semester).to eq 'B141'
       expect(event.faculty).to eq 18000
-      expect(event.source).to eq(Sequel.hstore({ exam_id: 620283180005 }))
+      expect(event.source_type).to eq('exam')
+      expect(event.source_id).to eq('620283180005')
     end
 
     context 'with no examiner' do

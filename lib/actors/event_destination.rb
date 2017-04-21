@@ -13,7 +13,7 @@ class EventDestination
   def initialize(input, output, sync = nil)
     self.input = input
     self.output = output
-    @sync = sync || Sync[Event, matching_attributes: [:faculty, :absolute_sequence_number, source: :teacher_timetable_slot_id]].new
+    @sync = sync || Sync[Event, matching_attributes: [:faculty, :source_type, :source_id, :absolute_sequence_number]].new
   end
 
   # @param events [Array<Event>] events that should be synced to the database

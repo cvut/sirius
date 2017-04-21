@@ -58,7 +58,8 @@ class TeacherTimetableSlotTransformer
 
     events.each_with_index do |e, i|
       e.event_type = 'teacher_timetable_slot'
-      e.source = Sequel.hstore({teacher_timetable_slot_id: slot.id})
+      e.source_type = 'teacher_timetable_slot'
+      e.source_id = slot.id
       e.teacher_ids = [teacher]
       e.student_ids = []
       e.absolute_sequence_number = i + 1

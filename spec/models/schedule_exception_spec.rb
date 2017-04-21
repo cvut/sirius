@@ -49,12 +49,12 @@ describe ScheduleException do
       subject(:exception) { Fabricate.build(:schedule_exception, timetable_slot_ids: [50, 123] ) }
 
       it 'matches with event from slot in exception' do
-        event = Fabricate.build(:event, timetable_slot_id: 123)
+        event = Fabricate.build(:event, source_type: 'timetable_slot', source_id: 123)
         expect( exception.affects?(event) ).to be_truthy
       end
 
       it 'does not match with event from different slot' do
-        event = Fabricate.build(:event, timetable_slot_id: 124)
+        event = Fabricate.build(:event, source_type: 'timetable_slot', source_id: 124)
         expect( exception.affects?(event) ).to be_falsey
       end
 
@@ -63,7 +63,7 @@ describe ScheduleException do
         subject(:exception) { Fabricate.build(:schedule_exception, timetable_slot_ids: [] ) }
 
         it 'always matches' do
-          event = Fabricate.build(:event, timetable_slot_id: 124)
+          event = Fabricate.build(:event, source_type: 'timetable_slot', source_id: 124)
           expect( exception.affects?(event) ).to be_truthy
         end
       end

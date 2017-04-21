@@ -23,12 +23,15 @@ module Sirius
       event.faculty = @faculty_semester.faculty
       event.semester = @faculty_semester.code
       event.applied_schedule_exception_ids = nil
+      event.source_id = @slot.id
       if @slot.respond_to? :parallel
         event.parallel = @slot.parallel
         event.course = @slot.parallel.course
         event.event_type = @slot.parallel.parallel_type
         event.capacity = @slot.parallel.capacity
-        event.timetable_slot_id = @slot.id
+        event.source_type = 'timetable_slot'
+      else
+        event.source_type = 'teacher_timetable_slot'
       end
       event.room = @slot.room if @slot.respond_to? :room
       event

@@ -46,12 +46,14 @@ gem 'corefines', '~> 1.9'
 gem 'role_playing', github: 'jnv/role_playing'
 gem 'logging', '~> 2.1'
 gem 'oauth2', github: 'cvut/oauth2', ref: 'd9f6fc3'
+gem 'rack-timeout' # required by pliny
 gem 'celluloid', '~> 0.17.2'
 
 ## For console
 gem 'pry', require: false
 
 ## Error reporting
+gem 'rollbar' # required by pliny
 gem 'sentry-raven', '~> 1.0'
 
 group :development do
@@ -88,3 +90,5 @@ group :development, :test do
   gem 'pry-byebug', require: false
   gem 'awesome_print'
 end
+
+

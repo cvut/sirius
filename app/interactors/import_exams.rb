@@ -19,7 +19,7 @@ class ImportExams < Interpipe::Pipe
       pipe[ ExtractItems[:kosapi_people, from: :exams, attr: :examiner], ConvertPeople, Sync[Person] ],
       pipe[ ExtractItems[:kosapi_courses, from: :exams, attr: :course], ConvertCourses, Sync[Course] ],
       pipe[ ExtractItems[:kosapi_rooms, from: :exams, attr: :room], ConvertRooms, Sync[Room] ],
-      Sync[Event, matching_attributes: [source: :exam_id]]
+      Sync[Event, matching_attributes: [:faculty, :source_type, :source_id, :absolute_sequence_number]]
     ]
   ]
 
