@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'interactors/sync'
-require 'person'
+require 'models/person'
+require 'models/room'
 
 describe Sync do
 
@@ -152,4 +153,16 @@ describe Sync do
 
   end
 
+  describe '#results' do
+    let(:sync) { described_class[Room]}
+
+    it 'returns models in case of update' do
+      Fabricate(:room, id: 'A-1324')
+      room = Room.new(kos_code: 'A-1324')
+      results = sync.perform({rooms: [room], other_stuff: []}).results[:rooms]
+      expect(results).to include room
+      expect(results.first.kos_code).to eq 'A-1324'
+    end
+
+  end
 end
