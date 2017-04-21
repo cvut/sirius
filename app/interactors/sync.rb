@@ -50,7 +50,7 @@ class Sync
     end
   end
 
-  # Synces a collection of models.
+  # Synchronizes a collection of models.
   #
   # @param args [Hash] with collection of models under key configured by {key_name} parameter
   def perform(args)
@@ -72,7 +72,7 @@ class Sync
     define_method(key) { self.class.send(key) }
   end
 
-  # Creates or updates a single model in the database and sets it's id.
+  # Creates or updates a single model in the database and sets its id.
   #
   # @param model [Sequel::Model] instance to sync
   def upsert_model(model)
