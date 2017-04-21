@@ -88,7 +88,11 @@ class Sync
     end
     model_insert_clause = model_hash.merge(insert_timestamps) { |key, oldval, newval| oldval }
 
-    model.id = model_class.dataset.insert_conflict(upsert_options).insert(model_insert_clause)
+    inserted_id = model_class.dataset.insert_conflict(upsert_options).insert(model_insert_clause)
+    # If model was not inserted, the above returns nil
+    if inserted_id
+      model.id = inserted_id
+    end
     model.instance_variable_set(:@new, false)
   end
 
