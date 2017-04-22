@@ -70,9 +70,15 @@ Sequel.migration do
   }
 
   up do
+    DB = self
     NOT_NULL_COLUMNS.each do |table, columns|
       alter_table(table) do
-        columns.each { |column| set_column_not_null column }
+        columns.each do |column|
+          if column == :created_at || column == :updated_at
+            DB[table].where(column => nil).update(column => Date.new(2014,1,1))
+          end
+          set_column_not_null column
+        end
       end
     end
   end
