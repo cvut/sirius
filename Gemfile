@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 unless ENV['CI']
-  ruby '2.2.6'
+  ruby '~> 2.3.4'
 end
 
 gem 'rake'
