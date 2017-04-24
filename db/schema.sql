@@ -276,7 +276,7 @@ begin
     created_at,
     updated_at
   ) values (
-    3,
+    'teacher_change',
     _name,
     _note,
     _starts_at,
@@ -292,7 +292,7 @@ begin
   insert into audits (action, table_name, primary_key, changed_values)
     values ('I', 'schedule_exceptions', _exception_id,
       json_compact(json_build_object(
-        'exception_type', 3,
+        'exception_type', 'teacher_change',
         'starts_at', _starts_at,
         'ends_at', _ends_at,
         'timetable_slot_ids', _timetable_slot_ids,
