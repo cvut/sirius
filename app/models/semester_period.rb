@@ -1,4 +1,3 @@
-require 'sirius/enums/semester_period_type'
 require 'day'
 require 'date_refinements'
 
@@ -7,16 +6,8 @@ class SemesterPeriod < Sequel::Model
 
   many_to_one :faculty_semester
 
-  def type
-    Sirius::SemesterPeriodType.from_numeric(super)
-  end
-
-  def type=(new_type)
-    super Sirius::SemesterPeriodType.to_numeric(new_type)
-  end
-
   def teaching?
-    type == :teaching
+    type == 'teaching'
   end
 
   def first_day_override
@@ -36,7 +27,7 @@ class SemesterPeriod < Sequel::Model
     if starts_at > ends_at
       errors.add(:starts_at, 'cannot be after ending')
     end
-    if (type == :teaching) && first_week_parity.nil?
+    if (type == 'teaching') && first_week_parity.nil?
       errors.add(:first_week_parity, 'cannot be null for teaching period')
     end
   end
@@ -62,7 +53,7 @@ class SemesterPeriod < Sequel::Model
   # @raise [ArgumentError] if the date's week is not within this period.
   #
   def week_parity(date)
-    return if type != :teaching
+    return if type != 'teaching'
 
     if date < starts_at.start_of_week || date > ends_at.end_of_week then
       fail ArgumentError, "The date's week is not within this period"

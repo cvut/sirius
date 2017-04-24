@@ -34,7 +34,7 @@ module Sirius
     private
     def create_converters(semester)
       time_converter = TimeConverter.new(hour_starts: semester.hour_starts, hour_length: semester.hour_duration)
-      semester_periods = semester.semester_periods_dataset.where(type: 0).order(:starts_at)
+      semester_periods = semester.semester_periods_dataset.where(type: 'teaching').order(:starts_at)
         .map { |p| PlannedSemesterPeriod.new(p) }
       [time_converter, semester_periods]
     end

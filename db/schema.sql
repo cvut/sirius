@@ -117,6 +117,18 @@ CREATE TYPE parity AS ENUM (
 
 
 --
+-- Name: semester_period_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE semester_period_type AS ENUM (
+    'teaching',
+    'exams',
+    'holiday'
+);
+
+
+
+--
 -- Name: create_event(bigint, timestamp without time zone, timestamp without time zone, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -752,7 +764,7 @@ CREATE TABLE semester_periods (
     faculty_semester_id integer NOT NULL,
     starts_at date NOT NULL,
     ends_at date NOT NULL,
-    type integer NOT NULL,
+    type semester_period_type NOT NULL,
     first_week_parity parity,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -1221,3 +1233,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1469130929_add_not_null_co
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469463514_convert_text_to_enum.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469465920_convert_schedule_exception_type_to_enum.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469470701_convert_parities_to_enum.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1493051746_convert_semester_period_type_to_enum.rb');

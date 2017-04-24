@@ -7,7 +7,7 @@ describe SemesterPeriod do
 
   let(:starts_at) { Date.new(2015, 11, 11) }
   let(:ends_at) { Date.new(2016, 1, 13) }
-  let(:type) { :teaching }
+  let(:type) { 'teaching' }
   let(:parity) { 'odd' }
   let(:semester) { Fabricate(:faculty_semester)}
 
@@ -23,7 +23,7 @@ describe SemesterPeriod do
     end
 
     context 'non-teaching period' do
-      let(:type) { :exams }
+      let(:type) { 'exams' }
       it { should be false }
     end
   end
@@ -39,7 +39,7 @@ describe SemesterPeriod do
     context 'with null parity' do
       let(:parity) { nil }
 
-      [:holiday, :exams].each do |given_type|
+      ['holiday', 'exams'].each do |given_type|
         context "for #{given_type} period" do
           let(:type) { given_type }
           it 'accepts an empty first week parity' do
@@ -50,7 +50,7 @@ describe SemesterPeriod do
       end
 
       context 'for teaching period' do
-        let(:type) { :teaching }
+        let(:type) { 'teaching' }
         it 'requires first week parity' do
           expect(period.valid?).to be false
         end
@@ -61,7 +61,7 @@ describe SemesterPeriod do
   describe '#first_week_parity' do
 
     context 'with null period type' do
-      let(:type) { :holiday }
+      let(:type) { 'holiday' }
       let(:parity) { nil }
       it 'can be nullable' do
         expect(period.save.reload.first_week_parity).to be nil
@@ -93,7 +93,7 @@ describe SemesterPeriod do
     subject { period.week_parity(date) }
 
     context 'non-teaching period' do
-      let(:type) { :exams }
+      let(:type) { 'exams' }
       it { should be nil }
     end
 

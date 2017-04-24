@@ -10,7 +10,7 @@ describe SemesterDay do
 
   let(:period) do
     Fabricate.build :semester_period,
-      type: :teaching,
+      type: 'teaching',
       starts_at: '2015-11-11',
       ends_at: '2015-11-27',
       first_week_parity: 'odd',

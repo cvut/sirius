@@ -134,7 +134,7 @@ module SiriusApi
     # @return [Boolean] `true` if this week includes a regular teaching period,
     #   `false` otherwise.
     def teaching?
-      period_types.include? :teaching
+      period_types.include? 'teaching'
     end
 
     ##
