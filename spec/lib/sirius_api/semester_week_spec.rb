@@ -19,13 +19,13 @@ describe SiriusApi::SemesterWeek do
 
   # This is input for the .resolve_weeks method.
   let(:semester_periods) do
-    [# type     , starts_at   , ends_at     , parity, day_override, irregular # semester_week_idx
-      [:teaching, '2015-12-03', '2015-12-20', 'odd' , nil         , false],   # 0-2
-      [:teaching, '2015-12-21', '2015-12-21', 'even', :wednesday  , true ],   # 3
-      [:teaching, '2015-12-22', '2015-12-22', 'odd' , :tuesday    , true ],   # 3
-      [:holiday , '2015-12-23', '2016-01-03', nil   , nil         , false],   # 3-4
-      [:teaching, '2016-01-04', '2016-01-06', 'odd' , nil         , false],   # 5
-      [:exams   , '2016-01-07', '2016-01-15', nil   , nil         , false]    # 5-6
+    [# type      , starts_at   , ends_at     , parity, day_override, irregular # semester_week_idx
+      ['teaching', '2015-12-03', '2015-12-20', 'odd' , nil         , false],   # 0-2
+      ['teaching', '2015-12-21', '2015-12-21', 'even', :wednesday  , true ],   # 3
+      ['teaching', '2015-12-22', '2015-12-22', 'odd' , :tuesday    , true ],   # 3
+      ['holiday' , '2015-12-23', '2016-01-03', nil   , nil         , false],   # 3-4
+      ['teaching', '2016-01-04', '2016-01-06', 'odd' , nil         , false],   # 5
+      ['exams'   , '2016-01-07', '2016-01-15', nil   , nil         , false]    # 5-6
     ].map do |row|
       Fabricate.build :semester_period,
         type: row[0],
@@ -147,7 +147,7 @@ describe SiriusApi::SemesterWeek do
       let(:semester_week) { semester_weeks[5] }
 
       it 'returns types of all the periods' do
-        should eq [:teaching, :exams]
+        should eq ['teaching', 'exams']
       end
 
       context 'of the same type' do
@@ -155,7 +155,7 @@ describe SiriusApi::SemesterWeek do
         let(:semester_week) { described_class.new(semester, week_periods, Date.parse('2015-12-21')) }
 
         it 'returns deduplicated types' do
-          should eq [:teaching, :holiday]
+          should eq ['teaching', 'holiday']
         end
       end
     end
@@ -164,7 +164,7 @@ describe SiriusApi::SemesterWeek do
       let(:semester_week) { semester_weeks[3] }
 
       it 'returns only types of regular periods' do
-        should eq [:holiday]
+        should eq ['holiday']
       end
     end
   end
