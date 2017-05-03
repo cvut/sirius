@@ -8,9 +8,11 @@ describe Sequel::Plugins::Enum do
     up do
       extension :pg_enum
       create_enum :test_enum, %w(a b c)
+      create_enum :test_enum2, %w(d e f)
       create_table(:enum_test_models) do
         String :str_col
         test_enum :enum_col
+        test_enum2 :enum_col2
       end
     end
 
@@ -18,6 +20,7 @@ describe Sequel::Plugins::Enum do
       extension :pg_enum
       drop_table :enum_test_models
       drop_enum :test_enum
+      drop_enum :test_enum2
     end
   end
 
@@ -32,14 +35,13 @@ describe Sequel::Plugins::Enum do
   let(:model) do
     class EnumTestModel < Sequel::Model
       plugin :enum
-      enum :enum_col
     end
     EnumTestModel
   end
 
   describe '.enum' do
-    it 'enables an enum column' do
-      expect { model.enum :enum_col }.to_not raise_error
+    it 'enables enum columns' do
+      expect { model.enum :enum_col, :enum_col2 }.to_not raise_error
     end
     context 'with non-enum column' do
       it 'raises an ArgumentError' do
@@ -49,14 +51,23 @@ describe Sequel::Plugins::Enum do
   end
 
   describe '.enums' do
+    before do
+      model.enum :enum_col, :enum_col2
+    end
     it 'contains allowed values for enum' do
-      expected = {enum_col: Set.new(%w'a b c')}
+      expected = {
+        enum_col: Set.new(%w'a b c'),
+        enum_col2: Set.new(%w'd e f'),
+      }
       expect(model.enums).to eq(expected)
     end
   end
 
   describe 'instance methods' do
-    subject(:instance) { model.new }
+    subject(:instance) do
+      model.enum :enum_col, :enum_col2
+      model.new
+    end
     describe 'enum getter' do
       it 'returns value as symbol' do
         instance.enum_col = 'a'

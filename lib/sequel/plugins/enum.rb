@@ -13,7 +13,14 @@ module Sequel
       module ClassMethods
         attr_reader :enums
 
-        def enum(column)
+        def enum(*columns)
+          columns.each do |column|
+            enable_enum(column)
+          end
+        end
+
+        private
+        def enable_enum(column)
           column = column.to_sym
           enum_schema = db_schema[column]
           if enum_schema[:type] != :enum
