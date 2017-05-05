@@ -27,7 +27,7 @@ class SemesterPeriod < Sequel::Model
     if starts_at > ends_at
       errors.add(:starts_at, 'cannot be after ending')
     end
-    if (type == 'teaching') && first_week_parity.nil?
+    if teaching? && first_week_parity.nil?
       errors.add(:first_week_parity, 'cannot be null for teaching period')
     end
   end
@@ -53,7 +53,7 @@ class SemesterPeriod < Sequel::Model
   # @raise [ArgumentError] if the date's week is not within this period.
   #
   def week_parity(date)
-    return if type != 'teaching'
+    return unless teaching?
 
     if date < starts_at.start_of_week || date > ends_at.end_of_week then
       fail ArgumentError, "The date's week is not within this period"
