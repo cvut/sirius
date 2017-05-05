@@ -7,7 +7,6 @@ module Sequel
     #
     # When enabled on model's field, the plugin:
     # - loads possible enum values from model's schema,
-    # - converts field's value to symbol,
     # - prevents setting incorrect value on field,
     # - exposes known enum fields and values in `.enums` class method.
     #
@@ -26,8 +25,8 @@ module Sequel
     #     instance.column1 = 'a'  # Values can be set both as symbols or strings
     #     instance.column2 = :c
     #
-    #     instance.column1        # Field's value is returned as symbol
-    #     #=> :a
+    #     instance.column1        # Field's value is returned as string
+    #     #=> 'a'
     #
     #     instance.column1 = 'invalid value'
     #     #=> ArgumentError
@@ -75,10 +74,6 @@ module Sequel
 
           enum_values = enum_schema[:enum_values].to_set.freeze
           self.enums[column] = enum_values
-
-          define_method "#{column}" do
-            super().to_sym
-          end
 
           define_method "#{column}=" do |value|
             val_str = value.to_s
