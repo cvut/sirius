@@ -67,12 +67,6 @@ describe Sequel::Plugins::Enum do
       model.plugin :enum, :enum_col, :enum_col2
       model.new
     end
-    describe 'enum getter' do
-      it 'returns value as symbol' do
-        instance.enum_col = 'a'
-        expect(instance.enum_col).to be_a(Symbol)
-      end
-    end
 
     describe 'enum setter' do
       context 'with invalid enum value' do
@@ -84,12 +78,12 @@ describe Sequel::Plugins::Enum do
       context 'with valid enum value' do
         it 'accepts string' do
           instance.enum_col = 'b'
-          expect(instance.enum_col).to eq :b
+          expect(instance.enum_col).to eq 'b'
         end
 
         it 'accepts symbol' do
           instance.enum_col = :c
-          expect(instance.enum_col).to eq :c
+          expect(instance.enum_col).to eq 'c'
         end
       end
     end
