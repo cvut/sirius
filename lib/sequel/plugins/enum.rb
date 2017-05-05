@@ -16,8 +16,7 @@ module Sequel
     # ### Example:
     #
     #     class MyModel < Sequel::Model
-    #       plugin :enum
-    #       enum :column1, :column2  # Columns have to be enums, otherwise the initialization will fail
+    #       plugin :enum, :column1, :column2  # Columns have to be enums, otherwise the initialization will fail
     #     end
     #
     #     MyModel.enums
@@ -37,9 +36,19 @@ module Sequel
     # [sequel_enum]: https://github.com/planas/sequel_enum
     module Enum
       # @private
-      def self.apply(model, opts = OPTS)
+      def self.apply(model, *columns)
         model.instance_eval do
           @enums = {}
+        end
+      end
+
+      # Enables enum plugin for given columns.
+      # @param [Array<Symbol>]
+      # @raise [ArgumentError] if given column(s) do not exist or aren't enums
+      # @return [void]
+      def self.configure(model, *columns)
+        model.instance_eval do
+          send(:create_enum_accessors, *columns)
         end
       end
 
@@ -48,20 +57,16 @@ module Sequel
         # @return [Hash{Symbol => Array<String>}] registered enum fields
         attr_reader :enums
 
-        # Enables enum plugin for given columns.
-        # @param [Array<Symbol>]
-        # @raise [ArgumentError] if given column(s) do not exist or aren't enums
-        # @return [void]
-        def enum(*columns)
+        Plugins.inherited_instance_variables(self, :@enums=>:hash_dup)
+
+        private
+        def create_enum_accessors(*columns)
           columns.each do |column|
-            enable_enum(column)
+            create_enum_accessor(column)
           end
         end
 
-        private
-        # @!macro enum
-        #   @!attribute $1
-        def enable_enum(column)
+        def create_enum_accessor(column)
           column = column.to_sym
           enum_schema = db_schema[column]
           if enum_schema[:type] != :enum
@@ -82,6 +87,7 @@ module Sequel
             end
             super(val_str)
           end
+
         end
 
       end

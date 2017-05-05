@@ -34,25 +34,24 @@ describe Sequel::Plugins::Enum do
 
   let(:model) do
     class EnumTestModel < Sequel::Model
-      plugin :enum
     end
     EnumTestModel
   end
 
-  describe '.enum' do
+  describe '.plugin :enum' do
     it 'enables enum columns' do
-      expect { model.enum :enum_col, :enum_col2 }.to_not raise_error
+      expect { model.plugin :enum, :enum_col, :enum_col2 }.to_not raise_error
     end
     context 'with non-enum column' do
       it 'raises an ArgumentError' do
-        expect { model.enum :str_col }.to raise_error(ArgumentError)
+        expect { model.plugin :enum, :str_col }.to raise_error(ArgumentError)
       end
     end
   end
 
   describe '.enums' do
     before do
-      model.enum :enum_col, :enum_col2
+      model.plugin :enum, :enum_col, :enum_col2
     end
     it 'contains allowed values for enum' do
       expected = {
@@ -65,7 +64,7 @@ describe Sequel::Plugins::Enum do
 
   describe 'instance methods' do
     subject(:instance) do
-      model.enum :enum_col, :enum_col2
+      model.plugin :enum, :enum_col, :enum_col2
       model.new
     end
     describe 'enum getter' do
