@@ -11,6 +11,7 @@ describe Sequel::Plugins::Enum do
       create_enum :test_enum2, %w(d e f)
       create_table(:enum_test_models) do
         String :str_col
+        String :kind
         test_enum :enum_col
         test_enum2 :enum_col2
       end
@@ -38,33 +39,31 @@ describe Sequel::Plugins::Enum do
     EnumTestModel
   end
 
+  let(:enums_schema) do
+    {
+      enum_col: Set.new(%w'a b c'),
+      enum_col2: Set.new(%w'd e f'),
+    }
+  end
+
   describe '.plugin :enum' do
     it 'enables enum columns' do
-      expect { model.plugin :enum, :enum_col, :enum_col2 }.to_not raise_error
-    end
-    context 'with non-enum column' do
-      it 'raises an ArgumentError' do
-        expect { model.plugin :enum, :str_col }.to raise_error(ArgumentError)
-      end
+      expect { model.plugin :enum }.to_not raise_error
     end
   end
 
   describe '.enums' do
     before do
-      model.plugin :enum, :enum_col, :enum_col2
+      model.plugin :enum
     end
     it 'contains allowed values for enum' do
-      expected = {
-        enum_col: Set.new(%w'a b c'),
-        enum_col2: Set.new(%w'd e f'),
-      }
-      expect(model.enums).to eq(expected)
+      expect(model.enums).to eq(enums_schema)
     end
   end
 
   describe 'instance methods' do
     subject(:instance) do
-      model.plugin :enum, :enum_col, :enum_col2
+      model.plugin :enum
       model.new
     end
 
@@ -87,5 +86,38 @@ describe Sequel::Plugins::Enum do
         end
       end
     end
+  end
+
+  context 'in subclass' do
+    let!(:model) do
+      class EnumTestModel < Sequel::Model
+        plugin :enum
+        plugin :single_table_inheritance, :kind
+      end
+      EnumTestModel
+    end
+
+    let(:submodel) do
+      class SubEnumTestModel < EnumTestModel
+      end
+      SubEnumTestModel
+    end
+
+    let!(:instance) { submodel.create(enum_col: 'b') }
+
+    describe '.enums' do
+      before do
+        model.plugin :enum
+      end
+      it 'contains allowed values for enum' do
+        expect(model.enums).to eq(enums_schema)
+        expect(submodel.enums).to eq(enums_schema)
+      end
+      it 'is a different object' do
+        expect(model.enums).to_not equal(submodel.enums)
+      end
+    end
+
+
   end
 end

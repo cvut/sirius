@@ -35,7 +35,7 @@ module Sequel
     # [sequel_enum]: https://github.com/planas/sequel_enum
     module Enum
       # @private
-      def self.apply(model, *columns)
+      def self.apply(model)
         model.instance_eval do
           @enums = {}
         end
@@ -45,9 +45,9 @@ module Sequel
       # @param [Array<Symbol>]
       # @raise [ArgumentError] if given column(s) do not exist or aren't enums
       # @return [void]
-      def self.configure(model, *columns)
+      def self.configure(model)
         model.instance_eval do
-          send(:create_enum_accessors, *columns)
+          send(:create_enum_accessors)
         end
       end
 
@@ -59,20 +59,19 @@ module Sequel
         Plugins.inherited_instance_variables(self, :@enums=>:hash_dup)
 
         private
-        def create_enum_accessors(*columns)
-          columns.each do |column|
-            create_enum_accessor(column)
+        def create_enum_accessors
+          columns = db_schema.select {|_, val| val[:type] == :enum}
+          columns.each do |col_name, col_schema|
+            create_enum_accessor(col_name, col_schema)
           end
         end
 
-        def create_enum_accessor(column)
-          column = column.to_sym
-          enum_schema = db_schema[column]
-          if enum_schema[:type] != :enum
-            raise ArgumentError, "Enum column '#{column}' should be of type enum, got #{enum_schema[:type]}"
+        def create_enum_accessor(column, column_schema)
+          if column_schema[:type] != :enum
+            raise ArgumentError, "Enum column '#{column}' should be of type enum, got #{column_schema[:type]}"
           end
 
-          enum_values = enum_schema[:enum_values].to_set.freeze
+          enum_values = column_schema[:enum_values].to_set.freeze
           self.enums[column] = enum_values
 
           define_method "#{column}=" do |value|
