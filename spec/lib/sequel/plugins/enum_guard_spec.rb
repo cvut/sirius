@@ -40,22 +40,19 @@ describe Sequel::Plugins::EnumGuard do
     }
   end
 
+  before do
+    Sequel::Model.plugin :enum_guard
+  end
+
   context 'within global Sequel::Model' do
     subject(:model) do
-      Sequel::Model.plugin :enum_guard
       Sequel::Model
     end
 
-    it 'exposes no enum' do
-      expect(model.enums).to eq({})
-    end
+    it { should_not respond_to(:enums) }
   end
 
   context 'within model with enums' do
-    before do
-      Sequel::Model.plugin :enum_guard
-    end
-
     subject(:model) do
       class EnumTestModel < Sequel::Model
       end
@@ -63,9 +60,13 @@ describe Sequel::Plugins::EnumGuard do
     end
 
     describe '.enums' do
+      subject(:enums) { model.enums }
+
       it 'contains allowed values for enum' do
-        expect(model.enums).to eq(enums_schema)
+        expect(enums).to eq(enums_schema)
       end
+
+      it { should be_frozen }
     end
 
     describe 'instance methods' do
@@ -97,7 +98,6 @@ describe Sequel::Plugins::EnumGuard do
 
   context 'in subclass' do
     let!(:model) do
-      Sequel::Model.plugin :enum_guard
       class EnumTestModel < Sequel::Model
         plugin :single_table_inheritance, :kind
       end

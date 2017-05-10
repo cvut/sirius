@@ -35,13 +35,6 @@ module Sequel
     # [pg_enum]: http://sequel.jeremyevans.net/rdoc-plugins/files/lib/sequel/extensions/pg_enum_rb.html
     # [sequel_enum]: https://github.com/planas/sequel_enum
     module EnumGuard
-      # @private
-      def self.apply(model)
-        model.instance_eval do
-          @enums = {}
-        end
-      end
-
       # @return [void]
       def self.configure(model)
         model.instance_eval do
@@ -52,11 +45,6 @@ module Sequel
       module ClassMethods
         Plugins.after_set_dataset(self, :create_enum_setters)
 
-        # @return [Hash{Symbol => Array<String>}] registered enum fields
-        attr_reader :enums
-
-        Plugins.inherited_instance_variables(self, :@enums=>:hash_dup)
-
         private
         def create_enum_setters
           columns = check_non_connection_error do
@@ -65,7 +53,10 @@ module Sequel
           return if columns.empty?
 
           @enums = columns.map{ |k, v| create_enum_setter(k, v) }.to_h
-          self.send :attr_reader, :enums
+          @enums.freeze
+          class << self
+            attr_reader :enums
+          end
         end
 
         def create_enum_setter(column, column_schema)
