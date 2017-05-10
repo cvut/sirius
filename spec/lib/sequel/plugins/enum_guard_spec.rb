@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'sequel/plugins/enum'
+require 'sequel/plugins/enum_guard'
 
 Sequel.extension :migration
 
-describe Sequel::Plugins::Enum do
+describe Sequel::Plugins::EnumGuard do
   Migration = Sequel.migration do
     up do
       extension :pg_enum
@@ -46,15 +46,15 @@ describe Sequel::Plugins::Enum do
     }
   end
 
-  describe '.plugin :enum' do
+  describe '.plugin :enum_guard' do
     it 'enables enum columns' do
-      expect { model.plugin :enum }.to_not raise_error
+      expect { model.plugin :enum_guard }.to_not raise_error
     end
   end
 
   describe '.enums' do
     before do
-      model.plugin :enum
+      model.plugin :enum_guard
     end
     it 'contains allowed values for enum' do
       expect(model.enums).to eq(enums_schema)
@@ -63,7 +63,7 @@ describe Sequel::Plugins::Enum do
 
   describe 'instance methods' do
     subject(:instance) do
-      model.plugin :enum
+      model.plugin :enum_guard
       model.new
     end
 
@@ -91,7 +91,7 @@ describe Sequel::Plugins::Enum do
   context 'in subclass' do
     let!(:model) do
       class EnumTestModel < Sequel::Model
-        plugin :enum
+        plugin :enum_guard
         plugin :single_table_inheritance, :kind
       end
       EnumTestModel
@@ -107,7 +107,7 @@ describe Sequel::Plugins::Enum do
 
     describe '.enums' do
       before do
-        model.plugin :enum
+        model.plugin :enum_guard
       end
       it 'contains allowed values for enum' do
         expect(model.enums).to eq(enums_schema)
