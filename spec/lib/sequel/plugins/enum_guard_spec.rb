@@ -59,8 +59,8 @@ describe Sequel::Plugins::EnumGuard do
       EnumTestModel
     end
 
-    describe '.enums' do
-      subject(:enums) { model.enums }
+    describe '.enum_fields' do
+      subject(:enums) { model.enum_fields }
 
       it 'contains allowed values for enum' do
         expect(enums).to eq(enums_schema)
@@ -112,13 +112,13 @@ describe Sequel::Plugins::EnumGuard do
 
     let!(:instance) { submodel.create(enum_col: 'b') }
 
-    describe '.enums' do
+    describe '.enum_fields' do
       it 'contains allowed values for enum' do
-        expect(model.enums).to eq(enums_schema)
-        expect(submodel.enums).to eq(enums_schema)
+        expect(model.enum_fields).to eq(enums_schema)
+        expect(submodel.enum_fields).to eq(enums_schema)
       end
       it 'is a different object' do
-        expect(model.enums).to_not equal(submodel.enums)
+        expect(model.enum_fields).to_not equal(submodel.enum_fields)
       end
     end
 
