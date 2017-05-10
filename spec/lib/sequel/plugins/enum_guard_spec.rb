@@ -12,8 +12,8 @@ describe Sequel::Plugins::EnumGuard do
       create_table(:enum_test_models) do
         String :str_col
         String :kind
-        test_enum :enum_col
-        test_enum2 :enum_col2
+        test_enum :enum_col, null: false
+        test_enum2 :enum_col2, null: true
       end
     end
 
@@ -36,7 +36,7 @@ describe Sequel::Plugins::EnumGuard do
   let(:enums_schema) do
     {
       enum_col: Set.new(%w'a b c'),
-      enum_col2: Set.new(%w'd e f'),
+      enum_col2: Set.new(['d', 'e', 'f', nil]),
     }
   end
 
@@ -77,7 +77,11 @@ describe Sequel::Plugins::EnumGuard do
       describe 'enum setter' do
         context 'with invalid enum value' do
           it 'raises an ArgumentError' do
-            expect { instance.enum_col = 'invalid' }.to raise_error(ArgumentError)
+            expect { instance.enum_col = 'invalid val' }.to raise_error(ArgumentError)
+          end
+
+          it "doesn't accept nil value for NOT NULL field" do
+            expect { instance.enum_col = nil }.to raise_error(ArgumentError)
           end
         end
 
@@ -90,6 +94,11 @@ describe Sequel::Plugins::EnumGuard do
           it 'accepts symbol' do
             instance.enum_col = :c
             expect(instance.enum_col).to eq 'c'
+          end
+
+          it 'accepts nil for NULL columns' do
+            instance.enum_col2 = nil
+            expect(instance.enum_col2).to be_nil
           end
         end
       end

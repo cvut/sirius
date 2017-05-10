@@ -20,16 +20,21 @@ module Sequel
     #     end
     #
     #     MyModel.enum_fields
-    #     #=> {column1: ['a', 'b'], column2: ['c', 'd']}
+    #     #=> {column1: ['a', 'b'], column2: ['c', 'd', nil]}
     #
     #     instance = MyModel.new
     #     instance.column1 = 'a'  # Values can be set both as symbols or strings
     #     instance.column2 = :c
     #
-    #     instance.column1        # Field's value is returned as string
-    #     #=> 'a'
+    #     instance.column2        # Field's value is returned as string
+    #     #=> 'c'
+    #
+    #     instance.column2 = nil  # NULL fields can be set to nil, as seen in .enum_fields
+    #
     #
     #     instance.column1 = 'invalid value'
+    #     #=> ArgumentError
+    #     instance.column1 = nil
     #     #=> ArgumentError
     #
     # [pg_enum]: http://sequel.jeremyevans.net/rdoc-plugins/files/lib/sequel/extensions/pg_enum_rb.html
@@ -60,12 +65,16 @@ module Sequel
         end
 
         def create_enum_setter(column, column_schema)
-          enum_values = column_schema[:enum_values].to_set.freeze
+          enum_values = column_schema[:enum_values].to_set
+          if column_schema[:allow_null]
+            enum_values.add(nil)
+          end
+          enum_values.freeze
 
           define_method "#{column}=" do |value|
-            val_str = value.to_s
+            val_str = value.nil? ? value : value.to_s
             unless enum_values.include? val_str
-              raise ArgumentError, "Invalid enum value for #{column}: '#{val_str}'"
+              raise ArgumentError, "Invalid enum value for #{column}: #{val_str.inspect}"
             end
             super(val_str)
           end
