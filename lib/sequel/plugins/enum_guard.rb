@@ -45,11 +45,12 @@ module Sequel
       # @return [void]
       def self.configure(model)
         model.instance_eval do
-          send(:create_enum_accessors)
+          send(:create_enum_setters) if @dataset
         end
       end
 
       module ClassMethods
+        Plugins.after_set_dataset(self, :create_enum_setters)
 
         # @return [Hash{Symbol => Array<String>}] registered enum fields
         attr_reader :enums
@@ -57,20 +58,18 @@ module Sequel
         Plugins.inherited_instance_variables(self, :@enums=>:hash_dup)
 
         private
-        def create_enum_accessors
-          columns = db_schema.select {|_, val| val[:type] == :enum}
-          columns.each do |col_name, col_schema|
-            create_enum_accessor(col_name, col_schema)
+        def create_enum_setters
+          columns = check_non_connection_error do
+            db_schema.select {|_, val| val[:type] == :enum}
           end
+          return if columns.empty?
+
+          @enums = columns.map{ |k, v| create_enum_setter(k, v) }.to_h
+          self.send :attr_reader, :enums
         end
 
-        def create_enum_accessor(column, column_schema)
-          if column_schema[:type] != :enum
-            raise ArgumentError, "Enum column '#{column}' should be of type enum, got #{column_schema[:type]}"
-          end
-
+        def create_enum_setter(column, column_schema)
           enum_values = column_schema[:enum_values].to_set.freeze
-          self.enums[column] = enum_values
 
           define_method "#{column}=" do |value|
             val_str = value.to_s
@@ -80,6 +79,7 @@ module Sequel
             super(val_str)
           end
 
+          [column, enum_values]
         end
 
       end

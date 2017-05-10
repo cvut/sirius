@@ -33,12 +33,6 @@ describe Sequel::Plugins::EnumGuard do
     Migration.apply(DB, :down)
   end
 
-  let(:model) do
-    class EnumTestModel < Sequel::Model
-    end
-    EnumTestModel
-  end
-
   let(:enums_schema) do
     {
       enum_col: Set.new(%w'a b c'),
@@ -46,43 +40,56 @@ describe Sequel::Plugins::EnumGuard do
     }
   end
 
-  describe '.plugin :enum_guard' do
-    it 'enables enum columns' do
-      expect { model.plugin :enum_guard }.to_not raise_error
+  context 'within global Sequel::Model' do
+    subject(:model) do
+      Sequel::Model.plugin :enum_guard
+      Sequel::Model
+    end
+
+    it 'exposes no enum' do
+      expect(model.enums).to eq({})
     end
   end
 
-  describe '.enums' do
+  context 'within model with enums' do
     before do
-      model.plugin :enum_guard
-    end
-    it 'contains allowed values for enum' do
-      expect(model.enums).to eq(enums_schema)
-    end
-  end
-
-  describe 'instance methods' do
-    subject(:instance) do
-      model.plugin :enum_guard
-      model.new
+      Sequel::Model.plugin :enum_guard
     end
 
-    describe 'enum setter' do
-      context 'with invalid enum value' do
-        it 'raises an ArgumentError' do
-          expect { instance.enum_col = 'invalid' }.to raise_error(ArgumentError)
-        end
+    subject(:model) do
+      class EnumTestModel < Sequel::Model
+      end
+      EnumTestModel
+    end
+
+    describe '.enums' do
+      it 'contains allowed values for enum' do
+        expect(model.enums).to eq(enums_schema)
+      end
+    end
+
+    describe 'instance methods' do
+      subject(:instance) do
+        model.new
       end
 
-      context 'with valid enum value' do
-        it 'accepts string' do
-          instance.enum_col = 'b'
-          expect(instance.enum_col).to eq 'b'
+      describe 'enum setter' do
+        context 'with invalid enum value' do
+          it 'raises an ArgumentError' do
+            expect { instance.enum_col = 'invalid' }.to raise_error(ArgumentError)
+          end
         end
 
-        it 'accepts symbol' do
-          instance.enum_col = :c
-          expect(instance.enum_col).to eq 'c'
+        context 'with valid enum value' do
+          it 'accepts string' do
+            instance.enum_col = 'b'
+            expect(instance.enum_col).to eq 'b'
+          end
+
+          it 'accepts symbol' do
+            instance.enum_col = :c
+            expect(instance.enum_col).to eq 'c'
+          end
         end
       end
     end
@@ -90,8 +97,8 @@ describe Sequel::Plugins::EnumGuard do
 
   context 'in subclass' do
     let!(:model) do
+      Sequel::Model.plugin :enum_guard
       class EnumTestModel < Sequel::Model
-        plugin :enum_guard
         plugin :single_table_inheritance, :kind
       end
       EnumTestModel
@@ -106,9 +113,6 @@ describe Sequel::Plugins::EnumGuard do
     let!(:instance) { submodel.create(enum_col: 'b') }
 
     describe '.enums' do
-      before do
-        model.plugin :enum_guard
-      end
       it 'contains allowed values for enum' do
         expect(model.enums).to eq(enums_schema)
         expect(submodel.enums).to eq(enums_schema)
