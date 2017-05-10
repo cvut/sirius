@@ -3,19 +3,20 @@ require 'set'
 
 module Sequel
   module Plugins
-    # Enum enhances Sequel's [pg_enum][pg_enum] types with extra runtime checking and symbol conversion.
+    # EnumGuard adds runtime checking for Sequel's [pg_enum][pg_enum] types.
     #
-    # When enabled on model's field, the plugin:
-    # - loads possible enum values from model's schema,
-    # - prevents setting incorrect value on field,
-    # - exposes known enum fields and values in `.enums` class method.
+    # When enabled, the plugin automatically searches model's schema for enum fields
+    # and adds custom setter to prevent invalid value to be set on enum field.
+    # The plugin also adds `enums` class method to the model exposing Hash of known enum fields with
+    # their value.
     #
-    # The plugin is loosely inspired by [sequel_enum][sequel_enum] plugin.
+    # The plugin was loosely inspired by [sequel_enum][sequel_enum] plugin.
     #
     # ### Example:
     #
+    #     Sequel::Model.plugin :enum_guard # The plugin is intended to be enabled globally
+    #
     #     class MyModel < Sequel::Model
-    #       plugin :enum, :column1, :column2  # Columns have to be enums, otherwise the initialization will fail
     #     end
     #
     #     MyModel.enums
@@ -33,7 +34,7 @@ module Sequel
     #
     # [pg_enum]: http://sequel.jeremyevans.net/rdoc-plugins/files/lib/sequel/extensions/pg_enum_rb.html
     # [sequel_enum]: https://github.com/planas/sequel_enum
-    module Enum
+    module EnumGuard
       # @private
       def self.apply(model)
         model.instance_eval do
@@ -41,9 +42,6 @@ module Sequel
         end
       end
 
-      # Enables enum plugin for given columns.
-      # @param [Array<Symbol>]
-      # @raise [ArgumentError] if given column(s) do not exist or aren't enums
       # @return [void]
       def self.configure(model)
         model.instance_eval do
