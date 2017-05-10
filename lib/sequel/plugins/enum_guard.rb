@@ -19,7 +19,7 @@ module Sequel
     #     class MyModel < Sequel::Model
     #     end
     #
-    #     MyModel.enums
+    #     MyModel.enum_fields
     #     #=> {column1: ['a', 'b'], column2: ['c', 'd']}
     #
     #     instance = MyModel.new
@@ -52,10 +52,10 @@ module Sequel
           end
           return if columns.empty?
 
-          @enums = columns.map{ |k, v| create_enum_setter(k, v) }.to_h
-          @enums.freeze
+          @enum_fields = columns.map{ |k, v| create_enum_setter(k, v) }.to_h
+          @enum_fields.freeze
           class << self
-            attr_reader :enums
+            attr_reader :enum_fields
           end
         end
 
