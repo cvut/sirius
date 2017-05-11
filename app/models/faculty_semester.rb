@@ -4,7 +4,7 @@ require 'models/semester_period'
 class FacultySemester < Sequel::Model
   using ::DateRefinements
 
-  one_to_many :semester_periods
+  one_to_many :semester_periods, order: :id
 
   def self.active_for(source_type)
     if source_type == :parallels
