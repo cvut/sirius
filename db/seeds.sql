@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 9.5.1
--- Dumped by pg_dump version 9.5.6
+-- Dumped by pg_dump version 9.6.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -13,7 +13,6 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
 
-SET search_path = public, pg_catalog;
 
 --
 -- Data for Name: faculty_semesters; Type: TABLE DATA; Schema: public; Owner: -
@@ -44,19 +43,14 @@ SELECT pg_catalog.setval('faculty_semesters_id_seq', 13, true);
 -- Data for Name: schedule_exceptions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO schedule_exceptions VALUES (4, 1, 'MI-MDW - posun začátku přednášky na 7:15', 'posun kvůli výuce FA', NULL, NULL, 18000, 'B141', '{392622000}', NULL, NULL, '"offset"=>"-15"', NULL);
-INSERT INTO schedule_exceptions VALUES (5, 0, 'MI-EVY - výuka až od 13. 10. 2014', NULL, NULL, '2014-10-13 00:00:00', 18000, 'B141', NULL, NULL, NULL, NULL, '{MI-EVY,MIE-EVY}');
-INSERT INTO schedule_exceptions VALUES (6, 0, 'MI-EVY - výuka pouze do 5. 12. 2014', NULL, '2014-12-06 00:00:00', NULL, 18000, 'B141', NULL, NULL, NULL, NULL, '{MI-EVY,MIE-EVY}');
 INSERT INTO schedule_exceptions VALUES (8, 0, 'MI-MVI - odpadá výuka 20. 10. 2014', NULL, '2014-10-20 00:00:00', '2014-10-21 00:00:00', 18000, 'B141', NULL, '2014-10-19 00:00:00', '2014-10-19 00:00:00', NULL, '{MI-MVI}');
 INSERT INTO schedule_exceptions VALUES (10, 0, 'Velikonoční pondělí', NULL, '2015-04-06 00:00:00', '2015-04-07 00:00:00', NULL, 'B142', NULL, '2015-01-22 04:47:51.057353', '2015-01-22 04:47:51.057353', NULL, NULL);
 INSERT INTO schedule_exceptions VALUES (11, 0, 'Děkanský den FIT', 'Výuka odpadá', '2015-04-30 00:00:00', '2015-05-01 00:00:00', 18000, 'B142', NULL, '2015-01-22 04:50:07.162538', '2015-01-22 04:50:07.162538', NULL, NULL);
 INSERT INTO schedule_exceptions VALUES (14, 0, 'Děkanský den FEL', NULL, '2015-04-03 00:00:00', '2015-04-04 00:00:00', 13000, 'B142', NULL, '2015-01-27 05:21:04.779597', '2015-01-27 05:21:04.779597', NULL, NULL);
 INSERT INTO schedule_exceptions VALUES (15, 0, 'Rektorský den', NULL, '2015-05-13 00:00:00', '2015-05-14 00:00:00', NULL, 'B142', NULL, '2015-01-27 05:21:04.779597', '2015-01-27 05:21:04.779597', NULL, NULL);
-INSERT INTO schedule_exceptions VALUES (7, 2, 'MI-MPI - přednáška 24. 9. 2014 přesunuta do T9:105', NULL, '2014-09-24 00:00:00', '2014-09-25 00:00:00', 18000, 'B141', '{392651000}', NULL, NULL, '"room_id"=>"T9:105"', NULL);
 INSERT INTO schedule_exceptions VALUES (9, 2, 'BI-ZMA - přesun přednášky 4. 12. 2014 do T9:155', NULL, '2014-12-04 00:00:00', '2014-12-05 00:00:00', 18000, 'B141', '{392356000}', '2014-10-19 00:00:00', '2014-10-19 00:00:00', '"room_id"=>"T9:155"', NULL);
 INSERT INTO schedule_exceptions VALUES (16, 0, 'Den vzniku samostatného československého státu', NULL, '2015-10-28 00:00:00', '2015-10-29 00:00:00', NULL, 'B151', NULL, '2015-06-15 19:15:10.507685', '2015-06-15 19:15:10.507685', NULL, NULL);
 INSERT INTO schedule_exceptions VALUES (17, 0, 'Den boje za svobodu a demokracii', NULL, '2015-11-17 00:00:00', '2015-11-18 00:00:00', NULL, 'B151', NULL, '2015-06-15 19:15:56.244907', '2015-06-15 19:15:56.244907', NULL, NULL);
-INSERT INTO schedule_exceptions VALUES (19, 1, 'MI-MDW - posun začátku přednášky na 7:15', 'posun kvůli výuce FA', NULL, NULL, 18000, 'B151', '{428739000}', NULL, NULL, '"offset"=>"-15"', NULL);
 INSERT INTO schedule_exceptions VALUES (18, 0, 'Zimní prázdniny', NULL, '2015-12-23 00:00:00', '2016-01-04 00:00:00', NULL, 'B151', NULL, '2015-06-15 19:26:13.56595', '2015-06-15 19:26:13.56595', NULL, NULL);
 INSERT INTO schedule_exceptions VALUES (20, 0, 'Rektorský den', NULL, '2016-05-11 00:00:00', '2016-05-12 00:00:00', NULL, 'B152', NULL, '2016-02-04 15:29:22.164551', '2016-02-04 15:29:22.164551', NULL, NULL);
 INSERT INTO schedule_exceptions VALUES (21, 0, 'Velký pátek', NULL, '2016-03-25 00:00:00', '2016-03-26 00:00:00', NULL, 'B152', NULL, '2016-02-04 15:29:22.164551', '2016-02-04 15:29:22.164551', NULL, NULL);
@@ -65,11 +59,16 @@ INSERT INTO schedule_exceptions VALUES (24, 1, 'MI-MDW - posun začátku předn�
 INSERT INTO schedule_exceptions VALUES (25, 0, 'Děkanský den', NULL, '2016-03-24 00:00:00', '2016-03-25 00:00:00', 18000, 'B152', NULL, '2016-02-17 14:08:33.031212', '2016-02-17 14:08:33.031212', NULL, NULL);
 INSERT INTO schedule_exceptions VALUES (26, 0, 'Svátek práce', NULL, '2016-05-01 00:00:00', '2016-05-02 00:00:00', NULL, 'B152', NULL, '2016-02-17 14:08:33.031212', '2016-02-17 14:08:33.031212', NULL, NULL);
 INSERT INTO schedule_exceptions VALUES (27, 0, 'Den vítězství', NULL, '2016-05-08 00:00:00', '2016-05-09 00:00:00', NULL, 'B152', NULL, '2016-02-17 14:08:33.031212', '2016-02-17 14:08:33.031212', NULL, NULL);
-INSERT INTO schedule_exceptions VALUES (1, 0, 'Den české státnosti', NULL, '2014-09-28 00:00:00', '2014-09-29 00:00:00', NULL, 'B141', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO schedule_exceptions VALUES (2, 0, 'Den vzniku samostatného československého státu', NULL, '2014-10-28 00:00:00', '2014-10-29 00:00:00', NULL, 'B141', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO schedule_exceptions VALUES (3, 0, 'Den boje za svobodu a demokracii', NULL, '2014-11-17 00:00:00', '2014-11-18 00:00:00', NULL, 'B141', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO schedule_exceptions VALUES (12, 0, 'Svátek práce', NULL, '2015-05-01 00:00:00', '2015-05-02 00:00:00', NULL, 'B142', NULL, '2015-01-22 04:52:07.533893', '2015-01-22 04:52:07.533893', NULL, NULL);
 INSERT INTO schedule_exceptions VALUES (13, 0, 'Den osvobození', NULL, '2015-05-08 00:00:00', '2015-05-09 00:00:00', NULL, 'B142', NULL, '2015-01-22 04:53:19.826746', '2015-01-22 04:53:19.826746', NULL, NULL);
+INSERT INTO schedule_exceptions VALUES (4, 1, 'MI-MDW - posun začátku přednášky na 7:15', 'posun kvůli výuce FA', NULL, NULL, 18000, 'B141', '{392622000}', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '"offset"=>"-15"', NULL);
+INSERT INTO schedule_exceptions VALUES (5, 0, 'MI-EVY - výuka až od 13. 10. 2014', NULL, NULL, '2014-10-13 00:00:00', 18000, 'B141', NULL, '1970-01-01 00:00:00', '1970-01-01 00:00:00', NULL, '{MI-EVY,MIE-EVY}');
+INSERT INTO schedule_exceptions VALUES (6, 0, 'MI-EVY - výuka pouze do 5. 12. 2014', NULL, '2014-12-06 00:00:00', NULL, 18000, 'B141', NULL, '1970-01-01 00:00:00', '1970-01-01 00:00:00', NULL, '{MI-EVY,MIE-EVY}');
+INSERT INTO schedule_exceptions VALUES (7, 2, 'MI-MPI - přednáška 24. 9. 2014 přesunuta do T9:105', NULL, '2014-09-24 00:00:00', '2014-09-25 00:00:00', 18000, 'B141', '{392651000}', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '"room_id"=>"T9:105"', NULL);
+INSERT INTO schedule_exceptions VALUES (19, 1, 'MI-MDW - posun začátku přednášky na 7:15', 'posun kvůli výuce FA', NULL, NULL, 18000, 'B151', '{428739000}', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '"offset"=>"-15"', NULL);
+INSERT INTO schedule_exceptions VALUES (1, 0, 'Den české státnosti', NULL, '2014-09-28 00:00:00', '2014-09-29 00:00:00', NULL, 'B141', NULL, '1970-01-01 00:00:00', '1970-01-01 00:00:00', NULL, NULL);
+INSERT INTO schedule_exceptions VALUES (2, 0, 'Den vzniku samostatného československého státu', NULL, '2014-10-28 00:00:00', '2014-10-29 00:00:00', NULL, 'B141', NULL, '1970-01-01 00:00:00', '1970-01-01 00:00:00', NULL, NULL);
+INSERT INTO schedule_exceptions VALUES (3, 0, 'Den boje za svobodu a demokracii', NULL, '2014-11-17 00:00:00', '2014-11-18 00:00:00', NULL, 'B141', NULL, '1970-01-01 00:00:00', '1970-01-01 00:00:00', NULL, NULL);
 
 
 --

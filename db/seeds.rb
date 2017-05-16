@@ -6,9 +6,18 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+puts 'Seeding'
 seeds_file = File.join(__dir__, 'seeds.sql')
 if File.exists?(seeds_file)
-  DB.run File.read(seeds_file)
+  begin
+    f = File.read(seeds_file)
+    DB.transaction do
+      DB << f
+      raise 'ERROR'
+    end
+  rescue Exception => e
+    p e
+  end
 end
 
 if ENV['RACK_ENV'] == 'development'
