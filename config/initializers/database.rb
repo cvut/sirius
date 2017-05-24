@@ -14,6 +14,7 @@ DB.sql_log_level = :debug
 DB.logger = Logging.logger[:sql]
 
 Sequel::Model.plugin :timestamps, update_on_create: true
+Sequel::Model.plugin :enum_guard
 DB.extension :pg_hstore
 DB.extension :pg_array
 Sequel.extension :pg_array_ops

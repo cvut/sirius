@@ -134,7 +134,7 @@ module SiriusApi
     # @return [Boolean] `true` if this week includes a regular teaching period,
     #   `false` otherwise.
     def teaching?
-      period_types.include? :teaching
+      period_types.include? 'teaching'
     end
 
     ##
@@ -144,7 +144,7 @@ module SiriusApi
     # The calculation is based on difference between the period's start date and
     # and this week's date, shifted by the period's `first_week_parity`.
     #
-    # @return [Symbol, nil] `:even`, `:odd`, or `nil`
+    # @return [String, nil] `'even'`, `'odd'`, or `nil`
     #
     def week_parity
       return @week_parity if defined? @week_parity

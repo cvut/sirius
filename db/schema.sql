@@ -2,12 +2,16 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.5.3
+-- Dumped by pg_dump version 9.5.3
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -61,6 +65,67 @@ CREATE TYPE event_source_type AS ENUM (
     'exam',
     'teacher_timetable_slot'
 );
+
+
+--
+-- Name: event_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE event_type AS ENUM (
+    'lecture',
+    'tutorial',
+    'laboratory',
+    'course_event',
+    'exam',
+    'assessment',
+    'teacher_timetable_slot'
+);
+
+
+--
+-- Name: exception_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE exception_type AS ENUM (
+    'cancel',
+    'relative_move',
+    'room_change',
+    'teacher_change'
+);
+
+
+--
+-- Name: parallel_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE parallel_type AS ENUM (
+    'lecture',
+    'tutorial',
+    'laboratory'
+);
+
+
+--
+-- Name: parity; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE parity AS ENUM (
+    'both',
+    'odd',
+    'even'
+);
+
+
+--
+-- Name: semester_period_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE semester_period_type AS ENUM (
+    'teaching',
+    'exams',
+    'holiday'
+);
+
 
 
 --
@@ -234,7 +299,7 @@ begin
     created_at,
     updated_at
   ) values (
-    3,
+    'teacher_change',
     _name,
     _note,
     _starts_at,
@@ -250,7 +315,7 @@ begin
   insert into audits (action, table_name, primary_key, changed_values)
     values ('I', 'schedule_exceptions', _exception_id,
       json_compact(json_build_object(
-        'exception_type', 3,
+        'exception_type', 'teacher_change',
         'starts_at', _starts_at,
         'ends_at', _ends_at,
         'timetable_slot_ids', _timetable_slot_ids,
@@ -419,7 +484,7 @@ SET default_with_oids = false;
 CREATE TABLE audits (
     id bigint NOT NULL,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
-    user_id text DEFAULT "session_user"() NOT NULL,
+    user_id text DEFAULT ("session_user"())::text NOT NULL,
     action text NOT NULL,
     table_name text NOT NULL,
     primary_key text NOT NULL,
@@ -453,9 +518,9 @@ ALTER SEQUENCE audits_id_seq OWNED BY audits.id;
 CREATE TABLE courses (
     id text NOT NULL,
     department text,
-    name hstore,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    name hstore NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -479,26 +544,26 @@ ALTER SEQUENCE courses_id_seq OWNED BY courses.id;
 
 
 --
--- Name: events; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: events; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE events (
     id bigint NOT NULL,
     name hstore,
     note hstore,
-    starts_at timestamp without time zone,
-    ends_at timestamp without time zone,
+    starts_at timestamp without time zone NOT NULL,
+    ends_at timestamp without time zone NOT NULL,
     absolute_sequence_number integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     teacher_ids text[],
     student_ids text[],
     relative_sequence_number integer,
     deleted boolean DEFAULT false NOT NULL,
-    event_type text,
+    event_type event_type NOT NULL,
     parallel_id bigint,
     course_id text,
-    semester text,
+    semester text NOT NULL,
     faculty integer,
     capacity integer,
     room_id text,
@@ -506,7 +571,7 @@ CREATE TABLE events (
     original_starts_at timestamp without time zone,
     original_ends_at timestamp without time zone,
     original_room_id text,
-    source_type event_source_type,
+    source_type event_source_type NOT NULL,
     source_id text
 );
 
@@ -531,24 +596,24 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 
 --
--- Name: faculty_semesters; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: faculty_semesters; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE faculty_semesters (
     id integer NOT NULL,
-    code text,
-    faculty integer,
-    update_parallels boolean DEFAULT true,
-    first_week_parity integer,
-    starts_at date,
-    teaching_ends_at date,
-    exams_start_at date,
+    code text NOT NULL,
+    faculty integer NOT NULL,
+    update_parallels boolean DEFAULT true NOT NULL,
+    first_week_parity parity NOT NULL,
+    starts_at date NOT NULL,
+    teaching_ends_at date NOT NULL,
+    exams_start_at date NOT NULL,
     exams_end_at date,
-    ends_at date,
-    hour_starts time without time zone[],
-    hour_duration integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    ends_at date NOT NULL,
+    hour_starts time without time zone[] NOT NULL,
+    hour_duration integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     update_other boolean DEFAULT false NOT NULL
 );
 
@@ -573,22 +638,22 @@ ALTER SEQUENCE faculty_semesters_id_seq OWNED BY faculty_semesters.id;
 
 
 --
--- Name: parallels; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: parallels; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE parallels (
     id bigint NOT NULL,
-    parallel_type text,
-    course_id text,
-    code integer,
+    parallel_type parallel_type NOT NULL,
+    course_id text NOT NULL,
+    code integer NOT NULL,
     capacity integer,
     occupied integer,
-    semester text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    semester text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     teacher_ids text[],
     student_ids text[],
-    faculty integer,
+    faculty integer NOT NULL,
     deleted_at timestamp without time zone
 );
 
@@ -613,20 +678,20 @@ ALTER SEQUENCE parallels_id_seq OWNED BY parallels.id;
 
 
 --
--- Name: people; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: people; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE people (
     id text NOT NULL,
-    full_name text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    access_token uuid DEFAULT gen_random_uuid()
+    full_name text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    access_token uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
 --
--- Name: rooms; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: rooms; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE rooms (
@@ -636,27 +701,27 @@ CREATE TABLE rooms (
     division text,
     locality text,
     type text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: schedule_exceptions; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: schedule_exceptions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE schedule_exceptions (
     id bigint NOT NULL,
-    exception_type integer,
-    name text,
+    exception_type exception_type NOT NULL,
+    name text NOT NULL,
     note text,
     starts_at timestamp without time zone,
     ends_at timestamp without time zone,
     faculty integer,
     semester text,
     timetable_slot_ids bigint[],
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     options hstore,
     course_ids text[]
 );
@@ -682,7 +747,7 @@ ALTER SEQUENCE schedule_exceptions_id_seq OWNED BY schedule_exceptions.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE schema_migrations (
@@ -691,18 +756,18 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: semester_periods; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: semester_periods; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE semester_periods (
     id bigint NOT NULL,
-    faculty_semester_id integer,
+    faculty_semester_id integer NOT NULL,
     starts_at date NOT NULL,
     ends_at date NOT NULL,
-    type integer NOT NULL,
-    first_week_parity integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    type semester_period_type NOT NULL,
+    first_week_parity parity,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     first_day_override integer,
     irregular boolean DEFAULT false NOT NULL
 );
@@ -728,18 +793,18 @@ ALTER SEQUENCE semester_periods_id_seq OWNED BY semester_periods.id;
 
 
 --
--- Name: timetable_slots; Type: TABLE; Schema: public; Owner: -; Tablespace:
+-- Name: timetable_slots; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE timetable_slots (
     id bigint NOT NULL,
-    day integer,
-    parity integer,
-    first_hour integer,
-    duration integer,
-    parallel_id bigint,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    day integer NOT NULL,
+    parity parity NOT NULL,
+    first_hour integer NOT NULL,
+    duration integer NOT NULL,
+    parallel_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     room_id text,
     deleted_at timestamp without time zone
 );
@@ -762,50 +827,6 @@ CREATE SEQUENCE timetable_slots_id_seq
 --
 
 ALTER SEQUENCE timetable_slots_id_seq OWNED BY timetable_slots.id;
-
-
---
--- Name: tokens; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE tokens (
-    uuid uuid NOT NULL,
-    username text,
-    last_used_at timestamp without time zone,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: update_logs; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE update_logs (
-    id bigint NOT NULL,
-    type integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: update_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE update_logs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: update_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE update_logs_id_seq OWNED BY update_logs.id;
 
 
 --
@@ -865,13 +886,6 @@ ALTER TABLE ONLY timetable_slots ALTER COLUMN id SET DEFAULT nextval('timetable_
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY update_logs ALTER COLUMN id SET DEFAULT nextval('update_logs_id_seq'::regclass);
-
-
---
 -- Name: audits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -896,7 +910,7 @@ ALTER TABLE ONLY events
 
 
 --
--- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; TableSpace:
+-- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY events
@@ -904,7 +918,7 @@ ALTER TABLE ONLY events
 
 
 --
--- Name: faculty_semesters_code_faculty_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: faculty_semesters_code_faculty_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY faculty_semesters
@@ -912,7 +926,7 @@ ALTER TABLE ONLY faculty_semesters
 
 
 --
--- Name: faculty_semesters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: faculty_semesters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY faculty_semesters
@@ -920,7 +934,7 @@ ALTER TABLE ONLY faculty_semesters
 
 
 --
--- Name: parallels_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: parallels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY parallels
@@ -928,7 +942,7 @@ ALTER TABLE ONLY parallels
 
 
 --
--- Name: people_access_token_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: people_access_token_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY people
@@ -936,7 +950,7 @@ ALTER TABLE ONLY people
 
 
 --
--- Name: people_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: people_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY people
@@ -944,7 +958,7 @@ ALTER TABLE ONLY people
 
 
 --
--- Name: rooms_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: rooms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY rooms
@@ -952,7 +966,7 @@ ALTER TABLE ONLY rooms
 
 
 --
--- Name: schedule_exceptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: schedule_exceptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schedule_exceptions
@@ -960,7 +974,7 @@ ALTER TABLE ONLY schedule_exceptions
 
 
 --
--- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schema_migrations
@@ -968,7 +982,7 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
--- Name: semester_periods_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: semester_periods_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY semester_periods
@@ -976,7 +990,7 @@ ALTER TABLE ONLY semester_periods
 
 
 --
--- Name: timetable_slots_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+-- Name: timetable_slots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY timetable_slots
@@ -984,58 +998,42 @@ ALTER TABLE ONLY timetable_slots
 
 
 --
--- Name: tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY tokens
-    ADD CONSTRAINT tokens_pkey PRIMARY KEY (uuid);
-
-
---
--- Name: update_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY update_logs
-    ADD CONSTRAINT update_logs_pkey PRIMARY KEY (id);
-
-
---
--- Name: events_absolute_sequence_number_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: events_absolute_sequence_number_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX events_absolute_sequence_number_index ON events USING btree (absolute_sequence_number);
 
 
 --
--- Name: events_applied_schedule_exception_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: events_applied_schedule_exception_ids_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX events_applied_schedule_exception_ids_index ON events USING gin (applied_schedule_exception_ids);
 
 
 --
--- Name: events_course_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: events_course_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX events_course_id_index ON events USING btree (course_id);
 
 
 --
--- Name: events_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: events_faculty_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX events_faculty_index ON events USING btree (faculty);
 
 
 --
--- Name: events_room_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: events_room_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX events_room_id_index ON events USING btree (room_id);
 
 
 --
--- Name: events_semester_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: events_semester_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX events_semester_index ON events USING btree (semester);
@@ -1063,70 +1061,70 @@ CREATE INDEX events_student_ids_index ON events USING gin (student_ids);
 
 
 --
--- Name: events_teacher_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: events_teacher_ids_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX events_teacher_ids_index ON events USING gin (teacher_ids);
 
 
 --
--- Name: faculty_semesters_code_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: faculty_semesters_code_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX faculty_semesters_code_index ON faculty_semesters USING btree (code);
 
 
 --
--- Name: faculty_semesters_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: faculty_semesters_faculty_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX faculty_semesters_faculty_index ON faculty_semesters USING btree (faculty);
 
 
 --
--- Name: parallels_deleted_at_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: parallels_deleted_at_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX parallels_deleted_at_index ON parallels USING btree (deleted_at);
 
 
 --
--- Name: parallels_faculty_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: parallels_faculty_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX parallels_faculty_index ON parallels USING btree (faculty);
 
 
 --
--- Name: parallels_student_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: parallels_student_ids_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX parallels_student_ids_index ON parallels USING gin (student_ids);
 
 
 --
--- Name: parallels_teacher_ids_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: parallels_teacher_ids_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX parallels_teacher_ids_index ON parallels USING gin (teacher_ids);
 
 
 --
--- Name: semester_periods_faculty_semester_id_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: semester_periods_faculty_semester_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX semester_periods_faculty_semester_id_index ON semester_periods USING btree (faculty_semester_id);
 
 
 --
--- Name: semester_periods_type_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: semester_periods_type_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX semester_periods_type_index ON semester_periods USING btree (type);
 
 
 --
--- Name: timetable_slots_deleted_at_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
+-- Name: timetable_slots_deleted_at_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX timetable_slots_deleted_at_index ON timetable_slots USING btree (deleted_at);
@@ -1192,6 +1190,8 @@ ALTER TABLE ONLY timetable_slots
 -- PostgreSQL database dump complete
 --
 
+SET search_path = "$user", public;
+
 INSERT INTO "schema_migrations" ("filename") VALUES ('1409657056_fix_array_indexes.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410088335_create_tokens.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1410433713_add_options_to_schedule_exceptions.rb');
@@ -1228,3 +1228,9 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1467309659_import_event_fu
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467309979_update_event_functions.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467312179_remove_source_timetable_slot_id.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1467918523_add_absolute_sequence_numbers_to_course_events_exams.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1469128840_remove_unused_tables.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1469130929_add_not_null_constraints.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1469463514_convert_text_to_enum.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1469465920_convert_schedule_exception_type_to_enum.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1469470701_convert_parities_to_enum.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1493051746_convert_semester_period_type_to_enum.rb');

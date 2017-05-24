@@ -6,8 +6,8 @@ describe ScheduleException do
   describe '#apply' do
 
     let(:event) { Fabricate.build(:event, period: Period.parse('7:30', '9:00'), room_id: 'T9:355') }
-    subject(:exception) { Fabricate.build(:schedule_exception, id: 42, exception_type: Sirius::ScheduleExceptionType::ROOM_CHANGE, options: Sequel.hstore(room_id: 'T9:155')) }
-    let(:exception2) { Fabricate.build(:schedule_exception, id: 7, exception_type: Sirius::ScheduleExceptionType::ROOM_CHANGE, options: Sequel.hstore(room_id: 'T9:105')) }
+    subject(:exception) { Fabricate.build(:schedule_exception, id: 42, exception_type: 'room_change', options: Sequel.hstore(room_id: 'T9:155')) }
+    let(:exception2) { Fabricate.build(:schedule_exception, id: 7, exception_type: 'room_change', options: Sequel.hstore(room_id: 'T9:105')) }
 
     it 'adds own id to event applied_schedule_exception_ids' do
       exception.apply(event)

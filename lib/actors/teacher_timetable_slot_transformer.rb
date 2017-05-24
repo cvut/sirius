@@ -41,7 +41,7 @@ class TeacherTimetableSlotTransformer
   # @return [Array<Event>] planned events
   def plan_events(slot, teacher)
     periods_query = @semester.semester_periods_dataset
-      .where(type: [:teaching, :exams].map { |it| Sirius::SemesterPeriodType.to_numeric(it) })
+      .where(type: ['teaching', 'exams'])
       .order(:starts_at)
     periods = periods_query.map { |p| PlannedSemesterPeriod.new(p) }
     time_converter = Sirius::TimeConverter.new(
@@ -52,6 +52,7 @@ class TeacherTimetableSlotTransformer
     unless slot.duration
       slot.duration = 2
     end
+    slot.parity = slot.parity.to_s
     events = periods.flat_map do |period|
       PlannedTimetableSlot.new(slot, time_converter).generate_events(@semester, period)
     end

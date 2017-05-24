@@ -1,5 +1,3 @@
-require 'sirius/enums/semester_period_type'
-require 'parity'
 require 'day'
 require 'date_refinements'
 
@@ -8,28 +6,8 @@ class SemesterPeriod < Sequel::Model
 
   many_to_one :faculty_semester
 
-  def type
-    Sirius::SemesterPeriodType.from_numeric(super)
-  end
-
-  def type=(new_type)
-    super Sirius::SemesterPeriodType.to_numeric(new_type)
-  end
-
   def teaching?
-    type == :teaching
-  end
-
-  def first_week_parity
-    Parity.from_numeric(super) if super
-  end
-
-  def first_week_parity=(new_parity)
-    if new_parity
-      super Parity.to_numeric(new_parity)
-    else
-      super
-    end
+    type == 'teaching'
   end
 
   def first_day_override
@@ -49,7 +27,7 @@ class SemesterPeriod < Sequel::Model
     if starts_at > ends_at
       errors.add(:starts_at, 'cannot be after ending')
     end
-    if (type == :teaching) && first_week_parity.nil?
+    if teaching? && first_week_parity.nil?
       errors.add(:first_week_parity, 'cannot be null for teaching period')
     end
   end
@@ -71,21 +49,21 @@ class SemesterPeriod < Sequel::Model
   # and the given date, shifted by the period's `first_week_parity`.
   #
   # @param date [Date]
-  # @return [Symbol, nil] `:even`, `:odd`, or `nil`
+  # @return [String, nil] `'even'`, `'odd'`, or `nil`
   # @raise [ArgumentError] if the date's week is not within this period.
   #
   def week_parity(date)
-    return if type != :teaching
+    return unless teaching?
 
     if date < starts_at.start_of_week || date > ends_at.end_of_week then
       fail ArgumentError, "The date's week is not within this period"
     end
 
     weeks_since_start = ((date.start_of_week - starts_at.start_of_week) / 7).abs.floor
-    first_parity = first_week_parity == :even ? 0 : 1
+    first_parity = first_week_parity == 'even' ? 0 : 1
     parity = (weeks_since_start + first_parity) % 2
 
-    parity == 0 ? :even : :odd
+    parity == 0 ? 'even' : 'odd'
   end
 
   alias_method :irregular?, :irregular

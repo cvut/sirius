@@ -6,7 +6,7 @@ describe PlannedSemesterPeriod do
 
   subject(:period) { create_period('17.2.2014', '16.5.2014') }
   let(:teaching_day) { :tuesday }
-  let(:teaching_time) { Sirius::TeachingTime.new(teaching_period: Period.new(Time.parse('14:30'), Time.parse('16:00')), parity: :both, day: teaching_day) }
+  let(:teaching_time) { Sirius::TeachingTime.new(teaching_period: Period.new(Time.parse('14:30'), Time.parse('16:00')), parity: 'both', day: teaching_day) }
 
   it 'plans weekly event into semester calendar correctly' do
     events = period.plan(teaching_time)
@@ -16,7 +16,7 @@ describe PlannedSemesterPeriod do
   end
 
   it 'plans odd week event into semester calendar correctly' do
-    teaching_time.parity = :odd
+    teaching_time.parity = 'odd'
     events = period.plan(teaching_time)
     expect(events.first).to eq(Period.parse('25.2.2014 14:30', '25.2.2014 16:00'))
     expect(events.last).to eq(Period.parse('6.5.2014 14:30', '6.5.2014 16:00'))
@@ -24,7 +24,7 @@ describe PlannedSemesterPeriod do
   end
 
   it 'plans even week event into semester calendar correctly' do
-    teaching_time.parity = :even
+    teaching_time.parity = 'even'
     events = period.plan(teaching_time)
     expect(events.first).to eq(Period.parse('18.2.2014 14:30', '18.2.2014 16:00'))
     expect(events.last).to eq(Period.parse('13.5.2014 14:30', '13.5.2014 16:00'))
@@ -48,7 +48,7 @@ describe PlannedSemesterPeriod do
       end
 
       it 'does not plan teaching times with opposite parity' do
-        teaching_time.parity = :odd
+        teaching_time.parity = 'odd'
         events = period.plan(teaching_time)
         expect(events).to be_empty
       end
@@ -61,7 +61,7 @@ describe PlannedSemesterPeriod do
 
     context 'with events having different parity than starting week' do
       it 'plans occurrences on second week correctly' do
-        teaching_time.parity = :odd
+        teaching_time.parity = 'odd'
         events = period.plan(teaching_time)
         # odd event should be planned once on following Tuesday (2015-12-15)
         expect(events).to contain_exactly(Period.parse('15.12.2015 14:30', '15.12.2015 16:00'))
@@ -79,7 +79,7 @@ describe PlannedSemesterPeriod do
     period = Fabricate(:teaching_semester_period,
                       starts_at: Time.parse(starts_at),
                       ends_at: Time.parse(ends_at),
-                      first_week_parity: :even,
+                      first_week_parity: 'even',
                       first_day_override: first_day_override)
     described_class.new(period)
   end

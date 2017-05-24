@@ -10,10 +10,10 @@ describe SemesterDay do
 
   let(:period) do
     Fabricate.build :semester_period,
-      type: :teaching,
+      type: 'teaching',
       starts_at: '2015-11-11',
       ends_at: '2015-11-27',
-      first_week_parity: :odd,
+      first_week_parity: 'odd',
       first_day_override: first_day_override
   end
 
@@ -49,8 +49,8 @@ describe SemesterDay do
   describe '#week_parity' do
 
     it 'returns result of @period.week_parity(@date)' do
-      expect( sem_day.period ).to receive(:week_parity).with(date).and_return(:odd)
-      expect( sem_day.week_parity ).to eq :odd
+      expect( sem_day.period ).to receive(:week_parity).with(date).and_return('odd')
+      expect( sem_day.week_parity ).to eq 'odd'
     end
   end
 
