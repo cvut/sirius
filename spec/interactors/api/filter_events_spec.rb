@@ -3,9 +3,11 @@ require 'interactors/api/filter_events'
 
 RSpec.shared_examples 'filtered by params' do
   subject(:sql) { events.sql }
+
   describe 'deleted record' do
-    it 'is filtered out by default' do
+    it 'filters cancelled and deleted events by default' do
       expect(sql).to include 'deleted IS FALSE'
+      expect(sql).to_not include 'deleted IS TRUE'
     end
   end
 
@@ -50,11 +52,21 @@ describe Interactors::Api::FilterEvents do
 
   context 'for JSON API format' do
     it_behaves_like 'filtered by params'
+
     context 'with deleted param set to true' do
-      before { params[:deleted] = true }
-      it 'filters out deleted events' do
-        expect(events.sql).to \
-        include 'deleted = FALSE OR (deleted = TRUE AND applied_schedule_exception_ids IS NOT NULL)'
+      before { params[:deleted] = 'true' }
+
+      it 'filters out cancelled events' do
+        expect(events.sql).to include \
+          'deleted IS FALSE OR deleted IS TRUE AND applied_schedule_exception_ids IS NOT NULL'
+      end
+    end
+
+    context 'with deleted param set to all' do
+      before { params[:deleted] = 'all' }
+
+      it 'does not filter cancelled and deleted events' do
+        expect(events.sql).to_not match /\bdeleted\b/i
       end
     end
   end
@@ -63,10 +75,14 @@ describe Interactors::Api::FilterEvents do
     let(:format) { :ical }
 
     it_behaves_like 'filtered by params'
-    context 'with deleted param set to true' do
-      before { params[:deleted] = true }
-      it 'always filters out deleted events' do
-        expect(events.sql).to include 'deleted'
+
+    ['true', 'all'].each do |value|
+      context "with deleted param set to #{value}" do
+        before { params[:deleted] = value }
+
+        it 'always filters out cancelled and deleted events' do
+          expect(events.sql).to match 'deleted IS FALSE'
+        end
       end
     end
   end
@@ -75,5 +91,28 @@ describe Interactors::Api::FilterEvents do
     subject { result.to_h }
 
     it { should include(:events) }
+  end
+
+  describe '#coerce_param_deleted' do
+    subject(:result) { interactor.new.send(:coerce_param_deleted, input) }
+
+    %w[false FALSE no NO off OFF f F n N 0].each do |input|
+      context "with '#{input}'" do
+        let(:input) { input }
+        it { should be false }
+      end
+    end
+
+    %w[true TRUE yes YES on ON t T y Y 1].each do |input|
+      context "with '#{input}'" do
+        let(:input) { input }
+        it { should be true }
+      end
+    end
+
+    context "with 'all'" do
+      let(:input) { 'all' }
+      it { should be :all }
+    end
   end
 end

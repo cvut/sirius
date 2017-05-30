@@ -40,7 +40,16 @@ module API
         optional :with_original_date, type: Boolean, default: false
       end
       params :deleted do
-        optional :deleted, type: Boolean, default: false
+        # XXX: This is a hack for backward compatibility. It used to be Boolean
+        # and we added additional value "all".
+        #
+        #   all => return all events
+        #   true => exclude deleted events
+        #   false => exclude deleted and cancelled events (events deleted by schedule exception)
+        #
+        # This should be fixed in next API version by introducing two separate parameters:
+        # cancelled and deleted.
+        optional :deleted, type: String, regexp: /\A(true|false|yes|no|on|off|t|f|y|n|1|0|all)\z/i, default: 'false'
       end
       params :event_type do
         optional :event_type, type: String, values: %w{assessment course_event exam laboratory lecture tutorial}

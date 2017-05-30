@@ -93,6 +93,55 @@ shared_examples 'events endpoint' do
       end
     end
 
+    context 'with parameter deleted' do
+
+      let!(:deleted_events) do
+        i = 0
+        Fabricate.times(2, :deleted_event, events_params) do
+          starts_at { "2014-04-0#{i += 1} 16:15" } # XXX restart sequence for each fabrication
+          ends_at { "2014-04-0#{i} 17:45" }
+        end
+      end
+      let!(:cancelled_events) do
+        i = 0
+        Fabricate.times(4, :cancelled_event, events_params) do
+          starts_at { "2014-04-0#{i += 1} 18:00" } # XXX restart sequence for each fabrication
+          ends_at { "2014-04-0#{i} 19:30" }
+        end
+      end
+
+      before { auth_get "#{path}?deleted=#{deleted}" }
+
+      %w[false FALSE no off f n 0].each do |value|
+        context "for deleted=#{value}" do
+          let(:deleted) { value }
+
+          it 'returns all events except cancelled and deleted' do
+            expect(body).to have_json_size(events_cnt).at_path('events')
+          end
+        end
+      end
+
+      %w[true TRUE yes on t y 1].each do | value|
+        context "for deleted=#{value}" do
+          let(:deleted) { value }
+
+          it 'returns all events except cancelled' do
+            expect(body).to have_json_size(events.size + cancelled_events.size).at_path('events')
+          end
+        end
+      end
+
+      context 'for deleted=all' do
+        let(:deleted) { 'all' }
+
+        it 'returns all events' do
+          all_events_cnt = events.size + deleted_events.size + cancelled_events.size
+          expect(body).to have_json_size(all_events_cnt).at_path('events')
+        end
+      end
+    end
+
     context 'with compound resources' do
       let(:events_cnt) { 1 }
       let!(:full_event) { Fabricate(:full_event, teachers: 1, **events_params) }

@@ -22,3 +22,15 @@ Fabricator(:full_event, from: :event) do
   teacher_ids { |tr| Fabricate.times(tr[:teachers], :person).map{|person| person.id} }
   student_ids { |tr| Fabricate.times(tr[:students], :person).map{|person| person.id} }
 end
+
+Fabricator(:deleted_event, from: :event) do
+  deleted true
+end
+
+Fabricator(:cancelled_event, from: :event) do
+  transient schedule_exceptions: 1
+  applied_schedule_exception_ids do |tr|
+    Fabricate.times(tr[:schedule_exceptions], :schedule_exception).map(&:id)
+  end
+  deleted true
+end
