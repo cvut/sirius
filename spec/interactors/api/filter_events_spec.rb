@@ -4,22 +4,25 @@ require 'interactors/api/filter_events'
 RSpec.shared_examples 'filtered by params' do
   subject(:sql) { events.sql }
 
-  describe 'deleted record' do
-    it 'filters cancelled and deleted events by default' do
+  context 'when deleted param is not set' do
+    it 'filters out cancelled and deleted events' do
       expect(sql).to include 'deleted IS FALSE'
       expect(sql).to_not include 'deleted IS TRUE'
     end
   end
 
-  describe 'event type' do
-    it 'is not used by default' do
+  context 'when event_type param is not set' do
+    it 'does not filter events by type' do
       expect(sql).not_to include 'event_type'
     end
+  end
 
-    context 'with event_type param set to true' do
-      before { params[:event_type] = 'lecture' }
+  %w[assessment course_event exam laboratory lecture tutorial].each do |value|
+    context "with event_type param set to '#{value}'" do
+      before { params[:event_type] = value }
+
       it 'looks up only events of specified type' do
-        expect(sql).to include "event_type = 'lecture'"
+        expect(sql).to include "event_type = '#{value}'"
       end
     end
   end
@@ -51,7 +54,7 @@ describe Interactors::Api::FilterEvents do
   end
 
   context 'for JSON API format' do
-    it_behaves_like 'filtered by params'
+    include_examples 'filtered by params'
 
     context 'with deleted param set to true' do
       before { params[:deleted] = 'true' }
@@ -74,7 +77,7 @@ describe Interactors::Api::FilterEvents do
   context 'for ICal format' do
     let(:format) { :ical }
 
-    it_behaves_like 'filtered by params'
+    include_examples 'filtered by params'
 
     ['true', 'all'].each do |value|
       context "with deleted param set to #{value}" do
