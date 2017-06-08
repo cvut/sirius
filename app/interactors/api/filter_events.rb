@@ -43,6 +43,7 @@ module Interactors
               end
             }
             .then_if(@type) { |q| q.where(event_type: @type) }
+            .then { |q| q.order(:starts_at, :id) }
         end
       end
 

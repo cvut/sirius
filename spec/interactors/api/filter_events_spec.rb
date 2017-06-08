@@ -28,6 +28,14 @@ RSpec.shared_examples 'filtered by params' do
   end
 end
 
+RSpec.shared_examples 'sorted' do
+  subject(:sql) { events.sql }
+
+  it 'sorts events by starts_at and id' do
+    expect(events.sql).to include ' ORDER BY starts_at, id'
+  end
+end
+
 
 describe Interactors::Api::FilterEvents do
   let(:db) { Sequel.mock(fetch: { count: 120, deleted: false }) }
@@ -55,6 +63,7 @@ describe Interactors::Api::FilterEvents do
 
   context 'for JSON API format' do
     include_examples 'filtered by params'
+    it_behaves_like 'sorted'
 
     context 'with deleted param set to true' do
       before { params[:deleted] = 'true' }
@@ -78,6 +87,7 @@ describe Interactors::Api::FilterEvents do
     let(:format) { :ical }
 
     include_examples 'filtered by params'
+    it_behaves_like 'sorted'
 
     ['true', 'all'].each do |value|
       context "with deleted param set to #{value}" do
