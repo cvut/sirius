@@ -1,6 +1,7 @@
 require 'interactors/kosapi_interactor'
 
 class FetchStudents < KOSapiInteractor
+  using Sequel::CoreRefinements
 
   def setup(*args)
     super
@@ -23,7 +24,7 @@ class FetchStudents < KOSapiInteractor
 
   def load_events(faculty_semester, future_only)
     query = Event.where(event_type: event_types, faculty: faculty_semester.faculty, semester: faculty_semester.code)
-    query = query.where('starts_at > ?', Time.new) if future_only
+    query = query.where('starts_at > ?'.lit(Time.new)) if future_only
     query
   end
 

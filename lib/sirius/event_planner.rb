@@ -40,7 +40,10 @@ module Sirius
     end
 
     def slots_dataset(semester)
-      TimetableSlot.join(Parallel, id: :parallel_id).where(semester: semester.code, faculty: semester.faculty).select(Sequel.lit('timetable_slots.*'))
+      TimetableSlot
+        .join(Parallel.table_name, id: :parallel_id)
+        .where(semester: semester.code, faculty: semester.faculty)
+        .select(Sequel.lit('timetable_slots.*'))
     end
 
     def number_events(events)

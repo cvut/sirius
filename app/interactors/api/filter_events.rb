@@ -15,7 +15,9 @@ module Interactors
     class FilterEvents
       include RolePlaying::Context
       include Interpipe::Interactor
+
       using Corefines::Hash[:only, :rekey]
+      using Sequel::CoreRefinements
 
       attr_reader :events
 
@@ -39,7 +41,7 @@ module Interactors
               if hide_cancelled?
                 q.where(deleted: false)
               else
-                q.where('deleted IS FALSE OR deleted IS TRUE AND applied_schedule_exception_ids IS NOT NULL')
+                q.where('deleted IS FALSE OR deleted IS TRUE AND applied_schedule_exception_ids IS NOT NULL'.lit)
               end
             }
             .then_if(@type) { |q| q.where(event_type: @type) }

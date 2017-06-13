@@ -7,7 +7,7 @@ class CleanupRemovedTimetableSlots < CleanupRemovedRecords
   def perform(timetable_slots: , faculty_semester: , **options)
     @slots = timetable_slots
     @options = options
-    stored_slot_ids = TimetableSlot.join(Parallel, id: :parallel_id)
+    stored_slot_ids = TimetableSlot.join(Parallel.table_name, id: :parallel_id)
       .where(semester: faculty_semester.code, faculty: faculty_semester.faculty, timetable_slots__deleted_at: nil)
       .select(Sequel.lit('timetable_slots.*'))
       .select_map(:timetable_slots__id)
