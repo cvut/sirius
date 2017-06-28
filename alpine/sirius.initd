@@ -9,7 +9,7 @@ extra_started_commands="reload"
 description_reload="Perform a hot restart (keeps the server sockets open)."
 
 : ${user:="sirius"}
-: ${basedir:="/opt/sirius"}
+: ${basedir:="/usr/bundles/sirius"}
 : ${logdir:="/var/log/sirius"}
 : ${puma_socket:="/run/sirius/server.sock"}
 : ${timezone:="Europe/Prague"}

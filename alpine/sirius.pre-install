@@ -1,0 +1,6 @@
+#!/bin/sh
+
+addgroup -S sirius 2>/dev/null
+adduser -S -D -H -h /usr/bundles/sirius -s /sbin/nologin -G sirius -g "added by apk for sirius" sirius 2>/dev/null
+
+exit 0

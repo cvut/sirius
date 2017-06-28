@@ -1,0 +1,74 @@
+# Maintainer: Jakub Jirutka <jakub@jirutka.cz>
+pkgname=sirius
+pkgver=$VERSION
+pkgrel=0
+pkgdesc="CTU Time management API"
+url="https://github.com/cvut/sirius"
+arch="all"
+license="MIT"
+depends="ruby-bigdecimal ruby-io-console ruby-irb ruby-json ruby-rake
+	ruby-bundler ca-certificates tzdata"
+makedepends="ruby-dev postgresql-dev"
+pkgusers="sirius"
+pkggroups="sirius"
+install="$pkgname.pre-install"
+source=""
+builddir="$startdir/.."
+
+_prefix="usr/bundles/$pkgname"
+
+build() {
+	cd "$builddir"
+
+	CI=true bundle install \
+		--deployment \
+		--frozen \
+		--jobs=${JOBS:-2} \
+		--no-cache \
+		--without development test
+
+	rm -rf vendor/bundle/ruby/*/cache
+}
+
+package() {
+	local destdir="$pkgdir/$_prefix"
+
+	# Install files
+
+	cd "$builddir"
+
+	mkdir -p "$destdir"
+	cp -ar app config db lib vendor config.ru Gemfile* Rakefile "$destdir"/
+
+	install -m 755 -D "$startdir"/$pkgname.initd "$pkgdir"/etc/init.d/$pkgname
+	install -m 755 -D "$startdir"/$pkgname.scheduler.initd "$pkgdir"/etc/init.d/$pkgname.scheduler
+	install -m 644 -D "$startdir"/$pkgname.confd "$pkgdir"/etc/conf.d/$pkgname
+	install -m 644 -D "$startdir"/$pkgname.logrotate "$pkgdir"/etc/logrotate.d/$pkgname
+
+	install -d -m 755 -o sirius -g sirius "$pkgdir"/var/log/$pkgname
+
+	# Cleanup
+
+	cd vendor/bundle/ruby/*/
+
+	# Remove documentations and other unused textual files.
+	find gems/ -name 'doc' -type d -exec rm -frv '{}' +
+	find gems/ \
+		-name 'README*' -delete \
+		-o -name 'CHANGELOG*' -delete \
+		-o -name 'CONTRIBUT*' -delete \
+		-o -name '*LICENSE*' -delete
+
+	# Remove sources and binaries of native extensions (they are installed
+	# in extensions directory).
+	find gems/ -type d -name ext -maxdepth 2 -exec rm -frv '{}' +
+	find gems/ -name '*.so' -delete
+
+	# Remove build logs and cache.
+	rm -rf cache
+	find extensions/ \
+		-name gem_make.out -delete \
+		-o -name mkmf.log -delete
+}
+
+sha512sums=""

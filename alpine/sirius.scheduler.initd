@@ -6,7 +6,7 @@ set -f
 name="Sirius (scheduler)"
 
 : ${user:="sirius"}
-: ${basedir:="/opt/sirius"}
+: ${basedir:="/usr/bundles/sirius"}
 : ${logdir:="/var/log/sirius"}
 : ${timezone:="Europe/Prague"}
 

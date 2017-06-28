@@ -1,0 +1,5 @@
+/var/log/sirius/*.log {
+	missingok
+	notifempty
+	copytruncate
+}
