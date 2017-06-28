@@ -7,7 +7,7 @@ require 'sequel/extensions/core_refinements'
 # while Sequel expects 'postgres' adapter
 db_url = Config.database_url.sub(/\Apostgresql:/, 'postgres:')
 
-DB = Sequel.connect(db_url, max_connections: Config.db_pool)
+DB = Sequel.connect(db_url, max_connections: Config.db_pool_max_size)
 
 # Log level at which to log SQL queries.
 DB.sql_log_level = :debug
