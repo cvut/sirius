@@ -36,7 +36,7 @@ module Config
   override :umapi_people_uri,       'https://kosapi.fit.cvut.cz/usermap/v1/people', string
   override :umapi_privileged_roles, 'B-00000-ZAMESTNANEC', array(string)
 
-  override :port,                   5000,             int
+  override :http_port,              5000,             int
   override :pretty_json,            false,            bool
   override :rack_env,               'development',    string
   override :raise_errors,           false,            bool
