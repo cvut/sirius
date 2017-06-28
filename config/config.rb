@@ -41,7 +41,7 @@ module Config
   override :rack_env,               'development',    string
   override :raise_errors,           false,            bool
   override :root,                   File.expand_path('../', __dir__), string
-  override :timeout,                10,               int
+  override :rack_timeout,           10,               int
   override :tz,                     'Europe/Prague',  string
   override :versioning,             false,            bool
 
