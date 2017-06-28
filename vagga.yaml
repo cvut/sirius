@@ -96,4 +96,3 @@ commands:
     children:
       postgres: *postgres
       elastic: *elastic
-
