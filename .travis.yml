@@ -3,11 +3,6 @@ sudo: false
 dist: trusty
 addons:
   postgresql: '9.5'
-  apt:
-    sources:
-      - elasticsearch-1.7
-    packages:
-      - elasticsearch
   code_climate:
     repo_token: a813ce884be14a158262d4e05906c0b6f4e7f4533c41cdf88bda7da84d88297f
 cache:
@@ -18,11 +13,16 @@ rvm:
   - ruby-head
 services:
   - postgresql
-  - elasticsearch
-bundler_args: --without development doc
+install:
+  # Travis provides only ElasticSearch 5.x, we must install legacy version ourself.
+  - "wget --no-verbose https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.3.tar.gz
+        && echo '754b089ec0a1aae5b36b39391d5385ed7428d8f5  elasticsearch-1.7.3.tar.gz' | sha1sum -c
+        && tar -xzf elasticsearch-*.tar.gz"
+  - bundle install --without development doc --jobs=3 --retry=3
 before_script:
   - while read line; do export $line; done < .env.test
   - bundle exec rake --trace db:setup
+  - ./elasticsearch-*/bin/elasticsearch &
   - echo 'waiting for elasticsearch to come up'; wget -q --waitretry=1 --retry-connrefused -T 10 -O - http://127.0.0.1:9200
 after_success: |
   if [ "$TRAVIS_BRANCH" = master ]; then
