@@ -26,7 +26,7 @@ module Config
 
   # Override -- value is returned or the set default.
   override :database_timeout,       10,               int
-  override :db_pool,                5,                int
+  override :db_pool_max_size,       5,                int
   override :deployment,             'production',     string
   override :elastic_prefix,         'sirius',         string
   override :force_ssl,              true,             bool
