@@ -1,0 +1,52 @@
+#!/sbin/openrc-run
+
+# XXX: We must disable globbing to prevent messing of SYNC_SCHEDULE variable!
+set -f
+
+name="Sirius (scheduler)"
+
+: ${user:="sirius"}
+: ${basedir:="/opt/sirius"}
+: ${logdir:="/var/log/sirius"}
+: ${timezone:="Europe/Prague"}
+
+command="/usr/bin/bundle"
+command_args="exec script/scheduler"
+command_background="yes"
+
+pidfile="/run/${RC_SVCNAME%.scheduler}/scheduler.pid"
+start_stop_daemon_args="
+	--chdir '$basedir'
+	--user $user
+	--stdout '$logdir/scheduler.log'
+	--stderr '$logdir/scheduler.log'
+	--wait 1000
+	--env RACK_ENV=production
+	--env TZ=$timezone
+	$start_stop_daemon_args"
+
+depend() {
+	use net postgresql
+}
+
+start_pre() {
+	checkpath -d -o $user -m755 "${pidfile%/*}"
+	checkpath -d -o $user -m755 "$logdir"
+
+	local name value
+	for name in database_url db_pool_max_size domain elastic_url http_port \
+		oauth_client_id oauth_client_secret puma_max_threads puma_min_threads \
+		puma_workers rack_timeout sentry_dsn sync_schedule
+	do
+		value=$(getval $name)
+		if [ -n "$value" ]; then
+			start_stop_daemon_args="$start_stop_daemon_args
+				--env $(echo $name | tr '[a-z]' '[A-Z]')='$value'"
+		fi
+	done
+}
+
+getval() {
+	local var_name="$1"
+	eval "printf '%s\n' \"\${$var_name:-}\""
+}

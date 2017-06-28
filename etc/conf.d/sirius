@@ -1,0 +1,42 @@
+# Configuration for /etc/init.d/sirius and /etc/init.d/sirius.scheduler
+
+# Domain name of the application (required).
+domain=
+
+# URI of PostgreSQL database (e.g. postgres://sirius:top-secret@db.org/sirius) (required).
+database_url=
+
+# URI of Elastic DB (e.g. http://elastic.example.org:9200) (required).
+elastic_url=
+
+# OAuth 2.0 client_id used to access KOSapi (required).
+oauth_client_id=
+
+# OAuth 2.0 client_secret used to access KOSapi (required).
+oauth_client_secret=
+
+
+# HTTP port to listen on (default: 5000).
+#http_port=
+
+# Timeout (in seconds) for HTTP requests (default: 10).
+# Requests which exceed this timeout are aborted.
+#rack_timeout=
+
+# Number of Puma worker processes to launch (default: 3).
+#puma_workers=
+
+# Minimum number of threads to by available in Puma's thread pool (default: 1).
+#puma_min_threads=
+
+# Maximum number of threads to by available in Puma's thread pool (default: 16).
+#puma_max_threads=
+
+# The maximum size of the connection pool (default: 3).
+#db_pool_max_size=
+
+# Sentry DSN (optional).
+#sentry_dsn=
+
+# Cron expression specifying when to run import and planning procedure (optional).
+#sync_schedule=
