@@ -56,6 +56,22 @@ jobs:
           on:
             branch: master
 
+    # Build Alpine package.
+    - stage: deploy
+      sudo: true
+      language: minimal
+      before_install:
+        - "wget -nv https://raw.githubusercontent.com/alpinelinux/alpine-chroot-install/v0.6.0/alpine-chroot-install \
+              && echo 'a827a4ba3d0817e7c88bae17fe34e50204983d1e  alpine-chroot-install' | sha1sum -c"
+        - alpine() { /alpine/enter-chroot -u "$USER" "$@"; }
+      install:
+        - sudo sh alpine-chroot-install -b v3.6 -p 'build-base alpine-sdk'
+      before_script:
+        - /alpine/enter-chroot sh -c "addgroup $USER wheel && addgroup $USER abuild"
+        - alpine abuild-keygen -ain
+      script:
+        - cd alpine && alpine abuild -R
+
   fast_finish: true
   # This doesn't work now, probably bug in Travis.
   allow_failures:

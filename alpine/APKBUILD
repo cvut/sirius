@@ -1,6 +1,6 @@
 # Maintainer: Jakub Jirutka <jakub@jirutka.cz>
 pkgname=sirius
-pkgver=$VERSION
+pkgver=${PKGVER:-$(date +%Y%m%d)}
 pkgrel=0
 pkgdesc="CTU Time management API"
 url="https://github.com/cvut/sirius"
