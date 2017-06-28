@@ -1,0 +1,71 @@
+---
+# Winter 2018
+B171:
+
+  # Common holidays
+  holidays:
+    - date: 2017-11-17
+      name:
+        cs: Den boje za svobodu a demokracii
+        en: Struggle for Freedom and Democracy Day
+    - date: 2018-01-01
+      name:
+        cs: Den obnovy samostatného českého státu
+        en: Restoration Day of the Independent Czech State
+
+  # FIT
+  18000:
+    semester: &B171-semester
+      starts: 2017-10-01
+      ends: 2018-02-18
+      hour_starts: [
+        '07:30', '08:15', '09:15', '10:00', '11:00', '11:45', '12:45', '13:30',
+        '14:30', '15:15', '16:15', '17:00', '18:00', '18:45', '19:45'
+      ]
+      hour_duration: 45
+    teaching:
+      - starts: 2017-10-02
+        parity: even
+        ends: 2018-01-07
+      - starts: 2018-01-03
+        parity: odd
+        ends: 2018-01-07
+    irregulars:
+      - date: 2018-01-05
+        parity: even
+        day: friday
+    exams:
+      - starts: 2018-01-08
+        ends: 2018-02-18
+    holidays:
+      - starts: 2017-12-23
+        ends: 2018-01-01
+        name: { cs: Zimní prázdniny, en: Winter Holidays }
+      - date: 2018-01-02
+        name: { cs: Děkanský den, en: Dean’s Day }
+
+  # FEL
+  13000:
+    semester:
+      <<: *B171-semester
+    teaching:
+      - starts: 2017-10-02
+        parity: even
+        ends: 2017-12-22
+      - starts: 2018-01-02
+        parity: odd
+        ends: 2018-01-14
+    irregulars:
+      - date: 2017-11-16
+        parity: even
+        day: friday
+      - date: 2017-12-19
+        parity: odd
+        day: friday
+    exams:
+      - starts: 2018-01-15
+        ends: 2018-02-18
+    holidays:
+      - starts: 2017-12-23
+        ends: 2018-01-01
+        name: { cs: Zimní prázdniny, en: Winter Holidays }

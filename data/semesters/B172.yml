@@ -1,0 +1,70 @@
+---
+# Summer 2018
+B172:
+
+  # Common holidays
+  holidays:
+    - date: 2018-03-30
+      name: { cs: Velký pátek, en: Good Friday }
+    - date: 2018-04-02
+      name: { cs: Velikonoční pondělí, en: Easter Monday }
+    - date: 2018-05-01
+      name: { cs: Svátek práce, en: Labour Day }
+    - date: 2018-05-08
+      name: { cs: Den vítězství, en: Liberation Day }
+    - date: 2018-05-16
+      name: { cs: Rektorský den, en: Rector’s Day }
+
+  # FIT
+  18000:
+    semester: &B172-semester
+      starts: 2018-02-19
+      ends: 2018-09-30
+      hour_starts: [
+        '07:30', '08:15', '09:15', '10:00', '11:00', '11:45', '12:45', '13:30',
+        '14:30', '15:15', '16:15', '17:00', '18:00', '18:45', '19:45'
+      ]
+      hour_duration: 45
+    teaching:
+      - starts: 2018-02-19
+        parity: even
+        ends: 2018-05-20
+    irregulars:
+      - date: 2018-04-06
+        parity: odd
+        day: friday
+      - date: 2018-05-10
+        parity: odd
+        day: tuesday
+      - date: 2018-05-17
+        parity: even
+        day: thursday
+    exams:
+      - starts: 2018-05-21
+        ends: 2018-07-01
+    holidays:
+      - starts: 2018-07-02
+        ends: 2018-09-02
+        name: { cs: Letní prázdniny, en: Summer Holidays }
+
+  # FEL
+  13000:
+    semester:
+      <<: *B172-semester
+    teaching:
+      - starts: 2018-02-19
+        parity: even
+        ends: 2018-05-27
+    irregulars:
+      - date: 2018-05-17
+        parity: odd
+        day: tuesday
+    exams:
+      - starts: 2018-05-28
+        ends: 2018-07-01
+      - starts: 2018-09-03
+        ends: 2018-09-07
+    holidays:
+      - starts: 2018-07-02
+        ends: 2018-09-02
+        name: { cs: Letní prázdniny, en: Summer Holidays }
