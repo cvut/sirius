@@ -19,6 +19,7 @@ end
 
 Fabricator(:holiday_semester_period, from: :semester_period) do
   type 'holiday'
+  name { {cs: 'Vánoční prázdniny', en: 'Christmas Holidays'} }
   first_week_parity nil
   starts_at '2014-12-21'
   ends_at '2015-01-04'

@@ -769,7 +769,8 @@ CREATE TABLE semester_periods (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     first_day_override integer,
-    irregular boolean DEFAULT false NOT NULL
+    irregular boolean DEFAULT false NOT NULL,
+    name hstore
 );
 
 
@@ -1234,3 +1235,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1469463514_convert_text_to
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469465920_convert_schedule_exception_type_to_enum.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469470701_convert_parities_to_enum.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1493051746_convert_semester_period_type_to_enum.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1499120813_add_name_to_semester_periods.rb');

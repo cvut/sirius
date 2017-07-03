@@ -282,6 +282,9 @@ describe API::FacultiesEndpoints do
         ends_at: period.ends_at,
         irregular: period.irregular
       }
+      if period.name
+        ret[:name] = period.name
+      end
       if period.first_week_parity
         ret[:first_week_parity] = period.first_week_parity
       end
