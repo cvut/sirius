@@ -86,6 +86,14 @@ namespace :sirius do
     end
   end
 
+
+  namespace :semesters do
+
+    task :create => :env do
+      require 'sirius/load_semesters'  # TODO
+    end
+  end
+
 end
 
 def build_manager
