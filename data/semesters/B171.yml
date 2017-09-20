@@ -55,13 +55,7 @@ B171:
       - starts: 2018-01-02
         parity: odd
         ends: 2018-01-14
-    irregulars:
-      - date: 2017-11-16
-        parity: even
-        day: friday
-      - date: 2017-12-19
-        parity: odd
-        day: friday
+    irregulars: []
     exams:
       - starts: 2018-01-15
         ends: 2018-02-18
