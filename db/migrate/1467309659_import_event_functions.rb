@@ -134,7 +134,7 @@ begin
     now(),
     par.teacher_ids,
     par.student_ids,
-    par.parallel_type,
+    par.parallel_type::text::event_type,
     _parallel_id,
     par.course_id,
     par.semester,
