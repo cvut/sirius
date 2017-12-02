@@ -45,7 +45,7 @@ gem 'activesupport', '~> 4.2'
 gem 'corefines', '~> 1.9'
 gem 'role_playing', github: 'jnv/role_playing'
 gem 'logging', '~> 2.1'
-gem 'oauth2', github: 'cvut/oauth2', ref: 'd9f6fc3'
+gem 'oauth2', '~> 1.4'
 gem 'celluloid', '~> 0.17.2'
 gem 'rack-timeout', '~> 0.4'  # required by pliny
 

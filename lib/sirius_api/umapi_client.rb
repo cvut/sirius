@@ -53,6 +53,7 @@ module SiriusApi
         site: SITE,
         authorize_url: Config.oauth_auth_uri,
         token_url: Config.oauth_token_uri,
+        auth_scheme: :basic_auth,
         raise_errors: false,
         max_redirects: 0
       )

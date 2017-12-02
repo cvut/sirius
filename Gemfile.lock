@@ -1,16 +1,4 @@
 GIT
-  remote: git://github.com/cvut/oauth2.git
-  revision: d9f6fc37eae191b124680361a698d673adff31c0
-  ref: d9f6fc3
-  specs:
-    oauth2 (1.1.0)
-      faraday (>= 0.8, < 0.10)
-      jwt (~> 1.0)
-      multi_json (~> 1.3)
-      multi_xml (~> 0.5)
-      rack (>= 1.2, < 3)
-
-GIT
   remote: git://github.com/jnv/role_playing.git
   revision: 8bfab60b5308993926c0f5acfd5d7d404ca0c44d
   specs:
@@ -208,6 +196,12 @@ GEM
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oauth2 (1.4.0)
+      faraday (>= 0.8, < 0.13)
+      jwt (~> 1.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (>= 1.2, < 3)
     ox (2.5.0)
     parser (2.3.3.1)
       ast (~> 2.2)
@@ -367,7 +361,7 @@ DEPENDENCIES
   kosapi_client (~> 0.5)
   kramdown
   logging (~> 2.1)
-  oauth2!
+  oauth2 (~> 1.4)
   pg (~> 0.18)
   pliny (~> 0.17.0)
   pry
@@ -394,7 +388,7 @@ DEPENDENCIES
   warden (~> 1.2.3)
 
 RUBY VERSION
-   ruby 2.3.4p301
+   ruby 2.4.1p111
 
 BUNDLED WITH
-   1.15.0
+   1.15.4
