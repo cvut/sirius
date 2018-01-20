@@ -37,7 +37,7 @@ B172:
         parity: odd
         day: tuesday
       - date: 2018-05-17
-        parity: even
+        parity: odd
         day: thursday
     exams:
       - starts: 2018-05-21
