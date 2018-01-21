@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/jnv/role_playing.git
-  revision: 8bfab60b5308993926c0f5acfd5d7d404ca0c44d
-  specs:
-    role_playing (0.1.4)
-      activesupport (>= 3.0.0)
-
-GIT
   remote: git://github.com/jnv/rspec-parameterized.git
   revision: badbf071e8f7de6aca6fc91cf720a66a47c329c2
   branch: badbf07
@@ -252,6 +245,8 @@ GEM
       uber (~> 0.0.7)
     roar (1.0.4)
       representable (>= 2.0.1, < 2.4.0)
+    role_playing (0.1.5)
+      activesupport (>= 3.0.0)
     rollbar (2.14.1)
       multi_json
     rspec (3.6.0)
@@ -373,7 +368,7 @@ DEPENDENCIES
   rake
   rake-jekyll
   roar (~> 1.0.0)
-  role_playing!
+  role_playing (~> 0.1.5)
   rollbar (~> 2.11)
   rspec (~> 3.3)
   rspec-collection_matchers
@@ -391,4 +386,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.15.4
+   1.16.1
