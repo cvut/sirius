@@ -22,8 +22,12 @@ describe Sirius::TimeConverter do
     expect(result).to eq(Period.parse('18:00','20:15'))
   end
 
-  it 'raises error with invalid start time' do
+  it 'raises error with zero start_hour' do
     expect { converter.convert_time(0, 2) }.to raise_error(RuntimeError)
+  end
+
+  it 'raises error with unknown start_hour' do
+    expect { converter.convert_time(66, 2) }.to raise_error(RuntimeError)
   end
 
   it 'raises error with zero duration' do
