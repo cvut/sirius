@@ -321,7 +321,7 @@ GEM
       equalizer (~> 0.0, >= 0.0.9)
     warden (1.2.7)
       rack (>= 1.0)
-    yard (0.9.9)
+    yard (0.9.12)
 
 PLATFORMS
   ruby
@@ -384,6 +384,5 @@ DEPENDENCIES
 
 RUBY VERSION
    ruby 2.4.1p111
-
 BUNDLED WITH
    1.16.1
