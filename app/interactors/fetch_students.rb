@@ -29,7 +29,7 @@ class FetchStudents < KOSapiInteractor
   end
 
   def fetch_event_students(client, event)
-    client.send(resource_name).find(event.source_id.to_i).limit(100).attendees
+    client.send(resource_name).find(event.source_id.to_i).limit(100).order_by('id').attendees
   end
 
   def update_event_students(event, students)

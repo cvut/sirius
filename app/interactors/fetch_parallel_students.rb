@@ -22,7 +22,7 @@ class FetchParallelStudents
   end
 
   def fetch_students(parallel, client)
-    client.parallels.find(parallel.id).students.limit(100).offset(0)
+    client.parallels.find(parallel.id).students.limit(100).order_by('id')
   end
 
   private
