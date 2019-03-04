@@ -1,0 +1,20 @@
+image: gitlab.fit.cvut.cz:5000/ict/alpine-docker-images/ci:3.9
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"  # per-branch cache
+  paths:
+    - .cache/
+
+before_script:
+  - apk add build-base git postgresql-dev ruby ruby-dev ruby-bigdecimal ruby-json ruby-bundler tzdata
+  - bundle install --path .cache/bundler --without development doc --jobs=3 --retry=3
+
+test:
+  stage: test
+  services:
+    - postgres:latest
+    - elasticsearch:1.7.5
+  script:
+    - while read line; do export $line; done < .env.test
+    - bundle exec rake --trace db:setup
+    - bundle exec rake spec
