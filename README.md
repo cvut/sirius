@@ -4,7 +4,6 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/cvut/sirius.svg)](https://codeclimate.com/github/cvut/sirius)
 [![Coverage Status](https://coveralls.io/repos/cvut/sirius/badge.svg?branch=master&service=github)](https://coveralls.io/github/cvut/sirius?branch=master)
 [![Inline docs](http://inch-ci.org/github/cvut/sirius.svg)](http://inch-ci.org/github/cvut/sirius)
-[![Dependency Status](https://gemnasium.com/cvut/sirius.svg)](https://gemnasium.com/cvut/sirius)
 
 
 Sirius is a Timetable management API, which is used at [CTU FIT](http://fit.cvut.cz/) to transform regular timetables
