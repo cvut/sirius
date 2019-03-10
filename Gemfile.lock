@@ -161,13 +161,13 @@ GEM
       multi_json (~> 1.0)
       rspec (>= 2.0, < 4.0)
     jwt (1.5.6)
-    kosapi_client (0.5.0)
+    kosapi_client (0.9.0)
       corefines (~> 1.6)
-      escape_utils
+      escape_utils (~> 1.0)
       faraday (~> 0.9)
-      oauth2
-      ox
-      uri_template
+      oauth2 (~> 1.4)
+      ox (~> 2.1)
+      uri_template (~> 0.7.0)
     kramdown (1.13.2)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -195,7 +195,7 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
-    ox (2.5.0)
+    ox (2.10.0)
     parser (2.3.3.1)
       ast (~> 2.2)
     pg (0.21.0)
@@ -353,7 +353,7 @@ DEPENDENCIES
   ice_cube (~> 0.14.0)
   json
   json_spec (~> 1.1)
-  kosapi_client (~> 0.5)
+  kosapi_client (~> 0.9)
   kramdown
   logging (~> 2.1)
   oauth2 (~> 1.4)
@@ -382,8 +382,5 @@ DEPENDENCIES
   vcr
   warden (~> 1.2.3)
 
-RUBY VERSION
-   ruby 2.4.1p111
-
 BUNDLED WITH
-   1.16.1
+   1.16.2
