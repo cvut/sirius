@@ -1,9 +1,8 @@
 image: gitlab.fit.cvut.cz:5000/ict/alpine-docker-images/base:3.7
 
-cache:
-  key: "$CI_COMMIT_REF_SLUG"  # per-branch cache
-  paths:
-    - .cache/
+stages:
+  - test
+  - package
 
 before_script:
   - apk add build-base git postgresql-dev ruby ruby-dev ruby-bigdecimal ruby-json ruby-bundler tzdata
@@ -11,6 +10,10 @@ before_script:
 
 test:
   stage: test
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"  # per-branch cache
+    paths:
+      - .cache/
   services:
     - postgres:9.6-alpine
     - elasticsearch:1.7.5
@@ -21,3 +24,20 @@ test:
     - while read line; do export $line; done < .env.test
     - bundle exec rake --trace db:setup
     - bundle exec rake spec
+
+package:
+  stage: package
+  cache: {}
+  before_script:
+    - apk add alpine-make-rootfs@backport git sudo
+  script:
+    - IMAGE_NAME="sirius-$(date +%Y%m%d)-$CI_JOB_ID-$(git rev-parse --short HEAD)"
+    - alpine-make-rootfs
+        --branch v3.7
+        --timezone Europe/Prague
+        --script-chroot
+        dist/$IMAGE_NAME.tar.gz
+        setup-image.sh
+  artifacts:
+    paths: [ dist/*.tar.gz ]
+    expire_in: 2 weeks
