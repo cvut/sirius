@@ -1,7 +1,4 @@
 source 'https://rubygems.org'
-unless ENV['CI']
-  ruby '~> 2.4.1'
-end
 
 gem 'rake'
 
