@@ -19,7 +19,12 @@ module API
     # represent Event, with: EventsRepresenter
     helpers do
       def represent(dataset)
+        # XXX: This is hack-ish, I don't know how to define default param value conditioned
+        # by api_format.
+        params.from ||= Date.today - 365 if api_format == :ical
+
         filtered = Interactors::Api::FilterEvents.perform(events: dataset, params: params, format: api_format)
+
         case api_format #XXX this is not great, it should be handled by Grape formatters
         when :jsonapi
           Interactors::Api::RepresentEventsJson.perform(

@@ -5,16 +5,20 @@ shared_examples 'events endpoint' do
 
   include IcalendarHelper
 
+  # XXX: We need to use the current year because of the default "from"
+  # parameter for the iCalendar representation.
+  year = Date.today.year
+
   let(:path) { path_for super() } # assume path is given as a context from outside
   let(:events_cnt) { 3 }
   let(:events_params) { Hash.new }
 
-  # Events from 2014-04-01 to 2014-04-03
+  # Events from YYYY-04-01 to YYYY-04-03
   let!(:events) do
     i = 0
     Fabricate.times(events_cnt, :event, events_params) do
-      starts_at { "2014-04-0#{i += 1} 14:30" } # XXX restart sequence for each fabrication
-      ends_at { "2014-04-0#{i} 16:00" }
+      starts_at { "#{year}-04-0#{i += 1} 14:30" } # XXX restart sequence for each fabrication
+      ends_at { "#{year}-04-0#{i} 16:00" }
     end
   end
   let(:event) { events.first }
@@ -53,7 +57,7 @@ shared_examples 'events endpoint' do
     end
 
     context 'with date filtering' do
-      before { auth_get "#{path}?from=2014-04-02T13:50&to=2014-04-03T00:00" }
+      before { auth_get "#{path}?from=#{year}-04-02T13:50&to=#{year}-04-03T00:00" }
       it { should have_json_size(1).at_path('events') }
 
       context 'with invalid date' do
@@ -98,15 +102,15 @@ shared_examples 'events endpoint' do
       let!(:deleted_events) do
         i = 0
         Fabricate.times(2, :deleted_event, events_params) do
-          starts_at { "2014-04-0#{i += 1} 16:15" } # XXX restart sequence for each fabrication
-          ends_at { "2014-04-0#{i} 17:45" }
+          starts_at { "#{year}-04-0#{i += 1} 16:15" } # XXX restart sequence for each fabrication
+          ends_at { "#{year}-04-0#{i} 17:45" }
         end
       end
       let!(:cancelled_events) do
         i = 0
         Fabricate.times(4, :cancelled_event, events_params) do
-          starts_at { "2014-04-0#{i += 1} 18:00" } # XXX restart sequence for each fabrication
-          ends_at { "2014-04-0#{i} 19:30" }
+          starts_at { "#{year}-04-0#{i += 1} 18:00" } # XXX restart sequence for each fabrication
+          ends_at { "#{year}-04-0#{i} 19:30" }
         end
       end
 
