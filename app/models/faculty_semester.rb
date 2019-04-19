@@ -1,8 +1,10 @@
 require 'date_refinements'
 require 'models/semester_period'
+require 'sequel/extensions/core_refinements'
 
 class FacultySemester < Sequel::Model
   using ::DateRefinements
+  using Sequel::CoreRefinements
 
   one_to_many :semester_periods, order: :id
 
@@ -15,8 +17,8 @@ class FacultySemester < Sequel::Model
   end
 
   def self.find_by_date(date, faculty_id)
-    where(':date >= starts_at AND :date <= ends_at AND faculty = :faculty',
-          date: date, faculty: faculty_id)
+    where(':date >= starts_at AND :date <= ends_at AND faculty = :faculty'
+          .lit(date: date, faculty: faculty_id))
       .eager(:semester_periods)
       .limit(1)
       .all.first  # eager loading doesn't work with Dataset.first
@@ -35,10 +37,10 @@ class FacultySemester < Sequel::Model
   # @return [Array<FacultySemester>] faculty semesters sorted by `start_date`.
   #
   def self.find_by_date_range_with_periods(start_date, end_date, faculty_id)
-    where('faculty = ? AND (starts_at, ends_at) OVERLAPS (?, ?)',
-          faculty_id, start_date.start_of_week, end_date)
+    where('faculty = ? AND (starts_at, ends_at) OVERLAPS (?, ?)'
+          .lit(faculty_id, start_date.start_of_week, end_date))
       .order_by(:starts_at)
-      .eager(semester_periods: ->(ds) { ds.where('starts_at < ?', end_date.end_of_week) })
+      .eager(semester_periods: ->(ds) { ds.where('starts_at < ?'.lit(end_date.end_of_week)) })
       .all  # <- this is necessary for eager to work correctly!
   end
 end
