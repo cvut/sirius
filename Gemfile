@@ -30,7 +30,7 @@ gem 'json'
 gem 'puma'
 
 ## Time & Space
-gem 'ice_cube', '~> 0.14.0' # Date/Time helper
+gem 'ice_cube', '~> 0.16.0' # Date/Time helper
 
 gem 'icalendar', '~> 2.3.0'
 
