@@ -1,0 +1,51 @@
+---
+# Winter 2019
+B191:
+
+  # Common holidays
+  holidays:
+    - date: 2019-10-28
+      name: { cs: Den vzniku samostatného československého státu, en: Czech Independendence Day }
+
+  # FIT
+  18000:
+    semester: &semester
+      starts: 2019-09-23
+      ends: 2020-02-16
+    teaching:
+      - starts: 2019-09-23
+        parity: odd
+        ends: 2019-12-19
+    exams:
+      - starts: 2020-01-06
+        ends: 2020-02-15
+    holidays:
+      - date: 2019-12-20
+        name: { cs: Děkanský den, en: Dean’s Day }
+      - starts: 2019-12-21
+        ends: 2020-01-05
+        name: { cs: Zimní prázdniny, en: Winter Holidays }
+    overrides:
+      - date: 2019-12-16
+        parity: even
+        day: monday
+
+  # FEL
+  13000:
+    semester:
+      <<: *semester
+    teaching:
+      - starts: 2019-09-23
+        parity: odd
+        ends: 2019-12-22
+      - starts: 2020-01-06
+        parity: even
+        ends: 2020-01-12
+    exams:
+      - starts: 2020-01-13
+        ends: 2020-02-16
+    holidays:
+      - starts: 2019-12-23
+        ends: 2020-01-05
+        name: { cs: Zimní prázdniny, en: Winter Holidays }
+    overrides: []

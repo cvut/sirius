@@ -1,0 +1,62 @@
+---
+# Summer 2019/2020
+B192:
+
+  # Common holidays
+  holidays:
+    - date: 2020-04-10
+      name: { cs: Velký pátek, en: Good Friday }
+    - date: 2020-04-13
+      name: { cs: Velikonoční pondělí, en: Easter Monday }
+    - date: 2020-05-01
+      name: { cs: Svátek práce, en: Labour Day }
+    - date: 2020-05-08
+      name: { cs: Den vítězství, en: Liberation Day }
+    - date: 2020-05-13
+      name: { cs: Rektorský den, en: Rector’s Day }
+    - starts: 2020-06-29
+      ends: 2020-08-30
+      name: { cs: Letní prázdniny, en: Summer Holidays }
+
+  # FIT
+  18000:
+    semester: &semester
+      starts: 2020-02-17
+      ends: 2020-09-20
+    teaching:
+      - starts: 2020-02-17
+        parity: even
+        ends: 2020-05-17
+    exams:
+      - starts: 2020-05-18
+        ends: 2020-06-28
+    holidays: []
+    overrides:
+      - date: 2020-04-30
+        parity: odd
+        day: friday
+      - date: 2020-05-12
+        parity: odd
+        day: friday
+
+  # FEL
+  13000:
+    semester:
+      <<: *semester
+    teaching:
+      - starts: 2020-02-17
+        parity: even
+        ends: 2020-05-24
+    exams:
+      - starts: 2020-05-25
+        ends: 2020-06-28
+      - starts: 2020-08-31
+        ends: 2020-09-04
+    holidays: []
+    overrides:
+      - date: 2020-04-09
+        parity: even
+        day: friday
+      - date: 2020-05-05
+        parity: odd
+        day: friday

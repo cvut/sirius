@@ -9,6 +9,13 @@ using Corefines::Object::instance_values
 using ::DateRefinements
 
 
+DEFAULT_HOUR_STARTS = [
+  '07:30', '08:15', '09:15', '10:00', '11:00', '11:45', '12:45', '13:30',
+  '14:30', '15:15', '16:15', '17:00', '18:00', '18:45', '19:45'
+]
+DEFAULT_HOUR_DURATION = 45
+
+
 def parse_day_name(str)
   Date.strptime(str, '%A').wday rescue fail "Invalid day name: #{str}"
 end
@@ -37,6 +44,27 @@ def resolve_parity(base_date, parity, new_date)
   parse_parity((weeks_since_base + parity_num(parity)) % 2)
 end
 
+
+class Semester
+  attr_reader :code, :starts, :ends, :hour_starts, :hour_duration
+
+  def initialize(code: nil, starts: nil, ends: nil, hour_starts: nil, hour_duration: nil, **rest)
+    hour_starts ||= DEFAULT_HOUR_STARTS
+    hour_duration ||= DEFAULT_HOUR_DURATION
+
+    fail "starts must be a Date, given: #{starts}" unless starts.is_a? Date
+    fail "ends must be a Date, given: #{ends}" unless ends.is_a? Date
+    fail "hour_starts must be an Array, given: #{hour_starts}" unless hour_starts.is_a? Array
+    fail "hour_duration must be an Integer, given: #{hour_duration}" unless hour_duration.is_a? Integer
+
+    @code = code.freeze
+    @starts = starts.freeze
+    @ends = ends.freeze
+    @hour_starts = hour_starts.freeze
+    @hour_duration = hour_duration
+    freeze
+  end
+end
 
 class Period
   attr_reader :starts, :ends, :type
@@ -169,19 +197,41 @@ def create_semester_period(period)
   SemesterPeriod.new(**attrs)
 end
 
-input = YAML.load_file('data/semesters/B171.yml')
+def create_faculty_semester(faculty, semester, periods)
+  attrs = semester
+    .instance_values
+    .rekey(:starts => :starts_at, :ends => :ends_at)
+
+  teaching_periods = periods.select { |p| p.type == :teaching }
+  exam_periods = periods.select { |p| p.type == :exams }
+
+  FacultySemester.new(
+    **attrs,
+    faculty: faculty,
+    first_week_parity: teaching_periods.first.parity,
+    teaching_ends_at: teaching_periods.last.ends,
+    exams_start_at: exam_periods.first.starts,
+    exams_end_at: exam_periods.last.ends,
+    update_parallels: true,
+    update_other: true,
+  )
+end
+
+input = YAML.load_file('data/semesters/B192.yml')
 
 input.each do |sem, sem_data|
   sem_data.except('holidays').each do |faculty, faculty_data|
-    next if faculty != 13000
 
     faculty_data['holidays'] ||= {}
     faculty_data['holidays'].concat(sem_data.fetch('holidays', {}))
 
     sem_starts, sem_ends = faculty_data['semester'].fetch_values('starts', 'ends')
+    semester = Semester.new(code: sem, **faculty_data['semester'].symbolize_keys)
 
     periods = align_periods(faculty_data)
     validate_periods! periods, sem_starts, sem_ends
+
+    puts DB[FacultySemester.table_name].insert_sql(create_faculty_semester(faculty, semester, periods).to_hash)
 
     periods.each do |p|
       puts DB[SemesterPeriod.table_name].insert_sql(create_semester_period(p).to_hash)
