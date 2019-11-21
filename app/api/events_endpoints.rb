@@ -57,7 +57,7 @@ module API
         optional :deleted, type: String, regexp: /\A(true|false|yes|no|on|off|t|f|y|n|1|0|all)\z/i, default: 'false'
       end
       params :event_type do
-        optional :event_type, type: String, values: %w{assessment course_event exam laboratory lecture tutorial}
+        optional :event_type, type: String, values: %w{assessment course_event exam laboratory lecture teacher_timetable_slot tutorial}
       end
       params :filter_events do
         use :pagination
