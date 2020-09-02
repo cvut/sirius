@@ -7,9 +7,13 @@ describe ConvertRooms do
 
     subject(:convert) { described_class }
     let(:room) { double(:room, link_id: 'MK:209', link_title: 'MK:209') }
+    let(:room_nil) { double(:room, link_id: 'MK:209', link_title: 'no-title') }
     let(:rooms) { [room] }
 
-
+    it 'returns empty array when nil rooms only' do
+      results = convert.perform(kosapi_rooms: [room_nil]).results
+      expect(results[:rooms]).to be_empty
+    end
 
     it 'returns empty array when no slots' do
       results = convert.perform(kosapi_rooms: []).results
@@ -20,6 +24,11 @@ describe ConvertRooms do
       results = convert.perform(kosapi_rooms: rooms).results
       room = results[:rooms].first
       expect(room.kos_code).to eq 'MK:209'
+    end
+
+    it 'converts only non-nil timetable slot rooms' do
+      results = convert.perform(kosapi_rooms: [room, room_nil]).results
+      expect(results[:rooms].map(&:kos_code)).to eq ['MK:209']
     end
 
     it 'passes timetable_slots through' do
