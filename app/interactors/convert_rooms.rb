@@ -4,9 +4,15 @@ class ConvertRooms
   include Interpipe::Interactor
 
   def perform(kosapi_rooms:, **options)
-    @rooms = kosapi_rooms.map do |room|
-      convert_room(room)
+    @rooms = []
+    kosapi_rooms.each do |room|
+      converted_room = convert_room(room)
+
+      unless converted_room.nil?
+        @rooms << converted_room
+      end
     end
+
     @options = options
   end
 
