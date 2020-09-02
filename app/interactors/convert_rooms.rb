@@ -20,13 +20,4 @@ class ConvertRooms
     room_code = room.link_id
     Room.new(kos_code: room_code)
   end
-
-  def extract_rooms(fetched_data)
-    {}.tap do |rooms|
-      fetched_data.lazy.map(&:room).reject(&:nil?).each do |room|
-        rooms[room.link_id] ||= room
-      end
-    end.values
-  end
-
 end
