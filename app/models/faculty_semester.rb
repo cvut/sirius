@@ -35,10 +35,10 @@ class FacultySemester < Sequel::Model
   # @return [Array<FacultySemester>] faculty semesters sorted by `start_date`.
   #
   def self.find_by_date_range_with_periods(start_date, end_date, faculty_id)
-    where('faculty = ? AND (starts_at, ends_at) OVERLAPS (?, ?)',
-          faculty_id, start_date.start_of_week, end_date)
+    where(Sequel.lit('faculty = ? AND (starts_at, ends_at) OVERLAPS (?, ?)',
+          faculty_id, start_date.start_of_week, end_date))
       .order_by(:starts_at)
-      .eager(semester_periods: ->(ds) { ds.where('starts_at < ?', end_date.end_of_week) })
+      .eager(semester_periods: ->(ds) { ds.where(Sequel.lit('starts_at < ?', end_date.end_of_week))})
       .all  # <- this is necessary for eager to work correctly!
   end
 end
