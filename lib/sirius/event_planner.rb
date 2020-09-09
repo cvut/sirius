@@ -14,10 +14,18 @@ module Sirius
 
     def plan_semester(semester)
       time_converter, semester_periods = create_converters(semester)
+
+      faculty_semester_weeks = SiriusApi::SemesterSchedule.resolve_weeks(semester.starts_at, semester.teaching_ends_at, semester.faculty)
+
+      faculty_semester_weeks = faculty_semester_weeks.select { |week| week.teaching_week != nil }
+
+      weeks_starts = faculty_semester_weeks.map { |week| week.start_date}
+      weeks_ends = faculty_semester_weeks.map { |week| week.end_date}
+
       slots_dataset(semester).flat_map do |sl|
         slot = PlannedTimetableSlot.new(sl, time_converter)
         events = semester_periods.flat_map do |semester_period|
-          slot.generate_events(semester, semester_period)
+          slot.generate_events(semester, semester_period, weeks_starts, weeks_ends)
         end
         number_events(events)
         apply_exceptions(events)
