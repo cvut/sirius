@@ -76,6 +76,20 @@ describe TeacherTimetableSlotTransformer do
         expect(events.first.ends_at).to be_the_same_time_as Time.parse('9:00')
       end
     end
+
+    context 'when start_time and end_time is set' do
+      let(:slot) do
+        Struct.new(:id, :day, :duration, :first_hour, :parity, :title, :start_time, :end_time)
+          .new(42, 1, nil, nil, :both, 'meditation', Time.parse('8:00'), Time.parse('9:00'))
+      end
+
+      it 'generates events with the specified times' do
+        transformer.plan_events(slot, teacher).each do |event|
+          expect(event.starts_at).to be_the_same_time_as slot.start_time
+          expect(event.ends_at).to be_the_same_time_as slot.end_time
+        end
+      end
+    end
   end
 
   describe '#process_row' do

@@ -40,7 +40,12 @@ class PlannedTimetableSlot < RolePlaying::Role
   end
 
   def generate_teaching_time
-    teaching_period = time_converter.convert_time(first_hour, duration)
+    teaching_period = if start_time && end_time
+        # Timetable slot has start time and end time already specified.
+        Period.new(start_time, end_time)
+      else
+        time_converter.convert_time(first_hour, duration)
+      end
     Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, parity: parity)
   end
 
