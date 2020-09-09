@@ -12,16 +12,16 @@ module Sirius
       @parity = parity
     end
 
-    def starts_at
+    def start_time
       @teaching_period.starts_at
     end
 
-    def ends_at
+    def end_time
       @teaching_period.ends_at
     end
 
     def duration
-      ends_at - starts_at
+      end_time - start_time
     end
 
     def ==(other)

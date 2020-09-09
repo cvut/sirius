@@ -10,7 +10,7 @@ class PlannedSemesterPeriod < RolePlaying::Role
   def plan(teaching_time)
     scheduling_start = combine_date_with_time(
       schedule_start_day(teaching_time.parity),
-      teaching_time.starts_at
+      teaching_time.start_time
     )
 
     schedule = IceCube::Schedule.new(scheduling_start, duration: teaching_time.duration)
