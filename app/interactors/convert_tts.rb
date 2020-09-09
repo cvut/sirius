@@ -3,7 +3,7 @@ require 'interpipe/interactor'
 class ConvertTTS
   include Interpipe::Interactor
 
-  DB_KEYS = [:day, :duration, :first_hour, :parity]
+  DB_KEYS = [:day, :duration, :first_hour, :parity, :start_time, :end_time]
 
   def setup
     @rooms = {}

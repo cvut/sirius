@@ -807,7 +807,9 @@ CREATE TABLE timetable_slots (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     room_id text,
-    deleted_at timestamp without time zone
+    deleted_at timestamp without time zone,
+    start_time time without time zone,
+    end_time time without time zone
 );
 
 
@@ -1236,3 +1238,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1469465920_convert_schedul
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469470701_convert_parities_to_enum.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1493051746_convert_semester_period_type_to_enum.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1499120813_add_name_to_semester_periods.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1599665760_add_start_time_and_end_time_to_timetable_slots.rb');
