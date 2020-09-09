@@ -9,7 +9,7 @@ class PlannedSemesterPeriod < RolePlaying::Role
 
   def plan(teaching_time)
     scheduling_start = combine_date_with_time(
-      schedule_start_day(teaching_time.parity),
+      schedule_start_day(teaching_time),
       teaching_time.start_time
     )
 
@@ -33,8 +33,11 @@ class PlannedSemesterPeriod < RolePlaying::Role
     Time.new(date.year, date.month, date.day, time.hour, time.min, time.sec)
   end
 
-  def schedule_start_day(teaching_time_parity)
-    if teaching_time_parity == 'both' || teaching_time_parity == first_week_parity
+  def schedule_start_day(teaching_time)
+    if teaching_time.start_date
+      # Teaching time is defined only in some time interval.
+      [starts_at, teaching_time.start_date].max
+    elsif teaching_time.parity == 'both' || teaching_time.parity == first_week_parity
       starts_at
     else
       starts_at.next_week(:monday)

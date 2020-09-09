@@ -4,6 +4,7 @@ require 'actors/etl_consumer'
 require 'sirius/time_converter'
 require 'roles/planned_timetable_slot'
 require 'day'
+require 'sirius/faculty_semester_weeks_generator'
 
 # A convertor which receives TeacherTimetableSlots loaded from KOSapi and plans them into
 # Events according to semester parameters and semester periods.
@@ -16,6 +17,7 @@ class TeacherTimetableSlotTransformer
     self.input = input
     self.output = output
     @semester = semester
+    @semester_weeks_dates = Sirius::FacultySemesterWeeksGenerator.generate_semester_weeks_dates(@semester)
     @events = nil
   end
 
@@ -58,7 +60,7 @@ class TeacherTimetableSlotTransformer
     end
 
     events = periods.flat_map do |period|
-      PlannedTimetableSlot.new(slot, time_converter).generate_events(@semester, period)
+      PlannedTimetableSlot.new(slot, time_converter).generate_events(@semester, period, @semester_weeks_dates)
     end
 
     events.each_with_index do |e, i|

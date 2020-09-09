@@ -17,3 +17,8 @@ Fabricator(:timetable_slot_with_times, class_name: TimetableSlot) do
   room
   parallel
 end
+
+Fabricator(:timetable_slot_with_weeks, from: :timetable_slot_with_times) do
+  parity nil
+  weeks [1, 3]
+end

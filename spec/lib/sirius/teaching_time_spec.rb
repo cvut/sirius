@@ -8,10 +8,12 @@ describe Sirius::TeachingTime do
 
   subject(:teaching_time) do
     described_class.new(teaching_period: Period.parse('14:30', '16:00'),
-                        parity: parity, day: input_day)
+                        parity: parity, day: input_day, start_date: start_date, end_date: end_date)
   end
   let(:parity) { 'odd' }
   let(:input_day) { :tuesday }
+  let(:start_date) { nil }
+  let(:end_date) { nil }
 
   describe '#week_frequency' do
     where :parity, :week_frequency do
@@ -34,7 +36,7 @@ describe Sirius::TeachingTime do
   end
 
   describe '#to_recurrence_rule' do
-    let(:ends_at) { DateTime.parse('2015-11-11') }
+    let(:ends_at) { DateTime.parse('2020-03-11') }
 
     it 'returns weekly recurrence rule' do
       expect(subject.to_recurrence_rule(0, ends_at)).to be_an_instance_of IceCube::WeeklyRule
@@ -59,6 +61,26 @@ describe Sirius::TeachingTime do
       it 'sets correct recurrence day' do
         rule = subject.to_recurrence_rule(offset, ends_at)
         expect(rule.validations[:day].first.day).to eq result_day
+      end
+    end
+
+    context 'when start/end dates were not provided' do
+      it 'returns recurrence rule ending at the given ends_at date' do
+        expect(
+          subject.to_recurrence_rule(0, ends_at).until_time.strftime("%F")
+        ).to eq ends_at.strftime("%F")
+      end
+    end
+
+    context 'when start/end dates were provided' do
+      let(:period) { nil }
+      let(:start_date) { Date.parse('2020-02-20') }
+      let(:end_date) { Date.parse('2020-02-26') }
+
+      it 'returns recurrence rule ending at the end_date' do
+        expect(
+          subject.to_recurrence_rule(0, ends_at).until_time.strftime("%F")
+        ).to eq end_date.strftime("%F")
       end
     end
   end

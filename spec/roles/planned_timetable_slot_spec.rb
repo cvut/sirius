@@ -10,19 +10,24 @@ describe PlannedTimetableSlot do
   let(:converter) { Sirius::TimeConverter.new(hour_starts: faculty_semester.hour_starts, hour_length: faculty_semester.hour_duration) }
   let(:semester_calendar) { PlannedSemesterPeriod.new(Fabricate(:teaching_semester_period)) }
   let(:faculty_semester) { Fabricate.build(:faculty_semester) }
+  let(:weeks_dates) {[
+    [Date.parse('2014-09-22'), Date.parse('2014-09-28')],
+    [Date.parse('2014-09-29'), Date.parse('2014-10-05')],
+    [Date.parse('2014-10-06'), Date.parse('2014-10-12')],
+  ]}
   subject(:planned_slot) { described_class.new(slot, converter) }
 
   describe '#generate_events' do
 
     it 'converts TimetableSlot to events' do
-      events = planned_slot.generate_events(faculty_semester, semester_calendar)
+      events = planned_slot.generate_events(faculty_semester, semester_calendar, weeks_dates)
       expect(events.size).to eq 13
       expect(events.first).to be_an_instance_of(Event)
     end
 
     it 'sets deleted flag for deleted timetable slots' do
       slot.deleted_at = Time.now
-      events = planned_slot.generate_events(faculty_semester, semester_calendar)
+      events = planned_slot.generate_events(faculty_semester, semester_calendar, weeks_dates)
       expect(events.first.deleted).to be_truthy
     end
 
@@ -30,12 +35,29 @@ describe PlannedTimetableSlot do
       let(:slot) { Fabricate(:timetable_slot_with_times, parity: 'even') }
 
       it 'converts TimetableSlot to events with the specified times' do
-        events = planned_slot.generate_events(faculty_semester, semester_calendar)
+        events = planned_slot.generate_events(faculty_semester, semester_calendar, weeks_dates)
 
         expect(events.size).to eq 6
         expect(events.first).to be_an_instance_of(Event)
         expect(events.first.starts_at.strftime('%H:%M')).to eq slot.start_time.strftime('%H:%M')
         expect(events.first.ends_at.strftime('%H:%M')).to eq slot.end_time.strftime('%H:%M')
+      end
+    end
+
+    context 'TimetableSlot with weeks' do
+      let(:slot) { Fabricate(:timetable_slot_with_weeks, weeks: weeks) }
+      let(:weeks) { [1, 3] }
+
+      it 'converts TimetableSlot to events in the specified weeks only' do
+        events = planned_slot.generate_events(faculty_semester, semester_calendar, weeks_dates)
+
+        expect(events.size).to eq weeks.size
+        expect(events[0]).to be_an_instance_of(Event)
+
+        events.each_with_index do |event, i|
+          expect(event.starts_at.strftime('%F')).to eq weeks_dates[weeks[i] - 1].first.strftime('%F')
+          expect(event.starts_at.strftime('%H:%M')).to eq slot.start_time.strftime('%H:%M')
+        end
       end
     end
 
