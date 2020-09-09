@@ -27,6 +27,7 @@ describe ConvertTTS do
           room: double(link_id: 'MK:209'),
           start_time: Time.parse('14:30:00'),
           end_time: Time.parse('16:00:00'),
+          weeks: '1-3,5',
         }
         double(**slot, to_hash: slot)
       end
@@ -43,6 +44,7 @@ describe ConvertTTS do
         expect(converted_slot.first_hour).to eq 3
         expect(converted_slot.start_time).to eq Time.parse('14:30:00')
         expect(converted_slot.end_time).to eq Time.parse('16:00:00')
+        expect(converted_slot.weeks).to eq([1, 2, 3, 5])
       end
 
       it 'loads rooms' do
@@ -71,6 +73,7 @@ describe ConvertTTS do
           room: double(link_id: 'MK:209'),
           start_time: nil,
           end_time: nil,
+          weeks: nil,
         }
         double(**slot, to_hash: slot)
       end

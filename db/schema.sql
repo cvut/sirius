@@ -809,7 +809,8 @@ CREATE TABLE timetable_slots (
     room_id text,
     deleted_at timestamp without time zone,
     start_time time without time zone,
-    end_time time without time zone
+    end_time time without time zone,
+    weeks integer[]
 );
 
 
@@ -1240,3 +1241,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1493051746_convert_semeste
 INSERT INTO "schema_migrations" ("filename") VALUES ('1499120813_add_name_to_semester_periods.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1599665760_add_start_time_and_end_time_to_timetable_slots.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1599920640_allow_null_for_change_first_hour_and_duration.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1601543796_add_weeks_to_timetable_slots.rb');

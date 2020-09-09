@@ -36,8 +36,8 @@ describe TeacherTimetableSlotTransformer do
 
   let(:duration) { 2 }
   let(:slot) do
-    Struct.new(:id, :day, :duration, :first_hour, :parity, :title, :start_time, :end_time)
-      .new(42, 1, duration, 1, :both, 'meditation', nil, nil)
+    Struct.new(:id, :day, :duration, :first_hour, :parity, :title, :start_time, :end_time, :weeks)
+      .new(42, 1, duration, 1, :both, 'meditation', nil, nil, nil)
   end
 
   let(:teacher) { 'vomackar' }
@@ -79,8 +79,8 @@ describe TeacherTimetableSlotTransformer do
 
     context 'when start_time and end_time is set' do
       let(:slot) do
-        Struct.new(:id, :day, :duration, :first_hour, :parity, :title, :start_time, :end_time)
-          .new(42, 1, nil, nil, :both, 'meditation', Time.parse('8:00'), Time.parse('9:00'))
+        Struct.new(:id, :day, :duration, :first_hour, :parity, :title, :start_time, :end_time, :weeks)
+          .new(42, 1, nil, nil, :both, 'meditation', Time.parse('8:00'), Time.parse('9:00'), nil)
       end
 
       it 'generates events with the specified times' do

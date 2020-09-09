@@ -51,6 +51,8 @@ class TeacherTimetableSlotTransformer
     # in case the duration is not set, use default duration of 2 hours
     slot.duration = 2 if !slot.duration && !slot.end_time
     slot.parity = slot.parity.to_s
+    slot.weeks = parse_weeks(slot.weeks) if !slot.weeks.blank?
+
     events = periods.flat_map do |period|
       PlannedTimetableSlot.new(slot, time_converter).generate_events(@semester, period)
     end
@@ -66,5 +68,19 @@ class TeacherTimetableSlotTransformer
     end
 
     events
+  end
+
+  private
+
+  # FIXME: Copy-pasted from the ConvertTTS interactor.
+  def parse_weeks(weeks)
+    weeks.split(',').flat_map { |interval|
+      if interval.include?('-')
+        from, to = interval.split('-', 2)
+        (Integer(from)..Integer(to)).to_a
+      else
+        Integer(interval)
+      end
+    }.sort.uniq
   end
 end

@@ -37,11 +37,23 @@ class ConvertTTS
       s.parallel_id = parallel_id
       s.room = @rooms[room_code] if room_code
       s.deleted_at = nil
+      s.weeks = parse_weeks(slot.weeks) unless slot.weeks.blank?
     end
   end
 
   def valid?(slot)
     slot.day && (slot.first_hour && slot.duration || slot.start_time && slot.end_time)
+  end
+
+  def parse_weeks(weeks)
+    weeks.split(',').flat_map { |interval|
+      if interval.include?('-')
+        from, to = interval.split('-', 2)
+        (Integer(from)..Integer(to)).to_a
+      else
+        Integer(interval)
+      end
+    }.sort.uniq
   end
 
 end
