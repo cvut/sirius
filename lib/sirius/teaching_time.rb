@@ -51,7 +51,7 @@ module Sirius
 
     # Returns true if current teaching time is defined only in some weeks in semester.
     def only_some_weeks?
-      @parity == nil && !@start_date != nil && !@end_date != nil
+      @parity.blank? && !@start_date != nil && !@end_date != nil
     end
 
     def week_frequency
