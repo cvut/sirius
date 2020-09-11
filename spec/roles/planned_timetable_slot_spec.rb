@@ -26,7 +26,6 @@ describe PlannedTimetableSlot do
     end
 
     it 'converts Timetableslot with weeks and times to events' do
-      puts "slot: " + planned_slot_with_weeks_and_times.to_s
       events = planned_slot_with_weeks_and_times.generate_events(faculty_semester, semester_calendar, weeks_starts, weeks_ends)
       expect(events.size).to eq 2
       expect(events.first).to be_an_instance_of(Event)
