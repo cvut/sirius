@@ -3,6 +3,7 @@ require 'roles/planned_timetable_slot'
 require 'models/parallel'
 require 'sirius/time_converter'
 require 'roles/planned_semester_period'
+require 'sirius/faculty_semester_weeks_generator'
 
 module Sirius
   class EventPlanner
@@ -15,12 +16,10 @@ module Sirius
     def plan_semester(semester)
       time_converter, semester_periods = create_converters(semester)
 
-      faculty_semester_weeks = SiriusApi::SemesterSchedule.resolve_weeks(semester.starts_at, semester.teaching_ends_at, semester.faculty)
+      weeks_dates = Sirius::FacultySemesterWeeksGenerator.generate_semester_weeks_dates(semester)
 
-      faculty_semester_weeks = faculty_semester_weeks.select { |week| week.teaching_week != nil }
-
-      weeks_starts = faculty_semester_weeks.map { |week| week.start_date}
-      weeks_ends = faculty_semester_weeks.map { |week| week.end_date}
+      weeks_starts = weeks_dates[0]
+      weeks_ends = weeks_dates[1]
 
       slots_dataset(semester).flat_map do |sl|
         slot = PlannedTimetableSlot.new(sl, time_converter)
