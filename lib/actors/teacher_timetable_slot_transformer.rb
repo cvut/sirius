@@ -48,13 +48,16 @@ class TeacherTimetableSlotTransformer
       hour_starts: @semester.hour_starts,
       hour_length: @semester.hour_duration
     )
+
+    weeks = week_starts_and_ends
+
     # in case the duration is not set, use default duration of 2 hours
     unless slot.duration
       slot.duration = 2
     end
     slot.parity = slot.parity.to_s
     events = periods.flat_map do |period|
-      PlannedTimetableSlot.new(slot, time_converter).generate_events(@semester, period)
+      PlannedTimetableSlot.new(slot, time_converter).generate_events(@semester, period, weeks[0], weeks[1])
     end
 
     events.each_with_index do |e, i|
@@ -69,4 +72,18 @@ class TeacherTimetableSlotTransformer
 
     events
   end
+
+  private
+
+  def week_starts_and_ends
+    faculty_semester_weeks = SiriusApi::SemesterSchedule.resolve_weeks(@semester.starts_at, @semester.teaching_ends_at, @semester.faculty)
+
+    faculty_semester_weeks = faculty_semester_weeks.select { |week| week.teaching_week != nil }
+
+    weeks_starts = faculty_semester_weeks.map { |week| week.start_date}
+    weeks_ends = faculty_semester_weeks.map { |week| week.end_date}
+
+    [weeks_starts, weeks_ends]
+  end
+
 end

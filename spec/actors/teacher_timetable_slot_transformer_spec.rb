@@ -36,8 +36,8 @@ describe TeacherTimetableSlotTransformer do
 
   let(:duration) { 2 }
   let(:slot) do
-    Struct.new(:id, :day, :duration, :first_hour, :parity, :title)
-      .new(42, 1, duration, 1, :both, 'meditation')
+    Struct.new(:id, :day, :duration, :first_hour, :parity, :title, :start_time, :end_time, :weeks)
+      .new(42, 1, duration, 1, :both, 'meditation', nil, nil, nil)
   end
 
   let(:teacher) { 'vomackar' }
