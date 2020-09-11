@@ -800,7 +800,7 @@ ALTER SEQUENCE semester_periods_id_seq OWNED BY semester_periods.id;
 CREATE TABLE timetable_slots (
     id bigint NOT NULL,
     day integer NOT NULL,
-    parity parity NOT NULL,
+    parity parity,
     first_hour integer,
     duration integer,
     parallel_id bigint NOT NULL,
@@ -1242,3 +1242,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1499120813_add_name_to_sem
 INSERT INTO "schema_migrations" ("filename") VALUES ('1599665760_add_start_time_and_end_time_to_timetable_slots.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1599920640_allow_null_for_change_first_hour_and_duration.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1601543796_add_weeks_to_timetable_slots.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1601552486_allow_null_for_parity_in_timetable_slots.rb');
