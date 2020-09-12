@@ -37,6 +37,9 @@ class ConvertTTS
       s.parallel_id = parallel_id
       s.room = @rooms[room_code] if room_code
       s.deleted_at = nil
+      s.start_time = slot.start_time
+      s.end_time = slot.end_time
+      s.weeks = slot.weeks
     end
   end
 
