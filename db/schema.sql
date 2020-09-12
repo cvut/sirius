@@ -801,8 +801,8 @@ CREATE TABLE timetable_slots (
     id bigint NOT NULL,
     day integer NOT NULL,
     parity parity NOT NULL,
-    first_hour integer NOT NULL,
-    duration integer NOT NULL,
+    first_hour integer,
+    duration integer,
     parallel_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -1239,3 +1239,4 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1469470701_convert_paritie
 INSERT INTO "schema_migrations" ("filename") VALUES ('1493051746_convert_semester_period_type_to_enum.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1499120813_add_name_to_semester_periods.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1599665760_add_start_time_and_end_time_to_timetable_slots.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1599920640_allow_null_for_change_first_hour_and_duration.rb');
