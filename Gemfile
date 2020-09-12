@@ -6,7 +6,7 @@ gem 'rake'
 gem 'pg', '~> 0.18'
 gem 'sequel', '~> 4.17'
 gem 'sequel_pg', require: 'sequel'
-gem 'kosapi_client', '~> 0.9'
+gem 'kosapi_client', '~> 0.12.1'
 gem 'chewy', '~> 0.8.2', '< 0.8.4'  # 0.8.4 is broken
 gem 'elasticsearch', '~> 1.0', require: false
 
