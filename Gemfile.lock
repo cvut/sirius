@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/jnv/rspec-parameterized.git
+  remote: https://github.com/jnv/rspec-parameterized.git
   revision: badbf071e8f7de6aca6fc91cf720a66a47c329c2
   branch: badbf07
   specs:
@@ -23,13 +23,13 @@ GEM
       ice_nine (~> 0.11.0)
       memoizable (~> 0.4.0)
     ansi (1.5.0)
-    ast (2.3.0)
+    ast (2.4.1)
     awesome_print (1.7.0)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
-    binding_of_caller (0.7.2)
+    binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
     bogus (0.1.6)
       dependor (>= 0.0.4)
@@ -63,7 +63,7 @@ GEM
     committee (1.15.0)
       json_schema (~> 0.6, >= 0.6.1)
       rack (>= 1.5)
-    concord (0.1.5)
+    concord (0.1.6)
       adamantium (~> 0.2.0)
       equalizer (~> 0.0.9)
     corefines (1.9.0)
@@ -196,8 +196,8 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     ox (2.10.0)
-    parser (2.3.3.1)
-      ast (~> 2.2)
+    parser (2.7.1.5)
+      ast (~> 2.4.1)
     pg (0.21.0)
     pliny (0.17.1)
       activesupport (~> 4.1, >= 4.1.0)
@@ -304,13 +304,12 @@ GEM
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
     uber (0.0.15)
-    unparser (0.2.5)
+    unparser (0.1.14)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2.0)
       concord (~> 0.1.5)
-      diff-lcs (~> 1.2.5)
       equalizer (~> 0.0.9)
-      parser (~> 2.3.0)
+      parser (~> 2.1)
       procto (~> 0.0.2)
     uri_template (0.7.0)
     vcr (3.0.3)
@@ -383,4 +382,4 @@ DEPENDENCIES
   warden (~> 1.2.3)
 
 BUNDLED WITH
-   1.16.2
+   2.1.4
