@@ -47,13 +47,12 @@ class PlannedTimetableSlot < RolePlaying::Role
   end
 
   def generate_teaching_period
-    if !start_time.blank? && !end_time.blank?
-      # timetable slot has start time and end time already specified
-      teaching_period = Period.new(start_time, end_time)
+    if start_time && end_time
+      # Timetable slot has start time and end time already specified
+      Period.new(start_time, end_time)
     else
-      teaching_period = time_converter.convert_time(first_hour, duration)
+      time_converter.convert_time(first_hour, duration)
     end
-    teaching_period
   end
 
   def generate_teaching_times(weeks_starts, weeks_ends)
