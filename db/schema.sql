@@ -800,14 +800,17 @@ ALTER SEQUENCE semester_periods_id_seq OWNED BY semester_periods.id;
 CREATE TABLE timetable_slots (
     id bigint NOT NULL,
     day integer NOT NULL,
-    parity parity NOT NULL,
-    first_hour integer NOT NULL,
-    duration integer NOT NULL,
+    parity parity,
+    first_hour integer,
+    duration integer,
     parallel_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     room_id text,
-    deleted_at timestamp without time zone
+    deleted_at timestamp without time zone,
+    start_time time without time zone,
+    end_time time without time zone,
+    weeks text COLLATE pg_catalog."default"
 );
 
 
@@ -1236,3 +1239,5 @@ INSERT INTO "schema_migrations" ("filename") VALUES ('1469465920_convert_schedul
 INSERT INTO "schema_migrations" ("filename") VALUES ('1469470701_convert_parities_to_enum.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1493051746_convert_semester_period_type_to_enum.rb');
 INSERT INTO "schema_migrations" ("filename") VALUES ('1499120813_add_name_to_semester_periods.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1599665760_add_time_and_weeks_to_timetable_slots.rb');
+INSERT INTO "schema_migrations" ("filename") VALUES ('1599920640_remove_not_null_constraint_for_parity.rb');
