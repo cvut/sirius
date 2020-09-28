@@ -12,21 +12,20 @@ describe PlannedTimetableSlot do
   let(:semester_calendar) { PlannedSemesterPeriod.new(Fabricate(:teaching_semester_period)) }
   let(:faculty_semester) { Fabricate.build(:faculty_semester) }
   let(:converter) { Sirius::TimeConverter.new(hour_starts: faculty_semester.hour_starts, hour_length: faculty_semester.hour_duration) }
-  let(:weeks_starts) {[Date.parse("2014-09-22"), Date.parse("2014-09-29"), Date.parse("2014-10-06")]}
-  let(:weeks_ends) {[Date.parse("2014-09-28"), Date.parse("2014-10-05"), Date.parse("2014-10-12")]}
+  let(:weeks_dates) {[[Date.parse("2014-09-22"), Date.parse("2014-09-28")], [Date.parse("2014-09-29"), Date.parse("2014-10-05")], [Date.parse("2014-10-06"), Date.parse("2014-10-12")]]}
   subject(:planned_slot) { described_class.new(slot, converter) }
   subject(:planned_slot_with_weeks_and_times) { described_class.new(slot_with_weeks_and_times, converter) }
 
   describe '#generate_events' do
 
     it 'converts Timetableslot to events' do
-      events = planned_slot.generate_events(faculty_semester, semester_calendar, weeks_starts, weeks_ends)
+      events = planned_slot.generate_events(faculty_semester, semester_calendar, weeks_dates)
       expect(events.size).to eq 13
       expect(events.first).to be_an_instance_of(Event)
     end
 
     it 'converts Timetableslot with weeks and times to events' do
-      events = planned_slot_with_weeks_and_times.generate_events(faculty_semester, semester_calendar, weeks_starts, weeks_ends)
+      events = planned_slot_with_weeks_and_times.generate_events(faculty_semester, semester_calendar, weeks_dates)
       expect(events.size).to eq 2
       expect(events.first).to be_an_instance_of(Event)
       expect(events.first.starts_at.strftime("%H:%M")).to eq "07:30"
@@ -35,7 +34,7 @@ describe PlannedTimetableSlot do
 
     it 'sets deleted flag for deleted timetable slots' do
       slot.deleted_at = Time.now
-      events = planned_slot.generate_events(faculty_semester, semester_calendar, weeks_starts, weeks_ends)
+      events = planned_slot.generate_events(faculty_semester, semester_calendar, weeks_dates)
       expect(events.first.deleted).to be_truthy
     end
 

@@ -16,12 +16,12 @@ module Sirius
     def plan_semester(semester)
       time_converter, semester_periods = create_converters(semester)
 
-      weeks_starts, weeks_ends = Sirius::FacultySemesterWeeksGenerator.generate_semester_weeks_dates(semester)
+      weeks_dates = Sirius::FacultySemesterWeeksGenerator.generate_semester_weeks_dates(semester)
 
       slots_dataset(semester).flat_map do |sl|
         slot = PlannedTimetableSlot.new(sl, time_converter)
         events = semester_periods.flat_map do |semester_period|
-          slot.generate_events(semester, semester_period, weeks_starts, weeks_ends)
+          slot.generate_events(semester, semester_period, weeks_dates)
         end
         number_events(events)
         apply_exceptions(events)

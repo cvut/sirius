@@ -9,8 +9,8 @@ class PlannedTimetableSlot < RolePlaying::Role
     @time_converter = time_converter
   end
 
-  def generate_events(faculty_semester, semester_period, weeks_starts, weeks_ends)
-    teaching_times = generate_teaching_times(weeks_starts, weeks_ends)
+  def generate_events(faculty_semester, semester_period, weeks_dates)
+    teaching_times = generate_teaching_times(weeks_dates)
     event_periods = []
     # count event periods in current semester period in all week intervals
     teaching_times.each do |teaching_time|
@@ -55,7 +55,7 @@ class PlannedTimetableSlot < RolePlaying::Role
     end
   end
 
-  def generate_teaching_times(weeks_starts, weeks_ends)
+  def generate_teaching_times(weeks_dates)
     teaching_period = generate_teaching_period
 
     if weeks
@@ -65,11 +65,11 @@ class PlannedTimetableSlot < RolePlaying::Role
         if interval.length > 2
           # true interval
           interval_split = interval.split('-')
-          Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, start_date: weeks_starts[Integer(interval_split[0]) - 1], end_date: weeks_ends[Integer(interval_split[1]) - 1])
+          Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, start_date: weeks_dates[Integer(interval_split[0]) - 1][0], end_date: weeks_dates[Integer(interval_split[1]) - 1][1])
         else
           # one week
           week_number = Integer(interval) - 1
-          Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, start_date: weeks_starts[week_number], end_date: weeks_ends[week_number])
+          Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, start_date: weeks_dates[week_number][0], end_date: weeks_dates[week_number][1])
         end
       end
     else

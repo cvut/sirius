@@ -17,7 +17,7 @@ class TeacherTimetableSlotTransformer
     self.input = input
     self.output = output
     @semester = semester
-    @semester_weeks_starts, @semester_weeks_ends = Sirius::FacultySemesterWeeksGenerator.generate_semester_weeks_dates(@semester)
+    @semester_weeks_dates = Sirius::FacultySemesterWeeksGenerator.generate_semester_weeks_dates(@semester)
     @events = nil
   end
 
@@ -57,7 +57,7 @@ class TeacherTimetableSlotTransformer
     end
     slot.parity = slot.parity.to_s
     events = periods.flat_map do |period|
-      PlannedTimetableSlot.new(slot, time_converter).generate_events(@semester, period, @semester_weeks_starts, @semester_weeks_ends)
+      PlannedTimetableSlot.new(slot, time_converter).generate_events(@semester, period, @semester_weeks_dates)
     end
 
     events.each_with_index do |e, i|
