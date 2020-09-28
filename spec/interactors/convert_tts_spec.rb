@@ -17,7 +17,7 @@ describe ConvertTTS do
 
     context 'with slots' do
 
-      let(:slot) { double(id: 239019, to_hash: {day: 5, duration: 2, parity: 'both', first_hour: 3}, day: 5, room: double(link_id: 'MK:209')) }
+      let(:slot) { double(id: 239019, to_hash: {day: 5, duration: 2, parity: 'both', first_hour: 3}, day: 5, room: double(link_id: 'MK:209'), start_time: Time.parse("14:30:00"), end_time: Time.parse("16:00:00"), weeks: '1-3') }
       let(:room) { Fabricate(:room, id: 'MK:209') }
       let(:slots) { {'1234' => [slot]} }
 
@@ -29,6 +29,9 @@ describe ConvertTTS do
         expect(converted_slot.duration).to eq 2
         expect(converted_slot.parity).to eq 'both'
         expect(converted_slot.first_hour).to eq 3
+        expect(converted_slot.start_time).to eq Time.parse("14:30:00")
+        expect(converted_slot.end_time).to eq Time.parse("16:00:00")
+        expect(converted_slot.weeks).to eq '1-3'
       end
 
       it 'loads rooms' do
@@ -47,7 +50,7 @@ describe ConvertTTS do
 
     context 'with invalid slots' do
 
-      let(:slot) { double(id: 239019, to_hash: {duration: 2, parity: 'both', first_hour: 3}, day: nil, room: double(link_id: 'MK:209')) } # missing day
+      let(:slot) { double(id: 239019, to_hash: {duration: 2, parity: 'both', first_hour: 3}, day: nil, room: double(link_id: 'MK:209'), start_time: nil, end_time: nil, weeks: nil) } # missing day
       let(:slots) { {'1234' => [slot]} }
 
       it 'rejects them' do
