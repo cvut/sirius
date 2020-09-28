@@ -58,10 +58,7 @@ class PlannedTimetableSlot < RolePlaying::Role
   def generate_teaching_times(weeks_starts, weeks_ends)
     teaching_period = generate_teaching_period
 
-    if weeks.blank?
-      #  timetable with even/odd week parity
-      [Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, parity: parity)]
-    else
+    if weeks
       #  timetable customized for different weeks defined by string
 
       week_intervals.map do |interval|
@@ -75,6 +72,9 @@ class PlannedTimetableSlot < RolePlaying::Role
           Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, start_date: weeks_starts[week_number], end_date: weeks_ends[week_number])
         end
       end
+    else
+      #  timetable with even/odd week parity
+      [Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, parity: parity)]
     end
   end
 
