@@ -39,12 +39,29 @@ class ConvertTTS
       s.deleted_at = nil
       s.start_time = slot.start_time
       s.end_time = slot.end_time
-      s.weeks = slot.weeks
+      s.weeks = convert_weeks_to_ranges(slot.weeks) if slot.weeks
     end
   end
 
   def valid?(slot)
     slot.day != nil
+  end
+
+  def convert_weeks_to_ranges(weeks)
+    weeks.split(',').map do |interval|
+      if interval.length > 2
+        # true interval
+        interval_split = interval.split('-')
+        from = Integer(interval_split[0])
+        to = Integer(interval_split[1])
+      else
+        # one week
+        week_number = Integer(interval)
+        from = week_number
+        to = week_number
+      end
+      Sequel.pg_range((from..to))
+    end
   end
 
 end

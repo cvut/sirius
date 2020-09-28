@@ -20,6 +20,8 @@ Sequel::Model.plugin :timestamps, update_on_create: true
 Sequel::Model.plugin :enum_guard
 DB.extension :pg_hstore
 DB.extension :pg_array
+DB.extension :pg_range
+DB.extension :pg_enum
 Sequel.extension :pg_array_ops
 Sequel.extension :pg_hstore_ops
-DB.extension :pg_enum
+Sequel.extension :pg_range_ops

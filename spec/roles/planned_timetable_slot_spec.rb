@@ -7,7 +7,7 @@ require 'roles/planned_semester_period'
 describe PlannedTimetableSlot do
 
   let(:slot) { Fabricate(:timetable_slot, first_hour: 1, duration: 2, parity: 'both', day: :monday) }
-  let(:slot_with_weeks_and_times) { Fabricate(:timetable_slot, first_hour: 1, duration: 2, parity: nil, day: :monday, start_time: Time.parse('1901-01-01 07:30:00'), end_time: Time.parse('1901-01-01 08:10:00'), weeks: "1,3") }
+  let(:slot_with_weeks_and_times) { double(id: 1, first_hour: 1, duration: 2, parity: nil, day: 1, start_time: Time.parse('1901-01-01 07:30:00'), end_time: Time.parse('1901-01-01 08:10:00'), weeks: [Sequel.pg_range((1..1)), Sequel.pg_range((3..3))]) }
   let(:period) { Period.parse('7:30', '9:00') }
   let(:semester_calendar) { PlannedSemesterPeriod.new(Fabricate(:teaching_semester_period)) }
   let(:faculty_semester) { Fabricate.build(:faculty_semester) }

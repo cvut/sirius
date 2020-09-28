@@ -810,7 +810,7 @@ CREATE TABLE timetable_slots (
     deleted_at timestamp without time zone,
     start_time time without time zone,
     end_time time without time zone,
-    weeks text COLLATE pg_catalog."default"
+    weeks int4range[]
 );
 
 
