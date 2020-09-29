@@ -48,19 +48,9 @@ class ConvertTTS
   end
 
   def convert_weeks_to_ranges(weeks)
-    weeks.split(',').map do |interval|
-      if interval.length > 2
-        # true interval
-        interval_split = interval.split('-')
-        from = Integer(interval_split[0])
-        to = Integer(interval_split[1])
-      else
-        # one week
-        week_number = Integer(interval)
-        from = week_number
-        to = week_number
-      end
-      Sequel.pg_range((from..to))
+    weeks.split(',').map do |str|
+      from, to = str.split('-', 2)
+      Range.new(Integer(from), Integer(to || from))
     end
   end
 

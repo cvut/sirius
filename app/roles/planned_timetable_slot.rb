@@ -61,21 +61,16 @@ class PlannedTimetableSlot < RolePlaying::Role
     if weeks
       #  timetable customized for different weeks defined by string
 
-      weeks.map do |interval|
-        range = interval.to_range
+      weeks.map do |range|
         from = range.begin
         to = range.last(1)[0]
 
-        Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, start_date: weeks_dates[Integer(from) - 1][0], end_date: weeks_dates[Integer(to) - 1][1])
+        Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, start_date: weeks_dates[from - 1][0], end_date: weeks_dates[to - 1][1])
       end
     else
       #  timetable with even/odd week parity
       [Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, parity: parity)]
     end
-  end
-
-  def week_intervals
-    weeks.split(',')
   end
 
   def create_events(event_periods, faculty_semester)

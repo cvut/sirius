@@ -31,7 +31,7 @@ describe ConvertTTS do
         expect(converted_slot.first_hour).to eq 3
         expect(converted_slot.start_time).to eq Time.parse("14:30:00")
         expect(converted_slot.end_time).to eq Time.parse("16:00:00")
-        expect(converted_slot.weeks).to eq [Sequel.pg_range((1..3)), Sequel.pg_range((5..5))]
+        expect(converted_slot.weeks).to eq [(1..3), (5..5)]
       end
 
       it 'loads rooms' do
