@@ -62,8 +62,7 @@ class PlannedTimetableSlot < RolePlaying::Role
       #  timetable customized for different weeks defined by string
 
       weeks.map do |range|
-        from = range.begin
-        to = range.last(1)[0]
+        from, to = range.minmax
 
         Sirius::TeachingTime.new(teaching_period: teaching_period, day: day, start_date: weeks_dates[from - 1][0], end_date: weeks_dates[to - 1][1])
       end

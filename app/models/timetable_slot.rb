@@ -15,7 +15,7 @@ class TimetableSlot < Sequel::Model
   end
 
   def weeks
-    super.map {|pg_range| pg_range.to_range } if super
+    super&.map(&:to_range).freeze
   end
 
   def weeks=(new_ranges)
