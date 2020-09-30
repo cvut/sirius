@@ -30,8 +30,8 @@ class ConvertTTS
 
   def convert_slot(slot, parallel_id)
     room_code = slot.room.link_id if slot.room
-    slot_hash = slot.to_hash
-    slot_hash = slot_hash.select { |key,_| DB_KEYS.include? key }
+    slot_hash = slot.to_hash.select { |key, _| DB_KEYS.include? key }
+
     TimetableSlot.new(slot_hash) do |s|
       s.id = slot.id
       s.parallel_id = parallel_id
@@ -41,7 +41,7 @@ class ConvertTTS
   end
 
   def valid?(slot)
-    slot.day != nil
+    slot.day && (slot.first_hour && slot.duration || slot.start_time && slot.end_time)
   end
 
 end

@@ -17,12 +17,19 @@ describe ConvertTTS do
 
     context 'with slots' do
 
-      let(:slot) { double(
-        id: 239019,
-        to_hash: {day: 5, duration: 2, parity: 'both', first_hour: 3, start_time: Time.parse('14:30:00'), end_time: Time.parse('16:00:00')},
-        day: 5,
-        room: double(link_id: 'MK:209'),
-      ) }
+      let(:slot) do
+        slot = {
+          id: 239019,
+          day: 5,
+          duration: 2,
+          parity: 'both',
+          first_hour: 3,
+          room: double(link_id: 'MK:209'),
+          start_time: Time.parse('14:30:00'),
+          end_time: Time.parse('16:00:00'),
+        }
+        double(**slot, to_hash: slot)
+      end
       let(:room) { Fabricate(:room, id: 'MK:209') }
       let(:slots) { {'1234' => [slot]} }
 
@@ -54,12 +61,19 @@ describe ConvertTTS do
 
     context 'with invalid slots' do
 
-      let(:slot) { double(
-        id: 239019,
-        to_hash: {duration: 2, parity: 'both', first_hour: 3, start_time: nil, end_time: nil},
-        day: nil,  # <-- missing day
-        room: double(link_id: 'MK:209'),
-      ) }
+      let(:slot) do
+        slot = {
+          id: 239019,
+          day: nil,  # <-- missing day
+          duration: 2,
+          parity: 'both',
+          first_hour: 3,
+          room: double(link_id: 'MK:209'),
+          start_time: nil,
+          end_time: nil,
+        }
+        double(**slot, to_hash: slot)
+      end
       let(:slots) { {'1234' => [slot]} }
 
       it 'rejects them' do
