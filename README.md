@@ -1,6 +1,6 @@
 # Sirius: CTU Time management API
 
-[![Code Climate](https://img.shields.io/codeclimate/github/cvut/sirius.svg)](https://codeclimate.com/github/cvut/sirius)
+[![Maintainability](https://api.codeclimate.com/v1/badges/cd54c798539c416f4ff3/maintainability.svg)](https://codeclimate.com/github/cvut/sirius/maintainability)
 [![Coverage Status](https://coveralls.io/repos/cvut/sirius/badge.svg?branch=master&service=github)](https://coveralls.io/github/cvut/sirius?branch=master)
 [![Inline docs](http://inch-ci.org/github/cvut/sirius.svg)](http://inch-ci.org/github/cvut/sirius)
 
