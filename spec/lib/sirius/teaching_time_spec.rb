@@ -18,6 +18,7 @@ describe Sirius::TeachingTime do
           'odd'  | 2
           'even' | 2
           'both' | 1
+          nil    | 1
     end
     with_them ->{ "with #{parity} parity" } do
       it 'returns correct frequency' do

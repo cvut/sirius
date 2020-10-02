@@ -27,7 +27,7 @@ describe ConvertTTS do
           room: double(link_id: 'MK:209'),
           start_time: Time.parse('14:30:00'),
           end_time: Time.parse('16:00:00'),
-          weeks: '1-3,5',
+          weeks: nil,
         }
         double(**slot, to_hash: slot)
       end
@@ -44,7 +44,6 @@ describe ConvertTTS do
         expect(converted_slot.first_hour).to eq 3
         expect(converted_slot.start_time).to eq Time.parse('14:30:00')
         expect(converted_slot.end_time).to eq Time.parse('16:00:00')
-        expect(converted_slot.weeks).to eq([1, 2, 3, 5])
       end
 
       it 'loads rooms' do
@@ -59,6 +58,21 @@ describe ConvertTTS do
         expect(converted_slot.parallel_id).to eq 1234
       end
 
+      context 'slot with weeks' do
+        let(:slot_with_weeks) do
+          hash = { **slot.to_hash, weeks: '1-3,5' }
+          double(**hash, to_hash: hash)
+        end
+        let(:slots) { {'1234' => [slot_with_weeks]} }
+
+        it 'converts weeks and sets parity to nil' do
+          results = described_class.perform(timetable_slots: slots, rooms: []).results
+          converted_slot = results[:timetable_slots].first
+
+          expect(converted_slot.parity).to be_nil
+          expect(converted_slot.weeks).to eq([1, 2, 3, 5])
+        end
+      end
     end
 
     context 'with invalid slots' do

@@ -3,7 +3,7 @@ require 'interpipe/interactor'
 class ConvertTTS
   include Interpipe::Interactor
 
-  DB_KEYS = [:day, :duration, :first_hour, :parity, :start_time, :end_time]
+  DB_KEYS = [:day, :duration, :first_hour, :start_time, :end_time]
   PARITY_VALUES = ['even', 'odd', 'both']
 
   def setup
@@ -35,6 +35,7 @@ class ConvertTTS
 
     TimetableSlot.new(slot_hash) do |s|
       s.id = slot.id
+      s.parity = slot.parity if slot.weeks.blank?
       s.parallel_id = parallel_id
       s.room = @rooms[room_code] if room_code
       s.deleted_at = nil

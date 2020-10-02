@@ -38,7 +38,7 @@ module Sirius
     end
 
     def week_frequency
-      if parity == 'both'
+      if parity.nil? || parity == 'both'
         1
       else
         2
