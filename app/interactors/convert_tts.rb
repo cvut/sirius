@@ -4,6 +4,7 @@ class ConvertTTS
   include Interpipe::Interactor
 
   DB_KEYS = [:day, :duration, :first_hour, :parity, :start_time, :end_time]
+  PARITY_VALUES = ['even', 'odd', 'both']
 
   def setup
     @rooms = {}
@@ -42,7 +43,9 @@ class ConvertTTS
   end
 
   def valid?(slot)
-    slot.day && (slot.first_hour && slot.duration || slot.start_time && slot.end_time)
+    slot.day &&
+      (PARITY_VALUES.include?(slot.parity.to_s) || !slot.weeks.blank?) &&
+      (slot.first_hour && slot.duration || slot.start_time && slot.end_time)
   end
 
   def parse_weeks(weeks)
