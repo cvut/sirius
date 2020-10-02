@@ -12,8 +12,11 @@ before_script:
 test:
   stage: test
   services:
-    - postgres:latest
+    - postgres:9.6-alpine
     - elasticsearch:1.7.5
+  variables:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
   script:
     - while read line; do export $line; done < .env.test
     - bundle exec rake --trace db:setup
