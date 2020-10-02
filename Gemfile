@@ -27,7 +27,7 @@ gem 'json'
 # gem "sinatra", require: "sinatra/base"
 # gem "sinatra-contrib", require: ["sinatra/namespace", "sinatra/reloader"]
 # gem "sinatra-router"
-gem 'puma'
+gem 'puma', '~> 3.9'
 
 ## Time & Space
 gem 'ice_cube', '~> 0.16.0' # Date/Time helper
