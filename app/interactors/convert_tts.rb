@@ -32,14 +32,15 @@ class ConvertTTS
   def convert_slot(slot, parallel_id)
     room_code = slot.room.link_id if slot.room
     slot_hash = slot.to_hash.select { |key, _| DB_KEYS.include? key }
+    weeks = parse_weeks(slot.weeks)
 
     TimetableSlot.new(slot_hash) do |s|
       s.id = slot.id
-      s.parity = slot.parity if slot.weeks.blank?
+      s.parity = weeks ? nil : slot.parity
       s.parallel_id = parallel_id
       s.room = @rooms[room_code] if room_code
       s.deleted_at = nil
-      s.weeks = parse_weeks(slot.weeks) unless slot.weeks.blank?
+      s.weeks = weeks
     end
   end
 
@@ -50,6 +51,8 @@ class ConvertTTS
   end
 
   def parse_weeks(weeks)
+    return if weeks.blank?
+
     weeks.split(',').flat_map { |interval|
       if interval.include?('-')
         from, to = interval.split('-', 2)
