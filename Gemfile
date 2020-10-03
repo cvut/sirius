@@ -13,7 +13,7 @@ gem 'elasticsearch', '~> 1.0', require: false
 ## REST API
 gem 'pliny', '~> 0.17.0'
 gem 'dotenv'
-gem 'grape', '~> 0.9.0'
+gem 'grape', '~> 1.4.0'
 gem 'warden', '~> 1.2.3' # authentication middleware
 gem 'faraday', '~> 0.9.0'
 gem 'faraday_middleware', '~> 0.10.0'
