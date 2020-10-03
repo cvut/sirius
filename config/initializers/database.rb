@@ -13,6 +13,9 @@ DB = Sequel.connect(db_url, max_connections: Config.db_pool)
 DB.sql_log_level = :debug
 DB.logger = Logging.logger[:sql]
 
+# Do not output deprecation messages in production env.
+Sequel::Deprecation.output = false if Config.rack_env == 'production'
+
 # Allow to use notation :table__column and :table___alias.
 Sequel.split_symbols = true
 
