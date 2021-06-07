@@ -20,6 +20,7 @@ test:
   variables:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres
+    DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: 'true'
   script:
     - while read line; do export $line; done < .env.test
     - bundle exec rake --trace db:setup
