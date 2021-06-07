@@ -191,7 +191,7 @@ GEM
     ox (2.14.5)
     parser (3.0.1.1)
       ast (~> 2.4.1)
-    pg (0.21.0)
+    pg (1.2.3)
     pliny (0.17.1)
       activesupport (~> 4.1, >= 4.1.0)
       http_accept (~> 0.1, >= 0.1.5)
@@ -343,7 +343,7 @@ DEPENDENCIES
   kramdown (~> 1.13)
   logging (~> 2.1)
   oauth2 (~> 1.4)
-  pg (~> 0.18)
+  pg (~> 1.0)
   pliny (~> 0.17.0)
   pry
   pry-byebug (~> 3.4)

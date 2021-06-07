@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rake', '~> 10.5'
 
 ## Storage
-gem 'pg', '~> 0.18'
+gem 'pg', '~> 1.0'
 gem 'sequel', '~> 4.17'
 gem 'sequel_pg', '~> 1.6', require: 'sequel'
 gem 'kosapi_client', '~> 0.13.0'
