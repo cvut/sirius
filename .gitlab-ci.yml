@@ -1,4 +1,4 @@
-image: gitlab.fit.cvut.cz:5000/ict/alpine-docker-images/ci:3.10
+image: gitlab.fit.cvut.cz:5000/ict/alpine-docker-images/ci:3.11
 
 stages:
   - test
@@ -34,7 +34,7 @@ package:
   script:
     - IMAGE_NAME="sirius-$(date +%Y%m%d)-$CI_JOB_ID-$(git rev-parse --short HEAD)"
     - alpine-make-rootfs
-        --branch v3.10
+        --branch v3.11
         --timezone Europe/Prague
         --script-chroot
         dist/$IMAGE_NAME.tar.gz
