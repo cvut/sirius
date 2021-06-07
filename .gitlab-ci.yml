@@ -15,7 +15,7 @@ test:
     paths:
       - .cache/
   services:
-    - postgres:9.6-alpine
+    - postgres:13.3-alpine
     - elasticsearch:1.7.5
   variables:
     POSTGRES_USER: postgres
