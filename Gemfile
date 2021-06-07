@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'rake'
+gem 'rake', '~> 10.5'
 
 ## Storage
 gem 'pg', '~> 0.18'
 gem 'sequel', '~> 4.17'
-gem 'sequel_pg', require: 'sequel'
+gem 'sequel_pg', '~> 1.6', require: 'sequel'
 gem 'kosapi_client', '~> 0.13.0'
 gem 'chewy', '~> 0.8.2', '< 0.8.4'  # 0.8.4 is broken
 gem 'elasticsearch', '~> 1.0', require: false
@@ -23,7 +23,7 @@ gem 'roar', '~> 1.0.0'
 
 # gem 'multi_json'
 # gem 'oj'
-gem 'json'
+gem 'json', '~> 2.3'
 # gem "sinatra", require: "sinatra/base"
 # gem "sinatra-contrib", require: ["sinatra/namespace", "sinatra/reloader"]
 # gem "sinatra-router"
@@ -55,35 +55,35 @@ gem 'rollbar', '~> 2.11' # required by pliny
 
 group :development do
   gem 'guard-shotgun', '~> 0.4.0', require: false
-  gem 'guard-rspec', require: false
-  gem 'foreman'
+  gem 'guard-rspec', '~> 4.7', require: false
+  gem 'foreman', '~> 0.84.0'
 
-  gem 'kramdown', require: false
-  gem 'guard-livereload', require: false
-  gem 'guard-yard', require: false
+  gem 'kramdown', '~> 1.13', require: false
+  gem 'guard-livereload', '~> 2.5', require: false
+  gem 'guard-yard', '~> 2.2', require: false
 end
 
 group :test do
-  gem 'committee'
+  gem 'committee', '~> 1.15'
   gem 'rspec', '~> 3.3'
-  gem 'rspec-collection_matchers'
+  gem 'rspec-collection_matchers', '~> 1.1'
   gem 'rspec-http', '~> 0.11'
   gem 'rspec-parameterized', github: 'jnv/rspec-parameterized', branch: 'badbf07'
-  gem 'rack-test'
-  gem 'bogus'
-  gem 'database_cleaner'
-  gem 'timecop'
-  gem 'codeclimate-test-reporter', require: nil
-  gem 'coveralls', require: false
-  gem 'fabrication'
+  gem 'rack-test', '~> 0.6.3'
+  gem 'bogus', '~> 0.1.6'
+  gem 'database_cleaner', '~> 1.6'
+  gem 'timecop', '~> 0.8.1'
+  gem 'codeclimate-test-reporter', '~> 1.0', require: nil
+  gem 'coveralls', '~> 0.8.19', require: false
+  gem 'fabrication', '~> 2.16'
   gem 'json_spec', '~> 1.1'
-  gem 'vcr'
-  gem 'rake-jekyll', require: false
-  gem 'elasticsearch-extensions'
+  gem 'vcr', '~> 3.0'
+  gem 'rake-jekyll', '~> 1.1', require: false
+  gem 'elasticsearch-extensions', '~> 0.0.26'
 end
 
 group :development, :test do
   gem 'pry-nav', '~> 0.2.4', require: false
-  gem 'pry-byebug', require: false
-  gem 'awesome_print'
+  gem 'pry-byebug', '~> 3.4', require: false
+  gem 'awesome_print', '~> 1.7'
 end

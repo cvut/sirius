@@ -328,58 +328,58 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 4.2)
-  awesome_print
-  bogus
+  awesome_print (~> 1.7)
+  bogus (~> 0.1.6)
   celluloid (~> 0.17.2)
   chewy (~> 0.8.2, < 0.8.4)
-  codeclimate-test-reporter
-  committee
+  codeclimate-test-reporter (~> 1.0)
+  committee (~> 1.15)
   corefines (~> 1.9)
-  coveralls
-  database_cleaner
+  coveralls (~> 0.8.19)
+  database_cleaner (~> 1.6)
   dotenv
   elasticsearch (~> 1.0)
-  elasticsearch-extensions
-  fabrication
+  elasticsearch-extensions (~> 0.0.26)
+  fabrication (~> 2.16)
   faraday (~> 0.9.0)
   faraday_middleware (~> 0.10.0)
-  foreman
+  foreman (~> 0.84.0)
   grape (~> 0.9.0)
-  guard-livereload
-  guard-rspec
+  guard-livereload (~> 2.5)
+  guard-rspec (~> 4.7)
   guard-shotgun (~> 0.4.0)
-  guard-yard
+  guard-yard (~> 2.2)
   icalendar (~> 2.3.0)
   ice_cube (~> 0.16.0)
-  json
+  json (~> 2.3)
   json_spec (~> 1.1)
   kosapi_client (~> 0.13.0)
-  kramdown
+  kramdown (~> 1.13)
   logging (~> 2.1)
   oauth2 (~> 1.4)
   pg (~> 0.18)
   pliny (~> 0.17.0)
   pry
-  pry-byebug
+  pry-byebug (~> 3.4)
   pry-nav (~> 0.2.4)
   puma (~> 3.9)
-  rack-test
+  rack-test (~> 0.6.3)
   rack-timeout (~> 0.4)
-  rake
-  rake-jekyll
+  rake (~> 10.5)
+  rake-jekyll (~> 1.1)
   roar (~> 1.0.0)
   role_playing (~> 0.1.5)
   rollbar (~> 2.11)
   rspec (~> 3.3)
-  rspec-collection_matchers
+  rspec-collection_matchers (~> 1.1)
   rspec-http (~> 0.11)
   rspec-parameterized!
   rufus-scheduler (~> 3.1)
   sentry-raven (~> 1.0)
   sequel (~> 4.17)
-  sequel_pg
-  timecop
-  vcr
+  sequel_pg (~> 1.6)
+  timecop (~> 0.8.1)
+  vcr (~> 3.0)
   warden (~> 1.2.3)
 
 BUNDLED WITH
