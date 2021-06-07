@@ -1,4 +1,4 @@
-image: gitlab.fit.cvut.cz:5000/ict/alpine-docker-images/base:3.7
+image: gitlab.fit.cvut.cz:5000/ict/alpine-docker-images/ci:3.10
 
 stages:
   - test
@@ -29,11 +29,11 @@ package:
   stage: package
   cache: {}
   before_script:
-    - apk add alpine-make-rootfs@backport git sudo
+    - apk add alpine-make-rootfs git sudo
   script:
     - IMAGE_NAME="sirius-$(date +%Y%m%d)-$CI_JOB_ID-$(git rev-parse --short HEAD)"
     - alpine-make-rootfs
-        --branch v3.7
+        --branch v3.10
         --timezone Europe/Prague
         --script-chroot
         dist/$IMAGE_NAME.tar.gz

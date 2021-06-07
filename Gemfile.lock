@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/jnv/rspec-parameterized.git
+  remote: https://github.com/jnv/rspec-parameterized.git
   revision: badbf071e8f7de6aca6fc91cf720a66a47c329c2
   branch: badbf07
   specs:
@@ -383,4 +383,4 @@ DEPENDENCIES
   warden (~> 1.2.3)
 
 BUNDLED WITH
-   1.16.2
+   2.0.2
