@@ -58,7 +58,7 @@ group :development do
   gem 'guard-rspec', '~> 4.7', require: false
   gem 'foreman', '~> 0.84.0'
 
-  gem 'kramdown', '~> 1.13', require: false
+  gem 'kramdown', '~> 2.3', require: false
   gem 'guard-livereload', '~> 2.5', require: false
   gem 'guard-yard', '~> 2.2', require: false
 end
