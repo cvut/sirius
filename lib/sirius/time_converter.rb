@@ -32,7 +32,9 @@ module Sirius
     # @return [Period] Event start and end times
     #
     def convert_time( start_hour, duration )
-      raise "Invalid start hour (#{start_hour}) or duration (#{duration})" if start_hour <= 0 || duration <= 0
+      if start_hour <= 0 || duration <= 0 || !@hour_starts.key?(start_hour - 1)
+        raise "Invalid start hour (#{start_hour}) or duration (#{duration})"
+      end
       start_time = @hour_starts[start_hour - 1]
       end_time = start_time + (@hour_length * duration).minutes
       Period.new(start_time, end_time)
