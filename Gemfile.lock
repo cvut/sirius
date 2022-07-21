@@ -292,7 +292,7 @@ GEM
     timers (4.3.3)
     tins (1.29.1)
       sync
-    tzinfo (1.2.9)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     uber (0.0.15)
     unparser (0.6.0)
